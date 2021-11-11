@@ -21,7 +21,7 @@ public class AppUser {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "telephone", unique = true, nullable = false)
+    @Column(name = "telephone", nullable = false)
     private String telephone;
 
     @Column(name = "is_password_changed", nullable = false)
