@@ -53,3 +53,6 @@ insert into order_item (quantity, status, price, priority, order_id, item_id) va
 
 insert into salary (amount, date_from, date_to, employee_id) values (100, 1636742869, 1636742869, 3);
 insert into salary (amount, date_from, date_to, employee_id) values (150, 1636742869, 1636742869, 4);
+
+insert into bonus (amount, date_to, employee_id) values (100, 1636742869, 4);
+insert into bonus (amount, date_to, employee_id) values (150, 1636742869, 4);

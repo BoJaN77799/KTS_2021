@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface EmployeeService {
 
-    public List<Employee> findAll();
+    List<Employee> findAll();
 
-    public Employee findByEmail(String email);
+    Employee findByEmail(String email);
 }

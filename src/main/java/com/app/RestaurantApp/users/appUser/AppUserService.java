@@ -7,8 +7,8 @@ import java.util.List;
 @Service
 public interface AppUserService {
 
-    public List<AppUser> findAll();
+    List<AppUser> findAll();
 
-    public AppUser findByEmail(String email);
+    AppUser findByEmail(String email);
 
 }

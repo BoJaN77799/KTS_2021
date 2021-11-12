@@ -15,7 +15,7 @@ public class Bonus {
     @Column(name = "amount", nullable = false)
     private double amount;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date_to", nullable = false)
     private Long date;
 
     @ManyToOne
@@ -47,4 +47,5 @@ public class Bonus {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
+
 }
