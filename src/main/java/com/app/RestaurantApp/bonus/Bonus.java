@@ -16,7 +16,7 @@ public class Bonus {
     private double amount;
 
     @Column(name = "date", nullable = false)
-    private LocalDate date;
+    private Long date;
 
     @ManyToOne
     @JoinColumn(name="employee_id", nullable=false)
@@ -32,11 +32,11 @@ public class Bonus {
         this.amount = amount;
     }
 
-    public LocalDate getDate() {
+    public Long getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Long date) {
         this.date = date;
     }
 
