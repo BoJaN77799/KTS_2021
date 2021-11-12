@@ -1,4 +1,4 @@
 package com.app.RestaurantApp.bonus;
 
-public class BonusService {
+public interface BonusService {
 }

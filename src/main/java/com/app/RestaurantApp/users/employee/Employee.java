@@ -15,10 +15,10 @@ public class Employee extends AppUser {
     @Column(name = "salary")
     private double salary;
 
-    @OneToMany(mappedBy="employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Salary> salaries;
 
-    @OneToMany(mappedBy="employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Bonus> bonuses;
 
     public Employee() { }
@@ -30,4 +30,21 @@ public class Employee extends AppUser {
     public void setSalary(double salary) {
         this.salary = salary;
     }
+
+    public Set<Salary> getSalaries() {
+        return salaries;
+    }
+
+    public void setSalaries(Set<Salary> salaries) {
+        this.salaries = salaries;
+    }
+
+    public Set<Bonus> getBonuses() {
+        return bonuses;
+    }
+
+    public void setBonuses(Set<Bonus> bonuses) {
+        this.bonuses = bonuses;
+    }
+
 }

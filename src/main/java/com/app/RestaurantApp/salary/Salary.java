@@ -15,8 +15,11 @@ public class Salary {
     @Column(name = "amount", nullable = false)
     private double amount;
 
-    @Column(name = "dateFrom", nullable = false)
+    @Column(name = "date_from", nullable = false)
     private Long dateFrom;
+
+    @Column(name = "date_to", nullable = false)
+    private Long dateTo;
 
     @ManyToOne
     @JoinColumn(name="employee_id", nullable=false)
@@ -47,5 +50,13 @@ public class Salary {
 
     public void setDateFrom(Long dateFrom) {
         this.dateFrom = dateFrom;
+    }
+
+    public Long getDateTo() {
+        return dateTo;
+    }
+
+    public void setDateTo(Long dateTo) {
+        this.dateTo = dateTo;
     }
 }

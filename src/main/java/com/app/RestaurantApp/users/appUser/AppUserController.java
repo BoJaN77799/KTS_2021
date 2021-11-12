@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -17,6 +18,7 @@ public class AppUserController {
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<AppUser> findAll() {
-        return appUserService.getAll();
+        return appUserService.findAll();
     }
+
 }

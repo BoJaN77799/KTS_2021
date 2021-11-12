@@ -51,3 +51,5 @@ insert into restaurant_order (status, created_at, note) values ('NEW', 163673007
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (2, 'ORDERED', 300.0, 'True', 1, 1);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (3, 'ORDERED', 160.0, 'False', 1, 2);
 
+insert into salary (amount, date_from, date_to, employee_id) values (100, 1636742869, 1636742869, 3);
+insert into salary (amount, date_from, date_to, employee_id) values (150, 1636742869, 1636742869, 4);
