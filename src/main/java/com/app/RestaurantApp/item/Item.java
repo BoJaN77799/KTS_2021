@@ -2,47 +2,66 @@ package com.app.RestaurantApp.item;
 
 import com.app.RestaurantApp.category.Category;
 import com.app.RestaurantApp.ingredient.Ingredient;
-import com.app.RestaurantApp.menu.Menu;
+import com.app.RestaurantApp.item.dto.ItemDTO;
 import com.app.RestaurantApp.price.Price;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+
+@SQLDelete(sql = "UPDATE item " + "SET deleted = true " + "WHERE id = ?")
+@Where(clause = "deleted = false")
+
 public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="name", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name="description", nullable = false)
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name="image", nullable = false)
+    @Column(name = "image", nullable = false)
     private String image;
 
-    @Column(name="cost", nullable = false)
+    @Column(name = "cost", nullable = false)
     private double cost;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Price> prices;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "item_ingredient",
-            joinColumns = { @JoinColumn(name = "item_id") },
-            inverseJoinColumns = { @JoinColumn(name = "ingredient_id") }
+            joinColumns = {@JoinColumn(name = "item_id")},
+            inverseJoinColumns = {@JoinColumn(name = "ingredient_id")}
     )
     private Set<Ingredient> ingredients;
 
     @ManyToOne
     private Category category;
 
+
+    @Column(name = "deleted")
+    private boolean deleted;
+
     public Item() {
+    }
+
+    public Item(ItemDTO itemDTO) {
+        this.id = itemDTO.getId();
+        this.name = itemDTO.getName();
+        this.description = itemDTO.getDescription();
+        this.image = itemDTO.getImage();
+        this.cost = itemDTO.getCost();
+        this.deleted = itemDTO.isDeleted();
     }
 
     public Long getId() {
@@ -91,5 +110,13 @@ public class Item {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

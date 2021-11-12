@@ -25,10 +25,10 @@ insert into category (name) values ('Supe');
 insert into category (name) values ('Gazirana pica');
 
 
-insert into item (name, description, image, cost, category_id) values ('Supa', 'Bas je Slana', 'putanja/supa', 250.0, 1);
+insert into item (name, description, image, cost, category_id, deleted) values ('Supa', 'Bas je Slana', 'putanja/supa', 250.0, 1, 'False');
 insert into food (id, recipe, time_to_make, food_type) values (1, 'Ma lako se pravi', 20, 'APETIZER');
 
-insert into item (name, description, image, cost, category_id) values ('Coca Cola', 'Bas je gazirana', 'putanja/cola', 140.0, 2);
+insert into item (name, description, image, cost, category_id, deleted) values ('Coca Cola', 'Bas je gazirana', 'putanja/cola', 140.0, 2, 'False');
 insert into drink (id, volume ) values (2, 0.5);
 
 insert into menu (name) values ('Leto');
