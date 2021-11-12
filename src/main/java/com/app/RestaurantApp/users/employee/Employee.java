@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@DiscriminatorValue(value="E")
 public class Employee extends AppUser {
 
     @Column(name = "salary")

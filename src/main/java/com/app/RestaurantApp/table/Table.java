@@ -1,12 +1,12 @@
 package com.app.RestaurantApp.table;
 
 import com.app.RestaurantApp.order.Order;
-import com.app.RestaurantApp.users.employee.Employee;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@javax.persistence.Table( name ="tables")
 public class Table {
 
     @Id

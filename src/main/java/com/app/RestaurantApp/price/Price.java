@@ -1,28 +1,26 @@
-package com.app.RestaurantApp.salary;
+package com.app.RestaurantApp.price;
 
-import com.app.RestaurantApp.users.employee.Employee;
+import com.app.RestaurantApp.item.Item;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
-public class Salary {
+public class Price {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "amount", nullable = false)
+    @Column(nullable = false)
     private double amount;
 
-    @Column(name = "dateFrom", nullable = false)
+    @Column(nullable = false)
     private Long dateFrom;
 
     @ManyToOne
-    @JoinColumn(name="employee_id", nullable=false)
-    private Employee employee;
+    private Item item;
 
-    public Salary() {
+    public Price() {
     }
 
     public Long getId() {

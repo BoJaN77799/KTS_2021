@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.orderItem;
 
 import com.app.RestaurantApp.enums.OrderItemStatus;
+import com.app.RestaurantApp.item.Item;
 import com.app.RestaurantApp.order.Order;
 import com.app.RestaurantApp.users.employee.Employee;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 public class OrderItem {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "quantity", nullable = false)
@@ -28,6 +30,10 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name="order_id", nullable=false)
     private Order order;
+
+    @ManyToOne
+    @JoinColumn(name="item_id", nullable=false)
+    private Item item;
 
     public OrderItem() {
     }
@@ -72,11 +78,11 @@ public class OrderItem {
         this.priority = priority;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
+//    public Order getOrder() {
+//        return order;
+//    }
+//
+//    public void setOrder(Order order) {
+//        this.order = order;
+//    }
 }

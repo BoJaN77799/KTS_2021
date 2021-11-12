@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
+@javax.persistence.Table(name="restaurant_order")
 public class Order {
 
     @Id
@@ -22,25 +23,21 @@ public class Order {
     private OrderStatus status;
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private Long createdAt;
 
     @Column(name = "note")
-    private LocalDateTime note;
+    private String note;
 
     @ManyToOne
-    @JoinColumn(name="table_id", nullable=false)
     private Table table;
 
     @ManyToOne
-    @JoinColumn(name="waiter_id", nullable=false)
     private Employee waiter;
 
     @ManyToOne
-    @JoinColumn(name="barmen_id")
     private Employee barmen;
 
     @ManyToOne
-    @JoinColumn(name="cook_id")
     private Employee cook;
 
     @OneToMany(mappedBy="order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -65,19 +62,19 @@ public class Order {
         this.status = status;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getNote() {
+    public String getNote() {
         return note;
     }
 
-    public void setNote(LocalDateTime note) {
+    public void setNote(String note) {
         this.note = note;
     }
 
@@ -88,36 +85,36 @@ public class Order {
     public void setTable(Table table) {
         this.table = table;
     }
-
-    public Employee getWaiter() {
-        return waiter;
-    }
-
-    public void setWaiter(Employee waiter) {
-        this.waiter = waiter;
-    }
-
-    public Employee getBarmen() {
-        return barmen;
-    }
-
-    public void setBarmen(Employee barmen) {
-        this.barmen = barmen;
-    }
-
-    public Employee getCook() {
-        return cook;
-    }
-
-    public void setCook(Employee cook) {
-        this.cook = cook;
-    }
-
-    public Set<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(Set<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
+//
+//    public Employee getWaiter() {
+//        return waiter;
+//    }
+//
+//    public void setWaiter(Employee waiter) {
+//        this.waiter = waiter;
+//    }
+//
+//    public Employee getBarmen() {
+//        return barmen;
+//    }
+//
+//    public void setBarmen(Employee barmen) {
+//        this.barmen = barmen;
+//    }
+//
+//    public Employee getCook() {
+//        return cook;
+//    }
+//
+//    public void setCook(Employee cook) {
+//        this.cook = cook;
+//    }
+//
+//    public Set<OrderItem> getOrderItems() {
+//        return orderItems;
+//    }
+//
+//    public void setOrderItems(Set<OrderItem> orderItems) {
+//        this.orderItems = orderItems;
+//    }
 }

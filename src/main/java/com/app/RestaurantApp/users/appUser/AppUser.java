@@ -1,9 +1,12 @@
 package com.app.RestaurantApp.users.appUser;
 
+import com.app.RestaurantApp.enums.UserType;
+
 import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue(value="U")
 public class AppUser {
 
     @Id
@@ -34,8 +37,9 @@ public class AppUser {
     @Column(name = "is_email_verified", nullable = false)
     private boolean emailVerified = false;
 
-    @Column(name = "type", nullable = false)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_type", nullable = false)
+    private UserType userType;
 
     public AppUser() {
     }
@@ -112,11 +116,11 @@ public class AppUser {
         this.emailVerified = emailVerified;
     }
 
-    public String getType() {
-        return type;
+    public UserType getUserType() {
+        return userType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 }
