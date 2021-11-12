@@ -1,8 +1,9 @@
-package com.app.RestaurantApp.users;
+package com.app.RestaurantApp.users.appUser;
 
 import javax.persistence.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class AppUser {
 
     @Id
@@ -21,6 +22,9 @@ public class AppUser {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
+    @Column(name = "gender", nullable = false)
+    private String gender;
+
     @Column(name = "telephone", nullable = false)
     private String telephone;
 
@@ -30,17 +34,10 @@ public class AppUser {
     @Column(name = "is_email_verified", nullable = false)
     private boolean emailVerified = false;
 
-    public AppUser() {
-    }
+    @Column(name = "type", nullable = false)
+    private String type;
 
-    public AppUser(Long id, String password, String firstName, String lastName, String email, String telephone, boolean isPasswordChanged) {
-        this.id = id;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.telephone = telephone;
-        this.isPasswordChanged = isPasswordChanged;
+    public AppUser() {
     }
 
     public Long getId() {
@@ -83,6 +80,14 @@ public class AppUser {
         this.email = email;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public String getTelephone() {
         return telephone;
     }
@@ -105,5 +110,13 @@ public class AppUser {
 
     public void setEmailVerified(boolean emailVerified) {
         this.emailVerified = emailVerified;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

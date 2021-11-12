@@ -1,4 +1,4 @@
-package com.app.RestaurantApp.users;
+package com.app.RestaurantApp.users.appUser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
