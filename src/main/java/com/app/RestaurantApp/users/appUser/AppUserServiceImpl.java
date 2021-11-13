@@ -3,6 +3,7 @@ package com.app.RestaurantApp.users.appUser;
 import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.UserUtils;
+import com.app.RestaurantApp.users.dto.UpdateUserDTO;
 import com.app.RestaurantApp.users.employee.Employee;
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.apache.catalina.User;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
+
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,9 +36,9 @@ public class AppUserServiceImpl implements AppUserService{
             searchField = "";
 
         if (userType == null){
-            searchField = "";
+            userType = "";
         }else if (userType.equalsIgnoreCase("all")){
-            searchField = "";
+            userType = "";
         }
         return appUserRepository.searchUsersAdmin(searchField, userType, pageable);
     }
@@ -62,6 +65,33 @@ public class AppUserServiceImpl implements AppUserService{
         }else{
             appUserRepository.save(user);
         }
+    }
 
+    @Override
+    public void updateUser(UpdateUserDTO updateUserDTO) throws UserException {
+        Optional<AppUser> user = appUserRepository.findById(updateUserDTO.getId());
+        if (user.isEmpty()) throw new UserException("Invalid user for update!");
+
+        AppUser us = user.get();
+        us.setFirstName(updateUserDTO.getFirstName());
+        us.setLastName(updateUserDTO.getLastName());
+        us.setAddress(updateUserDTO.getAddress());
+        us.setTelephone(updateUserDTO.getTelephone());
+
+        UserUtils.CheckUserInfo(us);
+        appUserRepository.save(us);
+    }
+
+    @Override
+    public void deleteUser(Long id) throws UserException{
+        Optional<AppUser> user = appUserRepository.findById(id);
+        if (user.isEmpty()) throw new UserException("Invalid user for deletion!");
+        appUserRepository.delete(user.get());
+    }
+
+    @Override
+    public AppUser getUser(Long id){
+        Optional<AppUser> user = appUserRepository.findById(id);
+        return user.orElse(null);
     }
 }
