@@ -31,7 +31,7 @@ insert into food (id, recipe, time_to_make, food_type) values (1, 'Ma lako se pr
 insert into item (name, description, image, cost, category_id) values ('Coca Cola', 'Bas je gazirana', 'putanja/cola', 140.0, 2);
 insert into drink (id, volume ) values (2, 0.5);
 
-insert into menu (name) values ('Leto');
+insert into menu (name, active_menu) values ('Leto', 'True');
 
 insert into menu_item (menu_id, item_id) values (1, 1);
 insert into menu_item (menu_id, item_id) values (1, 2);
@@ -58,3 +58,6 @@ insert into salary (amount, date_from, employee_id) values (150, 1640995199, 4);
 insert into bonus (amount, date_to, employee_id) values (100, 1636742869, 4);
 insert into bonus (amount, date_to, employee_id) values (150, 1636742869, 4);
 insert into bonus (amount, date_to, employee_id) values (150, 924825600000, 4);
+
+insert into menu (name, active_menu) values ('Jesenja Ponuda', 'True');
+insert into menu (name, active_menu) values ('Zimska Ponuda', 'False');
