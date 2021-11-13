@@ -14,7 +14,11 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
-    public Category() {
+    public Category(){}
+
+    public Category(CategoryDTO category) {
+        this.id = category.getId();
+        this.name = category.getName();
     }
 
     public Category(CategoryDTO category) {

@@ -9,17 +9,20 @@ public class ItemDTO {
     private Double cost;
     private String description;
     private String image;
-    private CategoryDTO categoryDTO;
+    private CategoryDTO category;
+    private boolean deleted;
 
-    public ItemDTO(){}
+    public ItemDTO() {
+    }
 
-    public ItemDTO(Long id, String name, Double cost, String description, String image, CategoryDTO categoryDTO) {
+    public ItemDTO(Long id, String name, Double cost, String description, String image, CategoryDTO category, boolean deleted) {
         this.id = id;
         this.name = name;
         this.cost = cost;
         this.description = description;
         this.image = image;
-        this.categoryDTO = categoryDTO;
+        this.category = category;
+        this.deleted = deleted;
     }
 
     public Long getId() {
@@ -62,12 +65,19 @@ public class ItemDTO {
         this.image = image;
     }
 
-    public CategoryDTO getCategoryDTO() {
-        return categoryDTO;
+    public CategoryDTO getCategory() {
+        return category;
     }
 
-    public void setCategoryDTO(CategoryDTO categoryDTO) {
-        this.categoryDTO = categoryDTO;
+    public void setCategory(CategoryDTO category) {
+        this.category = category;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
-

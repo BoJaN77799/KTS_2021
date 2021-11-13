@@ -20,5 +20,4 @@ public class ItemServiceImpl implements ItemService {
     public boolean deleteItem(Long id) {
         return false;
     }
-
 }

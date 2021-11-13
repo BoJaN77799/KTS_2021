@@ -11,4 +11,9 @@ public interface FoodService {
 
     List<FoodWithPriceDTO> getFoodWithPrice(FoodSearchDTO searchDTO, Pageable pageable);
 
+    Food findOne(Long id);
+
+    Food saveFood(FoodDTO foodDTO);
+
+    void deleteFood(Food food);
 }

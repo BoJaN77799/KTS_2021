@@ -12,15 +12,15 @@ public class FoodDTO extends ItemDTO {
 
     public FoodDTO() {}
 
-    public FoodDTO(Long id, String name, Double cost, String description, String image, CategoryDTO category, String recipe, Integer timeToMake, String foodType) {
-        super(id, name, cost, description, image, category);
+    public FoodDTO(Long id, String name, Double cost, String description, String image, CategoryDTO category, boolean deleted, String recipe, Integer timeToMake, String type) {
+        super(id, name, cost, description, image, category, deleted);
         this.recipe = recipe;
         this.timeToMake = timeToMake;
-        this.type = foodType;
+        this.type = type;
     }
 
     public FoodDTO(Food food) {
-        super(food.getId(), food.getName(), food.getCost(), food.getDescription(), food.getImage(), new CategoryDTO(food.getCategory()));
+        super(food.getId(), food.getName(), food.getCost(), food.getDescription(), food.getImage(), new CategoryDTO(food.getCategory()), food.isDeleted());
         this.recipe = food.getRecipe();
         this.timeToMake = food.getTimeToMake();
         this.type = food.getType().toString();
@@ -46,8 +46,7 @@ public class FoodDTO extends ItemDTO {
         return type;
     }
 
-    public void setFoodType(String type) {
+    public void setType(String type) {
         this.type = type;
     }
-
 }
