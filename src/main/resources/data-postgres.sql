@@ -23,13 +23,32 @@ insert into ingredient (name, allergen) values ('Voda', 'False');
 
 insert into category (name) values ('Supe');
 insert into category (name) values ('Gazirana pica');
+insert into category (name) values ('Mlecni proizvodi');
+insert into category (name) values ('Pilece meso');
+insert into category (name) values ('Jagnjece meso');
+insert into category (name) values ('Sladoledi');
 
 
 insert into item (name, description, image, cost, category_id) values ('Supa', 'Bas je Slana', 'putanja/supa', 250.0, 1);
 insert into food (id, recipe, time_to_make, food_type) values (1, 'Ma lako se pravi', 20, 'APETIZER');
 
+insert into item (name, description, image, cost, category_id) values ('Pohovani kackavalj', 'I on je slan', 'putanja/kackavalj', 550.0, 3);
+insert into food (id, recipe, time_to_make, food_type) values (2, 'Brzo se pravi', 15, 'APETIZER');
+
+insert into item (name, description, image, cost, category_id) values ('Prsuta', 'Bas je mnogo slana', 'putanja/prsuta', 750.0, 5);
+insert into food (id, recipe, time_to_make, food_type) values (3, 'Ma tesko se pravi', 5, 'APETIZER');
+
+insert into item (name, description, image, cost, category_id) values ('Jagnjece pecenje', 'Bas je ultra Slana', 'putanja/mmm', 2000.0, 5);
+insert into food (id, recipe, time_to_make, food_type) values (4, 'Ma lako se pravi', 120, 'MAIN_DISH');
+
+insert into item (name, description, image, cost, category_id) values ('Pileca krilca', 'Nisu losa', 'putanja/krila', 850.0, 4);
+insert into food (id, recipe, time_to_make, food_type) values (5, 'Ma lako se pravi', 30, 'MAIN_DISH');
+
+insert into item (name, description, image, cost, category_id) values ('Sladoled Kapri', 'Zaledjen', 'putanja/sladoled', 150.0, 6);
+insert into food (id, recipe, time_to_make, food_type) values (6, 'Ma lako se pravi', 2, 'DESERT');
+
 insert into item (name, description, image, cost, category_id) values ('Coca Cola', 'Bas je gazirana', 'putanja/cola', 140.0, 2);
-insert into drink (id, volume ) values (2, 0.5);
+insert into drink (id, volume ) values (7, 0.5);
 
 insert into menu (name) values ('Leto');
 
@@ -44,7 +63,12 @@ insert into item_ingredient (item_id, ingredient_id) values (2,6);
 
 
 insert into price (amount, date_from, item_id) values (300.0, 1636730076405, 1);
-insert into price (amount, date_from, item_id) values (160.0, 1636730076405, 2);
+insert into price (amount, date_from, item_id) values (600.0, 1636730076405, 2);
+insert into price (amount, date_from, item_id) values (960.0, 1636730076405, 3);
+insert into price (amount, date_from, item_id) values (2500.0, 1636730076405, 4);
+insert into price (amount, date_from, item_id) values (960.0, 1636730076405, 5);
+insert into price (amount, date_from, item_id) values (240.0, 1636730076405, 6);
+insert into price (amount, date_from, item_id) values (160.0, 1636730076405, 7);
 
 insert into restaurant_order (status, created_at, note) values ('NEW', 1636730076405, 'Pozuri, galdan sam.');
 

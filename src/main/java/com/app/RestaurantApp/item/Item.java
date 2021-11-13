@@ -2,6 +2,7 @@ package com.app.RestaurantApp.item;
 
 import com.app.RestaurantApp.category.Category;
 import com.app.RestaurantApp.ingredient.Ingredient;
+import com.app.RestaurantApp.item.dto.ItemDTO;
 import com.app.RestaurantApp.menu.Menu;
 import com.app.RestaurantApp.price.Price;
 
@@ -39,10 +40,19 @@ public class Item {
     )
     private Set<Ingredient> ingredients;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
     public Item() {
+    }
+
+    public Item(ItemDTO itemDTO){
+        this.id = itemDTO.getId();
+        this.name = itemDTO.getName();
+        this.description = itemDTO.getDescription();
+        this.image = itemDTO.getImage();
+        this.cost = itemDTO.getCost();
+        this.category = new Category(itemDTO.getCategoryDTO());
     }
 
     public Long getId() {
