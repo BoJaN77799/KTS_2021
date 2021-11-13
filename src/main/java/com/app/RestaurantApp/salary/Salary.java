@@ -4,6 +4,8 @@ import com.app.RestaurantApp.users.employee.Employee;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class Salary {
@@ -18,14 +20,17 @@ public class Salary {
     @Column(name = "date_from", nullable = false)
     private Long dateFrom;
 
-    @Column(name = "date_to", nullable = false)
-    private Long dateTo;
-
     @ManyToOne
     @JoinColumn(name="employee_id", nullable=false)
     private Employee employee;
 
     public Salary() {
+    }
+
+    public Salary(SalaryDTO salaryDTO){
+        this.amount = salaryDTO.getAmount();
+        this.dateFrom = LocalDate.parse(salaryDTO.getDateFrom(), DateTimeFormatter.ofPattern("dd.MM.yyyy."))
+                .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
     }
 
     public Long getId() {
@@ -50,14 +55,6 @@ public class Salary {
 
     public void setDateFrom(Long dateFrom) {
         this.dateFrom = dateFrom;
-    }
-
-    public Long getDateTo() {
-        return dateTo;
-    }
-
-    public void setDateTo(Long dateTo) {
-        this.dateTo = dateTo;
     }
 
     public Employee getEmployee() {

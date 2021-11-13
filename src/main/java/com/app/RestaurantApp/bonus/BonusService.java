@@ -6,5 +6,5 @@ public interface BonusService {
 
     List<BonusDTO> getBonusesOfEmployee(String email);
 
-    BonusDTO createBonus(BonusDTO bonus);
+    BonusDTO createBonus(BonusDTO bonusDTO);
 }

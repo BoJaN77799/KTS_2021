@@ -21,8 +21,8 @@ public class BonusController {
     }
 
     @PostMapping(value = "/createBonus")
-    public ResponseEntity<BonusDTO> createBonus(@RequestBody BonusDTO bonus){
-        return new ResponseEntity<>(bonusService.createBonus(bonus), HttpStatus.OK);
+    public ResponseEntity<BonusDTO> createBonus(@RequestBody BonusDTO bonusDTO){
+        return new ResponseEntity<>(bonusService.createBonus(bonusDTO), HttpStatus.OK);
     }
 
 }

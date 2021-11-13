@@ -7,6 +7,8 @@ import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +31,12 @@ public class BonusServiceImpl implements BonusService {
     }
 
     @Override
-    public BonusDTO createBonus(BonusDTO bonus) {
-        Employee e = employeeService.findByEmail(bonus.getEmail());
-        Bonus b = new Bonus(bonus);
-        b.setEmployee(e);
-        bonusRepository.save(b);
-        return bonus;
+    public BonusDTO createBonus(BonusDTO bonusDTO) {
+        bonusDTO.setDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy.")));
+        Employee e = employeeService.findByEmail(bonusDTO.getEmail());
+        Bonus bonus = new Bonus(bonusDTO);
+        bonus.setEmployee(e);
+        bonusRepository.save(bonus);
+        return bonusDTO;
     }
 }

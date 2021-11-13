@@ -21,8 +21,8 @@ public class SalaryController {
     }
 
     @PostMapping(value = "/createSalary")
-    public ResponseEntity<SalaryDTO> createSalary(@RequestBody SalaryDTO salary){
-        return new ResponseEntity<>(salary, HttpStatus.OK);
+    public ResponseEntity<SalaryDTO> createSalary(@RequestBody SalaryDTO salaryDTO){
+        return new ResponseEntity<>(salaryService.createSalary(salaryDTO), HttpStatus.OK);
     }
 
 }

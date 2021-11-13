@@ -16,12 +16,10 @@ public class SalaryDTO {
 
     public SalaryDTO(Salary salary){
         this.amount = salary.getAmount();
-        LocalDate dateTo =
-                Instant.ofEpochMilli(salary.getDateTo()).atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate dateFrom =
                 Instant.ofEpochMilli(salary.getDateFrom()).atZone(ZoneId.systemDefault()).toLocalDate();
         this.dateFrom = dateFrom.format(DateTimeFormatter.ofPattern("dd.MM.yyyy."));
-        this.dateTo = dateTo.format(DateTimeFormatter.ofPattern("dd.MM.yyyy."));
+        this.dateTo = "Nije odredjen.";
         this.email = salary.getEmployee().getEmail();
     }
 
