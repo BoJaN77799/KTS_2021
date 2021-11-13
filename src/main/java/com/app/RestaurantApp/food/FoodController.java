@@ -17,6 +17,9 @@ public class FoodController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<FoodDTO> findOne(@PathVariable Long id) {
         Food food = foodService.findOne(id);
+        if (food == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(new FoodDTO(food), HttpStatus.CREATED);
     }
 
