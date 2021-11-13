@@ -37,11 +37,28 @@ public class AppUser {
     @Column(name = "is_email_verified", nullable = false)
     private boolean emailVerified = false;
 
+    @Column(name="address")
+    private String address;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type", nullable = false)
     private UserType userType;
 
     public AppUser() {
+    }
+
+    public AppUser (AppUser appUser){
+        this.firstName = appUser.firstName;
+        this.lastName = appUser.lastName;
+        this.password = appUser.password;
+        this.id = appUser.id;
+        this.email = appUser.email;
+        this.gender = appUser.gender;
+        this.telephone = appUser.telephone;
+        this.address = appUser.address;
+        this.isPasswordChanged = appUser.isPasswordChanged;
+        this.emailVerified = appUser.emailVerified;
+        this.userType = appUser.userType;
     }
 
     public Long getId() {
@@ -115,6 +132,10 @@ public class AppUser {
     public void setEmailVerified(boolean emailVerified) {
         this.emailVerified = emailVerified;
     }
+
+    public String getAddress() { return address; }
+
+    public void setAddress(String address) { this.address = address; }
 
     public UserType getUserType() {
         return userType;
