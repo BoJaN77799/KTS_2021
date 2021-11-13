@@ -10,9 +10,16 @@ public class FoodWithPriceDTO extends FoodDTO{
 
     public FoodWithPriceDTO() { }
 
+//    public FoodWithPriceDTO(Long id, String name, Double cost, String description, String image, CategoryDTO category,
+//                            String recipe, Integer timeToMake, String foodType, Double price) {
+//        super(id, name, cost, description, image, category, recipe, timeToMake, foodType);
+//        this.price = price;
+//    }
+
+
     public FoodWithPriceDTO(Long id, String name, Double cost, String description, String image, CategoryDTO category,
-                            String recipe, Integer timeToMake, String foodType, Double price) {
-        super(id, name, cost, description, image, category, recipe, timeToMake, foodType);
+                            boolean deleted, String recipe, Integer timeToMake, String type, Double price) {
+        super(id, name, cost, description, image, category, deleted, recipe, timeToMake, type);
         this.price = price;
     }
 

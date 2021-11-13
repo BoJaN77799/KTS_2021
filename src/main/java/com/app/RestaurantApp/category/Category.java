@@ -21,11 +21,6 @@ public class Category {
         this.name = category.getName();
     }
 
-    public Category(CategoryDTO category) {
-        this.id = category.getId();
-        this.name = category.getName();
-    }
-
     public Long getId() {
         return id;
     }
