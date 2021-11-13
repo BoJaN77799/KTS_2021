@@ -59,4 +59,13 @@ public class Salary {
     public void setDateTo(Long dateTo) {
         this.dateTo = dateTo;
     }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
 }

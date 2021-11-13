@@ -27,4 +27,13 @@ public class BonusServiceImpl implements BonusService {
             bonuses.add(new BonusDTO(b));
         return bonuses;
     }
+
+    @Override
+    public BonusDTO createBonus(BonusDTO bonus) {
+        Employee e = employeeService.findByEmail(bonus.getEmail());
+        Bonus b = new Bonus(bonus);
+        b.setEmployee(e);
+        bonusRepository.save(b);
+        return bonus;
+    }
 }

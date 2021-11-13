@@ -56,3 +56,4 @@ insert into salary (amount, date_from, date_to, employee_id) values (150, 163674
 
 insert into bonus (amount, date_to, employee_id) values (100, 1636742869, 4);
 insert into bonus (amount, date_to, employee_id) values (150, 1636742869, 4);
+insert into bonus (amount, date_to, employee_id) values (150, 924825600000, 4);

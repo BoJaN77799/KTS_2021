@@ -4,6 +4,9 @@ import com.app.RestaurantApp.users.employee.Employee;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class Bonus {
@@ -23,6 +26,12 @@ public class Bonus {
     private Employee employee;
 
     public Bonus() { }
+
+    public Bonus(BonusDTO bonusDTO){
+        this.amount = bonusDTO.getAmount();
+        this.date = LocalDate.parse(bonusDTO.getDate(), DateTimeFormatter.ofPattern("dd.MM.yyyy."))
+        .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
+    }
 
     public double getAmount() {
         return amount;

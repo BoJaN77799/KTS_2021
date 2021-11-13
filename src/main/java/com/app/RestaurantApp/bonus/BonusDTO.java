@@ -9,6 +9,7 @@ public class BonusDTO {
 
     private double amount;
     private String date;
+    private String email;
 
     public BonusDTO() {}
 
@@ -17,6 +18,7 @@ public class BonusDTO {
         LocalDate date =
                 Instant.ofEpochMilli(b.getDate()).atZone(ZoneId.systemDefault()).toLocalDate();
         this.date = date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy."));
+        this.email = b.getEmployee().getEmail();
     }
 
     public double getAmount() {
@@ -33,6 +35,14 @@ public class BonusDTO {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }

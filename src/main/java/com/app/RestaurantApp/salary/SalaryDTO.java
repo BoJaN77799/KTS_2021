@@ -10,6 +10,7 @@ public class SalaryDTO {
     private double amount;
     private String dateFrom;
     private String dateTo;
+    private String email;
 
     public SalaryDTO() {}
 
@@ -21,6 +22,7 @@ public class SalaryDTO {
                 Instant.ofEpochMilli(salary.getDateFrom()).atZone(ZoneId.systemDefault()).toLocalDate();
         this.dateFrom = dateFrom.format(DateTimeFormatter.ofPattern("dd.MM.yyyy."));
         this.dateTo = dateTo.format(DateTimeFormatter.ofPattern("dd.MM.yyyy."));
+        this.email = salary.getEmployee().getEmail();
     }
 
     public double getAmount() {
@@ -45,5 +47,13 @@ public class SalaryDTO {
 
     public void setDateTo(String dateTo) {
         this.dateTo = dateTo;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
