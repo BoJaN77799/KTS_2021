@@ -2,6 +2,7 @@ package com.app.RestaurantApp.food;
 
 import com.app.RestaurantApp.food.dto.FoodDTO;
 import com.app.RestaurantApp.food.dto.FoodSearchDTO;
+import com.app.RestaurantApp.food.dto.FoodWithPriceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class FoodServiceImpl implements FoodService {
     private FoodRepository foodRepository;
 
     @Override
-    public List<FoodDTO> getFood(FoodSearchDTO searchDTO, Pageable pageable) {
+    public List<FoodWithPriceDTO> getFoodWithPrice(FoodSearchDTO searchDTO, Pageable pageable) {
         List<Food> foods = new ArrayList<>();
 
         String name = (searchDTO != null) ? searchDTO.getName() : null;
@@ -28,10 +29,10 @@ public class FoodServiceImpl implements FoodService {
         String type = (searchDTO != null) ? searchDTO.getType() : null;
         type = (type != null) ? type : "ALL";
 
-        foods = foodRepository.findAllByCriteria(name, category, type, pageable);
+        foods = foodRepository.findAllWithPriceByCriteria(name, category, type, pageable);
 
-        List<FoodDTO> foodsDTO = new ArrayList<>();
-        foods.forEach(food -> foodsDTO.add(new FoodDTO(food)));
+        List<FoodWithPriceDTO> foodsDTO = new ArrayList<>();
+        foods.forEach(food -> foodsDTO.add(new FoodWithPriceDTO(food)));
 
         return foodsDTO;
     }

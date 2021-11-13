@@ -3,6 +3,7 @@ package com.app.RestaurantApp.food;
 import com.app.RestaurantApp.food.FoodService;
 import com.app.RestaurantApp.food.dto.FoodDTO;
 import com.app.RestaurantApp.food.dto.FoodSearchDTO;
+import com.app.RestaurantApp.food.dto.FoodWithPriceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -44,9 +45,9 @@ public class FoodController {
 //    }
 
     @GetMapping(consumes = "application/json")
-    public ResponseEntity<List<FoodDTO>> findOne(@RequestBody FoodSearchDTO foodSearchDTO, Pageable pageable) {
+    public ResponseEntity<List<FoodWithPriceDTO>> getFoodWtihPrice(@RequestBody FoodSearchDTO foodSearchDTO, Pageable pageable) {
 
-        List<FoodDTO> foodsDTO = foodService.getFood(foodSearchDTO, pageable);
+        List<FoodWithPriceDTO> foodsDTO = foodService.getFoodWithPrice(foodSearchDTO, pageable);
 
         return new ResponseEntity<>(foodsDTO, HttpStatus.OK);
     }

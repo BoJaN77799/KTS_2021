@@ -43,6 +43,9 @@ public class Item {
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
+    @Column( name="current_price", nullable = true)
+    private Double currentPrice;
+
     public Item() {
     }
 
@@ -101,5 +104,13 @@ public class Item {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Double getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(Double currentPrice) {
+        this.currentPrice = currentPrice;
     }
 }

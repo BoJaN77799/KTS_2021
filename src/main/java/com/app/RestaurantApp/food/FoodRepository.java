@@ -15,6 +15,6 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
             "where (:name = 'ALL' or lower(f.name) like lower(concat('%', :name, '%'))) " +
             "and (:category = 'ALL' or lower(f.category.name) = lower(:category)) " +
             "and (:type = 'ALL' or lower(f.type) = lower(:type)) ")
-    List<Food> findAllByCriteria(@Param("name") String name, @Param("category") String category,
+    List<Food> findAllWithPriceByCriteria(@Param("name") String name, @Param("category") String category,
                                  @Param("type") String type, Pageable pageable);
 }
