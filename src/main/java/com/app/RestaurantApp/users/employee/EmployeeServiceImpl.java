@@ -19,6 +19,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public Employee findByEmail(String email) {
         return employeeRepository.findByEmail(email);
+    }
       
     @Override
     public void createEmployee(Employee employee) {
