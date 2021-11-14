@@ -116,3 +116,12 @@ insert into restaurant_order (status, created_at, note) values ('NEW', 163673007
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (2, 'ORDERED', 300.0, 'True', 1, 1);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (3, 'ORDERED', 160.0, 'False', 1, 2);
 
+insert into tables (active, x, y, floor) values (true, 10, 10, 0);
+insert into tables (active, x, y, floor) values (true, 20, 20, 0);
+insert into tables (active, x, y, floor) values (true, 30, 20, 0);
+insert into tables (active, x, y, floor) values (false, 40, 20, 0);
+insert into tables (active, x, y, floor) values (true, 50, 20, 0);
+insert into tables (active, x, y, floor) values (false, 10, 10, 1);
+insert into tables (active, x, y, floor) values (true, 14, 15, 1);
+insert into tables (active, x, y, floor) values (true, 5, 11, 1);
+insert into tables (active, x, y, floor) values (true, 22, 10, 1);
