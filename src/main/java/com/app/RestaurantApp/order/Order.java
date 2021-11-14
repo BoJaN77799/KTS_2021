@@ -35,7 +35,7 @@ public class Order {
     private Employee waiter;
 
     @ManyToOne
-    private Employee barmen;
+    private Employee barman;
 
     @ManyToOne
     private Employee cook;
@@ -94,12 +94,12 @@ public class Order {
         this.waiter = waiter;
     }
 
-    public Employee getBarmen() {
-        return barmen;
+    public Employee getBarman() {
+        return barman;
     }
 
-    public void setBarmen(Employee barmen) {
-        this.barmen = barmen;
+    public void setBarman(Employee barmen) {
+        this.barman = barmen;
     }
 
     public Employee getCook() {

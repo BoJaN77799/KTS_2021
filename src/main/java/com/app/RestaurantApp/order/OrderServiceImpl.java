@@ -13,7 +13,6 @@ import com.app.RestaurantApp.users.employee.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.*;
 
@@ -82,6 +81,21 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public Order findOneWithOrderItems(Long id) {
         return orderRepository.findOneWithOrderItems(id);
+    }
+
+    @Override
+    public Order findOneWithFood(Long id){
+        return orderRepository.findOneWithFood(id);
+    }
+
+    @Override
+    public List<Order> findAllNewWithFood() {
+        return orderRepository.findAllNewWithFood();
+    }
+
+    @Override
+    public List<Order> findAllMyWithFood(Long id) {
+        return orderRepository.findAllMyWithFood(id);
     }
 
 

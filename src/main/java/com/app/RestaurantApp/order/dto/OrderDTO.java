@@ -30,7 +30,7 @@ public class OrderDTO {
         this.tableId = (order.getTable() != null) ? order.getTable().getId() : null;
         this.waiterId = (order.getWaiter() != null) ? order.getWaiter().getId() : null;
         this.cookId = (order.getCook() != null) ? order.getCook().getId() : null;
-        this.barmenId = (order.getBarmen() != null) ? order.getBarmen().getId() : null;
+        this.barmenId = (order.getBarman() != null) ? order.getBarman().getId() : null;
         orderItems = new ArrayList<>();
         for(OrderItem orderItem : order.getOrderItems()){
             orderItems.add(new OrderItemSimpleDTO(orderItem));
