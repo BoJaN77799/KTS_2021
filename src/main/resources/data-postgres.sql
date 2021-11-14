@@ -70,7 +70,7 @@ insert into drink (id, volume ) values (9, 0.5);
 insert into item (name, description, image, cost, category_id, current_price, deleted) values ('Jelen', 'Piva', 'putanja/rogonja', 140.0, 2, 170, 'False');
 insert into drink (id, volume ) values (10, 0.5);
 
-insert into menu (name) values ('Leto');
+insert into menu (name, active_menu) values ('Leto', 'True');
 
 insert into menu_item (menu_id, item_id) values (1, 1);
 insert into menu_item (menu_id, item_id) values (1, 2);
@@ -116,3 +116,13 @@ insert into restaurant_order (status, created_at, note) values ('NEW', 163673007
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (2, 'ORDERED', 300.0, 'True', 1, 1);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (3, 'ORDERED', 160.0, 'False', 1, 2);
 
+insert into salary (amount, date_from, employee_id) values (100, 1635724800, 4);
+insert into salary (amount, date_from, employee_id) values (150, 1638316799, 4);
+insert into salary (amount, date_from, employee_id) values (150, 1640995199, 4);
+
+insert into bonus (amount, date_to, employee_id) values (100, 1636742869, 4);
+insert into bonus (amount, date_to, employee_id) values (150, 1636742869, 4);
+insert into bonus (amount, date_to, employee_id) values (150, 924825600000, 4);
+
+insert into menu (name, active_menu) values ('Jesenja Ponuda', 'True');
+insert into menu (name, active_menu) values ('Zimska Ponuda', 'False');

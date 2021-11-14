@@ -160,4 +160,5 @@ public class AppUser {
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
+
 }
