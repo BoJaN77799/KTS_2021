@@ -1,22 +1,20 @@
-package com.app.RestaurantApp.category;
+package com.app.RestaurantApp.category.dto;
 
-import com.app.RestaurantApp.category.dto.CategoryDTO;
+import com.app.RestaurantApp.category.Category;
 
-import javax.persistence.*;
+public class CategoryDTO {
 
-@Entity
-public class Category {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private String name;
 
-    public Category(){}
+    public CategoryDTO(){}
 
-    public Category(CategoryDTO category) {
+    public CategoryDTO(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public CategoryDTO(Category category) {
         this.id = category.getId();
         this.name = category.getName();
     }

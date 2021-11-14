@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.food;
 
 import com.app.RestaurantApp.enums.FoodType;
+import com.app.RestaurantApp.food.dto.FoodDTO;
 import com.app.RestaurantApp.item.Item;
 
 import javax.persistence.Column;
@@ -11,17 +12,24 @@ import javax.persistence.Enumerated;
 @Entity
 public class Food extends Item {
 
-    @Column( name="recipe", nullable = false)
+    @Column(name = "recipe", nullable = false)
     private String recipe;
 
-    @Column( name="time_to_make", nullable = false)
+    @Column(name = "time_to_make", nullable = false)
     private int timeToMake;
 
     @Enumerated(EnumType.STRING)
-    @Column( name="food_type", nullable = false)
+    @Column(name = "food_type", nullable = false)
     private FoodType type;
 
     public Food() {
+    }
+
+    public Food(FoodDTO food) {
+        super(food);
+        this.recipe = food.getRecipe();
+        this.timeToMake = food.getTimeToMake();
+        this.type = FoodType.valueOf(food.getType());
     }
 
     public String getRecipe() {

@@ -21,7 +21,12 @@ public class Employee extends AppUser {
     @OneToMany(mappedBy="employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Bonus> bonuses;
 
-    public Employee() { }
+    public Employee() {}
+
+    public Employee(AppUser appUser) {
+        super(appUser);
+        salary = 0;
+    }
 
     public double getSalary() {
         return salary;
