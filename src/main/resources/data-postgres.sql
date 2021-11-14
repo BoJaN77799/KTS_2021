@@ -116,3 +116,8 @@ insert into restaurant_order (status, created_at, note) values ('NEW', 163673007
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (2, 'ORDERED', 300.0, 'True', 1, 1);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (3, 'ORDERED', 160.0, 'False', 1, 2);
 
+insert into tables (active, x, y, floor) values ('False', 1.0, 1.0, 0);
+insert into tables (active, x, y, floor) values ('False', 2.0, 2.0, 0);
+insert into tables (active, x, y, floor) values ('False', 3.0, 3.0, 0);
+insert into tables (active, x, y, floor) values ('False', 4.0, 4.0, 0);
+insert into tables (active, x, y, floor) values ('False', 5.0, 5.0, 0);
