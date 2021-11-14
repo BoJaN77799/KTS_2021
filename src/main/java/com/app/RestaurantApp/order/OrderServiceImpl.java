@@ -98,5 +98,20 @@ public class OrderServiceImpl implements OrderService{
         return orderRepository.findAllMyWithFood(id);
     }
 
+    @Override
+    public Order findOneWithDrinks(Long id) {
+        return orderRepository.findOneWithDrinks(id);
+    }
+
+    @Override
+    public List<Order> findAllNewWithDrinks() {
+        return orderRepository.findAllNewWithDrinks();
+    }
+
+    @Override
+    public List<Order> findAllMyWithDrinks(Long id) {
+        return orderRepository.findAllMyWithDrinks(id);
+    }
+
 
 }

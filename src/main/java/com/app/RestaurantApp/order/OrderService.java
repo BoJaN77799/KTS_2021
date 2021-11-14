@@ -17,4 +17,10 @@ public interface OrderService {
     List<Order> findAllNewWithFood();
 
     List<Order> findAllMyWithFood(Long id);
+
+    Order findOneWithDrinks(Long id);
+
+    List<Order> findAllNewWithDrinks();
+
+    List<Order> findAllMyWithDrinks(Long id);
 }

@@ -52,6 +52,33 @@ public class OrderController {
         return orders.stream().map(OrderDTO::new).toList();
     }
 
+    @GetMapping(value = "/forBarman/{id}")
+    public ResponseEntity<OrderDTO> findOneWithDrinks(@PathVariable Long id) {
+        Order order = orderService.findOneWithDrinks(id);
+
+        if(order == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(new OrderDTO(order), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/forBarman/all")
+    public List<OrderDTO> findAllNewWithDrinks() {
+        List<Order> orders = orderService.findAllNewWithDrinks();
+
+        if(orders.size() == 0) return null;
+
+        return orders.stream().map(OrderDTO::new).toList();
+    }
+
+    @GetMapping(value = "/forBarman/all/{id}")
+    public List<OrderDTO> findAllMyWithDrinks(@PathVariable Long id) {
+        List<Order> orders = orderService.findAllMyWithDrinks(id);
+
+        if(orders.size() == 0) return null;
+
+        return orders.stream().map(OrderDTO::new).toList();
+    }
+
     @PostMapping(consumes = "application/json")
     public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO){
 
