@@ -13,7 +13,6 @@ values ('E', 'e123', 'AAA', 'Dodik', 'perazdera22333@gmail.com', 'MALE', '064231
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
 values ('E', 'e123', 'MMM', 'Dodik', 'perazdera22443@gmail.com', 'MALE', '0642312341', 'False', 'False', 'BARMAN', 40000.0, 'Luzicka 32, Becej', false);
 
-
 insert into ingredient (name, allergen) values ('Secer', 'False');
 insert into ingredient (name, allergen) values ('Mleko', 'True');
 insert into ingredient (name, allergen) values ('Brasno', 'False');
@@ -138,7 +137,6 @@ insert into restaurant_order (status, created_at, note, table_id, waiter_id, bar
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 600.0, 'True', 4, 2);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 160.0, 'False', 4, 7);
 
-
 insert into salary (amount, date_from, employee_id) values (100, 1635724800, 4);
 insert into salary (amount, date_from, employee_id) values (150, 1638316799, 4);
 insert into salary (amount, date_from, employee_id) values (150, 1640995199, 4);
@@ -149,4 +147,3 @@ insert into bonus (amount, date_to, employee_id) values (150, 924825600000, 4);
 
 insert into menu (name, active_menu) values ('Jesenja Ponuda', 'True');
 insert into menu (name, active_menu) values ('Zimska Ponuda', 'False');
-

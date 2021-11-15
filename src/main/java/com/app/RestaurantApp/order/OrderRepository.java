@@ -12,7 +12,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("select o from Order o join fetch o.orderItems i where o.id =?1")
     Order findOneWithOrderItems(Long orderId);
 
-
     @Query("select o from Order o join fetch o.orderItems i where o.id =?1 and i.item.itemType = 'FOOD'")
     Order findOneWithFood(Long id);
 
@@ -30,4 +29,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("select distinct o from Order o join fetch o.orderItems i where (o.barman.id =?1 and o.status = 'IN_PROGRESS') and i.item.itemType = 'DRINK'")
     List<Order> findAllMyWithDrinks(Long id);
+
+    @Query("select o from Order o join fetch o.orderItems i where o.id =?1 and i.status = 'ORDERED'")
+    Order findOneWithOrderItemsForUpdate(Long orderId);
+
 }

@@ -1,9 +1,11 @@
 package com.app.RestaurantApp.order;
 
 import com.app.RestaurantApp.order.dto.OrderDTO;
+
 import com.app.RestaurantApp.users.UserException;
 
 import java.util.List;
+
 
 public interface OrderService {
 
@@ -26,4 +28,11 @@ public interface OrderService {
     List<Order> findAllMyWithDrinks(Long id);
 
     void acceptOrder(Long id, String email) throws OrderException, UserException;
+
+    Order findOneWithOrderItemsForUpdate(Long id);
+
+    Order updateOrder(OrderDTO orderDTO);
+
+    Order finishOrder(Long id);
+
 }

@@ -2,7 +2,7 @@ package com.app.RestaurantApp.orderItem.dto;
 
 import com.app.RestaurantApp.orderItem.OrderItem;
 
-public class OrderItemSimpleDTO {
+public class OrderItemOrderCreationDTO {
 
     private Long id;
     private Long itemId;
@@ -10,9 +10,9 @@ public class OrderItemSimpleDTO {
     private Double price;
     private Boolean priority;
 
-    public OrderItemSimpleDTO() { }
+    public OrderItemOrderCreationDTO() { }
 
-    public OrderItemSimpleDTO(Long id, Long itemId, Integer quantity, Double price, Boolean priority) {
+    public OrderItemOrderCreationDTO(Long id, Long itemId, Integer quantity, Double price, Boolean priority) {
         this.id = id;
         this.itemId = itemId;
         this.quantity = quantity;
@@ -20,7 +20,7 @@ public class OrderItemSimpleDTO {
         this.priority = priority;
     }
 
-    public OrderItemSimpleDTO(OrderItem orderItem){
+    public OrderItemOrderCreationDTO(OrderItem orderItem){
         this(orderItem.getId(), orderItem.getItem().getId(), orderItem.getQuantity(),  orderItem.getPrice(), orderItem.isPriority());
     }
 

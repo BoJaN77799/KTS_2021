@@ -4,6 +4,8 @@ import com.app.RestaurantApp.item.dto.ItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ItemServiceImpl implements ItemService {
 
@@ -19,5 +21,10 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public boolean deleteItem(Long id) {
         return false;
+    }
+
+    @Override
+    public List<Item> findAllWithIds(List<Long> ids) {
+        return itemRepository.findAllWithIds(ids);
     }
 }

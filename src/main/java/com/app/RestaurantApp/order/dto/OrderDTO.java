@@ -3,7 +3,7 @@ package com.app.RestaurantApp.order.dto;
 
 import com.app.RestaurantApp.order.Order;
 import com.app.RestaurantApp.orderItem.OrderItem;
-import com.app.RestaurantApp.orderItem.dto.OrderItemSimpleDTO;
+import com.app.RestaurantApp.orderItem.dto.OrderItemOrderCreationDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class OrderDTO {
     private Long waiterId;
     private Long cookId;
     private Long barmenId;
-    private List<OrderItemSimpleDTO> orderItems;
+    private List<OrderItemOrderCreationDTO> orderItems;
 
     public OrderDTO() { }
 
@@ -33,7 +33,7 @@ public class OrderDTO {
         this.barmenId = (order.getBarman() != null) ? order.getBarman().getId() : null;
         orderItems = new ArrayList<>();
         for(OrderItem orderItem : order.getOrderItems()){
-            orderItems.add(new OrderItemSimpleDTO(orderItem));
+            orderItems.add(new OrderItemOrderCreationDTO(orderItem));
         }
     }
 
@@ -85,11 +85,11 @@ public class OrderDTO {
         this.waiterId = waiterId;
     }
 
-    public List<OrderItemSimpleDTO> getOrderItems() {
+    public List<OrderItemOrderCreationDTO> getOrderItems() {
         return orderItems;
     }
 
-    public void setOrderItems(List<OrderItemSimpleDTO> orderItems) {
+    public void setOrderItems(List<OrderItemOrderCreationDTO> orderItems) {
         this.orderItems = orderItems;
     }
 
