@@ -13,6 +13,11 @@ values ('E', 'e123', 'AAA', 'Dodik', 'perazdera22333@gmail.com', 'MALE', '064231
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
 values ('E', 'e123', 'MMM', 'Dodik', 'perazdera22443@gmail.com', 'MALE', '0642312341', 'False', 'False', 'BARMAN', 40000.0, 'Luzicka 32, Becej', false);
 
+insert into tables (active, x, y, floor) values ('True', 1.0, 1.0, 0);
+insert into tables (active, x, y, floor) values ('False', 2.0, 2.0, 0);
+insert into tables (active, x, y, floor) values ('False', 3.0, 3.0, 0);
+insert into tables (active, x, y, floor) values ('False', 4.0, 4.0, 0);
+insert into tables (active, x, y, floor) values ('False', 5.0, 5.0, 0);
 
 insert into ingredient (name, allergen) values ('Secer', 'False');
 insert into ingredient (name, allergen) values ('Mleko', 'True');
@@ -111,10 +116,19 @@ insert into price (amount, date_from, item_id) values (140.0, 1636730076405, 8);
 insert into price (amount, date_from, item_id) values (150.0, 1636730076405, 9);
 insert into price (amount, date_from, item_id) values (160.0, 1636730076405, 10);
 
-insert into restaurant_order (status, created_at, note) values ('NEW', 1636730076405, 'Pozuri, galdan sam.');
+
+insert into restaurant_order (status, created_at, note, table_id, waiter_id, barmen_id, cook_id)
+values ('NEW', 1636730076405, 'Pozuri, galdan sam.', 1, 3, 5, 4);
+
+insert into restaurant_order (status, created_at, note, table_id, waiter_id, barmen_id, cook_id)
+values ('NEW', 1636730076405, 'Pozuri, galdan sam.', 2, 3, 5, 4);
+
 
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (2, 'ORDERED', 300.0, 'True', 1, 1);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (3, 'ORDERED', 160.0, 'False', 1, 2);
+
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (2, 'IN_PROGRESS', 2500.0, 'True', 2, 4);
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (3, 'ORDERED', 960.0, 'False', 2, 5);
 
 
 insert into salary (amount, date_from, employee_id) values (100, 1635724800, 4);
@@ -128,8 +142,4 @@ insert into bonus (amount, date_to, employee_id) values (150, 924825600000, 4);
 insert into menu (name, active_menu) values ('Jesenja Ponuda', 'True');
 insert into menu (name, active_menu) values ('Zimska Ponuda', 'False');
 
-insert into tables (active, x, y, floor) values ('False', 1.0, 1.0, 0);
-insert into tables (active, x, y, floor) values ('False', 2.0, 2.0, 0);
-insert into tables (active, x, y, floor) values ('False', 3.0, 3.0, 0);
-insert into tables (active, x, y, floor) values ('False', 4.0, 4.0, 0);
-insert into tables (active, x, y, floor) values ('False', 5.0, 5.0, 0);
+

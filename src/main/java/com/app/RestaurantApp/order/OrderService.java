@@ -1,10 +1,6 @@
 package com.app.RestaurantApp.order;
 
 import com.app.RestaurantApp.order.dto.OrderDTO;
-import com.app.RestaurantApp.orderItem.dto.OrderItemSimpleDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 public interface OrderService {
 
@@ -14,4 +10,9 @@ public interface OrderService {
 
     Order findOneWithOrderItems(Long id);
 
+    Order findOneWithOrderItemsForUpdate(Long id);
+
+    Order updateOrder(OrderDTO orderDTO);
+
+    Order finishOrder(Long id);
 }
