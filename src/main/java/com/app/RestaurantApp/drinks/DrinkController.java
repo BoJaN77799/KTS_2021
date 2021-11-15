@@ -3,6 +3,7 @@ package com.app.RestaurantApp.drinks;
 
 import com.app.RestaurantApp.drinks.dto.DrinkSearchDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkWithPriceDTO;
+import com.app.RestaurantApp.food.Food;
 import org.springframework.data.domain.Pageable;
 import com.app.RestaurantApp.drinks.dto.DrinkDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,26 +33,34 @@ public class DrinkController {
         if (drink == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(new DrinkDTO(drink), HttpStatus.CREATED);
+        return new ResponseEntity<>(new DrinkDTO(drink), HttpStatus.FOUND);
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<DrinkDTO> saveDrink(@RequestBody DrinkDTO drinkDTO) {
+    public ResponseEntity<String> saveDrink(@RequestBody DrinkDTO drinkDTO) {
         drinkDTO.setDeleted(false);
-        Drink drink = drinkService.saveDrink(drinkDTO);
-        return new ResponseEntity<>(new DrinkDTO(drink), HttpStatus.CREATED);
+        try {
+            drinkService.saveDrink(drinkDTO);
+            return new ResponseEntity<>("Drink successfully created", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping(consumes = "application/json")
-    public ResponseEntity<DrinkDTO> updateDrink(@RequestBody DrinkDTO drinkDTO) {
+    public ResponseEntity<String> updateDrink(@RequestBody DrinkDTO drinkDTO) {
 
-        Drink drink = drinkService.findOne(drinkDTO.getId());
+        try {
+            Drink drink = drinkService.findOne(drinkDTO.getId());
 
-        if (drink == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            if (drink == null) {
+                return new ResponseEntity<>("Drink cannot be null", HttpStatus.BAD_REQUEST);
+            }
+            drinkService.saveDrink(drinkDTO);
+            return new ResponseEntity<>("Drink successfully updated", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        drink = drinkService.saveDrink(drinkDTO);
-        return new ResponseEntity<>(new DrinkDTO(drink), HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = "/{id}")

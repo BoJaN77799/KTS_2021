@@ -3,6 +3,7 @@ package com.app.RestaurantApp.drinks;
 import com.app.RestaurantApp.drinks.dto.DrinkDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkSearchDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkWithPriceDTO;
+import com.app.RestaurantApp.item.ItemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -49,8 +50,9 @@ public class DrinkServiceImpl implements DrinkService {
     }
 
     @Override
-    public Drink saveDrink(DrinkDTO drinkDTO) {
+    public Drink saveDrink(DrinkDTO drinkDTO) throws DrinkException, ItemException {
         Drink drink = new Drink(drinkDTO);
+        DrinkUtils.CheckDrinkInfo(drink);
         if (drinkDTO.getCategory() != null) {
             Category category = categoryService.findOne(drinkDTO.getCategory().getId());
             if (category == null)

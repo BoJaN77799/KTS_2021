@@ -40,13 +40,13 @@ insert into category (name) values ('Sladoledi');
 insert into category (name) values ('Alkoholna pica');
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, deleted) values ('Supa', 'Bas je Slana', 'putanja/supa', 250.0, 1, 300, 'FOOD', 'False');
-insert into food (id, recipe, time_to_make, food_type) values (1, 'Ma lako se pravi', 20, 'APETIZER');
+insert into food (id, recipe, time_to_make, food_type) values (1, 'Ma lako se pravi', 20, 'APPETIZER');
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, deleted) values ('Pohovani kackavalj', 'I on je slan', 'putanja/kackavalj', 550.0, 3, 600, 'FOOD', 'False');
-insert into food (id, recipe, time_to_make, food_type) values (2, 'Brzo se pravi', 15, 'APETIZER');
+insert into food (id, recipe, time_to_make, food_type) values (2, 'Brzo se pravi', 15, 'APPETIZER');
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, deleted) values ('Prsuta', 'Bas je mnogo slana', 'putanja/prsuta', 750.0, 5, 950, 'FOOD', 'False');
-insert into food (id, recipe, time_to_make, food_type) values (3, 'Ma tesko se pravi', 5, 'APETIZER');
+insert into food (id, recipe, time_to_make, food_type) values (3, 'Ma tesko se pravi', 5, 'APPETIZER');
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, deleted) values ('Jagnjece pecenje', 'Bas je ultra Slana', 'putanja/mmm', 2000.0, 5, 2500, 'FOOD', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (4, 'Ma lako se pravi', 120, 'MAIN_DISH');
