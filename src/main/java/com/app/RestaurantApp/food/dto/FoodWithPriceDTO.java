@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.food.dto;
 
 import com.app.RestaurantApp.category.dto.CategoryDTO;
+import com.app.RestaurantApp.enums.ItemType;
 import com.app.RestaurantApp.food.Food;
 import com.app.RestaurantApp.price.Price;
 
@@ -18,8 +19,8 @@ public class FoodWithPriceDTO extends FoodDTO{
 
 
     public FoodWithPriceDTO(Long id, String name, Double cost, String description, String image, CategoryDTO category,
-                            boolean deleted, String recipe, Integer timeToMake, String type, Double price) {
-        super(id, name, cost, description, image, category, deleted, recipe, timeToMake, type);
+                            boolean deleted, String recipe, Integer timeToMake, ItemType itemType, String type, Double price) {
+        super(id, name, cost, description, image, category, itemType, deleted, recipe, timeToMake, type);
         this.price = price;
     }
 

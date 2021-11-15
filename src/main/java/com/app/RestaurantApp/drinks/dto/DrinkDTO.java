@@ -2,7 +2,7 @@ package com.app.RestaurantApp.drinks.dto;
 
 import com.app.RestaurantApp.category.dto.CategoryDTO;
 import com.app.RestaurantApp.drinks.Drink;
-import com.app.RestaurantApp.food.Food;
+import com.app.RestaurantApp.enums.ItemType;
 import com.app.RestaurantApp.item.dto.ItemDTO;
 
 public class DrinkDTO extends ItemDTO {
@@ -15,13 +15,13 @@ public class DrinkDTO extends ItemDTO {
         this.volume = volume;
     }
 
-    public DrinkDTO(Long id, String name, Double cost, String description, String image, CategoryDTO category, boolean deleted, Double volume) {
-        super(id, name, cost, description, image, category, deleted);
+    public DrinkDTO(Long id, String name, Double cost, String description, String image, CategoryDTO category, ItemType itemType, boolean deleted, Double volume) {
+        super(id, name, cost, description, image, category, itemType, deleted);
         this.volume = volume;
     }
 
     public DrinkDTO(Drink drink) {
-        super(drink.getId(), drink.getName(), drink.getCost(), drink.getDescription(), drink.getImage(), new CategoryDTO(drink.getCategory()), drink.isDeleted());
+        super(drink.getId(), drink.getName(), drink.getCost(), drink.getDescription(), drink.getImage(), new CategoryDTO(drink.getCategory()), drink.getItemType(), drink.isDeleted());
         this.volume = drink.getVolume();
     }
 
