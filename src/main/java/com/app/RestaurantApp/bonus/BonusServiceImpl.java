@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.bonus;
 
 import com.app.RestaurantApp.bonus.dto.BonusDTO;
+import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.employee.Employee;
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,10 @@ public class BonusServiceImpl implements BonusService {
     private EmployeeService employeeService;
 
     @Override
-    public List<BonusDTO> getBonusesOfEmployee(String email) {
+    public List<BonusDTO> getBonusesOfEmployee(String email) throws UserException {
         Employee e = employeeService.findByEmail(email);
+        if (e == null) throw new UserException("Invalid employee, email not found!");
+
         List<BonusDTO> bonuses = new ArrayList<>();
         for (Bonus b : e.getBonuses())
             bonuses.add(new BonusDTO(b));
@@ -30,9 +33,11 @@ public class BonusServiceImpl implements BonusService {
     }
 
     @Override
-    public BonusDTO createBonus(BonusDTO bonusDTO) {
+    public BonusDTO createBonus(BonusDTO bonusDTO) throws UserException {
         bonusDTO.setDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy.")));
         Employee e = employeeService.findByEmail(bonusDTO.getEmail());
+        if (e == null) throw new UserException("Invalid employee, email not found!");
+
         Bonus bonus = new Bonus(bonusDTO);
         bonus.setEmployee(e);
         bonusRepository.save(bonus);

@@ -17,7 +17,7 @@ public class MenuController {
     private MenuService menuService;
 
     @PostMapping(value = "/createUpdateMenu")
-    public ResponseEntity<String> createUpdateMenu(@RequestBody String name){
+    public ResponseEntity<String> createUpdateMenu(@RequestBody String name) throws MenuException {
         if (menuService.createUpdateMenu(name))
             return new ResponseEntity<>("Menu created successfully", HttpStatus.OK);
         else
@@ -25,7 +25,7 @@ public class MenuController {
     }
 
     @GetMapping(value = "/getItemsOfMenu/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ItemDTO> getItemsOfMenu(@PathVariable String name){
+    public List<ItemDTO> getItemsOfMenu(@PathVariable String name) throws MenuException {
         return menuService.getItemsOfMenu(name);
     }
 }

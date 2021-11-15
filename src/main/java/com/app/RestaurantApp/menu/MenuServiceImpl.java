@@ -16,7 +16,7 @@ public class MenuServiceImpl implements MenuService{
     private MenuRepository menuRepository;
 
     @Override
-    public boolean createUpdateMenu(String name) {
+    public boolean createUpdateMenu(String name){
         Menu m = menuRepository.findByName(name);
         boolean indicator = false;
         if (m == null) {
@@ -31,8 +31,9 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     @Transactional
-    public List<ItemDTO> getItemsOfMenu(String name) {
+    public List<ItemDTO> getItemsOfMenu(String name) throws MenuException {
         Menu m = menuRepository.findByName(name);
+        if (m == null) throw new MenuException("Menu does not exist!");
 
         List<ItemDTO> items = new ArrayList<>();
         for (Item i : m.getItems())

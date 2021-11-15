@@ -147,3 +147,7 @@ insert into bonus (amount, date_to, employee_id) values (150, 924825600000, 4);
 
 insert into menu (name, active_menu) values ('Jesenja Ponuda', 'True');
 insert into menu (name, active_menu) values ('Zimska Ponuda', 'False');
+
+insert into price (amount, date_from, item_id) values (300.0, 1635724800, 1);
+insert into price (amount, date_from, item_id) values (300.0, 1638316799, 1);
+insert into price (amount, date_from, item_id) values (300.0, 1640995199, 1);

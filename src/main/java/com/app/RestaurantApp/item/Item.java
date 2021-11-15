@@ -143,4 +143,24 @@ public class Item {
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public Set<Price> getPrices() {
+        return prices;
+    }
+
+    public void setPrices(Set<Price> prices) {
+        this.prices = prices;
+    }
+
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
 }

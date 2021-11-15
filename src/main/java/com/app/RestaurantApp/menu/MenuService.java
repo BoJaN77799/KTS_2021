@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface MenuService {
 
-    boolean createUpdateMenu(String name);
+    boolean createUpdateMenu(String name) throws MenuException;
 
-    List<ItemDTO> getItemsOfMenu(String name);
+    List<ItemDTO> getItemsOfMenu(String name) throws MenuException;
 
 }

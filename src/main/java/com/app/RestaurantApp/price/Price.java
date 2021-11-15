@@ -46,4 +46,12 @@ public class Price {
     public void setDateFrom(Long dateFrom) {
         this.dateFrom = dateFrom;
     }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
 }
