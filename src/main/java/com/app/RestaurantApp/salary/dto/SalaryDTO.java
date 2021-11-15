@@ -1,4 +1,6 @@
-package com.app.RestaurantApp.salary;
+package com.app.RestaurantApp.salary.dto;
+
+import com.app.RestaurantApp.salary.Salary;
 
 import java.time.Instant;
 import java.time.LocalDate;

@@ -1,4 +1,6 @@
-package com.app.RestaurantApp.bonus;
+package com.app.RestaurantApp.bonus.dto;
+
+import com.app.RestaurantApp.bonus.Bonus;
 
 import java.time.Instant;
 import java.time.LocalDate;

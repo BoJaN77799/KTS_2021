@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.salary;
 
+import com.app.RestaurantApp.salary.dto.SalaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +22,7 @@ public class SalaryController {
     }
 
     @PostMapping(value = "/createSalary")
-    public ResponseEntity<SalaryDTO> createSalary(@RequestBody SalaryDTO salaryDTO){
+    public ResponseEntity<SalaryDTO> createSalary(@RequestBody SalaryDTO salaryDTO) throws SalaryException {
         return new ResponseEntity<>(salaryService.createSalary(salaryDTO), HttpStatus.OK);
     }
 

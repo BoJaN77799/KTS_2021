@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.salary;
 
+import com.app.RestaurantApp.salary.dto.SalaryDTO;
 import com.app.RestaurantApp.users.employee.Employee;
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +37,16 @@ public class SalaryServiceImpl implements SalaryService {
     }
 
     @Override
-    public SalaryDTO createSalary(SalaryDTO salaryDTO) {
+    public SalaryDTO createSalary(SalaryDTO salaryDTO) throws SalaryException {
+        // Postavljam da bude trenutan datum za kreiranje plate
         salaryDTO.setDateFrom(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy.")));
+
         Employee e = employeeService.findByEmail(salaryDTO.getEmail());
         Salary salary = new Salary(salaryDTO);
         salary.setEmployee(e);
+
+        SalaryUtils.CheckSalaryInfo(salary);
+
         salaryRepository.save(salary);
         return salaryDTO;
     }

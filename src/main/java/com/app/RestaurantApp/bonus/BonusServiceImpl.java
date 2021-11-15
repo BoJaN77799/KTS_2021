@@ -1,7 +1,6 @@
 package com.app.RestaurantApp.bonus;
 
-import com.app.RestaurantApp.salary.Salary;
-import com.app.RestaurantApp.salary.SalaryDTO;
+import com.app.RestaurantApp.bonus.dto.BonusDTO;
 import com.app.RestaurantApp.users.employee.Employee;
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;

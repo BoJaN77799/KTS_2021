@@ -1,10 +1,10 @@
 package com.app.RestaurantApp.bonus;
 
+import com.app.RestaurantApp.bonus.dto.BonusDTO;
 import com.app.RestaurantApp.users.employee.Employee;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 

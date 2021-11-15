@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.item.dto;
 
 import com.app.RestaurantApp.category.dto.CategoryDTO;
+import com.app.RestaurantApp.item.Item;
 
 public class ItemDTO {
 
@@ -23,6 +24,14 @@ public class ItemDTO {
         this.image = image;
         this.category = category;
         this.deleted = deleted;
+    }
+
+    public ItemDTO(Item i){
+        this.name = i.getName();
+        this.cost = i.getCost();
+        this.description = i.getDescription();
+        this.image = i.getImage();
+        this.category = new CategoryDTO(i.getCategory());
     }
 
     public Long getId() {

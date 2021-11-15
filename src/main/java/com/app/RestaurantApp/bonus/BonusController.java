@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.bonus;
 
+import com.app.RestaurantApp.bonus.dto.BonusDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

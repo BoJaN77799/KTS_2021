@@ -12,9 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
-import javax.transaction.Transactional;
 import java.util.List;
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("api/users")

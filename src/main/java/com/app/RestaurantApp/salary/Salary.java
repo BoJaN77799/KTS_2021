@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.salary;
 
+import com.app.RestaurantApp.salary.dto.SalaryDTO;
 import com.app.RestaurantApp.users.employee.Employee;
 
 import javax.persistence.*;
@@ -31,6 +32,7 @@ public class Salary {
         this.amount = salaryDTO.getAmount();
         this.dateFrom = LocalDate.parse(salaryDTO.getDateFrom(), DateTimeFormatter.ofPattern("dd.MM.yyyy."))
                 .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
+
     }
 
     public Long getId() {
