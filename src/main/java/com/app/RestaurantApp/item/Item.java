@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.item;
 
 import com.app.RestaurantApp.category.Category;
+import com.app.RestaurantApp.enums.ItemType;
 import com.app.RestaurantApp.ingredient.Ingredient;
 import com.app.RestaurantApp.item.dto.ItemDTO;
 import com.app.RestaurantApp.menu.Menu;
@@ -49,8 +50,12 @@ public class Item {
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
-    @Column( name="current_price", nullable = true)
+    @Column( name="current_price")
     private Double currentPrice;
+
+    @Enumerated(EnumType.STRING)
+    @Column( name="item_type", nullable = false)
+    private ItemType itemType;
 
     @Column(name = "deleted")
     private boolean deleted;
@@ -121,6 +126,14 @@ public class Item {
 
     public void setCurrentPrice(Double currentPrice) {
         this.currentPrice = currentPrice;
+    }
+
+    public ItemType getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(ItemType itemType) {
+        this.itemType = itemType;
     }
 
     public boolean isDeleted() {

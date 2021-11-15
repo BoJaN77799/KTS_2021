@@ -35,7 +35,7 @@ public class Order {
     private Employee waiter;
 
     @ManyToOne
-    private Employee barmen;
+    private Employee barman;
 
     @ManyToOne
     private Employee cook;
@@ -85,36 +85,36 @@ public class Order {
     public void setTable(Table table) {
         this.table = table;
     }
-//
-//    public Employee getWaiter() {
-//        return waiter;
-//    }
-//
-//    public void setWaiter(Employee waiter) {
-//        this.waiter = waiter;
-//    }
-//
-//    public Employee getBarmen() {
-//        return barmen;
-//    }
-//
-//    public void setBarmen(Employee barmen) {
-//        this.barmen = barmen;
-//    }
-//
-//    public Employee getCook() {
-//        return cook;
-//    }
-//
-//    public void setCook(Employee cook) {
-//        this.cook = cook;
-//    }
-//
-//    public Set<OrderItem> getOrderItems() {
-//        return orderItems;
-//    }
-//
-//    public void setOrderItems(Set<OrderItem> orderItems) {
-//        this.orderItems = orderItems;
-//    }
+
+    public Employee getWaiter() {
+        return waiter;
+    }
+
+    public void setWaiter(Employee waiter) {
+        this.waiter = waiter;
+    }
+
+    public Employee getBarman() {
+        return barman;
+    }
+
+    public void setBarman(Employee barmen) {
+        this.barman = barmen;
+    }
+
+    public Employee getCook() {
+        return cook;
+    }
+
+    public void setCook(Employee cook) {
+        this.cook = cook;
+    }
+
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(Set<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
 }
