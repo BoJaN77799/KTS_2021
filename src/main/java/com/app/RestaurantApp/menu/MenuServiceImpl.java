@@ -59,4 +59,19 @@ public class MenuServiceImpl implements MenuService{
         m.getItems().remove(i);
         menuRepository.save(m);
     }
+
+    @Override
+    @Transactional
+    public void addItemToMenu(MenuItemDTO mi) throws MenuException, ItemException {
+        Menu m = menuRepository.findByName(mi.getMenuName());
+        if (m == null) throw new MenuException("Menu does not exist!");
+
+        Item i = itemService.findItemById(Long.valueOf(mi.getItemId()));
+        if (i == null) throw new ItemException("Item does not exist!");
+
+        if (m.getItems().contains(i)) throw new MenuException("Item already exists in menu!");
+
+        m.getItems().add(i);
+        menuRepository.save(m);
+    }
 }

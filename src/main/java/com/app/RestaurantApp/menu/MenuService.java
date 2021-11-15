@@ -13,4 +13,6 @@ public interface MenuService {
     List<ItemDTO> getItemsOfMenu(String name) throws MenuException;
 
     void removeItemFromMenu(MenuItemDTO mi) throws MenuException, ItemException;
+
+    void addItemToMenu(MenuItemDTO mi) throws MenuException, ItemException;
 }

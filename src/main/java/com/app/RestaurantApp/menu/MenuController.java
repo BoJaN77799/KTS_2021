@@ -36,4 +36,10 @@ public class MenuController {
         menuService.removeItemFromMenu(mi);
         return new ResponseEntity<>("Item is succesfully removed from menu!", HttpStatus.OK);
     }
+
+    @PostMapping(value = "/addItemToMenu")
+    public ResponseEntity<String> addItemToMenu(@RequestBody MenuItemDTO mi) throws MenuException, ItemException {
+        menuService.addItemToMenu(mi);
+        return new ResponseEntity<>("Item is succesfully added to menu!", HttpStatus.OK);
+    }
 }
