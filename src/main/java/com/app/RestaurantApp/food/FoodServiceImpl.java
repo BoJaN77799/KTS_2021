@@ -3,11 +3,14 @@ package com.app.RestaurantApp.food;
 import com.app.RestaurantApp.food.dto.FoodDTO;
 import com.app.RestaurantApp.food.dto.FoodSearchDTO;
 import com.app.RestaurantApp.food.dto.FoodWithPriceDTO;
+import com.app.RestaurantApp.item.ItemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import com.app.RestaurantApp.category.Category;
 import com.app.RestaurantApp.category.CategoryService;
 
@@ -47,8 +50,9 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public Food saveFood(FoodDTO foodDTO) {
+    public Food saveFood(FoodDTO foodDTO) throws ItemException, FoodException {
         Food food = new Food(foodDTO);
+        FoodUtils.CheckFoodInfo(food);
         if (foodDTO.getCategory() != null) {
             Category category = categoryService.findOne(foodDTO.getCategory().getId());
             if (category == null)
