@@ -139,10 +139,6 @@ public class OrderServiceImpl implements OrderService{
         if(order == null) return null;
         order.setStatus(OrderStatus.FINISHED);
 
-        Table table = order.getTable();
-        table.setActive(false);
-        tableService.save(table);
-
         return orderRepository.save(order);
     }
 
