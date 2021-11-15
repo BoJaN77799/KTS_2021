@@ -84,7 +84,17 @@ public class OrderController {
 
         Order order = orderService.createOrder(orderDTO);
 
-        return new ResponseEntity<OrderDTO>(new OrderDTO(order), HttpStatus.CREATED);
+        return new ResponseEntity<>(new OrderDTO(order), HttpStatus.CREATED);
+    }
+
+    @PostMapping(value="accept/{id}/by/{email}")
+    public ResponseEntity<String> acceptOrder(@PathVariable Long id, @PathVariable String email){
+        try {
+            orderService.acceptOrder(id, email);
+            return new ResponseEntity<>("Order successfully accepted", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
 }

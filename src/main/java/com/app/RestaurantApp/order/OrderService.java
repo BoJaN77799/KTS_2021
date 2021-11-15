@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.order;
 
 import com.app.RestaurantApp.order.dto.OrderDTO;
+import com.app.RestaurantApp.users.UserException;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface OrderService {
     List<Order> findAllNewWithDrinks();
 
     List<Order> findAllMyWithDrinks(Long id);
+
+    void acceptOrder(Long id, String email) throws OrderException, UserException;
 }

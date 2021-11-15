@@ -2,6 +2,7 @@ package com.app.RestaurantApp.order;
 
 import com.app.RestaurantApp.enums.OrderItemStatus;
 import com.app.RestaurantApp.enums.OrderStatus;
+import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.item.Item;
 import com.app.RestaurantApp.item.ItemRepository;
 import com.app.RestaurantApp.order.dto.OrderDTO;
@@ -9,7 +10,10 @@ import com.app.RestaurantApp.orderItem.OrderItem;
 import com.app.RestaurantApp.orderItem.OrderItemRepository;
 import com.app.RestaurantApp.orderItem.dto.OrderItemSimpleDTO;
 import com.app.RestaurantApp.table.TableRepository;
+import com.app.RestaurantApp.users.UserException;
+import com.app.RestaurantApp.users.employee.Employee;
 import com.app.RestaurantApp.users.employee.EmployeeRepository;
+import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +37,9 @@ public class OrderServiceImpl implements OrderService{
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private EmployeeService employeeService;
 
     @Override
     public Order createOrder(OrderDTO orderDTO) {
@@ -111,6 +118,29 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public List<Order> findAllMyWithDrinks(Long id) {
         return orderRepository.findAllMyWithDrinks(id);
+    }
+
+    @Override
+    public void acceptOrder(Long id, String email) throws OrderException, UserException{
+        Order order = findOne(id);
+        if(order == null) throw new OrderException("Order not found.");
+
+        Employee employee = employeeService.findByEmail(email);
+        if(employee == null) throw new UserException("User not found.");
+
+        if(employee.getUserType() == UserType.BARMAN)
+            if(order.getBarman() != null)
+                throw new OrderException("Barman already accepted.");
+            else
+                order.setBarman(employee);
+        else
+            if(order.getCook() != null)
+                throw new OrderException("Cook already accepted.");
+            else
+                order.setCook(employee);
+        if(order.getStatus() == OrderStatus.NEW)
+            order.setStatus(OrderStatus.IN_PROGRESS);
+        orderRepository.save(order);
     }
 
 
