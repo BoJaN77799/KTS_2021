@@ -19,6 +19,7 @@ import com.app.RestaurantApp.table.TableService;
 
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -213,6 +214,16 @@ public class OrderServiceImpl implements OrderService{
         order.setStatus(OrderStatus.FINISHED);
 
         return orderRepository.save(order);
+    }
+
+    @Override
+    public List<Order> searchOrders(String searchField, String orderStatus, Pageable pageable) {
+        if (searchField == null)
+            searchField = "";
+        if (orderStatus == null)
+            orderStatus = "";
+
+        return orderRepository.searchOrders(searchField, orderStatus, pageable);
     }
 
 }
