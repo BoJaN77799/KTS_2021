@@ -226,4 +226,9 @@ public class OrderServiceImpl implements OrderService{
         return orderRepository.searchOrders(searchField, orderStatus, pageable);
     }
 
+    @Override
+    public List<Order> getOrdersByDate(long dateFrom, long dateTo) {
+        return orderRepository.getOrdersByDate(dateFrom, dateTo);
+    }
+
 }
