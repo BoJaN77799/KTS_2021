@@ -14,4 +14,8 @@ public interface TableService {
     void deleteTable(Long id) throws TableException;
 
     void createTable(Table table) throws TableException;
+
+    Table findById(Long id);
+
+    Table save(Table table);
 }
