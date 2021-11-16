@@ -26,4 +26,5 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
     Optional<AppUser> findByEmail(String email);
 
+    Optional<AppUser> findByIdAndDeleted(Long id, boolean deleted);
 }

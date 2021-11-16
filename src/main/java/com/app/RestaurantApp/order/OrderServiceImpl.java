@@ -5,6 +5,7 @@ import com.app.RestaurantApp.enums.OrderStatus;
 import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.item.Item;
 import com.app.RestaurantApp.item.ItemService;
+import com.app.RestaurantApp.notifications.OrderNotificationService;
 import com.app.RestaurantApp.order.dto.OrderDTO;
 import com.app.RestaurantApp.orderItem.OrderItem;
 
@@ -18,6 +19,7 @@ import com.app.RestaurantApp.table.TableService;
 
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -41,6 +43,9 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private OrderNotificationService orderNotificationService;
+
     @Override
     public Order createOrder(OrderDTO orderDTO) {
         List<OrderItemOrderCreationDTO> orderItemOrderCreationDTOS = orderDTO.getOrderItems();
@@ -56,6 +61,8 @@ public class OrderServiceImpl implements OrderService{
         tableService.save(order.getTable());
 
         orderRepository.save(order);
+        orderNotificationService.notifyNewOrder(order);
+
         return order;
     }
 
@@ -135,6 +142,7 @@ public class OrderServiceImpl implements OrderService{
 
         order.setNote(orderDTO.getNote());
 
+        List<OrderItem> orderItemsToDelete = new ArrayList<>();
         // Izmena postojecih orderItem-a
         for (Iterator<OrderItemOrderCreationDTO> it = orderItemsDTO.iterator(); it.hasNext();){
             OrderItemOrderCreationDTO orderItemDTO = it.next();
@@ -142,9 +150,14 @@ public class OrderServiceImpl implements OrderService{
                 OrderItem orderItemForUpdate = getOrderItemFromOrder(order, orderItemDTO.getId());
 
                 if(orderItemDTO.getQuantity() == 0){ // Ako je quantity na 0 obrisi ga
-                    orderItemService.delete(orderItemForUpdate);
+                    orderNotificationService.notifyOrderItemDeleted(order, orderItemForUpdate);
+                    order.getOrderItems().remove(orderItemForUpdate);
+                    orderItemsToDelete.add(orderItemForUpdate);
+                    it.remove();
+                    continue;
                 }
 
+                orderNotificationService.notifyOrderItemChange(order, orderItemForUpdate, orderItemDTO.getQuantity(), orderItemDTO.getPriority());
                 orderItemForUpdate.setQuantity(orderItemDTO.getQuantity());
                 orderItemForUpdate.setPriority(orderItemDTO.getPriority());
                 it.remove();
@@ -152,9 +165,13 @@ public class OrderServiceImpl implements OrderService{
         }
 
         Set<OrderItem> newOrderItems = createNewOrderItems(order, orderItemsDTO);
-        newOrderItems.forEach((item) -> order.getOrderItems().add(item));
+        Order finalOrder = order;
+        newOrderItems.forEach((item) -> finalOrder.getOrderItems().add(item));
+        orderNotificationService.notifyOrderItemAdded(order, newOrderItems);
 
-        return orderRepository.save(order);
+        order = orderRepository.save(finalOrder);
+        orderItemService.deleteAll(orderItemsToDelete);
+        return order;
     }
 
     private OrderItem getOrderItemFromOrder(Order order, Long id){
@@ -163,7 +180,7 @@ public class OrderServiceImpl implements OrderService{
                 return orderItem;
         return null;
     }
-
+    
     private Set<OrderItem> createNewOrderItems(Order order, List<OrderItemOrderCreationDTO> orderItemsDTO){
         Set<OrderItem> orderItems = new HashSet<OrderItem>();
 
@@ -191,6 +208,7 @@ public class OrderServiceImpl implements OrderService{
         return orderItems;
     }
 
+    @Override
     public Order finishOrder(Long id){
         Order order = orderRepository.findOneWithOrderItems(id);
         if(order == null) return null;
@@ -209,5 +227,19 @@ public class OrderServiceImpl implements OrderService{
         return orderRepository.findAllOrderInIntervalOfDates(dateFrom, dateTo);
     }
 
+    @Override
+    public List<Order> searchOrders(String searchField, String orderStatus, Pageable pageable) {
+        if (searchField == null)
+            searchField = "";
+        if (orderStatus == null)
+            orderStatus = "";
+
+        return orderRepository.searchOrders(searchField, orderStatus, pageable);
+    }
+
+    @Override
+    public List<Order> getOrdersByDate(long dateFrom, long dateTo) {
+        return orderRepository.getOrdersByDate(dateFrom, dateTo);
+    }
 
 }
