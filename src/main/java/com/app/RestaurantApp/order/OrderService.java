@@ -36,7 +36,10 @@ public interface OrderService {
 
     Order finishOrder(Long id);
 
+    List<Order> findAllOrderInIntervalOfDates(Long dateFrom, Long dateTo);
+
     List<Order> searchOrders(String searchField, String orderStatus, Pageable pageable);
 
     List<Order> getOrdersByDate(long dateFrom, long dateTo);
+
 }

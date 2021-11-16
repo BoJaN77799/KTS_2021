@@ -32,4 +32,9 @@ public class EmployeeServiceImpl implements EmployeeService{
     public Employee findById(Long id) {
         return employeeRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<Employee> findByDeleted(boolean deleted) {
+        return employeeRepository.findByDeleted(deleted);
+    }
 }

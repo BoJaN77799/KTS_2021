@@ -184,3 +184,12 @@ insert into price (amount, date_from, item_id) values (300.0, 1635724800, 1);
 insert into price (amount, date_from, item_id) values (300.0, 1638316799, 1);
 insert into price (amount, date_from, item_id) values (300.0, 1640995199, 1);
 
+insert into restaurant_order (status, created_at, note, table_id, waiter_id, profit) values ('FINISHED', 1636930800000, 'Pozuri, galdan sam.', 1, 3, 200);
+
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (2, 'FINISHED', 300.0, 'True', 5, 1);
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (3, 'FINISHED', 600.0, 'False', 5, 2);
+
+insert into restaurant_order (status, created_at, note, table_id, waiter_id, profit) values ('FINISHED', 1636844400000, 'Pozuri, zedan sam.', 3, 3, 200);
+
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (4, 'FINISHED', 180.0, 'True', 5, 1);
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'FINISHED', 140.0, 'False', 5, 8);
