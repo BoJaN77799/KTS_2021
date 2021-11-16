@@ -137,6 +137,10 @@ insert into restaurant_order (status, created_at, note, table_id, waiter_id, bar
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 600.0, 'True', 4, 2);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 160.0, 'False', 4, 7);
 
+insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id, cook_id) values ('IN_PROGRESS', 1636730076405, 'Pozuri gladan sam.', 1, 3, 5, 4);
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (11, 'ORDERED', 2500.0, 'False', 5, 4);
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (11, 'ORDERED', 160.0, 'True', 5, 7);
+
 insert into salary (amount, date_from, employee_id) values (100, 1635724800, 4);
 insert into salary (amount, date_from, employee_id) values (150, 1638316799, 4);
 insert into salary (amount, date_from, employee_id) values (150, 1640995199, 4);

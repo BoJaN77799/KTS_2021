@@ -5,6 +5,8 @@ import com.app.RestaurantApp.orderItem.dto.OrderItemChangeStatusDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OrderItemServiceImpl implements OrderItemService{
 
@@ -26,6 +28,11 @@ public class OrderItemServiceImpl implements OrderItemService{
     @Override
     public void delete(OrderItem orderItem) {
         orderItemRepository.delete(orderItem);
+    }
+
+    @Override
+    public void deleteAll(List<OrderItem> orderItems) {
+        orderItemRepository.deleteAll(orderItems);
     }
 
 
