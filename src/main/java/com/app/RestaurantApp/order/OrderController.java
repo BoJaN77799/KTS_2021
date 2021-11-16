@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.order;
 
 import com.app.RestaurantApp.order.dto.OrderDTO;
+import com.app.RestaurantApp.order.dto.OrderTableViewDTO;
 import com.app.RestaurantApp.order.dto.SimpleOrderDTO;
 import com.app.RestaurantApp.users.appUser.AppUser;
 import com.app.RestaurantApp.users.dto.AppUserAdminUserListDTO;
@@ -134,6 +135,14 @@ public class OrderController {
                                              Pageable pageable) {
         List<Order> orders = orderService.searchOrders(searchField, orderStatus, pageable);
         return orders.stream().map(SimpleOrderDTO::new).toList();
+    }
+
+    @GetMapping(value = "/getOrderForTable/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrderTableViewDTO> getOrderForTable(@PathVariable("id") Long id) {
+        Order order = orderService.findOrderAtTable(id);
+        if (order == null)
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new OrderTableViewDTO(order), HttpStatus.BAD_REQUEST);
     }
 
 }

@@ -37,4 +37,6 @@ public interface OrderService {
     Order finishOrder(Long id);
 
     List<Order> searchOrders(String searchField, String orderStatus, Pageable pageable);
+
+    Order findOrderAtTable(Long tableID);
 }
