@@ -5,6 +5,7 @@ import com.app.RestaurantApp.enums.OrderStatus;
 import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.item.Item;
 import com.app.RestaurantApp.item.ItemService;
+import com.app.RestaurantApp.notifications.OrderNotificationService;
 import com.app.RestaurantApp.order.dto.OrderDTO;
 import com.app.RestaurantApp.orderItem.OrderItem;
 
@@ -41,6 +42,9 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private OrderNotificationService orderNotificationService;
+
     @Override
     public Order createOrder(OrderDTO orderDTO) {
         List<OrderItemOrderCreationDTO> orderItemOrderCreationDTOS = orderDTO.getOrderItems();
@@ -56,6 +60,8 @@ public class OrderServiceImpl implements OrderService{
         tableService.save(order.getTable());
 
         orderRepository.save(order);
+        orderNotificationService.notifyNewOrder(order);
+
         return order;
     }
 
@@ -135,6 +141,7 @@ public class OrderServiceImpl implements OrderService{
 
         order.setNote(orderDTO.getNote());
 
+        List<OrderItem> orderItemsToDelete = new ArrayList<>();
         // Izmena postojecih orderItem-a
         for (Iterator<OrderItemOrderCreationDTO> it = orderItemsDTO.iterator(); it.hasNext();){
             OrderItemOrderCreationDTO orderItemDTO = it.next();
@@ -142,9 +149,15 @@ public class OrderServiceImpl implements OrderService{
                 OrderItem orderItemForUpdate = getOrderItemFromOrder(order, orderItemDTO.getId());
 
                 if(orderItemDTO.getQuantity() == 0){ // Ako je quantity na 0 obrisi ga
-                    orderItemService.delete(orderItemForUpdate);
+                    orderNotificationService.notifyOrderItemDeleted(order, orderItemForUpdate);
+                    order.getOrderItems().remove(orderItemForUpdate);
+                    // orderItemService.delete(orderItemForUpdate);
+                    orderItemsToDelete.add(orderItemForUpdate);
+                    it.remove();
+                    continue;
                 }
 
+                orderNotificationService.notifyOrderItemChange(order, orderItemForUpdate, orderItemDTO.getQuantity(), orderItemDTO.getPriority());
                 orderItemForUpdate.setQuantity(orderItemDTO.getQuantity());
                 orderItemForUpdate.setPriority(orderItemDTO.getPriority());
                 it.remove();
@@ -152,9 +165,13 @@ public class OrderServiceImpl implements OrderService{
         }
 
         Set<OrderItem> newOrderItems = createNewOrderItems(order, orderItemsDTO);
-        newOrderItems.forEach((item) -> order.getOrderItems().add(item));
+        Order finalOrder = order;
+        newOrderItems.forEach((item) -> finalOrder.getOrderItems().add(item));
+        orderNotificationService.notifyOrderItemAdded(order, newOrderItems);
 
-        return orderRepository.save(order);
+        order = orderRepository.save(finalOrder);
+        orderItemService.deleteAll(orderItemsToDelete);
+        return order;
     }
 
     private OrderItem getOrderItemFromOrder(Order order, Long id){
@@ -198,6 +215,5 @@ public class OrderServiceImpl implements OrderService{
 
         return orderRepository.save(order);
     }
-
 
 }
