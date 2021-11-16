@@ -35,4 +35,6 @@ public interface OrderService {
 
     Order finishOrder(Long id);
 
+    List<Order> findAllOrderInIntervalOfDates(Long dateFrom, Long dateTo);
+
 }

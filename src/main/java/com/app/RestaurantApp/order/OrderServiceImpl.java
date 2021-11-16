@@ -199,5 +199,10 @@ public class OrderServiceImpl implements OrderService{
         return orderRepository.save(order);
     }
 
+    @Override
+    public List<Order> findAllOrderInIntervalOfDates(Long dateFrom, Long dateTo) {
+        return orderRepository.findAllOrderInIntervalOfDates(dateFrom, dateTo);
+    }
+
 
 }
