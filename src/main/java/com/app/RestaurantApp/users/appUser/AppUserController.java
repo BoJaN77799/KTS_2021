@@ -12,8 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("api/users")
@@ -21,7 +21,7 @@ public class AppUserController {
 
     @Autowired
     private AppUserService appUserService;
-
+      
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<AppUserAdminUserListDTO> findAllAdmin(@PathVariable(value = "id") Long id) {
         List<AppUser> users = appUserService.getAllUsersButAdmin(id);
@@ -80,4 +80,5 @@ public class AppUserController {
             return new ResponseEntity<>("Unknown error happened while deleting user!", HttpStatus.BAD_REQUEST);
         }
     }
+
 }

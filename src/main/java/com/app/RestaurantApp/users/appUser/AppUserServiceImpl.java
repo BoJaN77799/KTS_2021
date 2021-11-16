@@ -26,6 +26,11 @@ public class AppUserServiceImpl implements AppUserService{
     private EmployeeService employeeService;
 
     @Override
+    public AppUser findByEmail(String email) {
+        return appUserRepository.findByEmail(email).orElse(null);
+    }
+
+    @Override
     public List<AppUser> getAllUsersButAdmin(Long adminID) {
         return appUserRepository.findAllUsersButAdmin(adminID);
     }
@@ -97,4 +102,5 @@ public class AppUserServiceImpl implements AppUserService{
         Optional<AppUser> user = appUserRepository.findById(id);
         return user.orElse(null);
     }
+
 }

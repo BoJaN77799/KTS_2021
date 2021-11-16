@@ -23,4 +23,7 @@ public interface AppUserService {
     void deleteUser(Long id) throws UserException;
 
     AppUser getUser(Long id);
+    
+    AppUser findByEmail(String email);
+
 }

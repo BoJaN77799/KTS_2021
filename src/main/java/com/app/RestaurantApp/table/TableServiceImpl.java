@@ -75,4 +75,14 @@ public class TableServiceImpl implements TableService{
         table.setActive(true);
         tableRepository.save(table);
     }
+    
+    @Override
+    public Table findById(Long id) {
+        return tableRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Table save(Table table) {
+        return tableRepository.save(table);
+    }
 }
