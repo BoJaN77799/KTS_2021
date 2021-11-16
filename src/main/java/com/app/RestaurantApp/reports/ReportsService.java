@@ -20,8 +20,6 @@ public interface ReportsService {
 
     double calculateExpenses(long dateFrom, long dateTo);
 
-    long generateDateFrom(String reportParameter);
-
     List<UserReportDTO> activityReport(long dateFrom, long currentTimeMillis);
 
 }
