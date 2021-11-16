@@ -1,9 +1,17 @@
 package com.app.RestaurantApp.table;
 
+import com.app.RestaurantApp.table.dto.TableAdminDTO;
+import com.app.RestaurantApp.table.dto.TableUpdateDTO;
+
+import java.util.List;
+
 public interface TableService {
 
-    Table findById(Long id);
+    List<Table> getTablesFromFloor(int floor);
 
-    Table save(Table table);
+    void updateTable(TableUpdateDTO tableAdminDTO) throws TableException;
 
+    void deleteTable(Long id) throws TableException;
+
+    void createTable(Table table) throws TableException;
 }

@@ -152,6 +152,17 @@ insert into bonus (amount, date_to, employee_id) values (150, 924825600000, 4);
 insert into menu (name, active_menu) values ('Jesenja Ponuda', 'True');
 insert into menu (name, active_menu) values ('Zimska Ponuda', 'False');
 
+insert into tables (active, x, y, floor) values (true, 10, 10, 0);
+insert into tables (active, x, y, floor) values (true, 20, 20, 0);
+insert into tables (active, x, y, floor) values (true, 30, 20, 0);
+insert into tables (active, x, y, floor) values (false, 40, 20, 0);
+insert into tables (active, x, y, floor) values (true, 50, 20, 0);
+insert into tables (active, x, y, floor) values (false, 10, 10, 1);
+insert into tables (active, x, y, floor) values (true, 14, 15, 1);
+insert into tables (active, x, y, floor) values (true, 5, 11, 1);
+insert into tables (active, x, y, floor) values (true, 22, 10, 1);
+
 insert into price (amount, date_from, item_id) values (300.0, 1635724800, 1);
 insert into price (amount, date_from, item_id) values (300.0, 1638316799, 1);
 insert into price (amount, date_from, item_id) values (300.0, 1640995199, 1);
+
