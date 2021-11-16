@@ -74,8 +74,11 @@ public class OrderNotificationServiceImpl implements OrderNotificationService {
 
         if(!priorityChanged && !quantityChanged) return; // Ako nije promenjen ni prioritet ni kvantitet vrati se
 
+        Employee employeeToNotify = getRightEmployee(order, oldOrderItem);
+        if(employeeToNotify == null) return;             // Ako je radnik null vrati se
+
         OrderNotification orderNotification = createBlankOrderNotification(order);
-        orderNotification.setEmployee(getRightEmployee(order, oldOrderItem));
+        orderNotification.setEmployee(employeeToNotify);
         orderNotification.setMessage(generateMsg(order, oldOrderItem, quantityChanged, priorityChanged, newQuantity, newPriority));
 
         orderNotificationRepository.save(orderNotification);
@@ -103,21 +106,28 @@ public class OrderNotificationServiceImpl implements OrderNotificationService {
     public void notifyOrderItemAdded(Order order, Set<OrderItem> orderItems) {
         List<OrderNotification> orderNotifications = new ArrayList<>();
         for(OrderItem orderItem : orderItems){
+            Employee employeeToNotify = getRightEmployee(order, orderItem);
+            if(employeeToNotify == null) continue; // Ako je radnik null preskoci
+
             OrderNotification orderNotification = createBlankOrderNotification(order);
-            orderNotification.setEmployee(getRightEmployee(order, orderItem));
-            String msg = orderItem.getItem().getName() + " has been added to order #" + order.getId() +
+            orderNotification.setEmployee(employeeToNotify);
+            String msg = orderItem.getItem().getName() + "(x" + orderItem.getQuantity() + ") has been added to order #" + order.getId() +
                     ", on table number " + order.getTable().getId();
             orderNotification.setMessage(msg);
 
             orderNotifications.add(orderNotification);
         }
-        orderNotificationRepository.saveAll(orderNotifications);
+        if(orderNotifications.size() > 0)
+            orderNotificationRepository.saveAll(orderNotifications);
     }
 
     @Override
     public void notifyOrderItemDeleted(Order order, OrderItem orderItem) {
+        Employee employeeToNotify = getRightEmployee(order, orderItem);
+        if(employeeToNotify == null) return; // Ako je radnik null vrati se
+
         OrderNotification orderNotification = createBlankOrderNotification(order);
-        orderNotification.setEmployee(getRightEmployee(order, orderItem));
+        orderNotification.setEmployee(employeeToNotify);
         String msg = orderItem.getItem().getName() + " has been deleted from order #" + order.getId() +
                 ", on table number " + order.getTable().getId();
         orderNotification.setMessage(msg);

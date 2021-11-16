@@ -151,7 +151,6 @@ public class OrderServiceImpl implements OrderService{
                 if(orderItemDTO.getQuantity() == 0){ // Ako je quantity na 0 obrisi ga
                     orderNotificationService.notifyOrderItemDeleted(order, orderItemForUpdate);
                     order.getOrderItems().remove(orderItemForUpdate);
-                    // orderItemService.delete(orderItemForUpdate);
                     orderItemsToDelete.add(orderItemForUpdate);
                     it.remove();
                     continue;
