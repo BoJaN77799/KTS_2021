@@ -25,4 +25,6 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
     List<AppUser> searchUsersAdmin(@Param("search") String searchField, @Param("userType") String userType, Pageable pageable);
 
     Optional<AppUser> findByEmail(String email);
+
+    Optional<AppUser> findByIdAndDeleted(Long id, boolean deleted);
 }

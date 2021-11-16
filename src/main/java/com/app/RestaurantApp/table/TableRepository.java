@@ -8,6 +8,8 @@ import java.util.List;
 @Repository
 public interface TableRepository extends JpaRepository<Table, Long> {
 
-    List<Table> findByFloor(int floor);
+    List<Table> findByFloorAndActive(int floor, boolean active);
+
+    long countByFloorAndActive(int floor, boolean active);
 
 }

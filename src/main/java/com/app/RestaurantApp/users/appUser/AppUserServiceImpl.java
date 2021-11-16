@@ -84,9 +84,12 @@ public class AppUserServiceImpl implements AppUserService{
 
     @Override
     public void deleteUser(Long id) throws UserException{
-        Optional<AppUser> user = appUserRepository.findById(id);
+        Optional<AppUser> user = appUserRepository.findByIdAndDeleted(id, false);
+        //todo provera da li je osoba busy trenutno (kuvar, sanker, konobar...)
         if (user.isEmpty()) throw new UserException("Invalid user for deletion!");
-        appUserRepository.delete(user.get());
+        AppUser appUser = user.get();
+        appUser.setDeleted(true);
+        appUserRepository.save(appUser);
     }
 
     @Override
