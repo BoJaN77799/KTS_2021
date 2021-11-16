@@ -9,8 +9,6 @@ import javax.persistence.*;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue(value="U")
-@SQLDelete(sql = "UPDATE app_user " + "SET deleted = true " + "WHERE id = ?")
-@Where(clause = "deleted = false")
 public class AppUser {
 
     @Id

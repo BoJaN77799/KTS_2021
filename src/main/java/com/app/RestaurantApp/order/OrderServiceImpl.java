@@ -192,9 +192,14 @@ public class OrderServiceImpl implements OrderService{
     }
 
     public Order finishOrder(Long id){
-        Order order = orderRepository.findById(id).orElse(null);
+        Order order = orderRepository.findOneWithOrderItems(id);
         if(order == null) return null;
         order.setStatus(OrderStatus.FINISHED);
+
+        double profit = 0;
+        for (OrderItem oi : order.getOrderItems())
+            profit += (oi.getPrice() - oi.getItem().getCost()) * oi.getQuantity();
+        order.setProfit(profit);
 
         return orderRepository.save(order);
     }

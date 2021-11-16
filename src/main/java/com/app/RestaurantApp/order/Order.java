@@ -43,6 +43,9 @@ public class Order {
     @OneToMany(mappedBy="order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<OrderItem> orderItems;
 
+    @Column(name = "profit")
+    private double profit;
+
     public Order() {
     }
 
@@ -116,5 +119,13 @@ public class Order {
 
     public void setOrderItems(Set<OrderItem> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public double getProfit() {
+        return profit;
+    }
+
+    public void setProfit(double profit) {
+        this.profit = profit;
     }
 }
