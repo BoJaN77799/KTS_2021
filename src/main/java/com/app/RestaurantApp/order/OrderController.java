@@ -1,9 +1,13 @@
 package com.app.RestaurantApp.order;
 
 import com.app.RestaurantApp.order.dto.OrderDTO;
+import com.app.RestaurantApp.order.dto.SimpleOrderDTO;
+import com.app.RestaurantApp.users.appUser.AppUser;
 import com.app.RestaurantApp.users.dto.AppUserAdminUserListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -122,6 +126,14 @@ public class OrderController {
         if(order == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<>(new OrderDTO(order), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<SimpleOrderDTO> searchOrders(@RequestParam(value = "searchField", required = false) String searchField,
+                                             @RequestParam(value = "orderStatus", required = false) String orderStatus,
+                                             Pageable pageable) {
+        List<Order> orders = orderService.searchOrders(searchField, orderStatus, pageable);
+        return orders.stream().map(SimpleOrderDTO::new).toList();
     }
 
 }
