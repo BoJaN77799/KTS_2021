@@ -2,10 +2,12 @@ package com.app.RestaurantApp.table;
 
 import com.app.RestaurantApp.table.dto.TableAdminDTO;
 import com.app.RestaurantApp.table.dto.TableUpdateDTO;
+import com.app.RestaurantApp.table.dto.TableWaiterDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,5 +86,17 @@ public class TableServiceImpl implements TableService{
     @Override
     public Table save(Table table) {
         return tableRepository.save(table);
+    }
+
+    @Override
+    public List<TableWaiterDTO> getTablesWithActiveOrderIfItExists(int floor) {
+        List<Table> listica1 = tableRepository.findByFloorAndNoInProgressOrders(floor);
+        List<Table> listica2 = tableRepository.findByFloorAndInProgressOrders(floor);
+
+        List<TableWaiterDTO> resultList = new ArrayList<>(listica1.size() + listica2.size());
+        listica1.forEach((el) -> resultList.add(new TableWaiterDTO(el, false)));
+        listica2.forEach((el) -> resultList.add(new TableWaiterDTO(el, true)));
+        // znam da je uga buga da dva puta vraca iz baze, ali posto spring jpa ne podrzava 'with' prilikom fetchovanja...
+        return resultList;
     }
 }

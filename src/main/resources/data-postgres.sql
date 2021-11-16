@@ -111,11 +111,11 @@ insert into price (amount, date_from, item_id) values (150.0, 1636730076405, 9);
 insert into price (amount, date_from, item_id) values (160.0, 1636730076405, 10);
 
 
-insert into tables (active, x, y, floor) values ('False', 1.0, 1.0, 0);
-insert into tables (active, x, y, floor) values ('False', 2.0, 2.0, 0);
-insert into tables (active, x, y, floor) values ('False', 3.0, 3.0, 0);
-insert into tables (active, x, y, floor) values ('False', 4.0, 4.0, 0);
-insert into tables (active, x, y, floor) values ('False', 5.0, 5.0, 0);
+insert into tables (active, x, y, floor) values (true, 1.0, 1.0, 0);
+insert into tables (active, x, y, floor) values (true, 2.0, 2.0, 0);
+insert into tables (active, x, y, floor) values (true, 3.0, 3.0, 0);
+insert into tables (active, x, y, floor) values (true, 4.0, 4.0, 0);
+insert into tables (active, x, y, floor) values (true, 5.0, 5.0, 0);
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id) values ('NEW', 1636730076405, 'Pozuri, galdan sam.', 1, 3);
 
@@ -132,7 +132,7 @@ insert into restaurant_order (status, created_at, note, table_id, waiter_id, coo
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 280.0, 'True', 3, 1);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 140.0, 'False', 3, 8);
 
-insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id) values ('IN_PROGRESS', 1636730076405, 'Pozuri, gladan i zedan sam.', 1, 3, 5);
+insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id) values ('IN_PROGRESS', 1636730076405, 'Pozuri, gladan i zedan sam.',2, 3, 5);
 
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 600.0, 'True', 4, 2);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 160.0, 'False', 4, 7);
@@ -155,9 +155,9 @@ insert into menu (name, active_menu) values ('Zimska Ponuda', 'False');
 insert into tables (active, x, y, floor) values (true, 10, 10, 0);
 insert into tables (active, x, y, floor) values (true, 20, 20, 0);
 insert into tables (active, x, y, floor) values (true, 30, 20, 0);
-insert into tables (active, x, y, floor) values (false, 40, 20, 0);
+insert into tables (active, x, y, floor) values (true, 40, 20, 0);
 insert into tables (active, x, y, floor) values (true, 50, 20, 0);
-insert into tables (active, x, y, floor) values (false, 10, 10, 1);
+insert into tables (active, x, y, floor) values (true, 10, 10, 1);
 insert into tables (active, x, y, floor) values (true, 14, 15, 1);
 insert into tables (active, x, y, floor) values (true, 5, 11, 1);
 insert into tables (active, x, y, floor) values (true, 22, 10, 1);

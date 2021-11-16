@@ -3,6 +3,7 @@ package com.app.RestaurantApp.table;
 import com.app.RestaurantApp.table.dto.TableAdminDTO;
 import com.app.RestaurantApp.table.dto.TableCreateDTO;
 import com.app.RestaurantApp.table.dto.TableUpdateDTO;
+import com.app.RestaurantApp.table.dto.TableWaiterDTO;
 import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.appUser.AppUser;
 import com.app.RestaurantApp.users.dto.AppUserAdminUserListDTO;
@@ -64,6 +65,11 @@ public class TableController {
         }catch (Exception e) {
             return new ResponseEntity<>("Unknown error happened while deleting table!", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<TableWaiterDTO> getTablesFromFloor(@RequestParam(value = "floor") int floor){
+        return tableService.getTablesWithActiveOrderIfItExists(floor);
     }
 
 }
