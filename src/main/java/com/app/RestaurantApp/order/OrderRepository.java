@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -49,4 +50,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("select o from Order o where (o.createdAt >= ?1 and o.createdAt <= ?2) and o.status = 'FINISHED'")
     List<Order> getOrdersByDate(long dateFrom, long dateTo);
 
+
+    @Query("select o from Order o join fetch o.orderItems oi join fetch oi.item where o.table.id =?1 and o.status <> 'FINISHED'")
+    List<Order> findActiveFromTable(Long table_id);
 }
