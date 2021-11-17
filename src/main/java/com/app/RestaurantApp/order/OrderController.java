@@ -127,7 +127,7 @@ public class OrderController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            return new ResponseEntity<>("Unknown error happened while creating order!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Unknown error happened while updating order!", HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -44,7 +44,7 @@ public class Order {
     private Set<OrderItem> orderItems;
 
     @Column(name = "profit")
-    private double profit;
+    private Double profit;
 
     public Order() {
     }
@@ -121,11 +121,11 @@ public class Order {
         this.orderItems = orderItems;
     }
 
-    public double getProfit() {
+    public Double getProfit() {
         return profit;
     }
 
-    public void setProfit(double profit) {
+    public void setProfit(Double profit) {
         this.profit = profit;
     }
 }

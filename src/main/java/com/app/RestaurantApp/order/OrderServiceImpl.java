@@ -224,7 +224,8 @@ public class OrderServiceImpl implements OrderService{
 
         double profit = 0;
         for (OrderItem oi : order.getOrderItems())
-            profit += (oi.getPrice() - oi.getItem().getCost()) * oi.getQuantity();
+            if(oi.getStatus() == OrderItemStatus.FINISHED)
+                profit += (oi.getPrice() - oi.getItem().getCost()) * oi.getQuantity();
         order.setProfit(profit);
 
         return orderRepository.save(order);
