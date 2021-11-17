@@ -15,10 +15,16 @@ public class OrderItemController {
 
 
     @PutMapping(value = "/changeStatus", consumes = "application/json")
-    public ResponseEntity<OrderItemChangeStatusDTO> changeStatus(@RequestBody OrderItemChangeStatusDTO orderItemDTO){
-
-        OrderItem orderItem = orderItemService.changeStatus(orderItemDTO);
-
-        return new ResponseEntity<OrderItemChangeStatusDTO>(new OrderItemChangeStatusDTO(orderItem), HttpStatus.OK);
+    public ResponseEntity<String> changeStatus(@RequestBody OrderItemChangeStatusDTO orderItemDTO){
+        try {
+            orderItemService.changeStatus(orderItemDTO);
+            return new ResponseEntity<>("Order item status successfully changed.", HttpStatus.BAD_REQUEST);
+        }
+        catch (OrderItemException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Unknown error happened while changing status of order item!", HttpStatus.BAD_REQUEST);
+        }
     }
 }

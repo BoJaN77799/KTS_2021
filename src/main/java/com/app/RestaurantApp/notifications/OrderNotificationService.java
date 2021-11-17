@@ -16,4 +16,6 @@ public interface OrderNotificationService {
     void notifyOrderItemDeleted(Order order, OrderItem orderItem);
 
     void deleteOrderNotifications(Order order);
+
+    void notifyWaiterOrderItemStatusFinished(OrderItem orderItem);
 }

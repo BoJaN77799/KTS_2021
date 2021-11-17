@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface OrderItemService {
 
-    OrderItem changeStatus(OrderItemChangeStatusDTO orderItemChangeStatusDTO);
+    OrderItem changeStatus(OrderItemChangeStatusDTO orderItemChangeStatusDTO) throws OrderItemException;
 
     void delete(OrderItem orderItem);
 
