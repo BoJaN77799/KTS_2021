@@ -26,4 +26,7 @@ public interface AppUserService {
     
     AppUser findByEmail(String email);
 
+    AppUser getActiveUser(Long id);
+
+    void changePassword(Long id, String oldPassword, String newPassword) throws UserException;
 }

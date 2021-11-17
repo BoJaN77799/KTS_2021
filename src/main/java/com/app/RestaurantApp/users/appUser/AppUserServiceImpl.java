@@ -74,7 +74,7 @@ public class AppUserServiceImpl implements AppUserService{
 
     @Override
     public void updateUser(UpdateUserDTO updateUserDTO) throws UserException {
-        Optional<AppUser> user = appUserRepository.findById(updateUserDTO.getId());
+        Optional<AppUser> user = appUserRepository.findByIdAndDeleted(updateUserDTO.getId(), false);
         if (user.isEmpty()) throw new UserException("Invalid user for update!");
 
         AppUser us = user.get();
@@ -103,4 +103,24 @@ public class AppUserServiceImpl implements AppUserService{
         return user.orElse(null);
     }
 
+    @Override
+    public AppUser getActiveUser(Long id){
+        Optional<AppUser> user = appUserRepository.findByIdAndDeleted(id, false);
+        return user.orElse(null);
+    }
+
+    @Override
+    public void changePassword(Long id, String oldPassword, String newPassword) throws UserException{
+        Optional<AppUser> user = appUserRepository.findByIdAndDeleted(id, false);
+        if (user.isEmpty()) throw new UserException("Error, user with id not found!");
+        if (oldPassword == null || newPassword == null) throw new UserException("Password cannot be null!");
+
+        AppUser appUser = user.get();
+        if (!appUser.getPassword().equals(oldPassword)) throw new UserException("Error, old password not correct!");
+
+        if (newPassword.length() < 8) throw new UserException("Error, new password too short!");
+
+        appUser.setPassword(newPassword);
+        appUserRepository.save(appUser);
+    }
 }

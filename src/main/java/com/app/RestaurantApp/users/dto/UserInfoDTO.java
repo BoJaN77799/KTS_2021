@@ -2,6 +2,7 @@ package com.app.RestaurantApp.users.dto;
 
 import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.users.appUser.AppUser;
+import com.app.RestaurantApp.users.employee.Employee;
 
 public class UserInfoDTO {
     private Long id;
@@ -22,6 +23,8 @@ public class UserInfoDTO {
 
     private boolean isPasswordChanged;
 
+    private double salary;
+
     public UserInfoDTO(){ }
 
     public UserInfoDTO(AppUser appUser){
@@ -34,6 +37,19 @@ public class UserInfoDTO {
         this.address = appUser.getAddress();
         this.userType = appUser.getUserType();
         this.isPasswordChanged = appUser.isPasswordChanged();
+    }
+
+    public UserInfoDTO(Employee appUser){
+        this.id = appUser.getId();
+        this.firstName = appUser.getFirstName();
+        this.lastName = appUser.getLastName();
+        this.email = appUser.getEmail();
+        this.gender = appUser.getGender();
+        this.telephone = appUser.getTelephone();
+        this.address = appUser.getAddress();
+        this.userType = appUser.getUserType();
+        this.isPasswordChanged = appUser.isPasswordChanged();
+        this.salary = appUser.getSalary();
     }
 
     public Long getId() {
@@ -106,5 +122,13 @@ public class UserInfoDTO {
 
     public void setPasswordChanged(boolean passwordChanged) {
         isPasswordChanged = passwordChanged;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 }
