@@ -1,8 +1,10 @@
 package com.app.RestaurantApp.users.employee;
 
+
 import java.util.List;
 import com.app.RestaurantApp.users.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,5 +38,18 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public List<Employee> findByDeleted(boolean deleted) {
         return employeeRepository.findByDeleted(deleted);
+    }
+
+    @Override
+    public List<Employee> searchEmployeesManager(String searchField, String userType, Pageable pageable) {
+        if (searchField == null)
+            searchField = "";
+
+        if (userType == null){
+            userType = "";
+        }else if (userType.equalsIgnoreCase("all")){
+            userType = "";
+        }
+        return employeeRepository.searchEmployeesManager(searchField, userType, pageable);
     }
 }

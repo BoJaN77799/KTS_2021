@@ -2,6 +2,7 @@ package com.app.RestaurantApp.users.employee;
 
 import java.util.List;
 import com.app.RestaurantApp.users.UserException;
+import org.springframework.data.domain.Pageable;
 
 public interface EmployeeService {
 
@@ -15,5 +16,6 @@ public interface EmployeeService {
 
     List<Employee> findByDeleted(boolean deleted);
 
+    List<Employee> searchEmployeesManager(String searchField, String userType, Pageable pageable);
 }
 
