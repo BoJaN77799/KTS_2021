@@ -52,6 +52,7 @@ public class OrderServiceImpl implements OrderService{
         Order order = new Order();
 
         order.setOrderItems(createNewOrderItems(order, orderItemOrderCreationDTOS));
+        OrderUtils.checkOrderItemsQuantityForCreation(order);
         order.setWaiter(employeeService.findById(orderDTO.getWaiterId()));
         order.setCreatedAt(Instant.now().toEpochMilli());
         order.setStatus(OrderStatus.NEW);
@@ -153,7 +154,7 @@ public class OrderServiceImpl implements OrderService{
                 if(orderItemForUpdate == null)
                     throw new OrderException("Order item with id: " + orderItemDTO.getId() + " does not exist in order or cannot be changed!");
 
-                if(orderItemDTO.getQuantity() == 0){ // Ako je quantity na 0 obrisi ga
+                if(orderItemDTO.getQuantity() <= 0){ // Ako je quantity na 0 obrisi ga
                     orderNotificationService.notifyOrderItemDeleted(order, orderItemForUpdate);
                     order.getOrderItems().remove(orderItemForUpdate);
                     orderItemsToDelete.add(orderItemForUpdate);
@@ -224,7 +225,7 @@ public class OrderServiceImpl implements OrderService{
 
         double profit = 0;
         for (OrderItem oi : order.getOrderItems())
-            if(oi.getStatus() == OrderItemStatus.FINISHED)
+            if(oi.getStatus() == OrderItemStatus.IN_PROGRESS || oi.getStatus() == OrderItemStatus.FINISHED || oi.getStatus() == OrderItemStatus.DELIVERED)
                 profit += (oi.getPrice() - oi.getItem().getCost()) * oi.getQuantity();
         order.setProfit(profit);
 
