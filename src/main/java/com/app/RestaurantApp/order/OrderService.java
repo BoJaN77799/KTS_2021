@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    Order createOrder(OrderDTO orderDTO);
+    Order createOrder(OrderDTO orderDTO) throws OrderException;
 
     Order findOne(Long id);
 
@@ -32,7 +32,7 @@ public interface OrderService {
 
     Order findOneWithOrderItemsForUpdate(Long id);
 
-    Order updateOrder(OrderDTO orderDTO);
+    Order updateOrder(OrderDTO orderDTO) throws OrderException;
 
     Order finishOrder(Long id);
 

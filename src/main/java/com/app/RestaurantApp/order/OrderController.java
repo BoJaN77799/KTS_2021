@@ -85,11 +85,17 @@ public class OrderController {
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO){
-
-        Order order = orderService.createOrder(orderDTO);
-
-        return new ResponseEntity<>(new OrderDTO(order), HttpStatus.CREATED);
+    public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDTO){
+        try {
+            orderService.createOrder(orderDTO);
+            return new ResponseEntity<>("Order successfully created.", HttpStatus.CREATED);
+        }
+        catch (OrderException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("Unknown error happened while creating order!", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(value="accept/{id}/by/{email}")
@@ -112,21 +118,26 @@ public class OrderController {
     }
 
     @PutMapping(consumes = "application/json")
-    public ResponseEntity<OrderDTO> updateOrder(@RequestBody OrderDTO orderDTO){
-        Order order = orderService.updateOrder(orderDTO);
-
-        if(order == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-        return new ResponseEntity<>(new OrderDTO(order), HttpStatus.OK);
+    public ResponseEntity<String> updateOrder(@RequestBody OrderDTO orderDTO){
+        try {
+            orderService.updateOrder(orderDTO);
+            return new ResponseEntity<>("Order successfully updated.", HttpStatus.OK);
+        }
+        catch (OrderException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Unknown error happened while creating order!", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping(value = "/finish/{id}")
-    public ResponseEntity<OrderDTO> finishOrder(@PathVariable Long id){
+    public ResponseEntity<String> finishOrder(@PathVariable Long id){
         Order order = orderService.finishOrder(id);
 
-        if(order == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if(order == null) return new ResponseEntity<>("Order not found!", HttpStatus.NOT_FOUND);
 
-        return new ResponseEntity<>(new OrderDTO(order), HttpStatus.OK);
+        return new ResponseEntity<>("Order successfully finished.", HttpStatus.OK);
     }
 
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
