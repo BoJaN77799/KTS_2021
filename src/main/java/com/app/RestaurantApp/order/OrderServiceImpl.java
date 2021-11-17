@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService{
     private OrderNotificationService orderNotificationService;
 
     @Override
-    public Order createOrder(OrderDTO orderDTO) {
+    public Order createOrder(OrderDTO orderDTO) throws OrderException {
         List<OrderItemOrderCreationDTO> orderItemOrderCreationDTOS = orderDTO.getOrderItems();
         Order order = new Order();
 
@@ -57,8 +57,8 @@ public class OrderServiceImpl implements OrderService{
         order.setStatus(OrderStatus.NEW);
         order.setNote(orderDTO.getNote());
         order.setTable(tableService.findById(orderDTO.getTableId()));
-        order.getTable().setActive(true);
-        tableService.save(order.getTable());
+
+        OrderUtils.checkBasicOrderInfo(order);
 
         orderRepository.save(order);
         orderNotificationService.notifyNewOrder(order);
@@ -135,11 +135,12 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public Order updateOrder(OrderDTO orderDTO) {
+    public Order updateOrder(OrderDTO orderDTO) throws OrderException {
         Order order = orderRepository.findOneWithOrderItemsForUpdate(orderDTO.getId());
         if(order == null) return order;
         List<OrderItemOrderCreationDTO> orderItemsDTO = orderDTO.getOrderItems();
 
+        OrderUtils.checkNoteLength(orderDTO.getNote());
         order.setNote(orderDTO.getNote());
 
         List<OrderItem> orderItemsToDelete = new ArrayList<>();
@@ -147,7 +148,10 @@ public class OrderServiceImpl implements OrderService{
         for (Iterator<OrderItemOrderCreationDTO> it = orderItemsDTO.iterator(); it.hasNext();){
             OrderItemOrderCreationDTO orderItemDTO = it.next();
             if(orderItemDTO.getId() != null){
+
                 OrderItem orderItemForUpdate = getOrderItemFromOrder(order, orderItemDTO.getId());
+                if(orderItemForUpdate == null)
+                    throw new OrderException("Order item with id: " + orderItemDTO.getId() + " does not exist in order or cannot be changed!");
 
                 if(orderItemDTO.getQuantity() == 0){ // Ako je quantity na 0 obrisi ga
                     orderNotificationService.notifyOrderItemDeleted(order, orderItemForUpdate);
@@ -181,13 +185,16 @@ public class OrderServiceImpl implements OrderService{
         return null;
     }
 
-    private Set<OrderItem> createNewOrderItems(Order order, List<OrderItemOrderCreationDTO> orderItemsDTO){
+    private Set<OrderItem> createNewOrderItems(Order order, List<OrderItemOrderCreationDTO> orderItemsDTO) throws OrderException {
         Set<OrderItem> orderItems = new HashSet<OrderItem>();
 
         List<Long> itemsId = new ArrayList<>();
         orderItemsDTO.forEach((itemDTO) -> itemsId.add(itemDTO.getItemId()));
 
         List<Item> items = itemService.findAllWithIds(itemsId);
+
+        if(items.size() != orderItemsDTO.size())
+            throw new OrderException("One of items selected for order does not exist in database!");
 
         Collections.sort(orderItemsDTO,(item1, item2) -> (int) (item1.getItemId() - item2.getItemId()));
         Collections.sort(items,(item1, item2) -> (int) (item1.getId() - item2.getId()));
