@@ -180,7 +180,7 @@ public class OrderServiceImpl implements OrderService{
                 return orderItem;
         return null;
     }
-
+    
     private Set<OrderItem> createNewOrderItems(Order order, List<OrderItemOrderCreationDTO> orderItemsDTO){
         Set<OrderItem> orderItems = new HashSet<OrderItem>();
 
@@ -208,12 +208,23 @@ public class OrderServiceImpl implements OrderService{
         return orderItems;
     }
 
+    @Override
     public Order finishOrder(Long id){
-        Order order = orderRepository.findById(id).orElse(null);
+        Order order = orderRepository.findOneWithOrderItems(id);
         if(order == null) return null;
         order.setStatus(OrderStatus.FINISHED);
 
+        double profit = 0;
+        for (OrderItem oi : order.getOrderItems())
+            profit += (oi.getPrice() - oi.getItem().getCost()) * oi.getQuantity();
+        order.setProfit(profit);
+
         return orderRepository.save(order);
+    }
+
+    @Override
+    public List<Order> findAllOrderInIntervalOfDates(Long dateFrom, Long dateTo) {
+        return orderRepository.findAllOrderInIntervalOfDates(dateFrom, dateTo);
     }
 
     @Override
@@ -231,6 +242,11 @@ public class OrderServiceImpl implements OrderService{
         List<Order> orders = orderRepository.findActiveFromTable(tableID);
         //inace mora da bude samo jedno aktivno porucivanje za stolom
         return orders.size() > 0 ? orders.get(0) : null;
+    }
+  
+    @Override
+    public List<Order> getOrdersByDate(long dateFrom, long dateTo) {
+        return orderRepository.getOrdersByDate(dateFrom, dateTo);
     }
 
 }

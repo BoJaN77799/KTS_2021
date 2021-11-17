@@ -13,5 +13,7 @@ public interface EmployeeService {
 
     Employee findById(Long id);
 
+    List<Employee> findByDeleted(boolean deleted);
+
 }
 
