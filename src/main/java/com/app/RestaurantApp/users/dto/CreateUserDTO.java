@@ -2,6 +2,7 @@ package com.app.RestaurantApp.users.dto;
 
 import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.users.appUser.AppUser;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Column;
 import javax.persistence.EnumType;
@@ -22,6 +23,8 @@ public class CreateUserDTO {
     private String address;
 
     private UserType userType;
+
+    private MultipartFile image;
 
     public CreateUserDTO() {
     }
@@ -80,6 +83,14 @@ public class CreateUserDTO {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 
     public AppUser convertToAppUser(){

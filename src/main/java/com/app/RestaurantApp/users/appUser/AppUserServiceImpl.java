@@ -1,19 +1,27 @@
 package com.app.RestaurantApp.users.appUser;
 
 import com.app.RestaurantApp.enums.UserType;
+import com.app.RestaurantApp.users.FileUploadUtil;
 import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.UserUtils;
+import com.app.RestaurantApp.users.dto.CreateUserDTO;
 import com.app.RestaurantApp.users.dto.UpdateUserDTO;
 import com.app.RestaurantApp.users.employee.Employee;
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.apache.catalina.User;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.StringUtils;
 
 import javax.swing.text.html.Option;
+import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -49,7 +57,9 @@ public class AppUserServiceImpl implements AppUserService{
     }
 
     @Override
-    public void createUser(AppUser user) throws UserException{
+    public void createUser(CreateUserDTO userDTO) throws UserException{
+        AppUser user = userDTO.convertToAppUser();
+
         UserUtils.CheckUserInfo(user);
 
         Optional<AppUser> userOptional = appUserRepository.findByEmail(user.getEmail());
@@ -62,6 +72,19 @@ public class AppUserServiceImpl implements AppUserService{
         user.setPassword(pw);
         user.setEmailVerified(false);
         user.setPasswordChanged(false);
+
+        try {
+            String fileName = StringUtils.cleanPath(Objects.requireNonNull(userDTO.getImage().getOriginalFilename()));
+            fileName = Instant.now().getEpochSecond() + "_" + fileName;
+            String uploadDir = "user_profile_photos/" + user.getFirstName();
+            //todo ovo srediti da bude id ili nesto drugo
+            String path = FileUploadUtil.saveFile(uploadDir, fileName, userDTO.getImage());
+
+            user.setProfilePhoto(uploadDir + "/" + fileName);
+        }catch (NullPointerException | IOException e){
+            System.out.println(e.getMessage());
+            user.setProfilePhoto(null);
+        }
 
         if (user.getUserType() == UserType.BARMAN || user.getUserType() == UserType.COOK ||
                 user.getUserType() == UserType.WAITER || user.getUserType() == UserType.HEAD_COOK)

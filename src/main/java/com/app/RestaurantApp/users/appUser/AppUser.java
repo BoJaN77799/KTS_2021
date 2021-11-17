@@ -49,6 +49,9 @@ public class AppUser {
     @Column(name = "user_type", nullable = false)
     protected UserType userType;
 
+    @Column(name="profile_photo")
+    protected String profilePhoto;
+
     public AppUser() {
     }
 
@@ -65,6 +68,7 @@ public class AppUser {
         this.emailVerified = appUser.emailVerified;
         this.userType = appUser.userType;
         this.deleted = appUser.deleted;
+        this.profilePhoto = appUser.profilePhoto;
     }
 
     public Long getId() {
@@ -159,4 +163,11 @@ public class AppUser {
         this.userType = userType;
     }
 
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
 }
