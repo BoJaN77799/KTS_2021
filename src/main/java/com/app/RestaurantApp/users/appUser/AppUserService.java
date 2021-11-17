@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.users.appUser;
 
 import com.app.RestaurantApp.users.UserException;
+import com.app.RestaurantApp.users.dto.CreateUserDTO;
 import com.app.RestaurantApp.users.dto.UpdateUserDTO;
 import com.app.RestaurantApp.users.employee.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public interface AppUserService {
 
     List<AppUser> searchUsersAdmin(String searchField, String userType, Pageable pageable);
 
-    void createUser(AppUser user) throws UserException;
+    void createUser(CreateUserDTO user) throws UserException;
 
     void updateUser(UpdateUserDTO updateUserDTO) throws UserException;
 
@@ -26,4 +27,7 @@ public interface AppUserService {
     
     AppUser findByEmail(String email);
 
+    AppUser getActiveUser(Long id);
+
+    void changePassword(Long id, String oldPassword, String newPassword) throws UserException;
 }

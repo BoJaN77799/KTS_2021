@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderTableViewDTO {
+
+    private Long id;
     private List<OrderItemForTableOrderViewDTO> orderItems;
 
     public OrderTableViewDTO() {
@@ -16,10 +18,19 @@ public class OrderTableViewDTO {
     }
 
     public OrderTableViewDTO(Order order){
+        id = order.getId();
         orderItems = new ArrayList<>();
         for(OrderItem orderItem : order.getOrderItems()){
             orderItems.add(new OrderItemForTableOrderViewDTO(orderItem));
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public List<OrderItemForTableOrderViewDTO> getOrderItems() {

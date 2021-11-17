@@ -13,41 +13,44 @@ public class AppUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @Column(name = "password", nullable = false)
-    private String password;
+    protected String password;
 
     @Column(name = "first_name", nullable = false)
-    private String firstName;
+    protected String firstName;
 
     @Column(name = "last_name", nullable = false)
-    private String lastName;
+    protected String lastName;
 
     @Column(name = "email", unique = true, nullable = false)
-    private String email;
+    protected String email;
 
     @Column(name = "gender", nullable = false)
-    private String gender;
+    protected String gender;
 
     @Column(name = "telephone", nullable = false)
-    private String telephone;
+    protected String telephone;
 
     @Column(name = "is_password_changed", nullable = false)
-    private boolean isPasswordChanged;
+    protected boolean isPasswordChanged;
 
     @Column(name = "is_email_verified", nullable = false)
-    private boolean emailVerified = false;
+    protected boolean emailVerified = false;
 
     @Column(name="address")
-    private String address;
+    protected String address;
 
     @Column(name = "deleted")
-    private boolean deleted = false;
+    protected boolean deleted = false;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type", nullable = false)
-    private UserType userType;
+    protected UserType userType;
+
+    @Column(name="profile_photo")
+    protected String profilePhoto;
 
     public AppUser() {
     }
@@ -65,6 +68,7 @@ public class AppUser {
         this.emailVerified = appUser.emailVerified;
         this.userType = appUser.userType;
         this.deleted = appUser.deleted;
+        this.profilePhoto = appUser.profilePhoto;
     }
 
     public Long getId() {
@@ -159,4 +163,11 @@ public class AppUser {
         this.userType = userType;
     }
 
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
 }
