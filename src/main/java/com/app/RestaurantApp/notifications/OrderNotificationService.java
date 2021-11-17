@@ -14,4 +14,6 @@ public interface OrderNotificationService {
     void notifyOrderItemAdded(Order order, Set<OrderItem> orderItems);
 
     void notifyOrderItemDeleted(Order order, OrderItem orderItem);
+
+    void deleteOrderNotifications(Order order);
 }

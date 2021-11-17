@@ -228,6 +228,7 @@ public class OrderServiceImpl implements OrderService{
                 profit += (oi.getPrice() - oi.getItem().getCost()) * oi.getQuantity();
         order.setProfit(profit);
 
+        orderNotificationService.deleteOrderNotifications(order);
         return orderRepository.save(order);
     }
 

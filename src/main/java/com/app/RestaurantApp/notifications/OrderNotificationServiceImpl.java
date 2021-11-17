@@ -158,4 +158,10 @@ public class OrderNotificationServiceImpl implements OrderNotificationService {
         return null;
     }
 
+    @Override
+    public void deleteOrderNotifications(Order order) {
+        orderNotificationRepository.deleteAllByOrder(order);
+    }
+
+
 }
