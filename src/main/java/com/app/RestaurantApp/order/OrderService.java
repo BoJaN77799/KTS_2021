@@ -40,6 +40,8 @@ public interface OrderService {
 
     List<Order> searchOrders(String searchField, String orderStatus, Pageable pageable);
 
+    Order findOrderAtTable(Long tableID);
+  
     List<Order> getOrdersByDate(long dateFrom, long dateTo);
-
+  
 }

@@ -238,6 +238,13 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
+    public Order findOrderAtTable(Long tableID){
+        List<Order> orders = orderRepository.findActiveFromTable(tableID);
+        //inace mora da bude samo jedno aktivno porucivanje za stolom
+        return orders.size() > 0 ? orders.get(0) : null;
+    }
+  
+    @Override
     public List<Order> getOrdersByDate(long dateFrom, long dateTo) {
         return orderRepository.getOrdersByDate(dateFrom, dateTo);
     }
