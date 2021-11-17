@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.order;
 
 import com.app.RestaurantApp.enums.UserType;
+import com.app.RestaurantApp.orderItem.OrderItem;
 
 public class OrderUtils {
 
@@ -24,6 +25,24 @@ public class OrderUtils {
     public static void checkNoteLength(String note) throws OrderException {
         if(note.length() > 300) {
             throw new OrderException("Maximum characters for note is 300!");
+        }
+    }
+
+    public static void checkOrderItemsQuantityForCreation(Order order) throws OrderException {
+        StringBuilder sb = new StringBuilder();
+
+        for(OrderItem oi : order.getOrderItems()) {
+            if(oi.getQuantity() <= 0) {
+                String msg = "Quantity of " + oi.getItem().getName() + " is '" + oi.getQuantity() + "'." +
+                        " Should be greater than zero.";
+
+                sb.append(msg);
+                sb.append("\n");
+            }
+        }
+
+        if(!sb.isEmpty()) {
+            throw new OrderException(sb.toString().trim());
         }
     }
 
