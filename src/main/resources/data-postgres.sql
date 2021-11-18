@@ -156,16 +156,17 @@ insert into order_item (quantity, status, price, priority, order_id, item_id) va
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'DELIVERED', 300.0, 'False', 4, 1);
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id, cook_id) values ('FINISHED', 1636730076405, 'Pozuri gladan sam.', 1, 3, 5, 4);
-insert into order_item (quantity, status, price, priority, order_id, item_id) values (11, 'DELIVERED', 2500.0, 'False', 5, 4);
-insert into order_item (quantity, status, price, priority, order_id, item_id) values (11, 'DELIVERED', 160.0, 'True', 5, 7);
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (11, 'FINISHED', 2500.0, 'False', 7, 4);
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (11, 'FINISHED', 160.0, 'True', 7, 7);
 
-insert into salary (amount, date_from, employee_id) values (100, 1635724800, 4);
-insert into salary (amount, date_from, employee_id) values (150, 1638316799, 4);
-insert into salary (amount, date_from, employee_id) values (150, 1640995199, 4);
+insert into salary (amount, date_from, employee_id) values (100, 1633816800000, 4);
+insert into salary (amount, date_from, employee_id) values (200, 1634680800000, 4);
+insert into salary (amount, date_from, employee_id) values (300, 1636239600000, 4);
 
-insert into bonus (amount, date_to, employee_id) values (100, 1636742869, 4);
-insert into bonus (amount, date_to, employee_id) values (150, 1636742869, 4);
-insert into bonus (amount, date_to, employee_id) values (150, 924825600000, 4);
+insert into bonus (amount, date_to, employee_id) values (100, 1631743200000, 4);
+insert into bonus (amount, date_to, employee_id) values (100, 1637017200000, 4);
+insert into bonus (amount, date_to, employee_id) values (150, 1637017200000, 4);
+insert into bonus (amount, date_to, employee_id) values (150, 1637017200000, 4);
 
 insert into menu (name, active_menu) values ('Jesenja Ponuda', 'True');
 insert into menu (name, active_menu) values ('Zimska Ponuda', 'False');
@@ -186,10 +187,10 @@ insert into price (amount, date_from, item_id) values (300.0, 1640995199, 1);
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, profit) values ('FINISHED', 1636930800000, 'Pozuri, galdan sam.', 1, 3, 200);
 
-insert into order_item (quantity, status, price, priority, order_id, item_id) values (2, 'FINISHED', 300.0, 'True', 5, 1);
-insert into order_item (quantity, status, price, priority, order_id, item_id) values (3, 'FINISHED', 600.0, 'False', 5, 2);
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (2, 'FINISHED', 300.0, 'True', 6, 1);
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (3, 'FINISHED', 600.0, 'False', 6, 2);
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, profit) values ('FINISHED', 1636844400000, 'Pozuri, zedan sam.', 3, 3, 200);
 
-insert into order_item (quantity, status, price, priority, order_id, item_id) values (4, 'FINISHED', 180.0, 'True', 5, 1);
-insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'FINISHED', 140.0, 'False', 5, 8);
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (4, 'FINISHED', 180.0, 'True', 7, 1);
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'DELIVERED', 140.0, 'False', 7, 8);

@@ -62,4 +62,9 @@ public class EmployeeServiceImpl implements EmployeeService{
     public Employee findEmployeeWithSalaries(String email) {
         return employeeRepository.findEmployeeWithSalaries(email);
     }
+
+    @Override
+    public List<Employee> findAllEmployeesWithSalariesAndBonuses(boolean deleted) {
+        return employeeRepository.findAllEmployeesWithSalariesAndBonuses(deleted);
+    }
 }

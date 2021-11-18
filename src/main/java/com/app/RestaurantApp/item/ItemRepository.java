@@ -14,6 +14,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query("select i from Item i where  i.id in :ids")
     List<Item> findAllWithIds(@Param("ids")List<Long> ids);
 
-    @Query("select i from Item i left join fetch i.prices where i.id = ?1")
+    @Query("select distinct i from Item i left join fetch i.prices where i.id = ?1")
     Item findByIdItemWithPrices(Long id);
 }

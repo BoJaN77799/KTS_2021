@@ -22,5 +22,6 @@ public interface EmployeeService {
 
     Employee findEmployeeWithSalaries(String email);
 
+    List<Employee> findAllEmployeesWithSalariesAndBonuses(boolean deleted);
 }
 

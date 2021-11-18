@@ -9,6 +9,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 
     Menu findByName(String name);
 
-    @Query("select m from Menu m left join fetch m.items where m.name = ?1")
+    @Query("select distinct m from Menu m left join fetch m.items where m.name = ?1")
     Menu findByNameWithItems(String name);
 }

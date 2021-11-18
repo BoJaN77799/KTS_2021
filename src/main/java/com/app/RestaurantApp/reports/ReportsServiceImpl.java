@@ -13,12 +13,8 @@ import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.*;
+import java.util.*;
 
 import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.order.Order;
@@ -26,8 +22,6 @@ import com.app.RestaurantApp.order.OrderService;
 import com.app.RestaurantApp.reports.dto.UserReportDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 
 @Service
 public class ReportsServiceImpl implements ReportsService {
@@ -74,7 +68,7 @@ public class ReportsServiceImpl implements ReportsService {
                             .setPriceCount(currentItemPrice);
                 } else {
                     maps.put(oi.getItem().getId(),
-                            new Sales(oi.getItem().getName(),
+                            new Sales(oi.getItem().getId(), oi.getItem().getName(),
                                     oi.getPrice() * oi.getQuantity(), oi.getQuantity()));
                 }
             }
@@ -99,25 +93,56 @@ public class ReportsServiceImpl implements ReportsService {
     public double calculateIncome(List<Order> orders) {
         double sum = 0;
         for (Order o : orders)
-            sum += o.getProfit();
+            if (o.getProfit() != null)
+                sum += o.getProfit();
         return sum;
     }
 
     @Override
     public double calculateExpenses(long dateFrom, long dateTo) {
         double sum = 0;
-        List<Employee> employees = employeeService.findByDeleted(false);
+        List<Employee> employees = employeeService.findAllEmployeesWithSalariesAndBonuses(false);
 
         for (Employee e : employees) {
-            for (Bonus b : e.getBonuses())
+            Iterator<Bonus> it =  e.getBonuses().stream().sorted(Comparator.comparingLong(Bonus::getDate)).iterator();
+            while (it.hasNext()) {
+                Bonus b = it.next();
                 if (b.getDate() >= dateFrom && b.getDate() <= dateTo)
                     sum += b.getAmount();
+            }
 
-            for (Salary s : e.getSalaries())
-                if (s.getDateFrom() >= dateFrom && s.getDateFrom() <= dateTo)
-                    sum += s.getAmount();
+            LocalDate dateFromLD = Instant.ofEpochMilli(dateFrom).atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate dateToLD = Instant.ofEpochMilli(dateTo).atZone(ZoneId.systemDefault()).toLocalDate();
+            sum += calculateExpensesPerEmployee(dateFromLD, dateToLD, e);
+
         }
 
+        return sum;
+    }
+
+    private double calculateExpensesPerEmployee(LocalDate dateFromLD, LocalDate dateToLD, Employee e) {
+        double sum = 0;
+        // ide od najvecih ka manjim datumima je sortirano
+        List<Salary> l = e.getSalaries().stream().sorted(Comparator.comparingLong(Salary::getDateFrom).reversed()).toList();
+
+        while (!dateFromLD.equals(dateToLD)) {
+            for (Salary s : l) {
+                boolean indicator = false;
+                LocalDate dateOfSalary = Instant.ofEpochMilli(s.getDateFrom()).atZone(ZoneId.systemDefault()).toLocalDate();
+                if (dateOfSalary.equals(dateToLD) || dateOfSalary.isBefore(dateToLD)) {
+                    switch (dateToLD.getMonth().minLength()) {
+                        case 28 -> sum += s.getAmount() / 28;
+                        case 29 -> sum += s.getAmount() / 29;
+                        case 30 -> sum += s.getAmount() / 30;
+                        default -> sum += s.getAmount() / 31;
+                    }
+                    indicator = true;
+                }
+                if (indicator)
+                    break;
+            }
+            dateToLD = dateToLD.minusDays(1);
+        }
         return sum;
     }
     
