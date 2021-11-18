@@ -52,4 +52,14 @@ public class EmployeeServiceImpl implements EmployeeService{
         }
         return employeeRepository.searchEmployeesManager(searchField, userType, pageable);
     }
+
+    @Override
+    public Employee findEmployeeWithBonuses(String email) {
+        return employeeRepository.findEmployeeWithBonuses(email);
+    }
+
+    @Override
+    public Employee findEmployeeWithSalaries(String email) {
+        return employeeRepository.findEmployeeWithSalaries(email);
+    }
 }

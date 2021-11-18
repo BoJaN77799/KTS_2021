@@ -12,6 +12,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,9 +44,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    @Transactional
     public boolean createUpdatePriceOnItem(ItemPriceDTO itemPriceDTO) throws ItemException {
-        Item i = itemRepository.findById(itemPriceDTO.getId()).orElse(null);
+        Item i = itemRepository.findByIdItemWithPrices(itemPriceDTO.getId());
         if (i == null) throw new ItemException("Item does not exist!");
 
         if (itemPriceDTO.getNewPrice() <= 0) throw new ItemException("Price must be above 0");
@@ -69,20 +69,20 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    @Transactional
     public List<ItemPriceDTO> getPricesOfItem(String id) throws ItemException {
-        Item item = itemRepository.findById(Long.valueOf(id)).orElse(null);
+        Item item = itemRepository.findByIdItemWithPrices(Long.valueOf(id));
         if (item == null) throw new ItemException("Item does not exist!");
 
         List<ItemPriceDTO> items = new ArrayList<>();
-        Iterator<Price> it = item.getPrices().iterator();
+        Iterator<Price> it = item.getPrices().stream().sorted(Comparator.comparingLong(Price::getDateFrom)).iterator();
         int i = 0;
         while (it.hasNext()) {
-            items.add(new ItemPriceDTO(it.next()));
+            items.add(new ItemPriceDTO(it.next(), item.getId()));
             if (i != 0)
                 items.get(i - 1).setDateTo(items.get(i).getDateFrom());
             ++i;
         }
         return items;
     }
+
 }

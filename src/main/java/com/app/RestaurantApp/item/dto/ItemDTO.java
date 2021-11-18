@@ -30,6 +30,7 @@ public class ItemDTO {
     }
 
     public ItemDTO(Item i){
+        this.id = i.getId();
         this.name = i.getName();
         this.cost = i.getCost();
         this.description = i.getDescription();

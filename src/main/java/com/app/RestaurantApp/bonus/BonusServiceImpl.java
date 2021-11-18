@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -23,12 +24,11 @@ public class BonusServiceImpl implements BonusService {
 
     @Override
     public List<BonusDTO> getBonusesOfEmployee(String email) throws UserException {
-        Employee e = employeeService.findByEmail(email);
+        Employee e = employeeService.findEmployeeWithBonuses(email);
         if (e == null) throw new UserException("Invalid employee, email not found!");
 
         List<BonusDTO> bonuses = new ArrayList<>();
-        for (Bonus b : e.getBonuses())
-            bonuses.add(new BonusDTO(b));
+        e.getBonuses().stream().sorted(Comparator.comparingLong(Bonus::getDate)).forEach(item -> bonuses.add(new BonusDTO(item)));
         return bonuses;
     }
 

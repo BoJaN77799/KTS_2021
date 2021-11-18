@@ -18,7 +18,8 @@ public class ItemPriceDTO {
 
     }
 
-    public ItemPriceDTO(Price p) {
+    public ItemPriceDTO(Price p, long idItem) {
+        this.id = idItem;
         this.newPrice = p.getAmount();
         LocalDate dateFrom =
                 Instant.ofEpochMilli(p.getDateFrom()).atZone(ZoneId.systemDefault()).toLocalDate();

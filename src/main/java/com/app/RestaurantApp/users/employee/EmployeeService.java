@@ -17,5 +17,10 @@ public interface EmployeeService {
     List<Employee> findByDeleted(boolean deleted);
 
     List<Employee> searchEmployeesManager(String searchField, String userType, Pageable pageable);
+
+    Employee findEmployeeWithBonuses(String email);
+
+    Employee findEmployeeWithSalaries(String email);
+
 }
 

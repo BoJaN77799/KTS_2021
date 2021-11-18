@@ -36,21 +36,18 @@ public class MenuServiceImpl implements MenuService{
     }
 
     @Override
-    @Transactional
     public List<ItemDTO> getItemsOfMenu(String name) throws MenuException {
-        Menu m = menuRepository.findByName(name);
+        Menu m = menuRepository.findByNameWithItems(name);
         if (m == null) throw new MenuException("Menu does not exist!");
 
         List<ItemDTO> items = new ArrayList<>();
-        for (Item i : m.getItems())
-            items.add(new ItemDTO(i));
+        m.getItems().forEach(item -> items.add(new ItemDTO(item)));
         return items;
     }
 
     @Override
-    @Transactional
     public void removeItemFromMenu(MenuItemDTO mi) throws MenuException, ItemException {
-        Menu m = menuRepository.findByName(mi.getMenuName());
+        Menu m = menuRepository.findByNameWithItems(mi.getMenuName());
         if (m == null) throw new MenuException("Menu does not exist!");
 
         Item i = itemService.findItemById(Long.valueOf(mi.getItemId()));
@@ -61,9 +58,8 @@ public class MenuServiceImpl implements MenuService{
     }
 
     @Override
-    @Transactional
     public void addItemToMenu(MenuItemDTO mi) throws MenuException, ItemException {
-        Menu m = menuRepository.findByName(mi.getMenuName());
+        Menu m = menuRepository.findByNameWithItems(mi.getMenuName());
         if (m == null) throw new MenuException("Menu does not exist!");
 
         Item i = itemService.findItemById(Long.valueOf(mi.getItemId()));

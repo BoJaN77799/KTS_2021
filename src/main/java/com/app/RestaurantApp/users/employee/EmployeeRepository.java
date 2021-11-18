@@ -1,6 +1,5 @@
 package com.app.RestaurantApp.users.employee;
 
-import com.app.RestaurantApp.users.appUser.AppUser;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +22,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             "AND (:userType = '' or u.userType = :userType) ")
     List<Employee> searchEmployeesManager(@Param("search") String searchField, @Param("userType") String userType, Pageable pageable);
 
+    @Query("select e from Employee e left join fetch e.bonuses where e.email = ?1")
+    Employee findEmployeeWithBonuses(String email);
+
+    @Query("select e from Employee e left join fetch e.salaries where e.email = ?1")
+    Employee findEmployeeWithSalaries(String email);
 }

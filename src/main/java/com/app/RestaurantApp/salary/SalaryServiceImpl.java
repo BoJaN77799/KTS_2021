@@ -7,9 +7,11 @@ import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,11 +26,11 @@ public class SalaryServiceImpl implements SalaryService {
 
     @Override
     public List<SalaryDTO> getSalariesOfEmployee(String email) throws UserException {
-        Employee e = employeeService.findByEmail(email);
+        Employee e = employeeService.findEmployeeWithSalaries(email);
         if (e == null) throw new UserException("Invalid employee, email not found!");
 
         List<SalaryDTO> salaries = new ArrayList<>();
-        Iterator<Salary> it = e.getSalaries().iterator();
+        Iterator<Salary> it = e.getSalaries().stream().sorted(Comparator.comparingLong(Salary::getDateFrom)).iterator();
         int i = 0;
         while (it.hasNext()) {
             salaries.add(new SalaryDTO(it.next()));
