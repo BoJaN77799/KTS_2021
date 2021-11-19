@@ -11,6 +11,8 @@ import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.apache.catalina.User;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
@@ -25,7 +27,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class AppUserServiceImpl implements AppUserService{
+public class AppUserServiceImpl implements AppUserService {
 
     @Autowired
     private AppUserRepository appUserRepository;
@@ -145,5 +147,15 @@ public class AppUserServiceImpl implements AppUserService{
 
         appUser.setPassword(newPassword);
         appUserRepository.save(appUser);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        AppUser user = appUserRepository.findByEmail(email).orElse(null);
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format("No user found with email '%s'.", email));
+        } else {
+            return user;
+        }
     }
 }

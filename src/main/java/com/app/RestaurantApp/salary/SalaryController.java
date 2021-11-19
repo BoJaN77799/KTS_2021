@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,11 +19,13 @@ public class SalaryController {
     private SalaryService salaryService;
 
     @GetMapping(value = "/getSalariesOfEmployee/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('MANAGER')")
     public List<SalaryDTO> getSalariesOfEmployee(@PathVariable String email) throws UserException {
         return salaryService.getSalariesOfEmployee(email);
     }
 
     @PostMapping(value = "/createSalary")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<SalaryDTO> createSalary(@RequestBody SalaryDTO salaryDTO) throws SalaryException, UserException {
         return new ResponseEntity<>(salaryService.createSalary(salaryDTO), HttpStatus.OK);
     }

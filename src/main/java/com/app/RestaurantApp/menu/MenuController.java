@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class MenuController {
     private MenuService menuService;
 
     @PostMapping(value = "/createUpdateMenu")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<String> createUpdateMenu(@RequestBody String name) throws MenuException {
         if (menuService.createUpdateMenu(name))
             return new ResponseEntity<>("Menu created successfully", HttpStatus.OK);
@@ -27,17 +29,20 @@ public class MenuController {
     }
 
     @GetMapping(value = "/getItemsOfMenu/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('MANAGER')")
     public List<ItemDTO> getItemsOfMenu(@PathVariable String name) throws MenuException {
         return menuService.getItemsOfMenu(name);
     }
 
     @PostMapping(value = "/removeItemFromMenu")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<String> removeItemFromMenu(@RequestBody MenuItemDTO mi) throws MenuException, ItemException {
         menuService.removeItemFromMenu(mi);
         return new ResponseEntity<>("Item is succesfully removed from menu!", HttpStatus.OK);
     }
 
     @PostMapping(value = "/addItemToMenu")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<String> addItemToMenu(@RequestBody MenuItemDTO mi) throws MenuException, ItemException {
         menuService.addItemToMenu(mi);
         return new ResponseEntity<>("Item is succesfully added to menu!", HttpStatus.OK);

@@ -6,6 +6,7 @@ import com.app.RestaurantApp.users.dto.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +26,8 @@ public class EmployeeController {
         return employeeService.findAll();
     }
 
-    @GetMapping(value = "/seach_employees", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/search_employees", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('MANAGER')")
     public List<EmployeeDTO> searchEmployeesManager(
             @RequestParam(value = "searchField", required = false) String searchField,
             @RequestParam(value = "userType", required = false) String userType,

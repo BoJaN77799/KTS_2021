@@ -4,6 +4,7 @@ import com.app.RestaurantApp.orderItem.dto.OrderItemChangeStatusDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +16,7 @@ public class OrderItemController {
 
 
     @PutMapping(value = "/changeStatus", consumes = "application/json")
+    @PreAuthorize("hasAnyRole('WAITER', 'COOK', 'BARMAN')")
     public ResponseEntity<String> changeStatus(@RequestBody OrderItemChangeStatusDTO orderItemDTO){
         try {
             orderItemService.changeStatus(orderItemDTO);

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class FoodController {
     }
 
     @PostMapping(consumes = "application/json")
+    @PreAuthorize("hasRole('HEAD_COOK')")
     public ResponseEntity<String> saveFood(@RequestBody FoodDTO foodDTO) {
         foodDTO.setDeleted(false);
         try {
@@ -49,6 +51,7 @@ public class FoodController {
     }
 
     @PutMapping(consumes = "application/json")
+    @PreAuthorize("hasRole('HEAD_COOK')")
     public ResponseEntity<String> updateFood(@RequestBody FoodDTO foodDTO) {
         try {
             Food food = foodService.findOne(foodDTO.getId());

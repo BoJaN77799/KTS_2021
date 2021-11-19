@@ -9,6 +9,7 @@ import com.app.RestaurantApp.drinks.dto.DrinkDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class DrinkController {
     }
 
     @PostMapping(consumes = "application/json")
+    @PreAuthorize("hasRole('BARMAN')")
     public ResponseEntity<String> saveDrink(@RequestBody DrinkDTO drinkDTO) {
         drinkDTO.setDeleted(false);
         try {
@@ -48,6 +50,7 @@ public class DrinkController {
     }
 
     @PutMapping(consumes = "application/json")
+    @PreAuthorize("hasRole('BARMAN')")
     public ResponseEntity<String> updateDrink(@RequestBody DrinkDTO drinkDTO) {
 
         try {

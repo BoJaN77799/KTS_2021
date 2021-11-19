@@ -1,7 +1,8 @@
 package com.app.RestaurantApp.users.appUser;
 
 import com.app.RestaurantApp.enums.UserType;
-import com.app.RestaurantApp.users.FileUploadUtil;
+import com.app.RestaurantApp.security.TokenUtils;
+import com.app.RestaurantApp.security.auth.JwtAuthenticationRequest;
 import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.dto.*;
 import com.app.RestaurantApp.users.employee.Employee;
@@ -11,19 +12,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Objects;
-
-import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("api/users")
 public class AppUserController {
+
+    @Autowired
+    private TokenUtils tokenUtils;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private AppUserService appUserService;
@@ -114,6 +120,25 @@ public class AppUserController {
         }catch (Exception e) {
             return new ResponseEntity<>("Unknown error happened while deleting user!", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
+                                                                    HttpServletResponse response) {
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
+                        authenticationRequest.getPassword()));
+
+        // Ubaci korisnika u trenutni security kontekst
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Kreiraj token za tog korisnika
+        AppUser user = (AppUser) authentication.getPrincipal();
+        String jwt = tokenUtils.generateToken(user.getEmail());
+        int expiresIn = tokenUtils.getExpiredIn();
+
+        // Vrati token kao odgovor na uspesnu autentifikaciju
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
     }
 
 }

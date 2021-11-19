@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/forCook/{id}")
+    @PreAuthorize("hasRole('COOK')")
     public ResponseEntity<OrderDTO> findOneWithFood(@PathVariable Long id) {
         Order order = orderService.findOneWithFood(id);
 
@@ -40,6 +42,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/forCook/all")
+    @PreAuthorize("hasRole('COOK')")
     public List<OrderDTO> findAllNewWithFood() {
         List<Order> orders = orderService.findAllNewWithFood();
 
@@ -49,6 +52,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/forCook/all/{id}")
+    @PreAuthorize("hasRole('COOK')")
     public List<OrderDTO> findAllMyWithFood(@PathVariable Long id) {
         List<Order> orders = orderService.findAllMyWithFood(id);
 
@@ -58,6 +62,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/forBarman/{id}")
+    @PreAuthorize("hasRole('BARMAN')")
     public ResponseEntity<OrderDTO> findOneWithDrinks(@PathVariable Long id) {
         Order order = orderService.findOneWithDrinks(id);
 
@@ -67,6 +72,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/forBarman/all")
+    @PreAuthorize("hasRole('BARMAN')")
     public List<OrderDTO> findAllNewWithDrinks() {
         List<Order> orders = orderService.findAllNewWithDrinks();
 
@@ -76,6 +82,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/forBarman/all/{id}")
+    @PreAuthorize("hasRole('BARMAN')")
     public List<OrderDTO> findAllMyWithDrinks(@PathVariable Long id) {
         List<Order> orders = orderService.findAllMyWithDrinks(id);
 
@@ -85,6 +92,7 @@ public class OrderController {
     }
 
     @PostMapping(consumes = "application/json")
+    @PreAuthorize("hasRole('WAITER')")
     public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDTO){
         try {
             orderService.createOrder(orderDTO);
@@ -99,6 +107,7 @@ public class OrderController {
     }
 
     @PostMapping(value="accept/{id}/by/{email}")
+    @PreAuthorize("hasAnyRole('COOK', 'BARMAN')")
     public ResponseEntity<String> acceptOrder(@PathVariable Long id, @PathVariable String email){
         try {
             orderService.acceptOrder(id, email);
@@ -109,6 +118,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/forUpdate/{id}")
+    @PreAuthorize("hasRole('WAITER')")
     public ResponseEntity<OrderDTO> findOneWithOrderItemsForUpdate(@PathVariable Long id) {
         Order order = orderService.findOneWithOrderItemsForUpdate(id);
 
@@ -118,6 +128,7 @@ public class OrderController {
     }
 
     @PutMapping(consumes = "application/json")
+    @PreAuthorize("hasRole('WAITER')")
     public ResponseEntity<String> updateOrder(@RequestBody OrderDTO orderDTO){
         try {
             orderService.updateOrder(orderDTO);
@@ -132,6 +143,7 @@ public class OrderController {
     }
 
     @PutMapping(value = "/finish/{id}")
+    @PreAuthorize("hasRole('WAITER')")
     public ResponseEntity<String> finishOrder(@PathVariable Long id){
         Order order = orderService.finishOrder(id);
 

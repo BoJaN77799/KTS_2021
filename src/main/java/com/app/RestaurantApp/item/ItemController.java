@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class ItemController {
     private ItemService itemService;
 
     @GetMapping(value = "/getItem/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<ItemDTO> getItemById(@PathVariable String id){
         Item i = itemService.findItemById(Long.valueOf(id));
         if (i == null)
@@ -27,6 +29,7 @@ public class ItemController {
     }
 
     @PostMapping(value = "/createUpdatePriceOnItem")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<String> createUpdatePriceOnItem(@RequestBody ItemPriceDTO itemPriceDTO) throws ItemException {
         if (itemService.createUpdatePriceOnItem(itemPriceDTO))
             return new ResponseEntity<>("Price successfully created!", HttpStatus.OK);
@@ -35,6 +38,7 @@ public class ItemController {
     }
 
     @GetMapping(value = "/getPricesOfItem/{id}")
+    @PreAuthorize("hasRole('MANAGER')")
     public List<ItemPriceDTO> getPricesOfItem(@PathVariable String id) throws ItemException {
         return itemService.getPricesOfItem(id);
     }
