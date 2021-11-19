@@ -1,6 +1,8 @@
 package com.app.RestaurantApp.users.appUser;
 
 import com.app.RestaurantApp.enums.UserType;
+import com.app.RestaurantApp.mail.EmailContent;
+import com.app.RestaurantApp.mail.EmailService;
 import com.app.RestaurantApp.security.TokenUtils;
 import com.app.RestaurantApp.security.auth.JwtAuthenticationRequest;
 import com.app.RestaurantApp.users.UserException;
@@ -33,6 +35,9 @@ public class AppUserController {
 
     @Autowired
     private AppUserService appUserService;
+
+    @Autowired
+    private EmailService emailService;
       
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<AppUserAdminUserListDTO> findAllAdmin(@PathVariable(value = "id") Long id) {
@@ -136,6 +141,10 @@ public class AppUserController {
         AppUser user = (AppUser) authentication.getPrincipal();
         String jwt = tokenUtils.generateToken(user.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
+
+        EmailContent email = new EmailContent("Login success", "Dear friend, You successfully logged in, bye bye!");
+        email.addRecipient(user.getEmail());
+        emailService.sendEmail(email);
 
         // Vrati token kao odgovor na uspesnu autentifikaciju
         return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
