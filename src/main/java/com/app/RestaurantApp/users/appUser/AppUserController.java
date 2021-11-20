@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.users.appUser;
 
 import com.app.RestaurantApp.enums.UserType;
+import com.app.RestaurantApp.mail.MailService;
 import com.app.RestaurantApp.security.TokenUtils;
 import com.app.RestaurantApp.security.auth.JwtAuthenticationRequest;
 import com.app.RestaurantApp.users.UserException;
@@ -18,7 +19,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -33,7 +36,10 @@ public class AppUserController {
 
     @Autowired
     private AppUserService appUserService;
-      
+
+    @Autowired
+    private MailService mailService;
+
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<AppUserAdminUserListDTO> findAllAdmin(@PathVariable(value = "id") Long id) {
         List<AppUser> users = appUserService.getAllUsersButAdmin(id);
@@ -124,7 +130,7 @@ public class AppUserController {
 
     @PostMapping("/login")
     public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
-                                                                    HttpServletResponse response) {
+                                                                    HttpServletResponse response) throws IOException, MessagingException {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
                         authenticationRequest.getPassword()));
@@ -136,6 +142,8 @@ public class AppUserController {
         AppUser user = (AppUser) authentication.getPrincipal();
         String jwt = tokenUtils.generateToken(user.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
+
+        mailService.sendmail("Login", "Login success.", user.getEmail());
 
         // Vrati token kao odgovor na uspesnu autentifikaciju
         return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));

@@ -6,22 +6,22 @@ INSERT INTO AUTHORITY (name) VALUES ('ROLE_COOK');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_BARMAN');
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('U','$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic', 'admin@gmail.com', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej', false);
+values ('U','$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic', 'admin@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej', false);
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('U', '$2a$10$ZqRoZridlWZYrJhPbIek3.xOtlG4M8cZ3aWWpBPW2IU7yreEZd8jq', 'Petar', 'Markovic', 'manager@gmail.com', 'MALE', '0642312341', 'False', 'False', 'MANAGER', null, 'Luzicka 32, Trebinje', false);
+values ('U', '$2a$10$ZqRoZridlWZYrJhPbIek3.xOtlG4M8cZ3aWWpBPW2IU7yreEZd8jq', 'Petar', 'Markovic', 'manager@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'MANAGER', null, 'Luzicka 32, Trebinje', false);
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('E', '$2a$10$hB5YCgeGsfGSwJZLmG3tXeTn.CrfkyksuzfcNTKgIgoL0CjBwkIcq', 'Milorad', 'Dodik', 'waiter@gmail.com', 'MALE', '0642312341', 'False', 'False', 'WAITER', 40000.0, 'Luzicka 32, Zajecar', false);
+values ('E', '$2a$10$hB5YCgeGsfGSwJZLmG3tXeTn.CrfkyksuzfcNTKgIgoL0CjBwkIcq', 'Milorad', 'Dodik', 'waiter@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'WAITER', 40000.0, 'Luzicka 32, Zajecar', false);
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Igor', 'Dodik', 'headcook@gmail.com', 'MALE', '0642312341', 'False', 'False', 'COOK', 40000.0, 'Luzicka 32, Gradiska', false);
+values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Igor', 'Dodik', 'headcook@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'COOK', 40000.0, 'Luzicka 32, Gradiska', false);
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Milan', 'Dodik', 'cook@gmail.com', 'MALE', '0642312341', 'False', 'False', 'COOK', 40000.0, 'Luzicka 32, Gradiska', false);
+values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Milan', 'Dodik', 'cook@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'COOK', 40000.0, 'Luzicka 32, Gradiska', false);
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('E', '$2a$10$II8odOsKhUp4LS/cID0DFuuBFWWAcXAgdxYXtlstns6z5dxPjSRw2', 'Brat', 'Dodik', 'barman@gmail.com', 'MALE', '0642312341', 'False', 'False', 'BARMAN', 40000.0, 'Luzicka 32, Becej', false);
+values ('E', '$2a$10$II8odOsKhUp4LS/cID0DFuuBFWWAcXAgdxYXtlstns6z5dxPjSRw2', 'Brat', 'Dodik', 'barman@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'BARMAN', 40000.0, 'Luzicka 32, Becej', false);
 
 
 INSERT INTO USER_AUTHORITY (app_user_id, authority_id) VALUES (1, 1); -- admin
