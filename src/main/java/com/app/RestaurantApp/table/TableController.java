@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,12 +26,14 @@ public class TableController {
     private TableService tableService;
 
     @GetMapping(value = "/{floor}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public List<TableAdminDTO> getAllTablesFromFloorAdmin(@PathVariable(value = "floor") int floor) {
         List<Table> tables = tableService.getTablesFromFloor(floor);
         return tables.stream().map(TableAdminDTO::new).toList();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> createTable(@RequestBody TableCreateDTO tableCreateDTO){
         Table table = tableCreateDTO.convertToTable();
         try{
@@ -44,6 +47,7 @@ public class TableController {
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> updateTable(@RequestBody TableUpdateDTO tableAdminDTO) {
         try{
             tableService.updateTable(tableAdminDTO);
@@ -56,6 +60,7 @@ public class TableController {
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteTable(@PathVariable(value = "id") Long id){
         try{
             tableService.deleteTable(id);
@@ -68,6 +73,7 @@ public class TableController {
     }
 
     @GetMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('WAITER')")
     public List<TableWaiterDTO> getTablesFromFloor(@RequestParam(value = "floor") int floor){
         return tableService.getTablesWithActiveOrderIfItExists(floor);
     }
