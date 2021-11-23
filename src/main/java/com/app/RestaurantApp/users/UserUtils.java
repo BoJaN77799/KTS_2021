@@ -9,6 +9,7 @@ import java.util.Set;
 public class UserUtils {
 
     public static void CheckUserInfo(AppUser user) throws UserException {
+        //todo zastita da mail bude validan, makar basic
         if (user == null) {
             throw new UserException("Invalid user sent from front!");
         }else if (user.getFirstName() == null || user.getLastName() == null || user.getEmail() == null

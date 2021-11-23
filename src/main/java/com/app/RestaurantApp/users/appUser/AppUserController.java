@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,12 +42,15 @@ public class AppUserController {
     private MailService mailService;
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public List<AppUserAdminUserListDTO> findAllAdmin(@PathVariable(value = "id") Long id) {
+        //todo dodati pageable ovde
         List<AppUser> users = appUserService.getAllUsersButAdmin(id);
         return users.stream().map(AppUserAdminUserListDTO::new).toList();
     }
 
     @GetMapping(value = "/get_user_info/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserInfoDTO> getUserInfoAdmin(@PathVariable(value = "id") Long id) {
         AppUser user = appUserService.getUser(id);
         if (user == null)
@@ -84,6 +88,7 @@ public class AppUserController {
     }
 
     @GetMapping(value = "/admin_search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public List<AppUserAdminUserListDTO> searchUsersAdmin(@RequestParam(value = "searchField", required = false) String searchField,
                                                           @RequestParam(value = "userType", required = false) String userType,
                                                           Pageable pageable) {
@@ -92,6 +97,7 @@ public class AppUserController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> createUser(@ModelAttribute CreateUserDTO createUserDTO){
         try{
             appUserService.createUser(createUserDTO);
@@ -117,6 +123,7 @@ public class AppUserController {
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteUser(@PathVariable(value = "id") Long id){
         try{
             appUserService.deleteUser(id);

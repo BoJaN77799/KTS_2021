@@ -10,7 +10,7 @@ public interface EmployeeService {
 
     Employee findByEmail(String email);
   
-    void createEmployee(Employee employee);
+    Employee saveEmployee(Employee employee);
 
     Employee findById(Long id);
 

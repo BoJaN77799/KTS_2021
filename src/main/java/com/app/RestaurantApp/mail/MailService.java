@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.mail;
 
+import com.app.RestaurantApp.users.appUser.AppUser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +48,12 @@ public class MailService {
         msg.setText(text);
 
         Transport.send(msg);
+    }
+
+    public static String createMessageForUserCreation(AppUser appUser, String unhashedPassword){
+        return "Dear " + appUser.getFirstName() + " " + appUser.getLastName() +
+                ",\nYou are now working for us, congratulations.\nYou will be the best " +
+                appUser.getUserType().toString() + " this restaurant ever had.\nYour password is: " +
+                unhashedPassword + "\n\nWelcome to the family,\n\nBest regards, restaurant ASDF";
     }
 }
