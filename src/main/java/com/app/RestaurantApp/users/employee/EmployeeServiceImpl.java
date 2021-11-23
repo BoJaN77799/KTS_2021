@@ -24,10 +24,10 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public void createEmployee(Employee employee) {
+    public Employee saveEmployee(Employee employee) {
         // ovde nema provera, jer se provera radi u prethodnoj pozivajucoj fji
         // (createUser iz appUserService)
-        employeeRepository.save(employee);
+        return employeeRepository.save(employee);
     }
 
     @Override

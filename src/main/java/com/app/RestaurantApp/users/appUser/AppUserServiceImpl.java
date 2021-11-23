@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.users.appUser;
 
 import com.app.RestaurantApp.enums.UserType;
+import com.app.RestaurantApp.mail.MailService;
 import com.app.RestaurantApp.users.FileUploadUtil;
 import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.UserUtils;
@@ -13,11 +14,13 @@ import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
+import javax.mail.MessagingException;
 import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.time.Instant;
@@ -34,6 +37,12 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private MailService mailService;
 
     @Override
     public AppUser findByEmail(String email) {
@@ -71,29 +80,39 @@ public class AppUserServiceImpl implements AppUserService {
 
         String pw = UserUtils.generatePassword(10);
 
-        user.setPassword(pw);
+        user.setPassword(passwordEncoder.encode(pw));
         user.setEmailVerified(false);
         user.setPasswordChanged(false);
 
+        AppUser appUser;
+        if (user.getUserType() == UserType.BARMAN || user.getUserType() == UserType.COOK ||
+                user.getUserType() == UserType.WAITER || user.getUserType() == UserType.HEAD_COOK)
+        {
+            appUser = employeeService.saveEmployee(new Employee(user));
+        }else{
+            appUser =  appUserRepository.save(user);
+        }
+
         try {
             String fileName = StringUtils.cleanPath(Objects.requireNonNull(userDTO.getImage().getOriginalFilename()));
-            fileName = Instant.now().getEpochSecond() + "_" + fileName;
-            String uploadDir = "user_profile_photos/" + user.getFirstName();
-            //todo ovo srediti da bude id ili nesto drugo
+            String uploadDir = "user_profile_photos/" + appUser.getId();
+
             String path = FileUploadUtil.saveFile(uploadDir, fileName, userDTO.getImage());
 
-            user.setProfilePhoto(uploadDir + "/" + fileName);
+            appUser.setProfilePhoto(uploadDir + "/" + fileName);
+
+            appUserRepository.save(appUser);
         }catch (NullPointerException | IOException e){
             System.out.println(e.getMessage());
             user.setProfilePhoto(null);
         }
 
-        if (user.getUserType() == UserType.BARMAN || user.getUserType() == UserType.COOK ||
-                user.getUserType() == UserType.WAITER || user.getUserType() == UserType.HEAD_COOK)
-        {
-            employeeService.createEmployee(new Employee(user));
-        }else{
-            appUserRepository.save(user);
+        try {
+            mailService.sendmail("Account creation", MailService.createMessageForUserCreation(user, pw), user.getEmail());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -139,13 +158,13 @@ public class AppUserServiceImpl implements AppUserService {
         Optional<AppUser> user = appUserRepository.findByIdAndDeleted(id, false);
         if (user.isEmpty()) throw new UserException("Error, user with id not found!");
         if (oldPassword == null || newPassword == null) throw new UserException("Password cannot be null!");
-
-        AppUser appUser = user.get();
-        if (!appUser.getPassword().equals(oldPassword)) throw new UserException("Error, old password not correct!");
-
         if (newPassword.length() < 8) throw new UserException("Error, new password too short!");
 
-        appUser.setPassword(newPassword);
+        String newPasswordHash = passwordEncoder.encode(newPassword);
+        AppUser appUser = user.get();
+        if (!passwordEncoder.matches(oldPassword, appUser.getPassword())) throw new UserException("Error, old password not correct!");
+
+        appUser.setPassword(newPasswordHash);
         appUserRepository.save(appUser);
     }
 
