@@ -8,11 +8,11 @@ public class OrderItemOrderCreationDTO {
     private Long itemId;
     private Integer quantity;
     private Double price;
-    private Boolean priority;
+    private Integer priority;
 
     public OrderItemOrderCreationDTO() { }
 
-    public OrderItemOrderCreationDTO(Long id, Long itemId, Integer quantity, Double price, Boolean priority) {
+    public OrderItemOrderCreationDTO(Long id, Long itemId, Integer quantity, Double price, Integer priority) {
         this.id = id;
         this.itemId = itemId;
         this.quantity = quantity;
@@ -21,7 +21,7 @@ public class OrderItemOrderCreationDTO {
     }
 
     public OrderItemOrderCreationDTO(OrderItem orderItem){
-        this(orderItem.getId(), orderItem.getItem().getId(), orderItem.getQuantity(),  orderItem.getPrice(), orderItem.isPriority());
+        this(orderItem.getId(), orderItem.getItem().getId(), orderItem.getQuantity(),  orderItem.getPrice(), orderItem.getPriority());
     }
 
     public Long getId() {
@@ -56,11 +56,11 @@ public class OrderItemOrderCreationDTO {
         this.price = price;
     }
 
-    public Boolean getPriority() {
+    public Integer getPriority() {
         return priority;
     }
 
-    public void setPriority(Boolean priority) {
+    public void setPriority(Integer priority) {
         this.priority = priority;
     }
 }

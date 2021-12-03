@@ -24,7 +24,7 @@ public class OrderNotificationServiceImpl implements OrderNotificationService {
     EmployeeService employeeService;
 
     @Override
-    public void notifyNewOrder(Order order) {
+    public List<OrderNotification> notifyNewOrder(Order order) {
         List<Employee> employees = employeeService.findAll();
         List<OrderNotification> orderNotifications = new ArrayList<>();
 
@@ -43,7 +43,7 @@ public class OrderNotificationServiceImpl implements OrderNotificationService {
             }
         }
 
-        orderNotificationRepository.saveAll(orderNotifications);
+        return orderNotifications;
     }
 
     private boolean orderHasFood(Order order){
@@ -65,27 +65,27 @@ public class OrderNotificationServiceImpl implements OrderNotificationService {
     }
 
     @Override
-    public void notifyOrderItemChange(Order order, OrderItem oldOrderItem, int newQuantity, boolean newPriority) {
+    public OrderNotification notifyOrderItemChange(Order order, OrderItem oldOrderItem, int newQuantity, int newPriority) {
         boolean quantityChanged;
         boolean priorityChanged;
 
         quantityChanged = oldOrderItem.getQuantity() != newQuantity;
-        priorityChanged = oldOrderItem.isPriority() != newPriority;
+        priorityChanged = oldOrderItem.getPriority() != newPriority;
 
-        if(!priorityChanged && !quantityChanged) return; // Ako nije promenjen ni prioritet ni kvantitet vrati se
+        if(!priorityChanged && !quantityChanged) return null; // Ako nije promenjen ni prioritet ni kvantitet vrati se
 
         Employee employeeToNotify = getRightEmployee(order, oldOrderItem);
-        if(employeeToNotify == null) return;             // Ako je radnik null vrati se
+        if(employeeToNotify == null) return null;             // Ako je radnik null vrati se
 
         OrderNotification orderNotification = createBlankOrderNotification(order);
         orderNotification.setEmployee(employeeToNotify);
         orderNotification.setMessage(generateMsg(order, oldOrderItem, quantityChanged, priorityChanged, newQuantity, newPriority));
 
-        orderNotificationRepository.save(orderNotification);
+        return orderNotification;
     }
 
     private String generateMsg(Order order, OrderItem orderItem, boolean quantityChanged, boolean priorityChanged,
-                               int newQuantity, boolean newPriority){
+                               int newQuantity, int newPriority){
 
         StringBuilder msg = new StringBuilder();
 
@@ -94,16 +94,15 @@ public class OrderNotificationServiceImpl implements OrderNotificationService {
 
         if(quantityChanged)
             msg.append("\n-Quantity changed from " + orderItem.getQuantity() + " to " + newQuantity + ".");
-        if(priorityChanged && newPriority)
-            msg.append("\n-Priority changed to HIGH.");
-        if(priorityChanged && !newPriority)
-            msg.append("\n-Priority changed to LOW.");
+        if(priorityChanged)
+            msg.append("\n-Priority changed from " + ((orderItem.getPriority() == -1) ? "default" : orderItem.getPriority()) +
+                    " to " + ((newPriority == -1) ? "default" : newPriority) + ".");
 
         return msg.toString();
     }
 
     @Override
-    public void notifyOrderItemAdded(Order order, Set<OrderItem> orderItems) {
+    public List<OrderNotification> notifyOrderItemAdded(Order order, Set<OrderItem> orderItems) {
         List<OrderNotification> orderNotifications = new ArrayList<>();
         for(OrderItem orderItem : orderItems){
             Employee employeeToNotify = getRightEmployee(order, orderItem);
@@ -117,14 +116,15 @@ public class OrderNotificationServiceImpl implements OrderNotificationService {
 
             orderNotifications.add(orderNotification);
         }
-        if(orderNotifications.size() > 0)
-            orderNotificationRepository.saveAll(orderNotifications);
+
+        return orderNotifications;
+
     }
 
     @Override
-    public void notifyOrderItemDeleted(Order order, OrderItem orderItem) {
+    public OrderNotification notifyOrderItemDeleted(Order order, OrderItem orderItem) {
         Employee employeeToNotify = getRightEmployee(order, orderItem);
-        if(employeeToNotify == null) return; // Ako je radnik null vrati se
+        if(employeeToNotify == null) return null; // Ako je radnik null vrati se
 
         OrderNotification orderNotification = createBlankOrderNotification(order);
         orderNotification.setEmployee(employeeToNotify);
@@ -132,7 +132,7 @@ public class OrderNotificationServiceImpl implements OrderNotificationService {
                 ", on table number " + order.getTable().getId();
         orderNotification.setMessage(msg);
 
-        orderNotificationRepository.save(orderNotification);
+        return orderNotification;
     }
 
     private OrderNotification createBlankOrderNotification(Order order){
@@ -175,6 +175,11 @@ public class OrderNotificationServiceImpl implements OrderNotificationService {
         orderNotification.setMessage(msg);
 
         orderNotificationRepository.save(orderNotification);
+    }
+
+    @Override
+    public void saveAll(List<OrderNotification> orderNotifications) {
+        orderNotificationRepository.saveAll(orderNotifications);
     }
 
 

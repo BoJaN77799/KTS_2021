@@ -1,10 +1,13 @@
 package com.app.RestaurantApp.order;
 
+import com.app.RestaurantApp.enums.FoodType;
 import com.app.RestaurantApp.enums.OrderItemStatus;
 import com.app.RestaurantApp.enums.OrderStatus;
 import com.app.RestaurantApp.enums.UserType;
+import com.app.RestaurantApp.food.Food;
 import com.app.RestaurantApp.item.Item;
 import com.app.RestaurantApp.item.ItemService;
+import com.app.RestaurantApp.notifications.OrderNotification;
 import com.app.RestaurantApp.notifications.OrderNotificationService;
 import com.app.RestaurantApp.order.dto.OrderDTO;
 import com.app.RestaurantApp.orderItem.OrderItem;
@@ -52,7 +55,9 @@ public class OrderServiceImpl implements OrderService{
         Order order = new Order();
 
         order.setOrderItems(createNewOrderItems(order, orderItemOrderCreationDTOS));
-        OrderUtils.checkOrderItemsQuantityForCreation(order);
+        OrderUtils.checkOrderItemsQuantity(order);
+        OrderUtils.checkOrderItemsPriority(order);
+
         order.setWaiter(employeeService.findById(orderDTO.getWaiterId()));
         order.setCreatedAt(Instant.now().toEpochMilli());
         order.setStatus(OrderStatus.NEW);
@@ -62,7 +67,8 @@ public class OrderServiceImpl implements OrderService{
         OrderUtils.checkBasicOrderInfo(order);
 
         orderRepository.save(order);
-        orderNotificationService.notifyNewOrder(order);
+        List<OrderNotification> orderNotifications = orderNotificationService.notifyNewOrder(order);
+        orderNotificationService.saveAll(orderNotifications);
 
         return order;
     }
@@ -138,13 +144,15 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public Order updateOrder(OrderDTO orderDTO) throws OrderException {
         Order order = orderRepository.findOneWithOrderItemsForUpdate(orderDTO.getId());
-        if(order == null) return order;
+        if(order == null) throw new OrderException("Invalid order id sent from front!");
         List<OrderItemOrderCreationDTO> orderItemsDTO = orderDTO.getOrderItems();
 
         OrderUtils.checkNoteLength(orderDTO.getNote());
         order.setNote(orderDTO.getNote());
 
         List<OrderItem> orderItemsToDelete = new ArrayList<>();
+        List<OrderNotification> notificationsToSend = new ArrayList<>(); // Lista koja cuva
+
         // Izmena postojecih orderItem-a
         for (Iterator<OrderItemOrderCreationDTO> it = orderItemsDTO.iterator(); it.hasNext();){
             OrderItemOrderCreationDTO orderItemDTO = it.next();
@@ -155,16 +163,24 @@ public class OrderServiceImpl implements OrderService{
                     throw new OrderException("Order item with id: " + orderItemDTO.getId() + " does not exist in order or cannot be changed!");
 
                 if(orderItemDTO.getQuantity() <= 0){ // Ako je quantity na 0 obrisi ga
-                    orderNotificationService.notifyOrderItemDeleted(order, orderItemForUpdate);
+                    OrderNotification on = orderNotificationService.notifyOrderItemDeleted(order, orderItemForUpdate);
+                    if(on != null) notificationsToSend.add(on);
+
                     order.getOrderItems().remove(orderItemForUpdate);
                     orderItemsToDelete.add(orderItemForUpdate);
                     it.remove();
                     continue;
                 }
 
-                orderNotificationService.notifyOrderItemChange(order, orderItemForUpdate, orderItemDTO.getQuantity(), orderItemDTO.getPriority());
-                orderItemForUpdate.setQuantity(orderItemDTO.getQuantity());
-                orderItemForUpdate.setPriority(orderItemDTO.getPriority());
+                boolean quantityChanged = orderItemForUpdate.getQuantity() != orderItemDTO.getQuantity();
+                boolean priorityChanged = orderItemForUpdate.getPriority() != orderItemDTO.getPriority();
+
+                if(priorityChanged || quantityChanged) {
+                    OrderNotification on = orderNotificationService.notifyOrderItemChange(order, orderItemForUpdate, orderItemDTO.getQuantity(), orderItemDTO.getPriority());
+                    notificationsToSend.add(on);
+                    orderItemForUpdate.setQuantity(orderItemDTO.getQuantity());
+                    orderItemForUpdate.setPriority(orderItemDTO.getPriority());
+                }
                 it.remove();
             }
         }
@@ -172,10 +188,17 @@ public class OrderServiceImpl implements OrderService{
         Set<OrderItem> newOrderItems = createNewOrderItems(order, orderItemsDTO);
         Order finalOrder = order;
         newOrderItems.forEach((item) -> finalOrder.getOrderItems().add(item));
-        orderNotificationService.notifyOrderItemAdded(order, newOrderItems);
 
-        order = orderRepository.save(finalOrder);
-        orderItemService.deleteAll(orderItemsToDelete);
+        OrderUtils.checkOrderItemsQuantity(finalOrder);
+        OrderUtils.checkOrderItemsPriority(finalOrder);
+
+        List<OrderNotification> ons = orderNotificationService.notifyOrderItemAdded(order, newOrderItems);
+        notificationsToSend.addAll(ons);
+
+        order = orderRepository.save(finalOrder);               // Cuvanje order-a (svih order item-a)
+        orderItemService.deleteAll(orderItemsToDelete);         // Brisanje svih koji koji imaju kvantitet nula
+        orderNotificationService.saveAll(notificationsToSend);  // Cuvanje (slanje) svih notifikacija
+
         return order;
     }
 
@@ -184,6 +207,10 @@ public class OrderServiceImpl implements OrderService{
             if(orderItem.getId().equals(id))
                 return orderItem;
         return null;
+    }
+
+    private boolean changed(int value1, int value2) {
+        return value1 != value2;
     }
 
 
@@ -204,14 +231,18 @@ public class OrderServiceImpl implements OrderService{
         for(int i = 0; i < items.size(); ++i){
             OrderItem orderItem = new OrderItem();
 
-            orderItem.setPriority(orderItemsDTO.get(i).getPriority());
+            orderItem.setItem(items.get(i));
             orderItem.setQuantity(orderItemsDTO.get(i).getQuantity());
             orderItem.setPrice(items.get(i).getCurrentPrice());
             orderItem.setStatus(OrderItemStatus.ORDERED);
-            orderItem.setItem(items.get(i));
             orderItem.setOrder(order);
-
             orderItems.add(orderItem);
+
+            orderItem.setPriority(orderItemsDTO.get(i).getPriority());
+            if(orderItem.getPriority() == -1 && orderItem.getItem() instanceof Food) {  // Podesavanje prioriteta ukoliko je default (-1)
+                FoodType type = ( (Food) orderItem.getItem() ).getType();
+                orderItem.setPriority(type.ordinal());
+            }
         }
 
         return orderItems;

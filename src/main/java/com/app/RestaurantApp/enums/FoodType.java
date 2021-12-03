@@ -1,7 +1,7 @@
 package com.app.RestaurantApp.enums;
 
 public enum FoodType {
-    APPETIZER,
+    DESERT,
     MAIN_DISH,
-    DESERT
+    APPETIZER
 }

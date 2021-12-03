@@ -25,7 +25,7 @@ public class OrderItem {
     private double price;
 
     @Column(name = "priority", nullable = false)
-    private boolean priority;
+    private int priority;
 
     @ManyToOne
     @JoinColumn(name="order_id", nullable=false)
@@ -70,11 +70,11 @@ public class OrderItem {
         this.price = price;
     }
 
-    public boolean isPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(boolean priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 
