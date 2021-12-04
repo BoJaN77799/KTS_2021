@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.food;
 
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
@@ -77,37 +78,40 @@ public class FoodRepositoryIntegrationTests {
 
     @Test
     public void testFindAllWithPriceByCriteria() {
-        Page<Food> foodPages;
+        /*
+            Ukoliko test pada proveriti da li su mozda dodati novi entiteti u bazu koji odgovaraju pretrazi!
+        */
+        Page<Food> foodsPage;
         List<Food> foods;
 
-        foodPages = foodRepository.findAllWithPriceByCriteria(NAME1, ALL, ALL, pageable);
-        foods = foodPages.getContent();
-        assertEquals(1, foodPages.getTotalElements());
+        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME1, ALL, ALL, pageable);
+        foods = foodsPage.getContent();
+        assertEquals(1, foodsPage.getTotalElements());
         assertEquals("Supa", foods.get(0).getName());
 
-        foodPages = foodRepository.findAllWithPriceByCriteria(NAME2,  ALL, ALL, pageable);
-        foods = foodPages.getContent();
-        assertEquals(1, foodPages.getTotalElements());
+        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME2,  ALL, ALL, pageable);
+        foods = foodsPage.getContent();
+        assertEquals(1, foodsPage.getTotalElements());
         assertEquals("Jagnjece pecenje", foods.get(0).getName());
 
-        foodPages = foodRepository.findAllWithPriceByCriteria(ALL,  ALL, APPETIZER, pageable);
-        foods = foodPages.getContent();
-        assertEquals(3, foodPages.getTotalElements());
+        foodsPage = foodRepository.findAllWithPriceByCriteria(ALL,  ALL, APPETIZER, pageable);
+        foods = foodsPage.getContent();
+        assertEquals(3, foodsPage.getTotalElements());
         assertEquals("Supa", foods.get(0).getName());
 
-        foodPages = foodRepository.findAllWithPriceByCriteria(NAME2,  ALL, MAIN_DISH, pageable);
-        foods = foodPages.getContent();
-        assertEquals(1, foodPages.getTotalElements());
+        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME2,  ALL, MAIN_DISH, pageable);
+        foods = foodsPage.getContent();
+        assertEquals(1, foodsPage.getTotalElements());
         assertEquals("Jagnjece pecenje", foods.get(0).getName());
 
-        foodPages = foodRepository.findAllWithPriceByCriteria(ALL,  CATEGORY1, ALL, pageable);
-        foods = foodPages.getContent();
-        assertEquals(2, foodPages.getTotalElements());
+        foodsPage = foodRepository.findAllWithPriceByCriteria(ALL,  CATEGORY1, ALL, pageable);
+        foods = foodsPage.getContent();
+        assertEquals(2, foodsPage.getTotalElements());
         assertEquals("Prsuta", foods.get(0).getName());
 
-        foodPages = foodRepository.findAllWithPriceByCriteria(NAME2,  CATEGORY1, MAIN_DISH, pageable);
-        foods = foodPages.getContent();
-        assertEquals(1, foodPages.getTotalElements());
+        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME2,  CATEGORY1, MAIN_DISH, pageable);
+        foods = foodsPage.getContent();
+        assertEquals(1, foodsPage.getTotalElements());
         assertEquals("Jagnjece pecenje", foods.get(0).getName());
     }
 }

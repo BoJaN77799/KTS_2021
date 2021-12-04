@@ -5,6 +5,7 @@ import com.app.RestaurantApp.drinks.dto.DrinkSearchDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkWithPriceDTO;
 import com.app.RestaurantApp.item.ItemException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -29,15 +30,19 @@ public class DrinkServiceImpl implements DrinkService {
 
     @Override
     public List<DrinkWithPriceDTO> getDrinksWithPrice(DrinkSearchDTO searchDTO, Pageable pageable) {
-        List<Drink> drinks = new ArrayList<>();
+        List<Drink> drinks;
+        Page<Drink> drinksPage;
 
         String name = (searchDTO != null) ? searchDTO.getName() : null;
-        name = (name != null) ? name : "ALL";
+        name = (name == null || name.equals("")) ? "ALL" : name;
 
         String category = (searchDTO != null) ? searchDTO.getCategory() : null;
-        category = (category != null) ? category : "ALL";
+        category = (category == null || category.equals("")) ? "ALL" : category;
 
-        drinks = drinkRepository.findAllWithPriceByCriteria(name, category, pageable);
+        drinksPage = drinkRepository.findAllWithPriceByCriteria(name, category, pageable);
+        drinks = drinksPage.getContent();
+
+        // Dodati da se vraca na front i ukupan broj elemenata
 
         List<DrinkWithPriceDTO> drinksDTO = new ArrayList<>();
         drinks.forEach(drink -> drinksDTO.add(new DrinkWithPriceDTO(drink)));

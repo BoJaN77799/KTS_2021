@@ -7,7 +7,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({AppUserServiceUnitTests.class, AppUserServiceIntegrationTests.class, FoodRepositoryIntegrationTests.class})
+@Suite.SuiteClasses({AppUserServiceUnitTests.class, AppUserServiceIntegrationTests.class, FoodRepositoryIntegrationTests.class,
+                     FoodRepositoryIntegrationTests.class})
 public class SuiteAll {
 
 

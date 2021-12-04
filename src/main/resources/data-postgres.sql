@@ -85,7 +85,7 @@ insert into drink (id, volume ) values (8, 0.5);
 insert into item (name, description, image, cost, category_id, current_price, item_type, deleted) values ('Zajecarsko pivo', 'Vise osvezavajuce nego Niksicko', 'putanja/vopiza', 120.0, 7, 150, 'DRINK', 'False');
 insert into drink (id, volume ) values (9, 0.5);
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted) values ('Jelen', 'Piva', 'putanja/rogonja', 140.0, 2, 170, 'DRINK', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, deleted) values ('Jelen', 'Piva', 'putanja/rogonja', 140.0, 7, 170, 'DRINK', 'False');
 insert into drink (id, volume ) values (10, 0.5);
 
 insert into menu (name, active_menu) values ('Leto', 'True');

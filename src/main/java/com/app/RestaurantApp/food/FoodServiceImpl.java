@@ -27,7 +27,7 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public List<FoodWithPriceDTO> getFoodWithPrice(FoodSearchDTO searchDTO, Pageable pageable) {
         List<Food> foods;
-        Page<Food> foodPages;
+        Page<Food> foodsPage;
 
         String name = (searchDTO != null) ? searchDTO.getName() : null;
         name = (name == null || name.equals("")) ? "ALL" : name;
@@ -38,8 +38,8 @@ public class FoodServiceImpl implements FoodService {
         String type = (searchDTO != null) ? searchDTO.getType() : null;
         type = (type == null || type.equals("")) ? "ALL" : type;
 
-        foodPages = foodRepository.findAllWithPriceByCriteria(name, category, type, pageable);
-        foods = foodPages.getContent();
+        foodsPage = foodRepository.findAllWithPriceByCriteria(name, category, type, pageable);
+        foods = foodsPage.getContent();
 
         //Potrebno izvaditi broj preostalih elemenata za vracanje front
 
