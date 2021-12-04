@@ -5,6 +5,7 @@ import com.app.RestaurantApp.food.dto.FoodSearchDTO;
 import com.app.RestaurantApp.food.dto.FoodWithPriceDTO;
 import com.app.RestaurantApp.item.ItemException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -25,18 +26,22 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public List<FoodWithPriceDTO> getFoodWithPrice(FoodSearchDTO searchDTO, Pageable pageable) {
-        List<Food> foods = new ArrayList<>();
+        List<Food> foods;
+        Page<Food> foodPages;
 
         String name = (searchDTO != null) ? searchDTO.getName() : null;
-        name = (name != null) ? name : "ALL";
+        name = (name == null || name.equals("")) ? "ALL" : name;
 
         String category = (searchDTO != null) ? searchDTO.getCategory() : null;
-        category = (category != null) ? category : "ALL";
+        category = (category == null || category.equals("")) ? "ALL" : category;
 
         String type = (searchDTO != null) ? searchDTO.getType() : null;
-        type = (type != null) ? type : "ALL";
+        type = (type == null || type.equals("")) ? "ALL" : type;
 
-        foods = foodRepository.findAllWithPriceByCriteria(name, category, type, pageable);
+        foodPages = foodRepository.findAllWithPriceByCriteria(name, category, type, pageable);
+        foods = foodPages.getContent();
+
+        //Potrebno izvaditi broj preostalih elemenata za vracanje front
 
         List<FoodWithPriceDTO> foodsDTO = new ArrayList<>();
         foods.forEach(food -> foodsDTO.add(new FoodWithPriceDTO(food)));
