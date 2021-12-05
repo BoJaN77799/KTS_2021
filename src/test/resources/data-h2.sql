@@ -23,6 +23,8 @@ values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Mi
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
 values ('E', '$2a$10$II8odOsKhUp4LS/cID0DFuuBFWWAcXAgdxYXtlstns6z5dxPjSRw2', 'Brat', 'Dodik', 'barman@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'BARMAN', 40000.0, 'Luzicka 32, Becej', false);
 
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
+values ('U', '$2a$10$II8odOsKhUp4LS/cID0DFuuBFWWAcXAgdxYXtlstns6z5dxPjSRw2', 'Toma', 'Dodik', 'manager123@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'MANAGER', null, 'Luzicka 32, Becej', true);
 
 INSERT INTO USER_AUTHORITY (app_user_id, authority_id) VALUES (1, 1); -- admin
 INSERT INTO USER_AUTHORITY (app_user_id, authority_id) VALUES (2, 2); -- menager
