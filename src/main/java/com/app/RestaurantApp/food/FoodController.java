@@ -5,14 +5,19 @@ import com.app.RestaurantApp.food.dto.FoodDTO;
 import com.app.RestaurantApp.food.dto.FoodSearchDTO;
 import com.app.RestaurantApp.food.dto.FoodWithPriceDTO;
 import com.app.RestaurantApp.item.ItemException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/food")
@@ -24,9 +29,18 @@ public class FoodController {
     @GetMapping(consumes = "application/json")
     public ResponseEntity<List<FoodWithPriceDTO>> getFoodWithPrice(@RequestBody FoodSearchDTO foodSearchDTO, Pageable pageable) {
 
-        List<FoodWithPriceDTO> foodsDTO = foodService.getFoodWithPrice(foodSearchDTO, pageable);
+        Page<Food> foodsPage = foodService.getFoodWithPrice(foodSearchDTO, pageable);
+        List<Food> foods = foodsPage.getContent();
 
-        return new ResponseEntity<>(foodsDTO, HttpStatus.OK);
+        List<FoodWithPriceDTO> foodsDTO = new ArrayList<>();
+        foods.forEach(food -> foodsDTO.add(new FoodWithPriceDTO(food)));
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("total-elements", Long.toString(foodsPage.getTotalElements()));
+        responseHeaders.set("total-pages", Long.toString(foodsPage.getTotalElements()));
+        responseHeaders.set("current-page", Integer.toString(foodsPage.getNumber()));
+
+        return new ResponseEntity<>(foodsDTO, responseHeaders, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
