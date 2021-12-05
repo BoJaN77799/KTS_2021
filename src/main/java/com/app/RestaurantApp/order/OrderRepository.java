@@ -33,9 +33,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("select distinct o from Order o join fetch o.orderItems i where (o.barman.id =?1 and o.status = 'IN_PROGRESS') and i.item.itemType = 'DRINK'")
     List<Order> findAllMyWithDrinks(Long id);
 
-    @Query("select o from Order o join fetch o.orderItems i where o.id =?1 and i.status = 'ORDERED'")
-    Order findOneWithOrderItemsForUpdate(Long orderId);
-
     @Query("select distinct o from Order o left join fetch o.orderItems i where o.createdAt <= ?2 and o.createdAt >= ?1 and o.status = 'FINISHED'")
     List<Order> findAllOrderInIntervalOfDates(Long dateFrom, Long dateTo);
 

@@ -136,14 +136,18 @@ public class OrderServiceImpl implements OrderService{
         orderRepository.save(order);
     }
 
-
+    @Override
     public Order findOneWithOrderItemsForUpdate(Long id) {
-        return orderRepository.findOneWithOrderItemsForUpdate(id);
+        Order order = orderRepository.findOneWithOrderItems(id);
+
+        order.getOrderItems().removeIf(orderItem -> orderItem.getStatus() != OrderItemStatus.ORDERED);
+
+        return order;
     }
 
     @Override
     public Order updateOrder(OrderDTO orderDTO) throws OrderException {
-        Order order = orderRepository.findOneWithOrderItemsForUpdate(orderDTO.getId());
+        Order order = findOneWithOrderItemsForUpdate(orderDTO.getId());
         if(order == null) throw new OrderException("Invalid order id sent from front!");
         List<OrderItemOrderCreationDTO> orderItemsDTO = orderDTO.getOrderItems();
 
@@ -209,13 +213,8 @@ public class OrderServiceImpl implements OrderService{
         return null;
     }
 
-    private boolean changed(int value1, int value2) {
-        return value1 != value2;
-    }
-
-
     private Set<OrderItem> createNewOrderItems(Order order, List<OrderItemOrderCreationDTO> orderItemsDTO) throws OrderException {
-        Set<OrderItem> orderItems = new HashSet<OrderItem>();
+        Set<OrderItem> orderItems = new HashSet<>();
 
         List<Long> itemsId = new ArrayList<>();
         orderItemsDTO.forEach((itemDTO) -> itemsId.add(itemDTO.getItemId()));
@@ -225,8 +224,8 @@ public class OrderServiceImpl implements OrderService{
         if(items.size() != orderItemsDTO.size())
             throw new OrderException("One of items selected for order does not exist in database!");
 
-        Collections.sort(orderItemsDTO,(item1, item2) -> (int) (item1.getItemId() - item2.getItemId()));
-        Collections.sort(items,(item1, item2) -> (int) (item1.getId() - item2.getId()));
+        orderItemsDTO.sort((item1, item2) -> (int) (item1.getItemId() - item2.getItemId()));
+        items.sort((item1, item2) -> (int) (item1.getId() - item2.getId()));
 
         for(int i = 0; i < items.size(); ++i){
             OrderItem orderItem = new OrderItem();

@@ -194,6 +194,11 @@ insert into restaurant_order (status, created_at, note, table_id, waiter_id, bar
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (5, 'ORDERED', 2500.0, 1, 12, 4);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (5, 'ORDERED', 160.0, -1, 12, 7);
 
+insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id, cook_id) values ('IN_PROGRESS', 1636730076405, 'Probam izmenu porudzbine.', 1, 3, 6, 4);
+
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (5, 'ORDERED', 2500.0, 1, 12, 4);
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (5, 'FINISHED', 160.0, -1, 12, 7);
+
 
 insert into salary (amount, date_from, employee_id) values (100, 1633816800000, 4);
 insert into salary (amount, date_from, employee_id) values (200, 1634680800000, 4);
