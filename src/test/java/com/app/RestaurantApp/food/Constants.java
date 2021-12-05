@@ -14,6 +14,8 @@ public class Constants {
     public static final String CATEGORY1 = "Jagnjece meso";
     public static final String CATEGORY2 = "Mlecni proizvodi";
 
+    public static final String TYPE1 = "MAIN_DISH";
+
     public static final int PAGEABLE_PAGE = 0;
     public static final int PAGEABLE_SIZE = 5;
     public static final int PAGEABLE_TOTAL_ELEMENTS = 6;

@@ -2,22 +2,13 @@ package com.app.RestaurantApp.drinks;
 
 import com.app.RestaurantApp.drinks.dto.DrinkDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkSearchDTO;
-import com.app.RestaurantApp.drinks.dto.DrinkWithPriceDTO;
 import com.app.RestaurantApp.item.ItemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
 import com.app.RestaurantApp.category.Category;
 import com.app.RestaurantApp.category.CategoryService;
-import com.app.RestaurantApp.drinks.dto.DrinkDTO;
-import com.app.RestaurantApp.food.Food;
-import com.app.RestaurantApp.food.FoodRepository;
-import com.app.RestaurantApp.food.dto.FoodDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class DrinkServiceImpl implements DrinkService {
@@ -29,8 +20,7 @@ public class DrinkServiceImpl implements DrinkService {
     private DrinkRepository drinkRepository;
 
     @Override
-    public List<DrinkWithPriceDTO> getDrinksWithPrice(DrinkSearchDTO searchDTO, Pageable pageable) {
-        List<Drink> drinks;
+    public Page<Drink> getDrinksWithPrice(DrinkSearchDTO searchDTO, Pageable pageable) {
         Page<Drink> drinksPage;
 
         String name = (searchDTO != null) ? searchDTO.getName() : null;
@@ -40,14 +30,7 @@ public class DrinkServiceImpl implements DrinkService {
         category = (category == null || category.equals("")) ? "ALL" : category;
 
         drinksPage = drinkRepository.findAllWithPriceByCriteria(name, category, pageable);
-        drinks = drinksPage.getContent();
-
-        // Dodati da se vraca na front i ukupan broj elemenata
-
-        List<DrinkWithPriceDTO> drinksDTO = new ArrayList<>();
-        drinks.forEach(drink -> drinksDTO.add(new DrinkWithPriceDTO(drink)));
-
-        return drinksDTO;
+        return drinksPage;
     }
 
     public Drink findOne(Long id) {
