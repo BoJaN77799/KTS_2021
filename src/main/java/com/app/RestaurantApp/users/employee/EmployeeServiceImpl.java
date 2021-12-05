@@ -24,20 +24,8 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public Employee saveEmployee(Employee employee) {
-        // ovde nema provera, jer se provera radi u prethodnoj pozivajucoj fji
-        // (createUser iz appUserService)
-        return employeeRepository.save(employee);
-    }
-
-    @Override
     public Employee findById(Long id) {
         return employeeRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public List<Employee> findByDeleted(boolean deleted) {
-        return employeeRepository.findByDeleted(deleted);
     }
 
     @Override

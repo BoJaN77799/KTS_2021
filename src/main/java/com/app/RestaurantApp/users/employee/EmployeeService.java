@@ -9,12 +9,8 @@ public interface EmployeeService {
     List<Employee> findAll();
 
     Employee findByEmail(String email);
-  
-    Employee saveEmployee(Employee employee);
 
     Employee findById(Long id);
-
-    List<Employee> findByDeleted(boolean deleted);
 
     List<Employee> searchEmployeesManager(String searchField, String userType, Pageable pageable);
 

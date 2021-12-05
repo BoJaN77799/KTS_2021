@@ -88,7 +88,7 @@ public class AppUserServiceImpl implements AppUserService {
         if (user.getUserType() == UserType.BARMAN || user.getUserType() == UserType.COOK ||
                 user.getUserType() == UserType.WAITER || user.getUserType() == UserType.HEAD_COOK)
         {
-            appUser = employeeService.saveEmployee(new Employee(user));
+            appUser = appUserRepository.save(new Employee(user));
         }else{
             appUser =  appUserRepository.save(user);
         }
@@ -109,9 +109,7 @@ public class AppUserServiceImpl implements AppUserService {
 
         try {
             mailService.sendmail("Account creation", MailService.createMessageForUserCreation(user, pw), user.getEmail());
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (MessagingException | IOException e) {
             e.printStackTrace();
         }
     }
