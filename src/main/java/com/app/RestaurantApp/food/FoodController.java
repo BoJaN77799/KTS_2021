@@ -27,8 +27,8 @@ public class FoodController {
     private FoodService foodService;
 
     @GetMapping(consumes = "application/json")
+    @PreAuthorize("hasRole('WAITER')")
     public ResponseEntity<List<FoodWithPriceDTO>> getFoodWithPrice(@RequestBody FoodSearchDTO foodSearchDTO, Pageable pageable) {
-
         Page<Food> foodsPage = foodService.getFoodWithPrice(foodSearchDTO, pageable);
         List<Food> foods = foodsPage.getContent();
 

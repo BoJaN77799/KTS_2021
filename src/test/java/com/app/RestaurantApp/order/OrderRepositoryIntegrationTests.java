@@ -36,6 +36,12 @@ public class OrderRepositoryIntegrationTests {
         assertEquals(Long.valueOf(1), orderItems.get(0).getId());
         assertEquals(Long.valueOf(2), orderItems.get(1).getItem().getId());
         assertEquals(Long.valueOf(2), orderItems.get(1).getId());
+    }
+
+    @Test
+    public void testFindOneWithOrderItems2() {
+        Order order;
+        List<OrderItem> orderItems;
 
         order = orderRepository.findOneWithOrderItems(3L);
         assertNotNull(order);
@@ -45,6 +51,11 @@ public class OrderRepositoryIntegrationTests {
         assertEquals(Long.valueOf(5), orderItems.get(0).getId());
         assertEquals(Long.valueOf(8), orderItems.get(1).getItem().getId());
         assertEquals(Long.valueOf(6), orderItems.get(1).getId());
+    }
+
+    @Test
+    public void testFindOneWithOrderItemsWithNull() {
+        Order order;
 
         order = orderRepository.findOneWithOrderItems(-1L);
         assertNull(order);

@@ -4,13 +4,17 @@ package com.app.RestaurantApp.drinks;
 import com.app.RestaurantApp.drinks.dto.DrinkSearchDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkWithPriceDTO;
 import com.app.RestaurantApp.food.Food;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.app.RestaurantApp.drinks.dto.DrinkDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,11 +25,20 @@ public class DrinkController {
     private DrinkService drinkService;
 
     @GetMapping(consumes = "application/json")
+    @PreAuthorize("hasRole('WAITER')")
     public ResponseEntity<List<DrinkWithPriceDTO>> getDrinksWithPrice(@RequestBody DrinkSearchDTO drinkSearchDTO, Pageable pageable) {
+        Page<Drink> drinksPage = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);
+        List<Drink> drinks = drinksPage.getContent();
 
-        List<DrinkWithPriceDTO> drinksDTO = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);
+        List<DrinkWithPriceDTO> drinksDTO = new ArrayList<>();
+        drinks.forEach(drink -> drinksDTO.add(new DrinkWithPriceDTO(drink)));
 
-        return new ResponseEntity<>(drinksDTO, HttpStatus.OK);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("total-elements", Long.toString(drinksPage.getTotalElements()));
+        responseHeaders.set("total-pages", Long.toString(drinksPage.getTotalElements()));
+        responseHeaders.set("current-page", Integer.toString(drinksPage.getNumber()));
+
+        return new ResponseEntity<>(drinksDTO, responseHeaders, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")

@@ -6,6 +6,7 @@ public class Constants {
 
     public static final String NAME1 = "supa";
     public static final String NAME2 = "jagnj";
+    public static final String NAME3 = "a";
 
     public static final String APPETIZER = "APPETIZER";
     public static final String MAIN_DISH = "MAIN_DISH";
@@ -13,6 +14,8 @@ public class Constants {
 
     public static final String CATEGORY1 = "Jagnjece meso";
     public static final String CATEGORY2 = "Mlecni proizvodi";
+
+    public static final String TYPE1 = "MAIN_DISH";
 
     public static final int PAGEABLE_PAGE = 0;
     public static final int PAGEABLE_SIZE = 5;

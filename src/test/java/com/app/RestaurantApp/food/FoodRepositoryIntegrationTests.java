@@ -21,47 +21,89 @@ import java.util.List;
 @DataJpaTest
 public class FoodRepositoryIntegrationTests {
 
+    /*
+        Ukoliko test pada proveriti da li su mozda dodati novi entiteti u bazu koji odgovaraju pretrazi!
+    */
+
     @Autowired
     private FoodRepository foodRepository;
 
     @Test
     public void testFindAllWithPriceByCriteria() {
-        /*
-            Ukoliko test pada proveriti da li su mozda dodati novi entiteti u bazu koji odgovaraju pretrazi!
-        */
+
         Page<Food> foodsPage;
         List<Food> foods;
-
-        Pageable pg = PageRequest.of(0, 5);
-
-        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME1, ALL, ALL, pg);
-        foods = foodsPage.getContent();
-        assertEquals(1, foodsPage.getTotalElements());
-        assertEquals("Supa", foods.get(0).getName());
-
-        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME2,  ALL, ALL, pg);
-        foods = foodsPage.getContent();
-        assertEquals(1, foodsPage.getTotalElements());
-        assertEquals("Jagnjece pecenje", foods.get(0).getName());
-
-        foodsPage = foodRepository.findAllWithPriceByCriteria(ALL,  ALL, APPETIZER, pg);
-        foods = foodsPage.getContent();
-        assertEquals(3, foodsPage.getTotalElements());
-        assertEquals("Supa", foods.get(0).getName());
-
-        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME2,  ALL, MAIN_DISH, pg);
-        foods = foodsPage.getContent();
-        assertEquals(1, foodsPage.getTotalElements());
-        assertEquals("Jagnjece pecenje", foods.get(0).getName());
-
-        foodsPage = foodRepository.findAllWithPriceByCriteria(ALL,  CATEGORY1, ALL, pg);
-        foods = foodsPage.getContent();
-        assertEquals(2, foodsPage.getTotalElements());
-        assertEquals("Prsuta", foods.get(0).getName());
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
 
         foodsPage = foodRepository.findAllWithPriceByCriteria(NAME2,  CATEGORY1, MAIN_DISH, pg);
         foods = foodsPage.getContent();
         assertEquals(1, foodsPage.getTotalElements());
         assertEquals("Jagnjece pecenje", foods.get(0).getName());
+    }
+
+    @Test public void testFindAllWithPriceByCriteriaWithName() {
+        Page<Food> foodsPage;
+        List<Food> foods;
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME1, ALL, ALL, pg);
+        foods = foodsPage.getContent();
+        assertEquals(1, foodsPage.getTotalElements());
+        assertEquals("Supa", foods.get(0).getName());
+    }
+
+    @Test public void testFindAllWithPriceByCriteriaWithType() {
+        Page<Food> foodsPage;
+        List<Food> foods;
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        foodsPage = foodRepository.findAllWithPriceByCriteria(ALL,  ALL, APPETIZER, pg);
+        foods = foodsPage.getContent();
+        assertEquals(3, foodsPage.getTotalElements());
+        assertEquals("Supa", foods.get(0).getName());
+    }
+
+    @Test public void testFindAllWithPriceByCriteriaWithCategory() {
+        Page<Food> foodsPage;
+        List<Food> foods;
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        foodsPage = foodRepository.findAllWithPriceByCriteria(ALL,  CATEGORY1, ALL, pg);
+        foods = foodsPage.getContent();
+        assertEquals(2, foodsPage.getTotalElements());
+        assertEquals("Prsuta", foods.get(0).getName());
+    }
+
+    @Test public void testFindAllWithPriceByCriteriaWithNameAndCategory() {
+        Page<Food> foodsPage;
+        List<Food> foods;
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME3, CATEGORY1, ALL, pg);
+        foods = foodsPage.getContent();
+        assertEquals(2, foodsPage.getTotalElements());
+        assertEquals("Prsuta", foods.get(0).getName());
+    }
+
+    @Test public void testFindAllWithPriceByCriteriaWithNameAndType() {
+        Page<Food> foodsPage;
+        List<Food> foods;
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME2,  ALL, MAIN_DISH, pg);
+        foods = foodsPage.getContent();
+        assertEquals(1, foodsPage.getTotalElements());
+        assertEquals("Jagnjece pecenje", foods.get(0).getName());
+    }
+
+    @Test public void testFindAllWithPriceByCriteriaWithBlanks() {
+        Page<Food> foodsPage;
+        List<Food> foods;
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        foodsPage = foodRepository.findAllWithPriceByCriteria(ALL,  ALL, ALL, pg);
+        foods = foodsPage.getContent();
+        assertEquals(6, foodsPage.getTotalElements());
+        assertEquals("Supa", foods.get(0).getName());
     }
 }
