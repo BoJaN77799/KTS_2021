@@ -164,17 +164,17 @@ public class OrderNotificationServiceImpl implements OrderNotificationService {
     }
 
     @Override
-    public void notifyWaiterOrderItemStatusFinished(OrderItem orderItem) {
+    public OrderNotification notifyWaiterOrderItemStatusFinished(OrderItem orderItem) {
         Order order = orderItem.getOrder();
 
         OrderNotification orderNotification = createBlankOrderNotification(order);
         orderNotification.setEmployee(order.getWaiter());
 
         String msg = orderItem.getItem().getName() + " from order #" + order.getId() +
-                " is finished and ready to deliver to table " + order.getTable().getId();
+                " is finished and ready to deliver to table " + order.getTable().getId() + ".";
         orderNotification.setMessage(msg);
 
-        orderNotificationRepository.save(orderNotification);
+        return orderNotification;
     }
 
     @Override

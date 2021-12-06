@@ -18,7 +18,7 @@ public interface OrderNotificationService {
 
     void deleteOrderNotifications(Order order);
 
-    void notifyWaiterOrderItemStatusFinished(OrderItem orderItem);
+    OrderNotification notifyWaiterOrderItemStatusFinished(OrderItem orderItem);
 
     void saveAll(List<OrderNotification> orderNotifications);
 }

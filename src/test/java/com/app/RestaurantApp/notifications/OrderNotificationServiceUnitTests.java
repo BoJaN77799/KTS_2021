@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.notifications;
 
 import com.app.RestaurantApp.drinks.Drink;
+import com.app.RestaurantApp.enums.OrderItemStatus;
 import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.food.Food;
 import com.app.RestaurantApp.order.Order;
@@ -206,6 +207,72 @@ public class OrderNotificationServiceUnitTests {
         assertEquals(0, orderNotifications.size());
     }
 
+    @Test
+    public void testNotifyOrderItemDeleted() {
+        Order order = createBlankOrder();
+        order.setCook(createEmployee(1L, UserType.COOK));
+        OrderItem oi = createFoodOrderItemWithName();
+
+        OrderNotification orderNotification = orderNotificationService.notifyOrderItemDeleted(order, oi);
+        assertEquals(1, orderNotification.getOrder().getId());
+        assertEquals(UserType.COOK, orderNotification.getEmployee().getUserType());
+        assertEquals(ORDER_ITEM_DELETED_MSG, orderNotification.getMessage());
+    }
+
+    @Test
+    public void testNotifyOrderItemDeleted_BarmanAndFood() {
+        Order order = createBlankOrder();
+        order.setBarman(createEmployee(1L, UserType.BARMAN));
+        OrderItem oi = createFoodOrderItemWithName();
+
+        OrderNotification orderNotification = orderNotificationService.notifyOrderItemDeleted(order, oi);
+        assertNull(orderNotification);
+    }
+
+    @Test
+    public void testNotifyOrderItemDeleted_CookAndDrink() {
+        Order order = createBlankOrder();
+        order.setCook(createEmployee(1L, UserType.COOK));
+        OrderItem oi = createDrinkOrderItemWithName();
+
+        OrderNotification orderNotification = orderNotificationService.notifyOrderItemDeleted(order, oi);
+        assertNull(orderNotification);
+    }
+
+    @Test
+    public void testNotifyOrderItemDeleted_NoEmployees() {
+        Order order = createBlankOrder();
+        order.setCook(createEmployee(1L, UserType.COOK));
+        OrderItem oi = createDrinkOrderItemWithName();
+
+        OrderNotification orderNotification = orderNotificationService.notifyOrderItemDeleted(order, oi);
+        assertNull(orderNotification);
+    }
+
+    @Test
+    public void testNotifyWaiterOrderItemStatusFinished_Food() {
+        Order order = createBlankOrder();
+        order.setWaiter(createEmployee(1L, UserType.WAITER));
+        OrderItem oi = createFoodOrderItem();
+        oi.setOrder(order);
+
+        OrderNotification orderNotification = orderNotificationService.notifyWaiterOrderItemStatusFinished(oi);
+        assertEquals(Long.valueOf(1), orderNotification.getEmployee().getId());
+        assertEquals(ORDER_ITEM_FOOD_FINISHED_MSG, orderNotification.getMessage());
+    }
+
+    @Test
+    public void testNotifyWaiterOrderItemStatusFinished_Drink() {
+        Order order = createBlankOrder();
+        order.setWaiter(createEmployee(1L, UserType.WAITER));
+        OrderItem oi = createDrinkOrderItem();
+        oi.setOrder(order);
+
+        OrderNotification orderNotification = orderNotificationService.notifyWaiterOrderItemStatusFinished(oi);
+        assertEquals(Long.valueOf(1), orderNotification.getEmployee().getId());
+        assertEquals(ORDER_ITEM_DRINK_FINISHED_MSG, orderNotification.getMessage());
+    }
+
     private Order createBlankOrder() {
         Order order = new Order();
         order.setId(1L);
@@ -310,6 +377,22 @@ public class OrderNotificationServiceUnitTests {
         Drink d = new Drink();
         d.setName(DRINK_NAME);
         orderItem.setItem(d);
+
+        return orderItem;
+    }
+
+    private OrderItem createFoodOrderItemWithName() {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setItem(new Food());
+        orderItem.getItem().setName(FOOD_NAME);
+
+        return orderItem;
+    }
+
+    private OrderItem createDrinkOrderItemWithName() {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setItem(new Drink());
+        orderItem.getItem().setName(DRINK_NAME);
 
         return orderItem;
     }
