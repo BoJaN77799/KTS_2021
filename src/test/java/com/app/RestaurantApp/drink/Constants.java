@@ -13,4 +13,8 @@ public class Constants {
     public static final int PAGEABLE_PAGE = 0;
     public static final int PAGEABLE_SIZE = 5;
     public static final int PAGEABLE_TOTAL_ELEMENTS = 6;
+
+    public static final Long CATEGORY_ID = 7L;
+    public static final String CATEGORY_NAME = "Alkoholna pica";
+    public static final String VOLUME_EQUALS_OR_LOWER_THAN_ZERO = "Drink volume cannot be less or equal zero!";
 }

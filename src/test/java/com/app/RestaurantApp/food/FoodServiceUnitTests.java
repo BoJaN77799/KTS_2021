@@ -9,8 +9,6 @@ import com.app.RestaurantApp.food.dto.FoodSearchDTO;
 import com.app.RestaurantApp.item.ItemException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -107,7 +105,6 @@ public class FoodServiceUnitTests {
         Food foodMocked = new Food(foodDTO);
         Category category = new Category(foodDTO.getCategory());
         given(categoryServiceMock.findOne(CATEGORY_ID)).willReturn(category);
-        given(categoryServiceMock.insertCategory(foodDTO.getCategory())).willReturn(category);
         given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
 
         // Test invoke
@@ -214,18 +211,26 @@ public class FoodServiceUnitTests {
     }
 
     @Test
-    public void testSaveFood_CategoryNull() {
+    public void testSaveFood_NewCategory() throws ItemException, FoodException {
         FoodDTO foodDTO = createFoodDTO();
-        // Category is null
-        foodDTO.setCategory(null);
+        // Category is new one.
         Food foodMocked = new Food(foodDTO);
+        Category category = new Category(CATEGORY_ID, CATEGORY_NAME);
+        given(categoryServiceMock.findOne(CATEGORY_ID)).willReturn(null); // category does not exist
+        given(categoryServiceMock.insertCategory(foodDTO.getCategory())).willReturn(category);
         given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
 
         // Test invoke
-        Exception exception = assertThrows(ItemException.class, () -> foodService.saveFood(foodDTO));
+        Food food = foodService.saveFood(foodDTO);
 
         // Verifying
-        assertEquals(NULL_VALUES_ITEM, exception.getMessage());
+        verify(categoryServiceMock, times(1)).findOne(CATEGORY_ID);
+        verify(categoryServiceMock, times(1)).insertCategory(foodDTO.getCategory());
+        verify(foodRepositoryMock, times(1)).save(food);
+
+        assertNotNull(food);
+        assertEquals(foodDTO.getName(), food.getName());
+        assertEquals(category.getName(), food.getCategory().getName());
     }
 
     @Test
