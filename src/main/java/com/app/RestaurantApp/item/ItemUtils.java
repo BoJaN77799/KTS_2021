@@ -22,8 +22,8 @@ public class ItemUtils {
             throw new ItemException("Description cannot be blank!");
         }
 
-        if (item.getDescription().length() > 300) {
-            throw new ItemException("Description cannot be greater than 300 characters!");
+        if (item.getDescription().length() > 256) {
+            throw new ItemException("Description cannot be greater than 256 characters!");
         }
 
         if (item.getImage().isBlank()) {

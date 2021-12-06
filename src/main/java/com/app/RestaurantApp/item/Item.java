@@ -69,7 +69,7 @@ public class Item {
         this.description = itemDTO.getDescription();
         this.image = itemDTO.getImage();
         this.cost = itemDTO.getCost();
-        this.category = new Category(itemDTO.getCategory());
+        this.category = itemDTO.getCategory() != null ? new Category(itemDTO.getCategory()) : null;
         this.itemType = itemDTO.getItemType();
         this.deleted = itemDTO.isDeleted();
     }

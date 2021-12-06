@@ -23,5 +23,12 @@ public class Constants {
 
     public static final Long CATEGORY_ID = 1L;
     public static final String NULL_VALUES = "Invalid food data sent from front! Null values in attributes!";
+    public static final String NULL_VALUES_ITEM = "Invalid item data sent from front! Null values in attributes!";
     public static final String RECIPE_CONTENT_BLANK = "Recipe cannot be blank";
+    public static final String NAME_CONTENT_BLANK = "Name cannot be blank!";
+    public static final String DESCRIPTION_CONTENT_BLANK = "Description cannot be blank!";
+    public static final String DESCRIPTION_TOO_BIG = "Description cannot be greater than 256 characters!";
+    public static final String IMAGE_PATH_BLANK = "Image path cannot be blank!";
+    public static final String CATEGORY_NAME_BLANK = "Category name cannot be blank!";
+    public static final String COST_EQUALS_OR_LOWER_THAN_ZERO = "Cost cannot be less or equal zero!";
 }

@@ -166,9 +166,174 @@ public class FoodServiceUnitTests {
 
         // Verifying
         assertEquals(RECIPE_CONTENT_BLANK, exception.getMessage());
-
     }
 
+    @Test
+    public void testSaveFood_NameNull() {
+        FoodDTO foodDTO = createFoodDTO();
+        // Name is null
+        foodDTO.setName(null);
+        Food foodMocked = new Food(foodDTO);
+        given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
+
+        // Test invoke
+        Exception exception = assertThrows(ItemException.class, () -> foodService.saveFood(foodDTO));
+
+        // Verifying
+        assertEquals(NULL_VALUES_ITEM, exception.getMessage());
+    }
+
+    @Test
+    public void testSaveFood_DescriptionNull() {
+        FoodDTO foodDTO = createFoodDTO();
+        // Description is null
+        foodDTO.setDescription(null);
+        Food foodMocked = new Food(foodDTO);
+        given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
+
+        // Test invoke
+        Exception exception = assertThrows(ItemException.class, () -> foodService.saveFood(foodDTO));
+
+        // Verifying
+        assertEquals(NULL_VALUES_ITEM, exception.getMessage());
+    }
+
+    @Test
+    public void testSaveFood_ImageNull() {
+        FoodDTO foodDTO = createFoodDTO();
+        // Image is null
+        foodDTO.setImage(null);
+        Food foodMocked = new Food(foodDTO);
+        given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
+
+        // Test invoke
+        Exception exception = assertThrows(ItemException.class, () -> foodService.saveFood(foodDTO));
+
+        // Verifying
+        assertEquals(NULL_VALUES_ITEM, exception.getMessage());
+    }
+
+    @Test
+    public void testSaveFood_CategoryNull() {
+        FoodDTO foodDTO = createFoodDTO();
+        // Category is null
+        foodDTO.setCategory(null);
+        Food foodMocked = new Food(foodDTO);
+        given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
+
+        // Test invoke
+        Exception exception = assertThrows(ItemException.class, () -> foodService.saveFood(foodDTO));
+
+        // Verifying
+        assertEquals(NULL_VALUES_ITEM, exception.getMessage());
+    }
+
+    @Test
+    public void testSaveFood_ItemTypeNull() {
+        FoodDTO foodDTO = createFoodDTO();
+        // ItemType is null
+        foodDTO.setItemType(null);
+        Food foodMocked = new Food(foodDTO);
+        given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
+
+        // Test invoke
+        Exception exception = assertThrows(ItemException.class, () -> foodService.saveFood(foodDTO));
+
+        // Verifying
+        assertEquals(NULL_VALUES_ITEM, exception.getMessage());
+    }
+
+    @Test
+    public void testSaveFood_NameContentBlank() {
+        FoodDTO foodDTO = createFoodDTO();
+        // Name is blank
+        foodDTO.setName("");
+        Food foodMocked = new Food(foodDTO);
+        given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
+
+        // Test invoke
+        Exception exception = assertThrows(ItemException.class, () -> foodService.saveFood(foodDTO));
+
+        // Verifying
+        assertEquals(NAME_CONTENT_BLANK, exception.getMessage());
+    }
+
+    @Test
+    public void testSaveFood_CostEqualsOrLowerThanZero() {
+        FoodDTO foodDTO = createFoodDTO();
+        // Cost is lower than 0
+        foodDTO.setCost(-30.0);
+        Food foodMocked = new Food(foodDTO);
+        given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
+
+        // Test invoke
+        Exception exception = assertThrows(ItemException.class, () -> foodService.saveFood(foodDTO));
+
+        // Verifying
+        assertEquals(COST_EQUALS_OR_LOWER_THAN_ZERO, exception.getMessage());
+    }
+
+    @Test
+    public void testSaveFood_DescriptionContentBlank() {
+        FoodDTO foodDTO = createFoodDTO();
+        // Description is blank
+        foodDTO.setDescription("");
+        Food foodMocked = new Food(foodDTO);
+        given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
+
+        // Test invoke
+        Exception exception = assertThrows(ItemException.class, () -> foodService.saveFood(foodDTO));
+
+        // Verifying
+        assertEquals(DESCRIPTION_CONTENT_BLANK, exception.getMessage());
+    }
+
+    @Test
+    public void testSaveFood_DescriptionContentIsTooBig() {
+        FoodDTO foodDTO = createFoodDTO();
+        // Description is too big
+        foodDTO.setDescription("0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789" +
+                "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789" +
+                "012345678901234567890123456789012345678901234567890123456"); // 257 characters
+        Food foodMocked = new Food(foodDTO);
+        given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
+
+        // Test invoke
+        Exception exception = assertThrows(ItemException.class, () -> foodService.saveFood(foodDTO));
+
+        // Verifying
+        assertEquals(DESCRIPTION_TOO_BIG, exception.getMessage());
+    }
+
+    @Test
+    public void testSaveFood_ImagePathBlank() {
+        FoodDTO foodDTO = createFoodDTO();
+        // Image path is blank
+        foodDTO.setImage("");
+        Food foodMocked = new Food(foodDTO);
+        given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
+
+        // Test invoke
+        Exception exception = assertThrows(ItemException.class, () -> foodService.saveFood(foodDTO));
+
+        // Verifying
+        assertEquals(IMAGE_PATH_BLANK, exception.getMessage());
+    }
+
+    @Test
+    public void testSaveFood_CategoryNameBlank() {
+        FoodDTO foodDTO = createFoodDTO();
+        // Category name is blank
+        foodDTO.setCategory(new CategoryDTO(1L, ""));
+        Food foodMocked = new Food(foodDTO);
+        given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
+
+        // Test invoke
+        Exception exception = assertThrows(ItemException.class, () -> foodService.saveFood(foodDTO));
+
+        // Verifying
+        assertEquals(CATEGORY_NAME_BLANK, exception.getMessage());
+    }
 
     private FoodDTO createFoodDTO(){
         // This method creates testing object
