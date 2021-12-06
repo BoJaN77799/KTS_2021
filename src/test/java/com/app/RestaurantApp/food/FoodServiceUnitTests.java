@@ -1,9 +1,7 @@
 package com.app.RestaurantApp.food;
-
 import com.app.RestaurantApp.food.dto.FoodSearchDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -42,7 +40,7 @@ public class FoodServiceUnitTests {
     }
 
     @Test
-    public void testGetFoodWithPriceWithName() {
+    public void testGetFoodWithPrice_WithName() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
         FoodSearchDTO foodSearchDTO = new FoodSearchDTO(NAME2, ALL, ALL);
         Page<Food> foodsPage = foodService.getFoodWithPrice(foodSearchDTO, pageable);
@@ -51,7 +49,7 @@ public class FoodServiceUnitTests {
     }
 
     @Test
-    public void testGetFoodWithPriceWithCategory() {
+    public void testGetFoodWithPrice_WithCategory() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
         FoodSearchDTO foodSearchDTO = new FoodSearchDTO(ALL, CATEGORY1, ALL);
         Page<Food> foodsPage = foodService.getFoodWithPrice(foodSearchDTO, pageable);
@@ -60,7 +58,7 @@ public class FoodServiceUnitTests {
     }
 
     @Test
-    public void testGetFoodWithPriceWithType() {
+    public void testGetFoodWithPrice_WithType() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
         FoodSearchDTO foodSearchDTO = new FoodSearchDTO(ALL, ALL, TYPE1);
         Page<Food> foodsPage = foodService.getFoodWithPrice(foodSearchDTO, pageable);
@@ -69,7 +67,7 @@ public class FoodServiceUnitTests {
     }
 
     @Test
-    public void testGetFoodWithPriceWithNulls() {
+    public void testGetFoodWithPrice_WithNulls() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
         FoodSearchDTO foodSearchDTO = new FoodSearchDTO(null, null, null);
         Page<Food> foodsPage = foodService.getFoodWithPrice(foodSearchDTO, pageable);
@@ -78,15 +76,13 @@ public class FoodServiceUnitTests {
     }
 
     @Test
-    public void testGetFoodWithPriceWithBlanks() {
+    public void testGetFoodWithPrice_WithBlanks() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
         FoodSearchDTO foodSearchDTO = new FoodSearchDTO("", "", "");
         Page<Food> foodsPage = foodService.getFoodWithPrice(foodSearchDTO, pageable);
         verify(foodRepository, times(1)).findAllWithPriceByCriteria(ALL, ALL, ALL, pageable);
         assertEquals(2, foodsPage.getNumberOfElements());
     }
-
-
 
     private List<Food> createFoods() {
         List<Food> foods = new ArrayList<>();

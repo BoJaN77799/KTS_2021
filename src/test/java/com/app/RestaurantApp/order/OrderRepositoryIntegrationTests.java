@@ -54,7 +54,7 @@ public class OrderRepositoryIntegrationTests {
     }
 
     @Test
-    public void testFindOneWithOrderItemsWithNull() {
+    public void testFindOneWithOrderItems_WithNull() {
         Order order;
 
         order = orderRepository.findOneWithOrderItems(-1L);

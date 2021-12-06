@@ -66,10 +66,11 @@ public class OrderServiceImpl implements OrderService{
         order.setTable(tableService.findById(orderDTO.getTableId()));
         OrderUtils.checkBasicOrderInfo(order);
 
-        orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
         List<OrderNotification> orderNotifications = orderNotificationService.notifyNewOrder(order);
         orderNotificationService.saveAll(orderNotifications);
 
+        order.setId(savedOrder.getId());
         return order;
     }
 
