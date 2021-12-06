@@ -6,6 +6,7 @@ public class Constants {
 
     public static final String NAME1 = "supa";
     public static final String NAME2 = "jagnj";
+    public static final String NAME3 = "a";
 
     public static final String APPETIZER = "APPETIZER";
     public static final String MAIN_DISH = "MAIN_DISH";
