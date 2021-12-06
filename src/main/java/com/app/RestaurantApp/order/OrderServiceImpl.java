@@ -55,6 +55,7 @@ public class OrderServiceImpl implements OrderService{
         Order order = new Order();
 
         order.setOrderItems(createNewOrderItems(order, orderItemOrderCreationDTOS));
+        OrderUtils.checkOrderItemsNumber(order);
         OrderUtils.checkOrderItemsQuantity(order);
         OrderUtils.checkOrderItemsPriority(order);
 
@@ -63,7 +64,6 @@ public class OrderServiceImpl implements OrderService{
         order.setStatus(OrderStatus.NEW);
         order.setNote(orderDTO.getNote());
         order.setTable(tableService.findById(orderDTO.getTableId()));
-
         OrderUtils.checkBasicOrderInfo(order);
 
         orderRepository.save(order);
@@ -183,7 +183,10 @@ public class OrderServiceImpl implements OrderService{
                     OrderNotification on = orderNotificationService.notifyOrderItemChange(order, orderItemForUpdate, orderItemDTO.getQuantity(), orderItemDTO.getPriority());
                     notificationsToSend.add(on);
                     orderItemForUpdate.setQuantity(orderItemDTO.getQuantity());
-                    orderItemForUpdate.setPriority(orderItemDTO.getPriority());
+                    if(orderItemDTO.getPriority() != -1)
+                        orderItemForUpdate.setPriority(orderItemDTO.getPriority());
+                    else
+                        orderItemForUpdate.setPriority(orderItemForUpdate.getItem().getItemType().ordinal()); // Ako je -1 podesi mu na default
                 }
                 it.remove();
             }

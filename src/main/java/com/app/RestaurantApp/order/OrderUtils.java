@@ -24,8 +24,14 @@ public class OrderUtils {
 
     }
 
+    public static void checkOrderItemsNumber(Order order) throws OrderException {
+        if(order.getOrderItems().size() == 0) {
+            throw new OrderException("Order does not have order items!");
+        }
+    }
+
     public static void checkNoteLength(String note) throws OrderException {
-        if(note.length() > 300) {
+        if (note.length() > 300) {
             throw new OrderException("Maximum characters for note is 300!");
         }
     }

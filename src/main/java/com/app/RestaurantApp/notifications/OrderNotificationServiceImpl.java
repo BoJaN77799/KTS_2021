@@ -30,8 +30,8 @@ public class OrderNotificationServiceImpl implements OrderNotificationService {
 
         for(Employee employee : employees){
             UserType type = employee.getUserType();
-
-            if(type == UserType.COOK && orderHasFood(order) || type == UserType.BARMAN && orderHasDrink(order)){
+            boolean orderHasFood = orderHasFood(order);
+            if((type == UserType.COOK && orderHasFood) || (type == UserType.HEAD_COOK && orderHasFood) || (type == UserType.BARMAN && orderHasDrink(order))){
                 OrderNotification orderNotification = new OrderNotification();
                 orderNotification.setOrder(order);
                 orderNotification.setEmployee(employee);
