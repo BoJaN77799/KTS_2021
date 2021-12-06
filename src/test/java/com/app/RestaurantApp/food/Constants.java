@@ -20,4 +20,8 @@ public class Constants {
     public static final int PAGEABLE_PAGE = 0;
     public static final int PAGEABLE_SIZE = 5;
     public static final int PAGEABLE_TOTAL_ELEMENTS = 6;
+
+    public static final Long CATEGORY_ID = 1L;
+    public static final String NULL_VALUES = "Invalid food data sent from front! Null values in attributes!";
+    public static final String RECIPE_CONTENT_BLANK = "Recipe cannot be blank";
 }
