@@ -22,10 +22,16 @@ public class MenuController {
     @PostMapping(value = "/createUpdateMenu")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<String> createUpdateMenu(@RequestBody String name) throws MenuException {
-        if (menuService.createUpdateMenu(name))
-            return new ResponseEntity<>("Menu created successfully", HttpStatus.OK);
-        else
-            return new ResponseEntity<>("Menu updated successfully", HttpStatus.OK);
+        try {
+            if (menuService.createUpdateMenu(name))
+                return new ResponseEntity<>("Menu created successfully", HttpStatus.OK);
+            else
+                return new ResponseEntity<>("Menu updated successfully", HttpStatus.OK);
+        } catch (MenuException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Unknown error happened while adding/updating menu!", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(value = "/getItemsOfMenu/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -36,15 +42,27 @@ public class MenuController {
 
     @PostMapping(value = "/removeItemFromMenu")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<String> removeItemFromMenu(@RequestBody MenuItemDTO mi) throws MenuException, ItemException {
-        menuService.removeItemFromMenu(mi);
-        return new ResponseEntity<>("Item is succesfully removed from menu!", HttpStatus.OK);
+    public ResponseEntity<String> removeItemFromMenu(@RequestBody MenuItemDTO mi) {
+        try {
+            menuService.removeItemFromMenu(mi);
+            return new ResponseEntity<>("Item is succesfully removed from menu!", HttpStatus.OK);
+        } catch (MenuException | ItemException e ) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Unknown error happened while removing item from menu!", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(value = "/addItemToMenu")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<String> addItemToMenu(@RequestBody MenuItemDTO mi) throws MenuException, ItemException {
-        menuService.addItemToMenu(mi);
-        return new ResponseEntity<>("Item is succesfully added to menu!", HttpStatus.OK);
+    public ResponseEntity<String> addItemToMenu(@RequestBody MenuItemDTO mi) {
+        try {
+            menuService.addItemToMenu(mi);
+            return new ResponseEntity<>("Item is succesfully added to menu!", HttpStatus.OK);
+        } catch (MenuException | ItemException e ) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Unknown error happened while adding item to menu!", HttpStatus.BAD_REQUEST);
+        }
     }
 }
