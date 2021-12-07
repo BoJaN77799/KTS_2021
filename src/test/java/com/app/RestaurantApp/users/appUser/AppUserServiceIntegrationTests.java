@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,6 +36,9 @@ public class AppUserServiceIntegrationTests {
 
     @Autowired
     private AppUserRepository appUserRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Test
     public void testFindByEmail() {
@@ -124,6 +130,71 @@ public class AppUserServiceIntegrationTests {
             fail();
         }
     }
+
+    @Test
+    public void testDeleteUser(){
+        try {
+            long id = 1L;
+            appUserService.deleteUser(id);
+            assertNull(appUserService.getActiveUser(id));
+
+            //ponistavanje brisanja
+            AppUser appUser = appUserService.getUser(id);
+            appUser.setDeleted(false);
+            appUserRepository.save(appUser);
+        } catch (UserException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void testGetUser(){
+        assertNotNull(appUserService.getUser(1L));
+        assertNotNull(appUserService.getUser(7L));
+        assertNull(appUserService.getUser(8L));
+    }
+
+    @Test
+    public void testGetActiveUser(){
+        assertNotNull(appUserService.getActiveUser(1L));
+        assertNull(appUserService.getActiveUser(7L));
+        assertNull(appUserService.getActiveUser(8L));
+    }
+
+    @Test
+    public void testChangePassword(){
+        long id = 1L;
+        String newPw = "adminic22";
+        try {
+            appUserService.changePassword(id, "admin", newPw);
+            AppUser appUser = appUserService.getUser(id);
+            assertTrue(passwordEncoder.matches(newPw, appUser.getPassword()));
+        } catch (UserException e) {
+            fail();
+        }
+
+        try {
+            appUserService.changePassword(id, "admin", "dwadwaawda");
+        } catch (UserException e) {
+            assertEquals(e.getMessage(), "Error, old password not correct!");
+        }
+    }
+
+    @Test
+    public void testLoadByUsername(){
+        UserDetails appUser = appUserService.loadUserByUsername("admin@maildrop.cc");
+
+        try{
+            appUserService.loadUserByUsername("djura@yahoo.com");
+            fail();
+        }catch (UsernameNotFoundException ignored){ }
+
+        try{
+            appUserService.loadUserByUsername("manager123@maildrop.cc");
+            fail();
+        }catch (UsernameNotFoundException ignored){ }
+    }
+
 
     private CreateUserDTO getCreateUserDTO(UserType userType){
         CreateUserDTO createUserDTO = new CreateUserDTO();

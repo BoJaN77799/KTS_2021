@@ -170,7 +170,9 @@ public class AppUserServiceImpl implements AppUserService {
         AppUser user = appUserRepository.findByEmail(email).orElse(null);
         if (user == null) {
             throw new UsernameNotFoundException(String.format("No user found with email '%s'.", email));
-        } else {
+        } else if (user.isDeleted()) {
+            throw new UsernameNotFoundException(String.format("No user found with email '%s'.", email));
+        }else{
             return user;
         }
     }
