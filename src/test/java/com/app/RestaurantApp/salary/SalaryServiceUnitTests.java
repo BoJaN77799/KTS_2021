@@ -20,6 +20,8 @@ import static org.mockito.BDDMockito.given;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import static com.app.RestaurantApp.salary.Constants.*;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class SalaryServiceUnitTests {
@@ -37,15 +39,15 @@ public class SalaryServiceUnitTests {
     public void setup() {
         Employee e = createEmployeeWithBonuses();
 
-        given(employeeServiceMock.findByEmail(Constants.EMAIL)).willReturn(e);
-        given(employeeServiceMock.findEmployeeWithSalaries(Constants.EMAIL)).willReturn(e);
+        given(employeeServiceMock.findByEmail(EMAIL)).willReturn(e);
+        given(employeeServiceMock.findEmployeeWithSalaries(EMAIL)).willReturn(e);
     }
 
     @Test
     public void testGetSalariesOfEmployee_Valid() throws UserException {
-        List<SalaryDTO> salaries = salaryService.getSalariesOfEmployee(Constants.EMAIL);
+        List<SalaryDTO> salaries = salaryService.getSalariesOfEmployee(EMAIL);
 
-        verify(employeeServiceMock, times(1)).findEmployeeWithSalaries(Constants.EMAIL);
+        verify(employeeServiceMock, times(1)).findEmployeeWithSalaries(EMAIL);
 
         assertEquals(3, salaries.size());
 
@@ -62,9 +64,9 @@ public class SalaryServiceUnitTests {
     public void testGetSalariesOfEmployee_Invalid() {
         given(employeeServiceMock.findEmployeeWithSalaries(any())).willReturn(null);
 
-        Exception exception = assertThrows(UserException.class, () -> salaryService.getSalariesOfEmployee(Constants.EMAIL));
+        Exception exception = assertThrows(UserException.class, () -> salaryService.getSalariesOfEmployee(EMAIL));
 
-        assertEquals(Constants.INVALID_USER_MESSAGE, exception.getMessage());
+        assertEquals(INVALID_USER_MESSAGE, exception.getMessage());
     }
 
     @Test
@@ -77,14 +79,14 @@ public class SalaryServiceUnitTests {
 
         salaryService.createSalary(salaryDTO);
 
-        verify(employeeServiceMock, times(2)).findByEmail(Constants.EMAIL);
+        verify(employeeServiceMock, times(2)).findByEmail(EMAIL);
         verify(salaryRepositoryMock, times(1)).save(any());
 
     }
 
     @Test
     public void testCreateSalary_InvalidUser() {
-        given(employeeServiceMock.findByEmail(Constants.EMAIL)).willReturn(null);
+        given(employeeServiceMock.findByEmail(EMAIL)).willReturn(null);
 
         Exception exception = assertThrows(UserException.class, () ->
         {
@@ -92,7 +94,7 @@ public class SalaryServiceUnitTests {
             salaryService.createSalary(salaryDTO);
         });
 
-        assertEquals(Constants.INVALID_USER_MESSAGE, exception.getMessage());
+        assertEquals(INVALID_USER_MESSAGE, exception.getMessage());
     }
 
     @Test
@@ -103,12 +105,12 @@ public class SalaryServiceUnitTests {
            salaryService.createSalary(salaryDTO);
         });
 
-        assertEquals(Constants.INVALID_AMOUNT, exception.getMessage());
+        assertEquals(INVALID_AMOUNT, exception.getMessage());
     }
 
     private Employee createEmployeeWithBonuses() {
         Employee e = new Employee();
-        e.setEmail(Constants.EMAIL);
+        e.setEmail(EMAIL);
         e.setSalaries(new HashSet<>());
 
         Salary s1 = new Salary(100, 1638658800000L, e);
