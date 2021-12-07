@@ -2,6 +2,13 @@ package com.app.RestaurantApp.drink;
 
 public class Constants {
 
+    public static long DRINK_ID = 7L;
+    public static long DELETE_DRINK_ID = 8L;
+
+    public static final String FOUND_NAME = "Coca Cola";
+    public static final double FOUND_COST = 140.0;
+    public static final String FOUND_CATEGORY_NAME = "Gazirana pica";
+
     public static final String ALL = "ALL";
     public static final String NAME1 = "pivo";
     public static final String NAME2 = "zajecar";

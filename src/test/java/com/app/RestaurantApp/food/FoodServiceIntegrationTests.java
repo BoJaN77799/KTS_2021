@@ -53,13 +53,13 @@ public class FoodServiceIntegrationTests {
 
     @Test
     public void testDeleteFood(){
-        Food food = foodService.findOne(FOOD_ID);
+        Food food = foodService.findOne(DELETE_FOOD_ID);
 
         // Test invoke
         foodService.deleteFood(food);
 
         // Verifying
-        assertNull(foodService.findOne(FOOD_ID));
+        assertNull(foodService.findOne(DELETE_FOOD_ID));
     }
 
     private FoodDTO createFoodDTO(){

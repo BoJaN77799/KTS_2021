@@ -5,6 +5,7 @@ public class Constants {
     public static final String ALL = "ALL";
 
     public static long FOOD_ID = 1L;
+    public static long DELETE_FOOD_ID = 2L;
 
     public static final String FOUND_NAME = "Supa";
     public static final double FOUND_COST = 250.0;
