@@ -33,6 +33,7 @@ public class Menu {
     public Menu(String name) {
         this.name = name;
         this.activeMenu = true;
+        this.items = new HashSet<>();
     }
 
     public Long getId() {

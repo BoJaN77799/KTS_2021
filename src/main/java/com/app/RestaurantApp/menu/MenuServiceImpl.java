@@ -53,6 +53,8 @@ public class MenuServiceImpl implements MenuService{
         Item i = itemService.findItemById(Long.valueOf(mi.getItemId()));
         if (i == null) throw new ItemException("Item does not exist!");
 
+        if (!m.getItems().contains(i)) throw new MenuException("Item does not exist in menu!");
+
         m.getItems().remove(i);
         menuRepository.save(m);
     }
