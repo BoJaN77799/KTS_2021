@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.order;
 
 import com.app.RestaurantApp.drinks.Drink;
+import com.app.RestaurantApp.enums.OrderItemStatus;
 import com.app.RestaurantApp.enums.OrderStatus;
 import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.food.Food;
@@ -10,6 +11,7 @@ import com.app.RestaurantApp.item.ItemService;
 import com.app.RestaurantApp.notifications.OrderNotification;
 import com.app.RestaurantApp.notifications.OrderNotificationService;
 import com.app.RestaurantApp.order.dto.OrderDTO;
+import com.app.RestaurantApp.orderItem.OrderItem;
 import com.app.RestaurantApp.orderItem.dto.OrderItemOrderCreationDTO;
 import com.app.RestaurantApp.table.Table;
 import com.app.RestaurantApp.table.TableService;
@@ -22,11 +24,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.app.RestaurantApp.order.Constants.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -78,13 +81,13 @@ public class OrderServiceUnitTests {
 
         given(orderRepositoryMock.save(any(Order.class))).willReturn(order);
         given(orderNotificationServiceMock.notifyNewOrder(any(Order.class))).willReturn(orderNotifications);
-        given(itemServiceMock.findAllWithIds(anyList())).willReturn(createItems());
     }
 
     @Test
     public void testCreateOrder() throws OrderException {
-        OrderDTO orderDTO = createOrderDTO();
+        given(itemServiceMock.findAllWithIds(anyList())).willReturn(createItems());
 
+        OrderDTO orderDTO = createOrderDTOWithOrderItems();
         Order order = orderService.createOrder(orderDTO);
 
         verify(employeeServiceMock, times(1)).findById(1L);
@@ -99,22 +102,297 @@ public class OrderServiceUnitTests {
         assertEquals(2, order.getOrderItems().size());
     }
 
-    private OrderDTO createOrderDTO() {
+    @Test
+    public void testCreateOrder_NoOrderItems() throws OrderException {
+        given(itemServiceMock.findAllWithIds(anyList())).willReturn(null);
+
+        OrderDTO orderDTO = createBlankOrderDTO();
+
+        Exception e = assertThrows(OrderException.class, () -> orderService.createOrder(orderDTO));
+
+        assertEquals(NO_ORDER_ITEMS_MSG, e.getMessage());
+    }
+
+    @Test
+    public void testCreateOrder_ItemDoesNotExistInDatabase() throws OrderException {
+        given(itemServiceMock.findAllWithIds(anyList())).willReturn(new ArrayList<>());
+
+        OrderDTO orderDTO = createOrderDTOWithOrderItems();
+
+        Exception e = assertThrows(OrderException.class, () -> orderService.createOrder(orderDTO));
+
+        assertEquals(NO_ORDER_ITEM_DATABASE_MSG, e.getMessage());
+    }
+
+    @Test
+    public void testCreateOrder_OderItemInvalidQuantity() throws OrderException {
+        given(itemServiceMock.findAllWithIds(anyList())).willReturn(createItems());
+
+        OrderDTO orderDTO = createOrderDTOWithOrderItemsInvalidQuantity();
+
+        Exception e = assertThrows(OrderException.class, () -> orderService.createOrder(orderDTO));
+
+        assertEquals(INVALID_QUANTITY_MSG, e.getMessage());
+    }
+
+    @Test
+    public void testCreateOrder_OderItemInvalidPriority() throws OrderException {
+        given(itemServiceMock.findAllWithIds(anyList())).willReturn(createItems());
+
+        OrderDTO orderDTO = createOrderDTOWithOrderItemsInvalidPriority();
+
+        Exception e = assertThrows(OrderException.class, () -> orderService.createOrder(orderDTO));
+
+        assertEquals(INVALID_PRIORITY_MSG, e.getMessage());
+    }
+
+    @Test
+    public void testCreateOrder_InvalidWaiterId() throws OrderException {
+        given(itemServiceMock.findAllWithIds(anyList())).willReturn(createItems());
+        OrderDTO orderDTO = createOrderDTOWithOrderItems();
+        orderDTO.setWaiterId(null);
+
+        Exception e = assertThrows(OrderException.class, () -> orderService.createOrder(orderDTO));
+
+        assertEquals(INVALID_WAITER_MSG, e.getMessage());
+    }
+
+    @Test
+    public void testCreateOrder_InvalidTableId() throws OrderException {
+        given(itemServiceMock.findAllWithIds(anyList())).willReturn(createItems());
+        OrderDTO orderDTO = createOrderDTOWithOrderItems();
+        orderDTO.setTableId(null);
+
+        Exception e = assertThrows(OrderException.class, () -> orderService.createOrder(orderDTO));
+
+        assertEquals(INVALID_TABLE_MSG, e.getMessage());
+    }
+
+    @Test
+    public void testCreateOrder_InvalidNote() throws OrderException {
+        given(itemServiceMock.findAllWithIds(anyList())).willReturn(createItems());
+        OrderDTO orderDTO = createOrderDTOWithOrderItems();
+        orderDTO.setNote(create301CharString());
+
+        Exception e = assertThrows(OrderException.class, () -> orderService.createOrder(orderDTO));
+
+        assertEquals(INVALID_NOTE_MSG, e.getMessage());
+    }
+
+    @Test
+    public void testFindOneWithOrderItemsForUpdate() {
+        Order order = new Order();
+        order.setId(1L);
+        OrderItem oi1 = new OrderItem();
+        oi1.setStatus(OrderItemStatus.ORDERED);
+        OrderItem oi2 = new OrderItem();
+        oi2.setStatus(OrderItemStatus.IN_PROGRESS);
+        OrderItem oi3 = new OrderItem();
+        oi3.setStatus(OrderItemStatus.FINISHED);
+        Set<OrderItem> ois = new HashSet<>();
+        ois.add(oi1); ois.add(oi2); ois.add(oi3);
+        order.setOrderItems(ois);
+
+        given(orderRepositoryMock.findOneWithOrderItems(1L)).willReturn(order);
+
+        Order o = orderService.findOneWithOrderItemsForUpdate(1L);
+
+        verify(orderRepositoryMock, times(1)).findOneWithOrderItems(1L);
+        assertEquals(Long.valueOf(1), o.getId());
+        assertEquals(1, order.getOrderItems().size());
+        order.getOrderItems().forEach(orderItem -> assertEquals(OrderItemStatus.ORDERED, orderItem.getStatus()));
+    }
+
+    @Test
+    public void testFindOneWithOrderItemsForUpdate_InvalidOrder() {
+        given(orderRepositoryMock.findOneWithOrderItems(-1L)).willReturn(null);
+
+        Order o = orderService.findOneWithOrderItemsForUpdate(-1L);
+
+        verify(orderRepositoryMock, times(1)).findOneWithOrderItems(-1L);
+        assertNull(o);
+    }
+
+    @Test
+    public void testUpdateOrder_ChangeQuantityAndPriority() throws OrderException {
+        // Changing quantity from INIT_QUANTITY1 to INIT_QUANTITY2 and priority from 1 to 2
+        Order order = createOrderWithOrderItemsForUpdate(1L);
+        OrderItem orderItem = findOrderItemWithId(1L, order);
+        OrderNotification on = new OrderNotification();
+        on.setOrder(order);
+
+        given(orderRepositoryMock.findOneWithOrderItems(1L)).willReturn(order);
+        given(orderNotificationServiceMock.notifyOrderItemChange(order, orderItem, INIT_QUANTITY2, 2)).willReturn(on);
+
+        OrderDTO orderDTO = createOrderDTOItemUpdate(1L);
+        Order o = orderService.updateOrder(orderDTO);
+
+        verify(orderRepositoryMock, times(1)).findOneWithOrderItems(1L);
+        verify(orderNotificationServiceMock, times(0)).notifyOrderItemDeleted(any(Order.class), any(OrderItem.class));
+        verify(orderNotificationServiceMock, times(1)).notifyOrderItemChange(order, orderItem, INIT_QUANTITY2, 2);
+        assertEquals(1L, o.getId());
+        for(OrderItem oi : o.getOrderItems()) {
+            if(oi.getId() == 1L){
+                assertEquals(INIT_QUANTITY2, oi.getQuantity());
+                assertEquals(2, oi.getPriority());
+            }
+        }
+        assertEquals(3, o.getOrderItems().size());
+        assertEquals(order.getNote(), "Alora, ciao bella.");
+    }
+
+    @Test
+    public void testUpdateOrder_Delete() throws OrderException {
+        // Deleting order item with id 1 from order
+        Order order = createOrderWithOrderItemsForUpdate(1L);
+        OrderItem orderItem = findOrderItemWithId(1L, order);
+        OrderNotification on = new OrderNotification();
+        on.setOrder(order);
+
+        given(orderRepositoryMock.findOneWithOrderItems(1L)).willReturn(order);
+        given(orderNotificationServiceMock.notifyOrderItemChange(order, orderItem, INIT_QUANTITY2, 2)).willReturn(on);
+        given(orderNotificationServiceMock.notifyOrderItemDeleted(order, orderItem)).willReturn(on);
+
+        OrderDTO orderDTO = createOrderDTOItemDelete(1L);
+        Order o = orderService.updateOrder(orderDTO);
+
+        verify(orderRepositoryMock, times(1)).findOneWithOrderItems(1L);
+        verify(orderNotificationServiceMock, times(1)).notifyOrderItemDeleted(order, orderItem);
+        verify(orderNotificationServiceMock, times(0)).notifyOrderItemChange(any(Order.class), any(OrderItem.class), anyInt(), anyInt());
+        assertEquals(1L, o.getId());
+        assertEquals(2, o.getOrderItems().size());
+        assertEquals(o.getNote(), "Alora, ciao bella.");
+    }
+
+    private Order createOrderWithOrderItemsForUpdate(Long id) {
+        Order order = new Order();
+        order.setId(id);
+        order.setOrderItems(new HashSet<>());
+        order.getOrderItems().add(createFoodOrderItem(1L, OrderItemStatus.ORDERED, INIT_QUANTITY1, 1));
+        order.getOrderItems().add(createFoodOrderItem(2L, OrderItemStatus.IN_PROGRESS, INIT_QUANTITY2, 2));
+        order.getOrderItems().add(createDrinkOrderItem(3L, OrderItemStatus.ORDERED, INIT_QUANTITY1, 1));
+        order.getOrderItems().add(createDrinkOrderItem(4L, OrderItemStatus.FINISHED, INIT_QUANTITY2, 2));
+        order.getOrderItems().add(createDrinkOrderItem(5L, OrderItemStatus.ORDERED, INIT_QUANTITY1, 1));
+        order.setNote("Ciao bella.");
+
+        return order;
+    }
+
+    private OrderItem findOrderItemWithId(Long id, Order order) {
+        for(OrderItem oi : order.getOrderItems()) {
+            if(oi.getId() == id)
+                return oi;
+        }
+        return null;
+    }
+
+    private OrderDTO createOrderDTOItemUpdate(Long id) {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setId(id);
+        orderDTO.setNote("Alora, ciao bella.");
+        orderDTO.setOrderItems(new ArrayList<>());
+        orderDTO.getOrderItems().add(createOrderItemDTOForUpdate(1L, INIT_QUANTITY2, 2));
+
+        return orderDTO;
+    }
+
+    private OrderDTO createOrderDTOItemDelete(Long id) {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setId(id);
+        orderDTO.setNote("Alora, ciao bella.");
+        orderDTO.setOrderItems(new ArrayList<>());
+        orderDTO.getOrderItems().add(createOrderItemDTOForUpdate(1L, DELETE_QUANTITY, 2));
+
+        return orderDTO;
+    }
+
+    private OrderItemOrderCreationDTO createOrderItemDTOForUpdate(Long id, int quantity, int priority) {
+        OrderItemOrderCreationDTO oi = new OrderItemOrderCreationDTO();
+        oi.setId(id);
+        oi.setQuantity(quantity);
+        oi.setPriority(priority);
+
+        return oi;
+    }
+
+    private OrderItem createFoodOrderItem(Long id, OrderItemStatus status, int quantity, int priority) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setId(id);
+        Food food = new Food();
+        food.setId(id);
+
+        orderItem.setItem(food);
+        orderItem.setStatus(status);
+        orderItem.setQuantity(quantity);
+        orderItem.setPriority(priority);
+
+        return orderItem;
+    }
+
+    private OrderItem createDrinkOrderItem(Long id, OrderItemStatus status, int quantity, int priority) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setId(id);
+        Drink drink = new Drink();
+        drink.setId(id);
+
+        orderItem.setItem(drink);
+        orderItem.setStatus(status);
+        orderItem.setQuantity(quantity);
+        orderItem.setPriority(priority);
+
+        return orderItem;
+    }
+
+    private OrderDTO createBlankOrderDTO() {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(null);
         orderDTO.setWaiterId(1L);
         orderDTO.setTableId(1L);
+
+        orderDTO.setCreatedAt(null);
+        orderDTO.setStatus(null);
+        orderDTO.setNote(NOTE);
+
+        orderDTO.setOrderItems(new ArrayList<>());
+
+        return orderDTO;
+    }
+
+    private OrderDTO createOrderDTOWithOrderItems() {
+        OrderDTO orderDTO = createBlankOrderDTO();
 
         OrderItemOrderCreationDTO oi1DTO = new OrderItemOrderCreationDTO(null, 1L, INIT_QUANTITY1, PRICE1, 1);
         OrderItemOrderCreationDTO oi2DTO = new OrderItemOrderCreationDTO(null, 2L, INIT_QUANTITY1, PRICE2, 2);
         List<OrderItemOrderCreationDTO> ois = new ArrayList<>();
         ois.add(oi1DTO);
         ois.add(oi2DTO);
-
         orderDTO.setOrderItems(ois);
-        orderDTO.setCreatedAt(null);
-        orderDTO.setStatus(null);
-        orderDTO.setNote(NOTE);
+
+        return orderDTO;
+    }
+
+    private OrderDTO createOrderDTOWithOrderItemsInvalidQuantity() {
+        OrderDTO orderDTO = createBlankOrderDTO();
+
+        OrderItemOrderCreationDTO oi1DTO = new OrderItemOrderCreationDTO(null, 1L, INVALID_QUANTITY, PRICE1, 1);
+        OrderItemOrderCreationDTO oi2DTO = new OrderItemOrderCreationDTO(null, 2L, INIT_QUANTITY1, PRICE2, 2);
+        List<OrderItemOrderCreationDTO> ois = new ArrayList<>();
+        ois.add(oi1DTO);
+        ois.add(oi2DTO);
+        orderDTO.setOrderItems(ois);
+
+        return orderDTO;
+    }
+
+    private OrderDTO createOrderDTOWithOrderItemsInvalidPriority() {
+        OrderDTO orderDTO = createBlankOrderDTO();
+
+        OrderItemOrderCreationDTO oi1DTO = new OrderItemOrderCreationDTO(null, 1L, INIT_QUANTITY1, PRICE1, INVALID_PRIORITY);
+        OrderItemOrderCreationDTO oi2DTO = new OrderItemOrderCreationDTO(null, 2L, INIT_QUANTITY1, PRICE2, 2);
+        List<OrderItemOrderCreationDTO> ois = new ArrayList<>();
+        ois.add(oi1DTO);
+        ois.add(oi2DTO);
+        orderDTO.setOrderItems(ois);
 
         return orderDTO;
     }
@@ -134,6 +412,12 @@ public class OrderServiceUnitTests {
         items.add(f);
         items.add(d);
         return items;
+    }
+
+    private String create301CharString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("a".repeat(302));
+        return sb.toString();
     }
 
 }

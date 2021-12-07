@@ -4,6 +4,9 @@ import com.app.RestaurantApp.enums.FoodType;
 import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.food.Food;
 import com.app.RestaurantApp.orderItem.OrderItem;
+import com.app.RestaurantApp.orderItem.dto.OrderItemOrderCreationDTO;
+
+import java.util.List;
 
 public class OrderUtils {
 
@@ -58,9 +61,9 @@ public class OrderUtils {
         StringBuilder sb = new StringBuilder();
 
         for(OrderItem oi : order.getOrderItems()) {
-            if(oi.getPriority() < -1 || oi.getPriority() > 2) {
+            if(oi.getPriority() < 0 || oi.getPriority() > 2) {
                 String msg = "Priority of " + oi.getItem().getName() + " is '" + oi.getPriority() + "'." +
-                        " Should be less or equal than two or greater or equal than one (or default - not set).";
+                        " Should be less or equal two or greater or equal than one (or default - not set or '-1').";
 
                 sb.append(msg);
                 sb.append("\n");
@@ -71,5 +74,12 @@ public class OrderUtils {
             throw new OrderException(sb.toString().trim());
         }
     }
+
+    public static void checkOrderItemsDTONumber(List<OrderItemOrderCreationDTO> ois) throws OrderException {
+        if(ois.size() == 0)
+            throw new OrderException("Order does not have order items for update!");
+    }
+
+
 
 }

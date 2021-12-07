@@ -140,6 +140,7 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public Order findOneWithOrderItemsForUpdate(Long id) {
         Order order = orderRepository.findOneWithOrderItems(id);
+        if(order == null) return null;
 
         order.getOrderItems().removeIf(orderItem -> orderItem.getStatus() != OrderItemStatus.ORDERED);
 
@@ -151,6 +152,7 @@ public class OrderServiceImpl implements OrderService{
         Order order = findOneWithOrderItemsForUpdate(orderDTO.getId());
         if(order == null) throw new OrderException("Invalid order id sent from front!");
         List<OrderItemOrderCreationDTO> orderItemsDTO = orderDTO.getOrderItems();
+        OrderUtils.checkOrderItemsDTONumber(orderItemsDTO);
 
         OrderUtils.checkNoteLength(orderDTO.getNote());
         order.setNote(orderDTO.getNote());
@@ -203,10 +205,11 @@ public class OrderServiceImpl implements OrderService{
         List<OrderNotification> ons = orderNotificationService.notifyOrderItemAdded(order, newOrderItems);
         notificationsToSend.addAll(ons);
 
-        order = orderRepository.save(finalOrder);               // Cuvanje order-a (svih order item-a)
+        Order savedOrder = orderRepository.save(finalOrder);    // Cuvanje order-a (svih order item-a)
         orderItemService.deleteAll(orderItemsToDelete);         // Brisanje svih koji koji imaju kvantitet nula
         orderNotificationService.saveAll(notificationsToSend);  // Cuvanje (slanje) svih notifikacija
 
+        order.setId(savedOrder.getId());
         return order;
     }
 
@@ -225,6 +228,9 @@ public class OrderServiceImpl implements OrderService{
 
         List<Item> items = itemService.findAllWithIds(itemsId);
 
+        if(items == null)
+            items = new ArrayList<>();
+
         if(items.size() != orderItemsDTO.size())
             throw new OrderException("One of items selected for order does not exist in database!");
 
@@ -241,7 +247,8 @@ public class OrderServiceImpl implements OrderService{
             orderItem.setOrder(order);
             orderItems.add(orderItem);
 
-            orderItem.setPriority(orderItemsDTO.get(i).getPriority());
+            Integer tempPriority = orderItemsDTO.get(i).getPriority();
+            orderItem.setPriority((tempPriority == null) ? -1 : tempPriority);
             if(orderItem.getPriority() == -1 && orderItem.getItem() instanceof Food) {  // Podesavanje prioriteta ukoliko je default (-1)
                 FoodType type = ( (Food) orderItem.getItem() ).getType();
                 orderItem.setPriority(type.ordinal());
