@@ -28,7 +28,7 @@ public class DrinkRepositoryIntegrationTests {
     private DrinkRepository drinkRepository;
 
     @Test
-    public void testFindAllWithPriceByCriteriaWithName() {
+    public void testFindAllWithPriceByCriteria_WithName() {
         Page<Drink> drinksPage;
         List<Drink> drinks;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
@@ -41,7 +41,7 @@ public class DrinkRepositoryIntegrationTests {
     }
 
     @Test
-    public void testFindAllWithPriceByCriteriaWithCategory() {
+    public void testFindAllWithPriceByCriteria_WithCategory() {
         Page<Drink> drinksPage;
         List<Drink> drinks;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
@@ -54,7 +54,7 @@ public class DrinkRepositoryIntegrationTests {
     }
 
     @Test
-    public void testFindAllWithPriceByCriteriaWithNameAndCategory() {
+    public void testFindAllWithPriceByCriteria_WithNameAndCategory() {
         Page<Drink> drinksPage;
         List<Drink> drinks;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
@@ -66,7 +66,7 @@ public class DrinkRepositoryIntegrationTests {
     }
 
     @Test
-    public void testFindAllWithPriceByCriteriaAll() {
+    public void testFindAllWithPriceByCriteria_All() {
         Page<Drink> drinksPage;
         List<Drink> drinks;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);

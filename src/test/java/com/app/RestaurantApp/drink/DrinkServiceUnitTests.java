@@ -46,7 +46,7 @@ public class DrinkServiceUnitTests {
     }
 
     @Test
-    public void testGetDrinksWithPriceWithName() {
+    public void testGetDrinksWithPrice_WithName() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
         DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(NAME3, ALL);
         Page<Drink> drinksPage = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);
@@ -55,7 +55,7 @@ public class DrinkServiceUnitTests {
     }
 
     @Test
-    public void testGetDrinksWithPriceWithCategory() {
+    public void testGetDrinksWithPrice_WithCategory() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
         DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(ALL, CATEGORY2);
         Page<Drink> drinksPage = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);
@@ -64,7 +64,7 @@ public class DrinkServiceUnitTests {
     }
 
     @Test
-    public void testGetDrinksWithPriceWithBlanks() {
+    public void testGetDrinksWithPrice_WithBlanks() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
         DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(ALL, ALL);
         Page<Drink> drinksPage = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);
@@ -73,7 +73,7 @@ public class DrinkServiceUnitTests {
     }
 
     @Test
-    public void testGetDrinksWithPriceWithNulls() {
+    public void testGetDrinksWithPrice_WithNulls() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
         DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(null, null);
         Page<Drink> drinksPage = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);

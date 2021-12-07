@@ -41,7 +41,8 @@ public class FoodRepositoryIntegrationTests {
         assertEquals("Jagnjece pecenje", foods.get(0).getName());
     }
 
-    @Test public void testFindAllWithPriceByCriteriaWithName() {
+    @Test
+    public void testFindAllWithPriceByCriteria_WithName() {
         Page<Food> foodsPage;
         List<Food> foods;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
@@ -52,7 +53,8 @@ public class FoodRepositoryIntegrationTests {
         assertEquals("Supa", foods.get(0).getName());
     }
 
-    @Test public void testFindAllWithPriceByCriteriaWithType() {
+    @Test
+    public void testFindAllWithPriceByCriteria_WithType() {
         Page<Food> foodsPage;
         List<Food> foods;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
@@ -63,7 +65,8 @@ public class FoodRepositoryIntegrationTests {
         assertEquals("Supa", foods.get(0).getName());
     }
 
-    @Test public void testFindAllWithPriceByCriteriaWithCategory() {
+    @Test
+    public void testFindAllWithPriceByCriteria_WithCategory() {
         Page<Food> foodsPage;
         List<Food> foods;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
@@ -74,7 +77,8 @@ public class FoodRepositoryIntegrationTests {
         assertEquals("Prsuta", foods.get(0).getName());
     }
 
-    @Test public void testFindAllWithPriceByCriteriaWithNameAndCategory() {
+    @Test
+    public void testFindAllWithPriceByCriteria_WithNameAndCategory() {
         Page<Food> foodsPage;
         List<Food> foods;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
@@ -85,7 +89,8 @@ public class FoodRepositoryIntegrationTests {
         assertEquals("Prsuta", foods.get(0).getName());
     }
 
-    @Test public void testFindAllWithPriceByCriteriaWithNameAndType() {
+    @Test
+    public void testFindAllWithPriceByCriteria_WithNameAndType() {
         Page<Food> foodsPage;
         List<Food> foods;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
@@ -96,7 +101,8 @@ public class FoodRepositoryIntegrationTests {
         assertEquals("Jagnjece pecenje", foods.get(0).getName());
     }
 
-    @Test public void testFindAllWithPriceByCriteriaWithBlanks() {
+    @Test
+    public void testFindAllWithPriceByCriteria_WithBlanks() {
         Page<Food> foodsPage;
         List<Food> foods;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
