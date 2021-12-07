@@ -30,7 +30,7 @@ public class Bonus {
     public Bonus(BonusDTO bonusDTO){
         this.amount = bonusDTO.getAmount();
         this.date = LocalDate.parse(bonusDTO.getDate(), DateTimeFormatter.ofPattern("dd.MM.yyyy."))
-        .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
+                .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
     }
 
     public double getAmount() {
