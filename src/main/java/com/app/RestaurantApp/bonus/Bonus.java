@@ -33,6 +33,18 @@ public class Bonus {
                 .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
     }
 
+
+    public Bonus(double amount, Long date) {
+        this.amount = amount;
+        this.date = date;
+    }
+
+    public Bonus(double amount, Long date, Employee e){
+        this.amount = amount;
+        this.date = date;
+        this.employee = e;
+    }
+
     public double getAmount() {
         return amount;
     }
