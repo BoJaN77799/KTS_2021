@@ -16,8 +16,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -27,19 +28,87 @@ public class BonusServiceUnitTests {
     private BonusService bonusService;
 
     @MockBean
-    private EmployeeService employeeService;
+    private EmployeeService employeeServiceMock;
+
+    @MockBean
+    private BonusRepository bonusRepositoryMock;
 
     @BeforeEach
     public void setup() {
         Employee e = createEmployeeWithBonuses();
-        given(employeeService.findEmployeeWithBonuses(Constants.EMAIL)).willReturn(e);
+
+        Bonus b = new Bonus();
+
+        given(employeeServiceMock.findEmployeeWithBonuses(Constants.EMAIL)).willReturn(e);
+        given(employeeServiceMock.findByEmail(Constants.EMAIL)).willReturn(e);
+        given(bonusRepositoryMock.save(b)).willReturn(b);
     }
 
     @Test
     public void testGetBonusesOfEmployee_Valid() throws UserException {
         List<BonusDTO> bonuses = bonusService.getBonusesOfEmployee(Constants.EMAIL);
+
+        verify(employeeServiceMock, times(1)).findEmployeeWithBonuses(Constants.EMAIL);
+
         assertEquals(3, bonuses.size());
 
+        //sorted by dates
+        assertEquals(150.0, bonuses.get(0).getAmount());
+        assertEquals(200.0, bonuses.get(1).getAmount());
+        assertEquals(100.0, bonuses.get(2).getAmount());
+
+        assertEquals("05.12.2021.", bonuses.get(0).getDate());
+        assertEquals("06.12.2021.", bonuses.get(1).getDate());
+        assertEquals("07.12.2021.", bonuses.get(2).getDate());
+    }
+
+    @Test
+    public void testGetBonusesOfEmployee_Invalid() {
+        given(employeeServiceMock.findEmployeeWithBonuses(Constants.EMAIL)).willReturn(null);
+
+        Exception exception = assertThrows(UserException.class, () -> bonusService.getBonusesOfEmployee(Constants.EMAIL));
+
+        assertEquals(Constants.INVALID_USER_MESSAGE, exception.getMessage());
+    }
+
+    @Test
+    public void testCreateBonus_Valid() throws BonusException, UserException {
+        BonusDTO bonusDTO = createBonusDTO();
+        Bonus bonusMocked = new Bonus(bonusDTO);
+        Employee e = employeeServiceMock.findByEmail(bonusDTO.getEmail());
+        bonusMocked.setEmployee(e);
+        given(bonusRepositoryMock.save(any())).willReturn(bonusMocked);
+
+        bonusService.createBonus(bonusDTO);
+
+        verify(employeeServiceMock, times(2)).findByEmail(Constants.EMAIL);
+        verify(bonusRepositoryMock, times(1)).save(any());
+
+    }
+
+    @Test
+    public void testCreateBonus_InvalidUser() {
+        given(employeeServiceMock.findByEmail(Constants.EMAIL)).willReturn(null);
+
+        Exception exception = assertThrows(UserException.class, () ->
+        {
+            BonusDTO bonusDTO = createBonusDTO();
+            bonusService.createBonus(bonusDTO);
+        });
+
+        assertEquals(Constants.INVALID_USER_MESSAGE, exception.getMessage());
+    }
+
+    @Test
+    public void testCreateBonus_InvalidAmount() {
+        Exception exception = assertThrows(BonusException.class, () ->
+        {
+            BonusDTO bonusDTO = createBonusDTO();
+            bonusDTO.setAmount(-1);
+            bonusService.createBonus(bonusDTO);
+        });
+
+        assertEquals(Constants.INVALID_AMOUNT, exception.getMessage());
     }
 
     private Employee createEmployeeWithBonuses() {
@@ -56,5 +125,13 @@ public class BonusServiceUnitTests {
         e.getBonuses().add(b3);
 
         return e;
+    }
+
+    private BonusDTO createBonusDTO() {
+        BonusDTO bonusDTO = new BonusDTO();
+        bonusDTO.setDate("07.12.2021.");
+        bonusDTO.setAmount(300);
+        bonusDTO.setEmail(Constants.EMAIL);
+        return bonusDTO;
     }
 }

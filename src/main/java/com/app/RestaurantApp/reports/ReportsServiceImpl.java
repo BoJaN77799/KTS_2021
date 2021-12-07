@@ -130,12 +130,7 @@ public class ReportsServiceImpl implements ReportsService {
                 boolean indicator = false;
                 LocalDate dateOfSalary = Instant.ofEpochMilli(s.getDateFrom()).atZone(ZoneId.systemDefault()).toLocalDate();
                 if (dateOfSalary.equals(dateToLD) || dateOfSalary.isBefore(dateToLD)) {
-                    switch (dateToLD.getMonth().minLength()) {
-                        case 28 -> sum += s.getAmount() / 28;
-                        case 29 -> sum += s.getAmount() / 29;
-                        case 30 -> sum += s.getAmount() / 30;
-                        default -> sum += s.getAmount() / 31;
-                    }
+                    sum += s.getAmount() / dateToLD.getMonth().minLength();
                     indicator = true;
                 }
                 if (indicator)

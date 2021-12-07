@@ -26,8 +26,15 @@ public class BonusController {
 
     @PostMapping(value = "/createBonus")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<BonusDTO> createBonus(@RequestBody BonusDTO bonusDTO) throws UserException {
-        return new ResponseEntity<>(bonusService.createBonus(bonusDTO), HttpStatus.OK);
+    public ResponseEntity<String> createBonus(@RequestBody BonusDTO bonusDTO) {
+        try {
+            bonusService.createBonus(bonusDTO);
+        } catch (BonusException | UserException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Unknown error happened while adding bonus!", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Bonus added successfully", HttpStatus.OK);
     }
 
 }

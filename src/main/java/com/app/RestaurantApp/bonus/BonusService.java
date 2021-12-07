@@ -9,5 +9,5 @@ public interface BonusService {
 
     List<BonusDTO> getBonusesOfEmployee(String email) throws UserException;
 
-    BonusDTO createBonus(BonusDTO bonusDTO) throws UserException;
+    Bonus createBonus(BonusDTO bonusDTO) throws UserException, BonusException;
 }

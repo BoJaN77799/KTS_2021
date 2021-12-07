@@ -33,14 +33,16 @@ public class BonusServiceImpl implements BonusService {
     }
 
     @Override
-    public BonusDTO createBonus(BonusDTO bonusDTO) throws UserException {
+    public Bonus createBonus(BonusDTO bonusDTO) throws UserException, BonusException {
         bonusDTO.setDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy.")));
         Employee e = employeeService.findByEmail(bonusDTO.getEmail());
         if (e == null) throw new UserException("Invalid employee, email not found!");
 
         Bonus bonus = new Bonus(bonusDTO);
         bonus.setEmployee(e);
-        bonusRepository.save(bonus);
-        return bonusDTO;
+        BonusUtils.CheckBonusInfo(bonus);
+
+        return bonusRepository.save(bonus);
+
     }
 }

@@ -25,16 +25,16 @@ public class ReportsController {
     @Autowired
     private ReportsService reportsService;
 
-    @GetMapping(value = "/getReportsSales/{indikator}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getReportsSales/{indicator}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
-    public List<Sales> getReportsSales(@PathVariable String indikator) {
-        return reportsService.getReportsSales(indikator);
+    public List<Sales> getReportsSales(@PathVariable String indicator) {
+        return reportsService.getReportsSales(indicator);
     }
 
-    @GetMapping(value = "/getIncomeExpenses/{indikator}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getIncomeExpenses/{indicator}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
-    public IncomeExpenses getIncomeExpenses(@PathVariable String indikator) {
-        return reportsService.getIncomeExpenses(indikator);
+    public IncomeExpenses getIncomeExpenses(@PathVariable String indicator) {
+        return reportsService.getIncomeExpenses(indicator);
     }
 
     @GetMapping(value = "/activity")
