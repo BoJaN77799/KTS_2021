@@ -102,6 +102,7 @@ public class CreateUserDTO {
         user.setGender(gender);
         user.setTelephone(telephone);
         user.setUserType(userType);
+        user.setProfilePhoto("");
         return user;
     }
 }

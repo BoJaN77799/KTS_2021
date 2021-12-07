@@ -3,10 +3,7 @@ package com.app.RestaurantApp.users.appUser;
 import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.dto.CreateUserDTO;
 import com.app.RestaurantApp.users.dto.UpdateUserDTO;
-import com.app.RestaurantApp.users.employee.Employee;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
 import java.util.List;
@@ -18,9 +15,9 @@ public interface AppUserService extends UserDetailsService {
 
     List<AppUser> searchUsersAdmin(String searchField, String userType, Pageable pageable);
 
-    void createUser(CreateUserDTO user) throws UserException;
+    AppUser createUser(CreateUserDTO user) throws UserException;
 
-    void updateUser(UpdateUserDTO updateUserDTO) throws UserException;
+    AppUser updateUser(UpdateUserDTO updateUserDTO) throws UserException;
 
     void deleteUser(Long id) throws UserException;
 
