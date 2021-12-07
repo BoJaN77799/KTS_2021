@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.salary;
 
+import com.app.RestaurantApp.bonus.BonusException;
 import com.app.RestaurantApp.salary.dto.SalaryDTO;
 import com.app.RestaurantApp.users.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,16 @@ public class SalaryController {
 
     @PostMapping(value = "/createSalary")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<SalaryDTO> createSalary(@RequestBody SalaryDTO salaryDTO) throws SalaryException, UserException {
-        return new ResponseEntity<>(salaryService.createSalary(salaryDTO), HttpStatus.OK);
+    public ResponseEntity<String> createSalary(@RequestBody SalaryDTO salaryDTO) throws SalaryException, UserException {
+        try {
+            salaryService.createSalary(salaryDTO);
+        } catch (SalaryException | UserException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Unknown error happened while adding salary!", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Salary added successfully", HttpStatus.OK);
+
     }
 
 }

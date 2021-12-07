@@ -35,6 +35,12 @@ public class Salary {
 
     }
 
+    public Salary(double amount, Long dateFrom, Employee e) {
+        this.amount = amount;
+        this.dateFrom = dateFrom;
+        this.employee = e;
+    }
+
     public Long getId() {
         return id;
     }

@@ -9,5 +9,5 @@ public interface SalaryService {
 
     List<SalaryDTO> getSalariesOfEmployee(String email) throws UserException;
 
-    SalaryDTO createSalary(SalaryDTO salaryDTO) throws SalaryException, UserException;
+    Salary createSalary(SalaryDTO salaryDTO) throws SalaryException, UserException;
 }

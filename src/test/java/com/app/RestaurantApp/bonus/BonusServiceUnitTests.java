@@ -37,11 +37,8 @@ public class BonusServiceUnitTests {
     public void setup() {
         Employee e = createEmployeeWithBonuses();
 
-        Bonus b = new Bonus();
-
         given(employeeServiceMock.findEmployeeWithBonuses(Constants.EMAIL)).willReturn(e);
         given(employeeServiceMock.findByEmail(Constants.EMAIL)).willReturn(e);
-        given(bonusRepositoryMock.save(b)).willReturn(b);
     }
 
     @Test

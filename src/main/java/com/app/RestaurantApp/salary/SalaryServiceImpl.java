@@ -42,7 +42,7 @@ public class SalaryServiceImpl implements SalaryService {
     }
 
     @Override
-    public SalaryDTO createSalary(SalaryDTO salaryDTO) throws SalaryException, UserException {
+    public Salary createSalary(SalaryDTO salaryDTO) throws SalaryException, UserException {
         // Postavljam da bude trenutan datum za kreiranje plate
         salaryDTO.setDateFrom(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy.")));
 
@@ -53,8 +53,7 @@ public class SalaryServiceImpl implements SalaryService {
 
         SalaryUtils.CheckSalaryInfo(salary);
 
-        salaryRepository.save(salary);
-        return salaryDTO;
+        return salaryRepository.save(salary);
     }
 
 }
