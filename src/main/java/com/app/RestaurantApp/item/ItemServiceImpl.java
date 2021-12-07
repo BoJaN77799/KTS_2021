@@ -23,17 +23,6 @@ public class ItemServiceImpl implements ItemService {
     private ItemRepository itemRepository;
 
     @Override
-    public void insertItem(ItemDTO itemDTO) {
-        Item item = new Item(itemDTO);
-        itemRepository.save(item);
-    }
-
-    @Override
-    public boolean deleteItem(Long id) {
-        return false;
-    }
-
-    @Override
     public List<Item> findAllWithIds(List<Long> ids) {
         return itemRepository.findAllWithIds(ids);
     }

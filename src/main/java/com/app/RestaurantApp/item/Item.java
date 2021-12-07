@@ -39,7 +39,8 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Price> prices;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.DETACH}) // when food is deleted, all ingredients that are linked to
+                                                // that food loses references without removing
     @JoinTable(
             name = "item_ingredient",
             joinColumns = {@JoinColumn(name = "item_id")},

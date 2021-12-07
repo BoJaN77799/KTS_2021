@@ -4,6 +4,12 @@ public class Constants {
 
     public static final String ALL = "ALL";
 
+    public static long FOOD_ID = 1L;
+
+    public static final String FOUND_NAME = "Supa";
+    public static final double FOUND_COST = 250.0;
+    public static final String FOUND_CATEGORY_NAME = "Supe";
+
     public static final String NAME1 = "supa";
     public static final String NAME2 = "jagnj";
     public static final String NAME3 = "a";
