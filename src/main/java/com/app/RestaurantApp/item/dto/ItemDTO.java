@@ -35,7 +35,8 @@ public class ItemDTO {
         this.cost = i.getCost();
         this.description = i.getDescription();
         this.image = i.getImage();
-        this.category = new CategoryDTO(i.getCategory());
+        if (i.getCategory() != null)
+            this.category = new CategoryDTO(i.getCategory());
         this.itemType = i.getItemType();
         this.deleted = i.isDeleted();
     }
