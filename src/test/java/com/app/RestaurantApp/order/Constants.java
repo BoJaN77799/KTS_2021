@@ -10,11 +10,15 @@ public class Constants {
     public static final Integer DELETE_QUANTITY = 0;
     public static final Integer INVALID_QUANTITY = -1;
     public static final Integer INVALID_PRIORITY = 50;
+    public static final Integer DRINK_PRIORITY = 0;
 
     public static final Double PRICE1 = 500.0;
     public static final Double PRICE2 = 300.0;
+    public static final Double PRICE3 = 400.0;
 
+    public static final String INVALID_ORDER_ID_MSG = "Invalid order id sent from front!";
     public static final String NO_ORDER_ITEMS_MSG = "Order does not have order items!";
+    public static final String NO_ORDER_ITEMS_UPDATE_MSG = "Order does not have order items for update!";
 
     public static final String NO_ORDER_ITEM_DATABASE_MSG = "One of items selected for order does not exist in database!";
 
@@ -27,4 +31,5 @@ public class Constants {
     public static final String INVALID_TABLE_MSG = "Invalid table id sent from front!";
     public static final String INVALID_NOTE_MSG = "Maximum characters for note is 300!";
 
+    public static final String NOT_CHANGEABLE_ORDER_ITEM_MSG = "Order item with id: 1 does not exist in order or cannot be changed!";
 }

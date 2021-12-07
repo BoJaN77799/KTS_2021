@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.order;
 
+import com.app.RestaurantApp.drinks.Drink;
 import com.app.RestaurantApp.enums.FoodType;
 import com.app.RestaurantApp.enums.OrderItemStatus;
 import com.app.RestaurantApp.enums.OrderStatus;
@@ -169,7 +170,7 @@ public class OrderServiceImpl implements OrderService{
                 if(orderItemForUpdate == null)
                     throw new OrderException("Order item with id: " + orderItemDTO.getId() + " does not exist in order or cannot be changed!");
 
-                if(orderItemDTO.getQuantity() <= 0){ // Ako je quantity na 0 obrisi ga
+                if(orderItemDTO.getQuantity() == 0){ // Ako je quantity na 0 obrisi ga
                     OrderNotification on = orderNotificationService.notifyOrderItemDeleted(order, orderItemForUpdate);
                     if(on != null) notificationsToSend.add(on);
 
@@ -180,16 +181,20 @@ public class OrderServiceImpl implements OrderService{
                 }
 
                 boolean quantityChanged = orderItemForUpdate.getQuantity() != orderItemDTO.getQuantity();
-                boolean priorityChanged = orderItemForUpdate.getPriority() != orderItemDTO.getPriority();
+                boolean priorityChanged = false;
+                if(orderItemForUpdate.getItem() instanceof Food)                                                    // Ako je pice ne gleda se prioritet
+                    priorityChanged = orderItemForUpdate.getPriority() != orderItemDTO.getPriority();
 
                 if(priorityChanged || quantityChanged) {
+                    if(orderItemForUpdate.getItem() instanceof Drink)                                               // Ako je pice ne gleda se prioriter
+                        orderItemForUpdate.setPriority(0);
                     OrderNotification on = orderNotificationService.notifyOrderItemChange(order, orderItemForUpdate, orderItemDTO.getQuantity(), orderItemDTO.getPriority());
                     notificationsToSend.add(on);
                     orderItemForUpdate.setQuantity(orderItemDTO.getQuantity());
-                    if(orderItemDTO.getPriority() != -1)
+                    if(orderItemDTO.getPriority() != -1 && orderItemForUpdate.getItem() instanceof Food)            // Ako je neki broj i hrana podesi mu na taj broj
                         orderItemForUpdate.setPriority(orderItemDTO.getPriority());
-                    else
-                        orderItemForUpdate.setPriority(orderItemForUpdate.getItem().getItemType().ordinal()); // Ako je -1 podesi mu na default
+                    else if(orderItemDTO.getPriority() == -1 && orderItemForUpdate.getItem() instanceof Food)
+                        orderItemForUpdate.setPriority(((Food) orderItemForUpdate.getItem()).getType().ordinal());  // Ako je -1 i hrana podesi mu na default
                 }
                 it.remove();
             }
@@ -253,6 +258,7 @@ public class OrderServiceImpl implements OrderService{
                 FoodType type = ( (Food) orderItem.getItem() ).getType();
                 orderItem.setPriority(type.ordinal());
             }
+            else if (orderItem.getItem() instanceof Drink) orderItem.setPriority(0);    // Pica nemaju veze sa hranom i prioritetima
         }
 
         return orderItems;
@@ -266,12 +272,13 @@ public class OrderServiceImpl implements OrderService{
 
         double profit = 0;
         for (OrderItem oi : order.getOrderItems())
-            if(oi.getStatus() == OrderItemStatus.IN_PROGRESS || oi.getStatus() == OrderItemStatus.FINISHED || oi.getStatus() == OrderItemStatus.DELIVERED)
+            if(oi.getStatus() != OrderItemStatus.ORDERED)
                 profit += (oi.getPrice() - oi.getItem().getCost()) * oi.getQuantity();
         order.setProfit(profit);
 
         orderNotificationService.deleteOrderNotifications(order);
-        return orderRepository.save(order);
+        orderRepository.save(order);
+        return order;
     }
 
     @Override

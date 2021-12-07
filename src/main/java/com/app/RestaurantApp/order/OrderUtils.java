@@ -3,6 +3,7 @@ package com.app.RestaurantApp.order;
 import com.app.RestaurantApp.enums.FoodType;
 import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.food.Food;
+import com.app.RestaurantApp.order.dto.OrderDTO;
 import com.app.RestaurantApp.orderItem.OrderItem;
 import com.app.RestaurantApp.orderItem.dto.OrderItemOrderCreationDTO;
 
@@ -76,10 +77,10 @@ public class OrderUtils {
     }
 
     public static void checkOrderItemsDTONumber(List<OrderItemOrderCreationDTO> ois) throws OrderException {
-        if(ois.size() == 0)
+        if(ois == null)
+            throw new OrderException("Order does not have order items for update!");
+        else if(ois.size() == 0)
             throw new OrderException("Order does not have order items for update!");
     }
-
-
 
 }
