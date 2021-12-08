@@ -43,10 +43,10 @@ public class AppUserController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public List<AppUserAdminUserListDTO> findAllAdmin(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<List<AppUserAdminUserListDTO>> findAllAdmin(@PathVariable(value = "id") Long id) {
         //todo dodati pageable ovde
         List<AppUser> users = appUserService.getAllUsersButAdmin(id);
-        return users.stream().map(AppUserAdminUserListDTO::new).toList();
+        return new ResponseEntity<>(users.stream().map(AppUserAdminUserListDTO::new).toList(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/get_user_info/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
