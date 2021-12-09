@@ -24,4 +24,8 @@ public class Constants {
 
     public static final String ORDER_ITEM_FOOD_FINISHED_MSG = "Hrana from order #1 is finished and ready to deliver to table 1.";
     public static final String ORDER_ITEM_DRINK_FINISHED_MSG = "Pice from order #1 is finished and ready to deliver to table 1.";
+
+
+
+
 }
