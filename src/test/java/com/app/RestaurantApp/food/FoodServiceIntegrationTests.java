@@ -1,6 +1,5 @@
 package com.app.RestaurantApp.food;
 
-import com.app.RestaurantApp.category.CategoryService;
 import com.app.RestaurantApp.category.dto.CategoryDTO;
 import com.app.RestaurantApp.enums.ItemType;
 import com.app.RestaurantApp.food.dto.FoodDTO;
@@ -8,6 +7,8 @@ import com.app.RestaurantApp.item.ItemException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static com.app.RestaurantApp.food.Constants.*;
@@ -60,6 +61,16 @@ public class FoodServiceIntegrationTests {
 
         // Verifying
         assertNull(foodService.findOne(DELETE_FOOD_ID));
+    }
+
+    @Test
+    public void testFindAllFood(){
+        // Test invoke
+        List<Food> food = foodService.findAll();
+
+        // Verifying
+        assertNotNull(food);
+        assertTrue(food.size() >= 5); // condition is independent of test order
     }
 
     private FoodDTO createFoodDTO(){

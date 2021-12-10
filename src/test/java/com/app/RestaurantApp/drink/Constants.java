@@ -6,7 +6,8 @@ public class Constants {
 
     public static long DRINK_ID = 7L;
     public static long DELETE_DRINK_ID = 8L;
-    public static long DELETE_DRINK_ID_BAD_REQUEST = 1000000L;
+    public static long DELETE_DRINK_ID_CONTROLLER = 9L;
+    public static long DELETE_DRINK_ID_BAD_REQUEST = -1L;
 
     public static final String FOUND_NAME = "Coca Cola";
     public static final double FOUND_COST = 140.0;

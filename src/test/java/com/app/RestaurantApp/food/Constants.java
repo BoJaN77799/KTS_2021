@@ -6,6 +6,8 @@ public class Constants {
 
     public static long FOOD_ID = 1L;
     public static long DELETE_FOOD_ID = 2L;
+    public static long DELETE_FOOD_ID_CONTROLLER = 3L;
+    public static long DELETE_FOOD_ID_BAD_REQUEST = -1L;
 
     public static final String FOUND_NAME = "Supa";
     public static final double FOUND_COST = 250.0;
@@ -39,4 +41,9 @@ public class Constants {
     public static final String IMAGE_PATH_BLANK = "Image path cannot be blank!";
     public static final String CATEGORY_NAME_BLANK = "Category name cannot be blank!";
     public static final String COST_EQUALS_OR_LOWER_THAN_ZERO = "Cost cannot be less or equal zero!";
+
+    public static final String COOK_EMAIL = "headcook@maildrop.cc";
+    public static final String COOK_PWD = "cook";
+
+    public static int UPDATE_TIME_TO_MAKE = 45;
 }

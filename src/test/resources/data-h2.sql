@@ -31,6 +31,7 @@ INSERT INTO USER_AUTHORITY (app_user_id, authority_id) VALUES (2, 2); -- menager
 INSERT INTO USER_AUTHORITY (app_user_id, authority_id) VALUES (3, 3); -- waiter
 INSERT INTO USER_AUTHORITY (app_user_id, authority_id) VALUES (4, 4); -- head_cook
 INSERT INTO USER_AUTHORITY (app_user_id, authority_id) VALUES (4, 5); -- cook
+INSERT INTO USER_AUTHORITY (app_user_id, authority_id) VALUES (5, 5); -- cook
 INSERT INTO USER_AUTHORITY (app_user_id, authority_id) VALUES (6, 6); -- barman
 
 

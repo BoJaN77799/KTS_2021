@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 import java.util.Objects;
@@ -52,7 +51,7 @@ public class DrinkControllerIntegrationTests {
         ResponseEntity<String> entity = restTemplate
                 .exchange("/api/drinks", HttpMethod.POST, httpEntity, String.class);
 
-        assertEquals(entity.getStatusCode(), HttpStatus.CREATED);
+        assertEquals(HttpStatus.CREATED, entity.getStatusCode());
 
         String message = entity.getBody();
 
@@ -73,14 +72,15 @@ public class DrinkControllerIntegrationTests {
         ResponseEntity<String> entity = restTemplate
                 .exchange("/api/drinks", HttpMethod.PUT, httpEntity, String.class);
 
-        assertEquals(entity.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
 
         String message = entity.getBody();
 
         assertNotNull(message);
         assertEquals("Drink successfully updated", message);
-        assertEquals(DRINK_ID, drinkService.findOne(DRINK_ID).getId());
-        assertEquals(UPDATE_VOLUME, drinkService.findOne(DRINK_ID).getVolume());
+        Drink drink = drinkService.findOne(DRINK_ID);
+        assertEquals(DRINK_ID, drink.getId());
+        assertEquals(UPDATE_VOLUME, drink.getVolume());
     }
 
     @Test
@@ -88,15 +88,15 @@ public class DrinkControllerIntegrationTests {
         HttpEntity<DrinkDTO> httpEntity = new HttpEntity<>(headers);
 
         ResponseEntity<String> entity = restTemplate
-                .exchange("/api/drinks/{id}", HttpMethod.DELETE, httpEntity, String.class, DELETE_DRINK_ID);
+                .exchange("/api/drinks/{id}", HttpMethod.DELETE, httpEntity, String.class, DELETE_DRINK_ID_CONTROLLER);
 
-        assertEquals(entity.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
 
         String message = entity.getBody();
 
         assertNotNull(message);
         assertEquals("Drink successfully deleted", message);
-        assertNull(drinkService.findOne(DELETE_DRINK_ID));
+        assertNull(drinkService.findOne(DELETE_DRINK_ID_CONTROLLER));
     }
 
     @Test
@@ -108,7 +108,7 @@ public class DrinkControllerIntegrationTests {
         ResponseEntity<String> entity = restTemplate
                 .exchange("/api/drinks/{id}", HttpMethod.DELETE, httpEntity, String.class, DELETE_DRINK_ID_BAD_REQUEST);
 
-        assertEquals(entity.getStatusCode(), HttpStatus.BAD_REQUEST);
+        assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
 
         String message = entity.getBody();
 
