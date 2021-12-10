@@ -47,9 +47,7 @@ public class ItemServiceImpl implements ItemService {
         i.getPrices().add(p);
         p.setItem(i);
 
-        boolean indicator = false;
-        if (i.getCurrentPrice() == 0)
-            indicator = true;
+        boolean indicator = i.getCurrentPrice() == 0;
 
         i.setCurrentPrice(itemPriceDTO.getNewPrice());
         itemRepository.save(i);

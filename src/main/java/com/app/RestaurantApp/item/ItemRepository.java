@@ -1,6 +1,5 @@
 package com.app.RestaurantApp.item;
 
-import com.app.RestaurantApp.orderItem.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
