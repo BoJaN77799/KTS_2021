@@ -6,13 +6,11 @@ import com.app.RestaurantApp.order.Order;
 import com.app.RestaurantApp.order.OrderService;
 import com.app.RestaurantApp.reports.dto.UserReportDTO;
 import com.app.RestaurantApp.users.employee.Employee;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.time.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +18,6 @@ import java.util.List;
 import static com.app.RestaurantApp.reports.Constants.*;
 import static org.mockito.BDDMockito.given;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class ReportsServiceUnitTests {
@@ -30,32 +27,6 @@ public class ReportsServiceUnitTests {
 
     @MockBean
     private OrderService orderServiceMock;
-
-    private static LocalDate localDate;
-
-    @BeforeAll
-    static void setup() {
-        Clock clock = Clock.fixed(Instant.parse("2021-12-10T16:00:00.00Z"), ZoneId.of("UTC"));
-        localDate = LocalDate.now(clock);
-    }
-
-    @Test
-    public void generateDateFrom_Monthly() {
-        LocalDate dateTimeMinusMonth = Instant.ofEpochMilli(DATE_FROM)
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        mockStatic(LocalDate.class);
-        when(LocalDate.now()).thenReturn(localDate);
-        when(localDate.minusMonths(1)).thenReturn(dateTimeMinusMonth);
-
-        // Test invoke
-        long result = reportsService.generateDateFrom("monthly");
-
-        // Verifying
-        assertNotEquals(0, result);
-        assertNotEquals(-100, result);
-        assertEquals(DATE_FROM, result);
-    }
 
     @Test
     public void testActivityReport(){
