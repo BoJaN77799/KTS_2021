@@ -1,6 +1,8 @@
 package com.app.RestaurantApp.order;
 
+import com.app.RestaurantApp.notifications.OrderNotificationRepository;
 import com.app.RestaurantApp.order.dto.OrderDTO;
+import com.app.RestaurantApp.orderItem.OrderItem;
 import com.app.RestaurantApp.orderItem.OrderItemRepository;
 import com.app.RestaurantApp.orderItem.dto.OrderItemOrderCreationDTO;
 import org.junit.jupiter.api.AfterEach;
@@ -27,6 +29,9 @@ public class OrderServiceIntegrationTests {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    @Autowired
+    private OrderNotificationRepository orderNotificationRepository;
+
     @Test @Transactional
     public void testCreateOrder() throws OrderException {
         int ordersSize = orderRepository.findAll().size();
@@ -39,8 +44,30 @@ public class OrderServiceIntegrationTests {
         assertEquals(orderItemsSize + 2, orderItemRepository.findAll().size());
     }
 
-    public void testUpdateOrder() throws OrderException {
+    @Test @Transactional
+    public void testUpdateOrder_ChangeQuantityAndPriority() throws OrderException {
+        int notificationsSize = orderItemRepository.findAll().size();
+        OrderDTO orderDTO = createOrderDTOItemUpdate(1L, 1L);
 
+        Order order = orderService.updateOrder(orderDTO);
+        OrderItem orderItem = findOrderItem(order, 1L);
+
+        assertEquals(INIT_QUANTITY1, orderItem.getQuantity());
+        assertEquals(1, orderItem.getPriority());
+        assertEquals(notificationsSize, orderItemRepository.findAll().size());
+    }
+
+    @Test @Transactional
+    public void testUpdateOrder_ChangeQuantityAndPriorityInProgress() throws OrderException {
+        int notificationsSize = orderNotificationRepository.findAll().size();
+        OrderDTO orderDTO = createOrderDTOItemUpdate(3L, 5L);
+
+        Order order = orderService.updateOrder(orderDTO);
+        OrderItem orderItem = findOrderItem(order, 5L);
+
+        assertEquals(INIT_QUANTITY1, orderItem.getQuantity());
+        assertEquals(1, orderItem.getPriority());
+        assertEquals(notificationsSize + 1, orderNotificationRepository.findAll().size());
     }
 
     private OrderDTO createOrderDTOWithOrderItems() {
@@ -69,6 +96,33 @@ public class OrderServiceIntegrationTests {
         orderDTO.setOrderItems(new ArrayList<>());
 
         return orderDTO;
+    }
+
+    private OrderDTO createOrderDTOItemUpdate(Long orderId, Long itemId) {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setId(orderId);
+        orderDTO.setNote("Alora, ciao bella.");
+        orderDTO.setOrderItems(new ArrayList<>());
+        orderDTO.getOrderItems().add(createOrderItemDTOForUpdate(itemId, INIT_QUANTITY1, 1));
+
+        return orderDTO;
+    }
+
+    private OrderItemOrderCreationDTO createOrderItemDTOForUpdate(Long id, int quantity, int priority) {
+        OrderItemOrderCreationDTO oi = new OrderItemOrderCreationDTO();
+        oi.setId(id);
+        oi.setQuantity(quantity);
+        oi.setPriority(priority);
+
+        return oi;
+    }
+
+    private OrderItem findOrderItem(Order order, Long id) {
+        for(OrderItem orderItem : order.getOrderItems()) {
+            if(orderItem.getId() == id)
+                return orderItem;
+        }
+        return null;
     }
 
 }

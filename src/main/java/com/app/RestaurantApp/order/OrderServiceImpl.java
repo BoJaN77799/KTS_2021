@@ -191,7 +191,7 @@ public class OrderServiceImpl implements OrderService{
                     if(orderItemForUpdate.getItem() instanceof Drink)                                               // Ako je pice ne gleda se prioriter
                         orderItemForUpdate.setPriority(0);
                     OrderNotification on = orderNotificationService.notifyOrderItemChange(order, orderItemForUpdate, orderItemDTO.getQuantity(), orderItemDTO.getPriority());
-                    notificationsToSend.add(on);
+                    if(on != null) notificationsToSend.add(on);
                     orderItemForUpdate.setQuantity(orderItemDTO.getQuantity());
                     if(orderItemDTO.getPriority() != -1 && orderItemForUpdate.getItem() instanceof Food)            // Ako je neki broj i hrana podesi mu na taj broj
                         orderItemForUpdate.setPriority(orderItemDTO.getPriority());

@@ -153,7 +153,7 @@ insert into order_item (quantity, status, price, priority, order_id, item_id) va
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, barman_id) values ('IN_PROGRESS', 1636730076405, 'Pozuri, gladan i zedan sam.', 2, 3, 4, 5);
 
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 280.0, 2, 3, 1);
-insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 140.0, -1, 3, 8);
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 140.0, 0, 3, 8);
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id) values ('IN_PROGRESS', 1636730076405, 'Pozuri, gladan i zedan sam.',2, 3, 5);
 
