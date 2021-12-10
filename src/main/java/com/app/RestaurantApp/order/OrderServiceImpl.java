@@ -116,7 +116,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public void acceptOrder(Long id, String email) throws OrderException, UserException{
+    public void acceptOrder(Long id, String email) throws OrderException, UserException {
         Order order = findOne(id);
         if(order == null) throw new OrderException("Order not found.");
 

@@ -66,4 +66,9 @@ public class FoodServiceImpl implements FoodService {
     public void deleteFood(Food food) {
         foodRepository.delete(food);
     }
+
+    @Override
+    public List<Food> findAll() {
+        return foodRepository.findAll();
+    }
 }

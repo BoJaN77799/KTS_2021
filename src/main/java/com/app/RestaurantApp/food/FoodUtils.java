@@ -17,9 +17,5 @@ public class FoodUtils extends ItemUtils {
         if (food.getRecipe().isBlank()) {
             throw new FoodException("Recipe cannot be blank");
         }
-
-        if (food.getType() != FoodType.APPETIZER && food.getType() != FoodType.MAIN_DISH && food.getType() != FoodType.DESERT) {
-            throw new FoodException("Food type is APPETIZER, MAIN_DISH or DESERT");
-        }
     }
 }

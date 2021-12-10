@@ -6,7 +6,7 @@ public class ItemUtils {
         if (item == null) {
             throw new ItemException("Invalid item sent from front!");
         } else if (item.getName() == null || item.getDescription() == null
-                || item.getImage() == null || item.getCategory() == null || item.getItemType() == null) {
+                || item.getImage() == null || item.getItemType() == null) {
             throw new ItemException("Invalid item data sent from front! Null values in attributes!");
         }
 
@@ -22,16 +22,17 @@ public class ItemUtils {
             throw new ItemException("Description cannot be blank!");
         }
 
-        if (item.getDescription().length() > 300) {
-            throw new ItemException("Description cannot be greater than 300 characters!");
+        if (item.getDescription().length() > 256) {
+            throw new ItemException("Description cannot be greater than 256 characters!");
         }
 
         if (item.getImage().isBlank()) {
             throw new ItemException("Image path cannot be blank!");
         }
 
-        if (item.getCategory().getName().isBlank()) {
-            throw new ItemException("Category name cannot be blank!");
-        }
+        if(item.getCategory() != null)
+            if (item.getCategory().getName().isBlank()) {
+                throw new ItemException("Category name cannot be blank!");
+            }
     }
 }

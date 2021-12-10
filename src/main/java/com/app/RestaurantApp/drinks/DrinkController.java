@@ -73,7 +73,7 @@ public class DrinkController {
                 return new ResponseEntity<>("Drink cannot be null", HttpStatus.BAD_REQUEST);
             }
             drinkService.saveDrink(drinkDTO);
-            return new ResponseEntity<>("Drink successfully updated", HttpStatus.CREATED);
+            return new ResponseEntity<>("Drink successfully updated", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -85,9 +85,9 @@ public class DrinkController {
         Drink drink = drinkService.findOne(id);
 
         if (drink == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Drink does not exist with requested ID",HttpStatus.BAD_REQUEST);
         }
         drinkService.deleteDrink(drink);
-        return new ResponseEntity<>("Drink successfully deleted.", HttpStatus.OK);
+        return new ResponseEntity<>("Drink successfully deleted", HttpStatus.OK);
     }
 }
