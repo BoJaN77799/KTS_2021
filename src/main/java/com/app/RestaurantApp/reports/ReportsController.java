@@ -37,11 +37,13 @@ public class ReportsController {
         return reportsService.getIncomeExpenses(indicator);
     }
 
-    @GetMapping(value = "/activity")
+    @GetMapping(value = "/activity/{indicator}")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<List<UserReportDTO>> getActivityReport(@PathParam("reportParameter") String reportParameter) {
-        long dateFrom = reportsService.generateDateFrom(reportParameter);
+    public ResponseEntity<List<UserReportDTO>> getActivityReport(@PathVariable String indicator) {
+        long dateFrom = reportsService.generateDateFrom(indicator);
         List<UserReportDTO> users = reportsService.activityReport(dateFrom, System.currentTimeMillis());
+        if(users.isEmpty())
+            return new ResponseEntity<>(users, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }
