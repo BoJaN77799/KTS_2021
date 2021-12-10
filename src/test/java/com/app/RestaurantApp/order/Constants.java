@@ -30,6 +30,7 @@ public class Constants {
     public static final String INVALID_WAITER_MSG = "Invalid waiter id sent from front!";
     public static final String INVALID_TABLE_MSG = "Invalid table id sent from front!";
     public static final String INVALID_NOTE_MSG = "Maximum characters for note is 300!";
+    public static final String TABLE_IN_USE_MSG = "Table in use!";
 
     public static final String NOT_CHANGEABLE_ORDER_ITEM_MSG = "Order item with id: 1 does not exist in order or cannot be changed!";
 }

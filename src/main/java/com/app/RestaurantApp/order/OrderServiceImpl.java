@@ -66,6 +66,8 @@ public class OrderServiceImpl implements OrderService{
         order.setNote(orderDTO.getNote());
         order.setTable(tableService.findById(orderDTO.getTableId()));
         OrderUtils.checkBasicOrderInfo(order);
+        if(orderRepository.findActiveOrderByTable(order.getTable().getId()).size() > 0)
+            throw new OrderException("Table in use!");
 
         Order savedOrder = orderRepository.save(order);
         List<OrderNotification> orderNotifications = orderNotificationService.notifyNewOrder(order);

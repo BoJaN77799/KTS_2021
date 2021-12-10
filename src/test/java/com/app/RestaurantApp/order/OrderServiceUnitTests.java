@@ -65,6 +65,8 @@ public class OrderServiceUnitTests {
 
         Order order = new Order();
         order.setId(1L);
+        List<Order> orders = new ArrayList<>();
+        orders.add(order);
 
         OrderNotification orderNotification1 = new OrderNotification();
         OrderNotification orderNotification2 = new OrderNotification();
@@ -80,6 +82,8 @@ public class OrderServiceUnitTests {
 
         given(orderRepositoryMock.save(any(Order.class))).willReturn(order);
         given(orderNotificationServiceMock.notifyNewOrder(any(Order.class))).willReturn(orderNotifications);
+
+        given(orderRepositoryMock.findActiveOrderByTable(1L)).willReturn(new ArrayList<>());
     }
 
     @Test
@@ -176,6 +180,26 @@ public class OrderServiceUnitTests {
         Exception e = assertThrows(OrderException.class, () -> orderService.createOrder(orderDTO));
 
         assertEquals(INVALID_NOTE_MSG, e.getMessage());
+    }
+
+    @Test
+    public void testCreateOrder_TableInUse() throws OrderException {
+        Table table = new Table();
+        table.setId(120L);
+        Order order = new Order();
+        List<Order> orders = new ArrayList<>();
+        orders.add(order);
+
+        given(itemServiceMock.findAllWithIds(anyList())).willReturn(createItems());
+        given(tableServiceMock.findById(120L)).willReturn(table);
+        given(orderRepositoryMock.findActiveOrderByTable(120L)).willReturn(orders);
+
+        OrderDTO orderDTO = createOrderDTOWithOrderItems();
+        orderDTO.setTableId(120L);
+
+        Exception e = assertThrows(OrderException.class, () -> orderService.createOrder(orderDTO));
+
+        assertEquals(TABLE_IN_USE_MSG, e.getMessage());
     }
 
     @Test

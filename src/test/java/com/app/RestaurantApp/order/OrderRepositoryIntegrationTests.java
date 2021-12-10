@@ -61,6 +61,24 @@ public class OrderRepositoryIntegrationTests {
         assertNull(order);
     }
 
+    @Test
+    public void testFindActiveOrderByTable() {
+        List<Order> orders;
+
+        orders = orderRepository.findActiveOrderByTable(1L);
+
+        assertTrue(orders.size() > 0);
+    }
+
+    @Test
+    public void testFindActiveOrderByTable2() {
+        List<Order> orders;
+
+        orders = orderRepository.findActiveOrderByTable(-1L);
+
+        assertEquals(0, orders.size());
+    }
+
     private List<OrderItem> sortHashSet(Set<OrderItem> orderItems) {
         List<OrderItem> orderItemsList = new ArrayList<>(orderItems);
         orderItemsList.sort((oi1, oi2) -> (int) (oi1.getId() - oi2.getId()));

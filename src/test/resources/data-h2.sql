@@ -138,6 +138,7 @@ insert into tables (active, x, y, floor) values (true, 2.0, 2.0, 0);
 insert into tables (active, x, y, floor) values (true, 3.0, 3.0, 0);
 insert into tables (active, x, y, floor) values (true, 4.0, 4.0, 0);
 insert into tables (active, x, y, floor) values (true, 5.0, 5.0, 0);
+insert into tables (id, active, x, y, floor) values (120, true, 5.0, 5.0, 0);
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id) values ('NEW', 1636730076405, 'Pozuri, galdan sam.', 1, 3);
 
