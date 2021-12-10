@@ -202,6 +202,8 @@ insert into order_item (quantity, status, price, priority, order_id, item_id) va
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (5, 'FINISHED', 160.0, -1, 12, 7);
 
 
+
+
 insert into salary (amount, date_from, employee_id) values (100, 1633816800000, 4);
 insert into salary (amount, date_from, employee_id) values (200, 1634680800000, 4);
 insert into salary (amount, date_from, employee_id) values (300, 1636239600000, 4);
@@ -228,3 +230,6 @@ insert into price (amount, date_from, item_id) values (300.0, 1635724800, 1);
 insert into price (amount, date_from, item_id) values (300.0, 1638316799, 1);
 insert into price (amount, date_from, item_id) values (300.0, 1640995199, 1);
 
+
+insert into order_notification(seen, message, order_id, employee_id) values ('False', 'New order from table #1', 12, 6);
+insert into order_notification(seen, message, order_id, employee_id) values ('False', 'New order from table #1', 12, 4);
