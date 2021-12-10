@@ -15,6 +15,7 @@ import com.app.RestaurantApp.item.ItemException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -76,6 +77,7 @@ public class DrinkServiceIntegrationTests {
     }
 
     @Test
+    @Transactional
     public void testSaveDrink() throws ItemException, DrinkException {
         DrinkDTO drinkDTO = createDrinkDTO(); // Creating test object
 
@@ -94,6 +96,7 @@ public class DrinkServiceIntegrationTests {
     }
 
     @Test
+    @Transactional
     public void testDeleteDrink(){
         Drink drink = drinkService.findOne(DELETE_DRINK_ID);
 

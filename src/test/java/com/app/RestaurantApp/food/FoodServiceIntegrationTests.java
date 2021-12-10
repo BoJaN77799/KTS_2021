@@ -12,6 +12,7 @@ import com.app.RestaurantApp.item.ItemException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -86,6 +87,7 @@ public class FoodServiceIntegrationTests {
     }
 
     @Test
+    @Transactional
     public void testSaveFood() throws ItemException, FoodException {
         FoodDTO foodDTO = createFoodDTO(); // Creating test object
 
@@ -107,6 +109,7 @@ public class FoodServiceIntegrationTests {
     }
 
     @Test
+    @Transactional
     public void testDeleteFood(){
         Food food = foodService.findOne(DELETE_FOOD_ID);
 
