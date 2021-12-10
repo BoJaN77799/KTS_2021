@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.app.RestaurantApp.category.Category;
 import com.app.RestaurantApp.category.CategoryService;
 
+import java.util.List;
+
 @Service
 public class DrinkServiceImpl implements DrinkService {
 
@@ -55,5 +57,10 @@ public class DrinkServiceImpl implements DrinkService {
     @Override
     public void deleteDrink(Drink drink) {
         drinkRepository.delete(drink);
+    }
+
+    @Override
+    public List<Drink> findAll() {
+        return drinkRepository.findAll();
     }
 }

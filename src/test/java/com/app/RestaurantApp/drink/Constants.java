@@ -2,8 +2,11 @@ package com.app.RestaurantApp.drink;
 
 public class Constants {
 
+    public static int NUM_DRINKS = 4;
+
     public static long DRINK_ID = 7L;
     public static long DELETE_DRINK_ID = 8L;
+    public static long DELETE_DRINK_ID_BAD_REQUEST = 1000000L;
 
     public static final String FOUND_NAME = "Coca Cola";
     public static final double FOUND_COST = 140.0;
@@ -24,4 +27,10 @@ public class Constants {
     public static final Long CATEGORY_ID = 7L;
     public static final String CATEGORY_NAME = "Alkoholna pica";
     public static final String VOLUME_EQUALS_OR_LOWER_THAN_ZERO = "Drink volume cannot be less or equal zero!";
+
+    public static final String BARMAN_EMAIL = "barman@maildrop.cc";
+    public static final String BARMAN_PWD = "barman";
+
+    public static final double UPDATE_VOLUME = 1.0;
+
 }

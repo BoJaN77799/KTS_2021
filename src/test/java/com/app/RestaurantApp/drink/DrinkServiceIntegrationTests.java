@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static com.app.RestaurantApp.drink.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,13 +54,23 @@ public class DrinkServiceIntegrationTests {
 
     @Test
     public void testDeleteDrink(){
-        Drink food = drinkService.findOne(DELETE_DRINK_ID);
+        Drink drink = drinkService.findOne(DELETE_DRINK_ID);
 
         // Test invoke
-        drinkService.deleteDrink(food);
+        drinkService.deleteDrink(drink);
 
         // Verifying
         assertNull(drinkService.findOne(DELETE_DRINK_ID));
+    }
+
+    @Test
+    public void testFindAllDrinks(){
+        // Test invoke
+        List<Drink> drinks = drinkService.findAll();
+
+        // Verifying
+        assertNotNull(drinks);
+        assertTrue(drinks.size() >= 3); // condition is independent of test order
     }
 
     private DrinkDTO createDrinkDTO() {
