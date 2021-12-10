@@ -2,12 +2,9 @@ package com.app.RestaurantApp.drinks;
 
 import com.app.RestaurantApp.drinks.dto.DrinkDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkSearchDTO;
-import com.app.RestaurantApp.drinks.dto.DrinkWithPriceDTO;
 import com.app.RestaurantApp.item.ItemException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import com.app.RestaurantApp.food.Food;
-import com.app.RestaurantApp.food.dto.FoodDTO;
 
 import java.util.List;
 
@@ -20,4 +17,6 @@ public interface DrinkService {
     Drink saveDrink(DrinkDTO drinkDTO) throws ItemException, DrinkException;
 
     void deleteDrink(Drink drink);
+
+    List<Drink> findAll();
 }

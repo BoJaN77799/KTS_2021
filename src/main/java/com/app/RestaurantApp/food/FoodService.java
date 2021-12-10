@@ -18,4 +18,6 @@ public interface FoodService {
     Food saveFood(FoodDTO foodDTO) throws ItemException, FoodException;
 
     void deleteFood(Food food);
+
+    List<Food> findAll();
 }

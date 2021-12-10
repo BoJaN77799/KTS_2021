@@ -74,7 +74,7 @@ public class FoodController {
                 return new ResponseEntity<>("Food cannot be null", HttpStatus.BAD_REQUEST);
             }
             foodService.saveFood(foodDTO);
-            return new ResponseEntity<>("Food successfully updated", HttpStatus.CREATED);
+            return new ResponseEntity<>("Food successfully updated", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -86,9 +86,9 @@ public class FoodController {
         Food food = foodService.findOne(id);
 
         if (food == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Food does not exist with requested ID",HttpStatus.BAD_REQUEST);
         }
         foodService.deleteFood(food);
-        return new ResponseEntity<>("Food successfully deleted.", HttpStatus.OK);
+        return new ResponseEntity<>("Food successfully deleted", HttpStatus.OK);
     }
 }
