@@ -50,4 +50,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("select o from Order o join fetch o.orderItems oi join fetch oi.item where o.table.id =?1 and o.status <> 'FINISHED'")
     List<Order> findActiveFromTable(Long table_id);
+
+    @Query("select o from Order o where o.table.id =?1 and o.status <> 'FINISHED'")
+    List<Order> findActiveOrderByTable(Long table_id);
+
 }
