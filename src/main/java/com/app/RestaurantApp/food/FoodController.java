@@ -26,9 +26,9 @@ public class FoodController {
     @Autowired
     private FoodService foodService;
 
-    @GetMapping(consumes = "application/json")
+    @GetMapping
     @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<List<FoodWithPriceDTO>> getFoodWithPrice(@RequestBody FoodSearchDTO foodSearchDTO, Pageable pageable) {
+    public ResponseEntity<List<FoodWithPriceDTO>> getFoodWithPrice(FoodSearchDTO foodSearchDTO, Pageable pageable) {
         Page<Food> foodsPage = foodService.getFoodWithPrice(foodSearchDTO, pageable);
         List<Food> foods = foodsPage.getContent();
 
@@ -37,7 +37,7 @@ public class FoodController {
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("total-elements", Long.toString(foodsPage.getTotalElements()));
-        responseHeaders.set("total-pages", Long.toString(foodsPage.getTotalElements()));
+        responseHeaders.set("total-pages", Long.toString(foodsPage.getTotalPages()));
         responseHeaders.set("current-page", Integer.toString(foodsPage.getNumber()));
 
         return new ResponseEntity<>(foodsDTO, responseHeaders, HttpStatus.OK);

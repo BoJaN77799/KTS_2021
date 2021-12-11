@@ -45,5 +45,8 @@ public class Constants {
     public static final String COOK_EMAIL = "headcook@maildrop.cc";
     public static final String COOK_PWD = "cook";
 
+    public static final String WAITER_EMAIL = "waiter@maildrop.cc";
+    public static final String WAITER_PWD = "waiter";
+
     public static int UPDATE_TIME_TO_MAKE = 45;
 }

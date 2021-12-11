@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.order;
 
+import com.app.RestaurantApp.enums.OrderItemStatus;
 import com.app.RestaurantApp.enums.OrderStatus;
 import com.app.RestaurantApp.notifications.OrderNotificationRepository;
 import com.app.RestaurantApp.order.dto.OrderDTO;
@@ -16,7 +17,6 @@ import java.util.List;
 
 import static com.app.RestaurantApp.order.Constants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class OrderServiceIntegrationTests {
@@ -106,8 +106,25 @@ public class OrderServiceIntegrationTests {
         Order order = orderService.finishOrder(12L);
 
         assertEquals(OrderStatus.FINISHED, order.getStatus());
-        assertTrue(0 == order.getProfit());
+        assertEquals(Double.valueOf(0), order.getProfit());
         assertEquals(notificationsSize - 2, orderNotificationRepository.findAll().size());
+    }
+
+    @Test
+    public void testFindOneWithOrderItemsForUpdate() {
+        Order order = orderService.findOneWithOrderItemsForUpdate(13L);
+
+        assertEquals(1, order.getOrderItems().size());
+    }
+
+    @Test
+    public void testFindOneWithOrderItemsForUpdate_AllOrdered() {
+        Order order = orderService.findOneWithOrderItemsForUpdate(12L);
+
+        assertEquals(2, order.getOrderItems().size());
+        for(OrderItem oi : order.getOrderItems()) {
+            assertEquals(OrderItemStatus.ORDERED, oi.getStatus());
+        }
     }
 
     private OrderDTO createOrderDTOItemsAdd(Long id) {

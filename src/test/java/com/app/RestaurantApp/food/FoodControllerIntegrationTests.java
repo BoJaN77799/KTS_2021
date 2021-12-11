@@ -3,17 +3,23 @@ package com.app.RestaurantApp.food;
 import com.app.RestaurantApp.category.dto.CategoryDTO;
 import com.app.RestaurantApp.enums.ItemType;
 import com.app.RestaurantApp.food.dto.FoodDTO;
+import com.app.RestaurantApp.food.dto.FoodSearchDTO;
+import com.app.RestaurantApp.food.dto.FoodWithPriceDTO;
 import com.app.RestaurantApp.security.auth.JwtAuthenticationRequest;
 import com.app.RestaurantApp.users.dto.UserTokenState;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static com.app.RestaurantApp.food.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -115,6 +121,50 @@ public class FoodControllerIntegrationTests {
         assertEquals("Food does not exist with requested ID", message);
         assertEquals(foods.size(), foodService.findAll().size()); // nothing changed
     }
+
+    @Test
+    public void testGetFoodWithPrice_All() {
+        logInAsWaiter();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<FoodWithPriceDTO[]> responseEntity = restTemplate
+                .exchange("/api/food?name=&category=&type=&page=0&size=5", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(5, responseEntity.getBody().length);
+    }
+
+    @Test
+    public void testGetFoodWithPrice_WithName() {
+        logInAsWaiter();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<FoodWithPriceDTO[]> responseEntity = restTemplate
+                .exchange("/api/food?name=supa&category=&type=&page=0&size=5", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, responseEntity.getBody().length);
+    }
+
+    private void logInAsWaiter() {
+        ResponseEntity<UserTokenState> responseEntity =
+                restTemplate.postForEntity("/api/users/login",
+                        new JwtAuthenticationRequest(WAITER_EMAIL, WAITER_PWD),
+                        UserTokenState.class);
+
+        String accessToken = Objects.requireNonNull(responseEntity.getBody()).getAccessToken();
+
+        headers.set("Authorization", "Bearer " + accessToken);
+    }
+
+    private Map<String, Integer> createPageable(int pageSize, int pageNumber) {
+        Map<String, Integer> params = new HashMap<>();
+        params.put("page", pageNumber);
+        params.put("size", pageSize);
+        return params;
+    }
+
+
 
     private FoodDTO createFoodDTO(){
         // This method creates testing object
