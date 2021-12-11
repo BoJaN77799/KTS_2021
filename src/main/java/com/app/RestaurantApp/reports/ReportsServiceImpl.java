@@ -71,7 +71,7 @@ public class ReportsServiceImpl implements ReportsService {
                 }
             }
         }
-        return maps.values().stream().toList();
+        return maps.values().stream().sorted(Comparator.comparingLong(Sales::getItemId)).toList();
     }
 
     @Override
@@ -107,21 +107,21 @@ public class ReportsServiceImpl implements ReportsService {
                     sum += b.getAmount();
             }
 
-            LocalDate dateFromLD = Instant.ofEpochMilli(dateFrom).atZone(ZoneId.systemDefault()).toLocalDate();
-            LocalDate dateToLD = Instant.ofEpochMilli(dateTo).atZone(ZoneId.systemDefault()).toLocalDate();
-            sum += calculateExpensesPerEmployee(dateFromLD, dateToLD, e);
+            sum += calculateExpensesPerEmployee(dateFrom, dateTo, e);
 
         }
 
-        return sum;
+        return Math.round(sum * 100.0) / 100.0;
     }
 
-    public double calculateExpensesPerEmployee(LocalDate dateFromLD, LocalDate dateToLD, Employee e) {
+    public double calculateExpensesPerEmployee(long dateFrom, long dateTo, Employee e) {
+        LocalDate dateFromLD = Instant.ofEpochMilli(dateFrom).atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate dateToLD = Instant.ofEpochMilli(dateTo).atZone(ZoneId.systemDefault()).toLocalDate();
         double sum = 0;
         // ide od najvecih ka manjim datumima je sortirano
         List<Salary> l = e.getSalaries().stream().sorted(Comparator.comparingLong(Salary::getDateFrom).reversed()).toList();
 
-        while (!dateFromLD.equals(dateToLD)) {
+        while (!dateFromLD.isAfter(dateToLD)) {
             for (Salary s : l) {
                 boolean indicator = false;
                 LocalDate dateOfSalary = Instant.ofEpochMilli(s.getDateFrom()).atZone(ZoneId.systemDefault()).toLocalDate();
@@ -134,7 +134,7 @@ public class ReportsServiceImpl implements ReportsService {
             }
             dateToLD = dateToLD.minusDays(1);
         }
-        return sum;
+        return Math.round(sum * 100.0) / 100.0;
     }
     
     @Override

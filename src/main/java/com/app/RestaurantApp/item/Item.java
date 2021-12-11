@@ -75,6 +75,13 @@ public class Item {
         this.deleted = itemDTO.isDeleted();
     }
 
+    public Item(long id, String name, double currentPrice, double cost) {
+        this.id = id;
+        this.name = name;
+        this.currentPrice = currentPrice;
+        this.cost = cost;
+    }
+
     public Long getId() {
         return id;
     }

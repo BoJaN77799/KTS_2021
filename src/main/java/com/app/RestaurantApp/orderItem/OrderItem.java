@@ -38,6 +38,14 @@ public class OrderItem {
     public OrderItem() {
     }
 
+    public OrderItem(long id, Order o, Item i, double price, int quantity) {
+        this.id = id;
+        this.order = o;
+        this.item = i;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
     public Long getId() {
         return id;
     }
