@@ -4,7 +4,9 @@ import com.app.RestaurantApp.category.dto.CategoryDTO;
 import com.app.RestaurantApp.drinks.Drink;
 import com.app.RestaurantApp.drinks.DrinkService;
 import com.app.RestaurantApp.drinks.dto.DrinkDTO;
+import com.app.RestaurantApp.drinks.dto.DrinkWithPriceDTO;
 import com.app.RestaurantApp.enums.ItemType;
+import com.app.RestaurantApp.food.dto.FoodWithPriceDTO;
 import com.app.RestaurantApp.security.auth.JwtAuthenticationRequest;
 import com.app.RestaurantApp.users.dto.UserTokenState;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +18,7 @@ import org.springframework.http.*;
 
 import java.util.List;
 import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static com.app.RestaurantApp.drink.Constants.*;
 
@@ -62,10 +65,12 @@ public class DrinkControllerIntegrationTests {
 
     @Test
     public void testUpdateDrink(){
+        CategoryDTO category = new CategoryDTO(2L, "Gazirana pica");
 
         DrinkDTO modifiedDrinkDTO = createDrinkDTO();
         modifiedDrinkDTO.setId(DRINK_ID);
         modifiedDrinkDTO.setVolume(UPDATE_VOLUME);
+        modifiedDrinkDTO.setCategory(category);
 
         HttpEntity<DrinkDTO> httpEntity = new HttpEntity<>(modifiedDrinkDTO, headers);
 
@@ -115,6 +120,56 @@ public class DrinkControllerIntegrationTests {
         assertNotNull(message);
         assertEquals("Drink does not exist with requested ID", message);
         assertEquals(drinks.size(), drinkService.findAll().size()); // nothing changed
+    }
+
+    @Test
+    public void testGetDrinkWithPrice_All() {
+        logInAsWaiter();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<DrinkWithPriceDTO[]> responseEntity = restTemplate
+                .exchange("/api/drinks?name=&category=&page=0&size=5", HttpMethod.GET, httpEntity, DrinkWithPriceDTO[].class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(4, Objects.requireNonNull(responseEntity.getBody()).length, 1);
+        assertEquals(7L, responseEntity.getBody()[0].getId());
+    }
+
+    @Test
+    public void testGetDrinkWithPrice_WithName() {
+        logInAsWaiter();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<FoodWithPriceDTO[]> responseEntity = restTemplate
+                .exchange("/api/drinks?name=niksicko&category=&page=0&size=5", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, Objects.requireNonNull(responseEntity.getBody()).length);
+        assertEquals(8L, responseEntity.getBody()[0].getId());
+    }
+
+    @Test
+    public void testGetDrinkWithPrice_WithCategory() {
+        logInAsWaiter();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<FoodWithPriceDTO[]> responseEntity = restTemplate
+                .exchange("/api/drinks?name=&category=Alkoholna pica&page=0&size=5", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(3, Objects.requireNonNull(responseEntity.getBody()).length, 1);
+        assertEquals(8L, responseEntity.getBody()[0].getId());
+    }
+
+    private void logInAsWaiter() {
+        ResponseEntity<UserTokenState> responseEntity =
+                restTemplate.postForEntity("/api/users/login",
+                        new JwtAuthenticationRequest(WAITER_EMAIL, WAITER_PWD),
+                        UserTokenState.class);
+
+        String accessToken = Objects.requireNonNull(responseEntity.getBody()).getAccessToken();
+
+        headers.set("Authorization", "Bearer " + accessToken);
     }
 
     private DrinkDTO createDrinkDTO() {

@@ -131,7 +131,8 @@ public class FoodControllerIntegrationTests {
                 .exchange("/api/food?name=&category=&type=&page=0&size=5", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(5, responseEntity.getBody().length);
+        assertEquals(5, Objects.requireNonNull(responseEntity.getBody()).length);
+        assertEquals(1L, responseEntity.getBody()[0].getId());
     }
 
     @Test
@@ -140,10 +141,48 @@ public class FoodControllerIntegrationTests {
         HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
 
         ResponseEntity<FoodWithPriceDTO[]> responseEntity = restTemplate
-                .exchange("/api/food?name=supa&category=&type=&page=0&size=5", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
+                .exchange("/api/food?name=jagnjece pecenje&category=&type=&page=0&size=5", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(1, responseEntity.getBody().length);
+        assertEquals(1, Objects.requireNonNull(responseEntity.getBody()).length);
+        assertEquals(4L, responseEntity.getBody()[0].getId());
+    }
+
+    @Test
+    public void testGetFoodWithPrice_WithNameAndType() {
+        logInAsWaiter();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<FoodWithPriceDTO[]> responseEntity = restTemplate
+                .exchange("/api/food?name=jagnjece pecenje&category=&type=APPETIZER&page=0&size=5", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(0, Objects.requireNonNull(responseEntity.getBody()).length);
+    }
+
+    @Test
+    public void testGetFoodWithPrice_WithCategory() {
+        logInAsWaiter();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<FoodWithPriceDTO[]> responseEntity = restTemplate
+                .exchange("/api/food?name=&category=sladoledi&type=&page=0&size=5", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, Objects.requireNonNull(responseEntity.getBody()).length);
+        assertEquals(6L, responseEntity.getBody()[0].getId());
+    }
+
+    @Test
+    public void testGetFoodWithPrice_WithCategoryAndType() {
+        logInAsWaiter();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<FoodWithPriceDTO[]> responseEntity = restTemplate
+                .exchange("/api/food?name=&category=jagnjece meso&type=MAIN_DISH&page=0&size=5", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, Objects.requireNonNull(responseEntity.getBody()).length);
     }
 
     private void logInAsWaiter() {
@@ -156,15 +195,6 @@ public class FoodControllerIntegrationTests {
 
         headers.set("Authorization", "Bearer " + accessToken);
     }
-
-    private Map<String, Integer> createPageable(int pageSize, int pageNumber) {
-        Map<String, Integer> params = new HashMap<>();
-        params.put("page", pageNumber);
-        params.put("size", pageSize);
-        return params;
-    }
-
-
 
     private FoodDTO createFoodDTO(){
         // This method creates testing object
