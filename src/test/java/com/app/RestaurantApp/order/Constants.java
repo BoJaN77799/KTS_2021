@@ -39,4 +39,8 @@ public class Constants {
     public static final int PAGEABLE_TOTAL_ELEMENTS = 2;
     public static final String SEARCH_FIELD = "Dodik";
     public static final String ORDER_STATUS_IP = "IN_PROGRESS";
+
+
+    public static final String COOK_EMAIL = "headcook@maildrop.cc";
+    public static final String COOK_PWD = "cook";
 }
