@@ -8,7 +8,6 @@ import com.app.RestaurantApp.reports.dto.IncomeExpenses;
 import com.app.RestaurantApp.reports.dto.Sales;
 import com.app.RestaurantApp.salary.Salary;
 import com.app.RestaurantApp.users.employee.Employee;
-import com.app.RestaurantApp.users.employee.EmployeeRepository;
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +16,7 @@ import java.time.*;
 import java.util.*;
 
 import com.app.RestaurantApp.enums.UserType;
-import com.app.RestaurantApp.order.Order;
-import com.app.RestaurantApp.order.OrderService;
 import com.app.RestaurantApp.reports.dto.UserReportDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ReportsServiceImpl implements ReportsService {
@@ -33,9 +28,9 @@ public class ReportsServiceImpl implements ReportsService {
     private EmployeeService employeeService;
 
     @Override
-    public long generateDateFrom(String reportParameter) {
+    public long generateDateFrom(String indicator) {
         LocalDate dateTo = LocalDate.now();
-        switch (reportParameter.toLowerCase()) {
+        switch (indicator.toLowerCase()) {
             case "monthly": {
                 return dateTo.minusMonths(1).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
             }
@@ -51,8 +46,8 @@ public class ReportsServiceImpl implements ReportsService {
     }
 
     @Override
-    public List<Sales> getReportsSales(String indikator) {
-        long dateFrom = generateDateFrom(indikator);
+    public List<Sales> getReportsSales(String indicator) {
+        long dateFrom = generateDateFrom(indicator);
         long dateTo = System.currentTimeMillis();
         List<Order> orders = orderService.findAllOrderInIntervalOfDates(dateFrom, dateTo);
 
@@ -77,8 +72,8 @@ public class ReportsServiceImpl implements ReportsService {
     }
 
     @Override
-    public IncomeExpenses getIncomeExpenses(String indikator) {
-        long dateFrom = generateDateFrom(indikator);
+    public IncomeExpenses getIncomeExpenses(String indicator) {
+        long dateFrom = generateDateFrom(indicator);
         long dateTo = System.currentTimeMillis();
         List<Order> orders = orderService.findAllOrderInIntervalOfDates(dateFrom, dateTo);
 

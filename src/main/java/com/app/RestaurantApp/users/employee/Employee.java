@@ -1,7 +1,6 @@
 package com.app.RestaurantApp.users.employee;
 
 import com.app.RestaurantApp.bonus.Bonus;
-import com.app.RestaurantApp.order.Order;
 import com.app.RestaurantApp.salary.Salary;
 import com.app.RestaurantApp.users.appUser.AppUser;
 
@@ -26,6 +25,10 @@ public class Employee extends AppUser {
     public Employee(AppUser appUser) {
         super(appUser);
         salary = 0;
+    }
+
+    public Employee(Long id) {
+        super(id);
     }
 
     public double getSalary() {

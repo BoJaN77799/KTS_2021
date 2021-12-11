@@ -83,6 +83,10 @@ public class AppUser implements UserDetails {
         this.profilePhoto = appUser.profilePhoto;
     }
 
+    public AppUser (Long id){
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

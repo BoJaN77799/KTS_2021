@@ -46,7 +46,14 @@ public class Order {
     @Column(name = "profit")
     private Double profit;
 
-    public Order() {
+    public Order() {}
+
+    public Order(OrderStatus status, Long createdAt, Employee waiter, Employee barman, Employee cook) {
+        this.status = status;
+        this.createdAt = createdAt;
+        this.waiter = waiter;
+        this.barman = barman;
+        this.cook = cook;
     }
 
     public Long getId() {
