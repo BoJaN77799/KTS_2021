@@ -23,6 +23,7 @@ import com.app.RestaurantApp.table.TableService;
 
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -289,7 +290,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public List<Order> searchOrders(String searchField, String orderStatus, Pageable pageable) {
+    public Page<Order> searchOrders(String searchField, String orderStatus, Pageable pageable) {
         if (searchField == null)
             searchField = "";
         if (orderStatus == null)

@@ -31,6 +31,10 @@ public class Employee extends AppUser {
         super(id);
     }
 
+    public Employee(Long id, String lastName) {
+        super(id, lastName);
+    }
+
     public double getSalary() {
         return salary;
     }

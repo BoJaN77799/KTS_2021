@@ -33,4 +33,10 @@ public class Constants {
     public static final String TABLE_IN_USE_MSG = "Table in use!";
 
     public static final String NOT_CHANGEABLE_ORDER_ITEM_MSG = "Order item with id: 1 does not exist in order or cannot be changed!";
+
+    public static final int PAGEABLE_PAGE = 0;
+    public static final int PAGEABLE_SIZE = 4;
+    public static final int PAGEABLE_TOTAL_ELEMENTS = 2;
+    public static final String SEARCH_FIELD = "Dodik";
+    public static final String ORDER_STATUS_IP = "IN_PROGRESS";
 }
