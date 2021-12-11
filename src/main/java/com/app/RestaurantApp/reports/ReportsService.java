@@ -12,9 +12,9 @@ public interface ReportsService {
 
     long generateDateFrom(String reportParameter);
 
-    List<Sales> getReportsSales(String indikator);
+    List<Sales> getReportsSales(long dateFrom, long dateTo);
 
-    IncomeExpenses getIncomeExpenses(String indikator);
+    IncomeExpenses getIncomeExpenses(long dateFrom, long dateTo);
 
     double calculateIncome(List<Order> orders);
 

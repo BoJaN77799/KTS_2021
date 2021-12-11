@@ -51,9 +51,7 @@ public class ReportsServiceImpl implements ReportsService {
     }
 
     @Override
-    public List<Sales> getReportsSales(String indikator) {
-        long dateFrom = generateDateFrom(indikator);
-        long dateTo = System.currentTimeMillis();
+    public List<Sales> getReportsSales(long dateFrom, long dateTo) {
         List<Order> orders = orderService.findAllOrderInIntervalOfDates(dateFrom, dateTo);
 
         Map<Long, Sales> maps = new HashMap<>();
@@ -77,9 +75,7 @@ public class ReportsServiceImpl implements ReportsService {
     }
 
     @Override
-    public IncomeExpenses getIncomeExpenses(String indikator) {
-        long dateFrom = generateDateFrom(indikator);
-        long dateTo = System.currentTimeMillis();
+    public IncomeExpenses getIncomeExpenses(long dateFrom, long dateTo) {
         List<Order> orders = orderService.findAllOrderInIntervalOfDates(dateFrom, dateTo);
 
         IncomeExpenses ie = new IncomeExpenses();
@@ -120,7 +116,7 @@ public class ReportsServiceImpl implements ReportsService {
         return sum;
     }
 
-    private double calculateExpensesPerEmployee(LocalDate dateFromLD, LocalDate dateToLD, Employee e) {
+    public double calculateExpensesPerEmployee(LocalDate dateFromLD, LocalDate dateToLD, Employee e) {
         double sum = 0;
         // ide od najvecih ka manjim datumima je sortirano
         List<Salary> l = e.getSalaries().stream().sorted(Comparator.comparingLong(Salary::getDateFrom).reversed()).toList();
