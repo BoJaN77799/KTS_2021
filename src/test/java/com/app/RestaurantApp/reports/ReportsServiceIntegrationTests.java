@@ -29,4 +29,5 @@ public class ReportsServiceIntegrationTests {
         assertEquals( 3, activityReport.stream().filter(user -> user.getUserType() == UserType.COOK).findAny().get().getOrdersAccomplished());
         assertEquals( 3, activityReport.stream().filter(user -> user.getUserType() == UserType.BARMAN).findAny().get().getOrdersAccomplished());
     }
+
 }

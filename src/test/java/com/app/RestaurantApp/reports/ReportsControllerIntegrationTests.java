@@ -56,4 +56,5 @@ public class ReportsControllerIntegrationTests {
         assertEquals( 3, users.stream().filter(user -> user.getUserType() == UserType.BARMAN).findAny().get().getOrdersAccomplished());
 
     }
+
 }

@@ -28,13 +28,17 @@ public class ReportsController {
     @GetMapping(value = "/getReportsSales/{indicator}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
     public List<Sales> getReportsSales(@PathVariable String indicator) {
-        return reportsService.getReportsSales(indicator);
+        long dateFrom = reportsService.generateDateFrom(indicator);
+        long dateTo = System.currentTimeMillis();
+        return reportsService.getReportsSales(dateFrom, dateTo);
     }
 
     @GetMapping(value = "/getIncomeExpenses/{indicator}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
     public IncomeExpenses getIncomeExpenses(@PathVariable String indicator) {
-        return reportsService.getIncomeExpenses(indicator);
+        long dateFrom = reportsService.generateDateFrom(indicator);
+        long dateTo = System.currentTimeMillis();
+        return reportsService.getIncomeExpenses(dateFrom, dateTo);
     }
 
     @GetMapping(value = "/activity/{indicator}")

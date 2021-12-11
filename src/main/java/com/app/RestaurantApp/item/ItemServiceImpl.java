@@ -37,7 +37,7 @@ public class ItemServiceImpl implements ItemService {
         Item i = itemRepository.findByIdItemWithPrices(itemPriceDTO.getId());
         if (i == null) throw new ItemException("Item does not exist!");
 
-        if (itemPriceDTO.getNewPrice() <= 0) throw new ItemException("Price must be above 0");
+        if (itemPriceDTO.getNewPrice() <= 0) throw new ItemException("Price must be above 0!");
 
         Price p = new Price();
         p.setAmount(itemPriceDTO.getNewPrice());
