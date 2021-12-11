@@ -3,6 +3,7 @@ package com.app.RestaurantApp.order;
 import com.app.RestaurantApp.order.dto.OrderDTO;
 
 import com.app.RestaurantApp.users.UserException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public interface OrderService {
 
     List<Order> findAllOrderInIntervalOfDates(Long dateFrom, Long dateTo);
 
-    List<Order> searchOrders(String searchField, String orderStatus, Pageable pageable);
+    Page<Order> searchOrders(String searchField, String orderStatus, Pageable pageable);
 
     Order findOrderAtTable(Long tableID);
   

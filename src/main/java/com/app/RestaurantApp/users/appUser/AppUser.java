@@ -87,6 +87,11 @@ public class AppUser implements UserDetails {
         this.id = id;
     }
 
+    public AppUser (Long id, String lastName){
+        this.id = id;
+        this.lastName = lastName;
+    }
+
     public Long getId() {
         return id;
     }
