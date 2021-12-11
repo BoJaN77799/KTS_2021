@@ -9,14 +9,18 @@ import com.app.RestaurantApp.orderItem.dto.OrderItemOrderCreationDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.app.RestaurantApp.order.Constants.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class OrderServiceIntegrationTests {
@@ -108,6 +112,17 @@ public class OrderServiceIntegrationTests {
         assertEquals(OrderStatus.FINISHED, order.getStatus());
         assertTrue(0 == order.getProfit());
         assertEquals(notificationsSize - 2, orderNotificationRepository.findAll().size());
+    }
+
+    @Test
+    public void testSearchOrders() {
+        Pageable pageableSetup = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+        // Test invoke
+        Page<Order> ordersPage = orderService.searchOrders(SEARCH_FIELD, ORDER_STATUS_IP, pageableSetup);
+
+        // Verifying
+        assertNotNull(ordersPage);
+        assertEquals(4 , ordersPage.stream().toList().size());
     }
 
     private OrderDTO createOrderDTOItemsAdd(Long id) {
