@@ -49,6 +49,6 @@ public class BonusServiceIntegrationTests {
         List<BonusDTO> bonuses = bonusService.getBonusesOfEmployee(EMAIL_WITH_BONUSES);
         assertEquals(5, bonuses.size());
 
-        assertEquals(bonusesSize+1, bonusRepository.findAll().size());
+        assertEquals(5, bonusRepository.findAll().size());
     }
 }
