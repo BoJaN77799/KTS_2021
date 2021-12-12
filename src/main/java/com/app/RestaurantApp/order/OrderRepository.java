@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import org.springframework.data.domain.Page;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -19,20 +18,32 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("select o from Order o join fetch o.orderItems i where o.id =?1 and i.item.itemType = 'FOOD'")
     Order findOneWithFood(Long id);
 
-    @Query("select distinct o from Order o join fetch o.orderItems i where (o.status = 'NEW' or o.cook is null ) and i.item.itemType = 'FOOD'")
-    List<Order> findAllNewWithFood();
+    @Query(
+            value = "select distinct o from Order o join fetch o.orderItems i where o.status <> 'FINISHED' and (o.status = 'NEW' or o.cook is null ) and i.item.itemType = 'FOOD'",
+            countQuery = "select count(o) from Order o join o.orderItems i where o.status <> 'FINISHED' and (o.status = 'NEW' or o.cook is null ) and i.item.itemType = 'FOOD'"
+    )
+    Page<Order> findAllNewWithFood(Pageable pageable);
 
-    @Query("select distinct o from Order o join fetch o.orderItems i where (o.cook.id =?1 and o.status = 'IN_PROGRESS') and i.item.itemType = 'FOOD'")
-    List<Order> findAllMyWithFood(Long id);
+    @Query(
+            value = "select distinct o from Order o join fetch o.orderItems i where (o.cook.id =?1 and o.status = 'IN_PROGRESS') and i.item.itemType = 'FOOD'",
+            countQuery = "select count(o) from Order o join o.orderItems i where (o.cook.id =?1 and o.status = 'IN_PROGRESS') and i.item.itemType = 'FOOD'"
+    )
+    Page<Order> findAllMyWithFood(Long id, Pageable pageable);
 
     @Query("select o from Order o join fetch o.orderItems i where o.id =?1 and i.item.itemType = 'DRINK'")
     Order findOneWithDrinks(Long id);
 
-    @Query("select distinct o from Order o join fetch o.orderItems i where (o.status = 'NEW' or o.barman is null ) and i.item.itemType = 'DRINK'")
-    List<Order> findAllNewWithDrinks();
+    @Query(
+            value = "select distinct o from Order o join fetch o.orderItems i where (o.status = 'NEW' or o.barman is null ) and i.item.itemType = 'DRINK'",
+            countQuery = "select count(o) from Order o join o.orderItems i where (o.status = 'NEW' or o.barman is null ) and i.item.itemType = 'DRINK'"
+    )
+    Page<Order> findAllNewWithDrinks(Pageable pageable);
 
-    @Query("select distinct o from Order o join fetch o.orderItems i where (o.barman.id =?1 and o.status = 'IN_PROGRESS') and i.item.itemType = 'DRINK'")
-    List<Order> findAllMyWithDrinks(Long id);
+    @Query(
+            value = "select distinct o from Order o join fetch o.orderItems i where (o.barman.id =?1 and o.status = 'IN_PROGRESS') and i.item.itemType = 'DRINK'",
+            countQuery = "select count(o) from Order o join o.orderItems i where (o.barman.id =?1 and o.status = 'IN_PROGRESS') and i.item.itemType = 'DRINK'"
+    )
+    Page<Order> findAllMyWithDrinks(Long id, Pageable pageable);
 
     @Query("select distinct o from Order o left join fetch o.orderItems i where o.createdAt <= ?2 and o.createdAt >= ?1 and o.status = 'FINISHED'")
     List<Order> findAllOrderInIntervalOfDates(Long dateFrom, Long dateTo);
