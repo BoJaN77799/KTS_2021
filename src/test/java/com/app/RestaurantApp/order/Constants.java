@@ -43,4 +43,11 @@ public class Constants {
 
     public static final String COOK_EMAIL = "headcook@maildrop.cc";
     public static final String COOK_PWD = "cook";
+    public static final String WAITER_EMAIL = "waiter@maildrop.cc";
+    public static final String WAITER_PWD = "waiter";
+
+    public static final String ORDER_CREATED = "Order successfully created.";
+    public static final String ORDER_UPDATED = "Order successfully updated.";
+    public static final String ORDER_FINISHED = "Order successfully finished.";
+    public static final String ORDER_NOT_FOUND = "Order not found!";
 }

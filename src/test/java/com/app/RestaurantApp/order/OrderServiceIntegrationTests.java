@@ -51,7 +51,7 @@ public class OrderServiceIntegrationTests {
 
     @Test @Transactional
     public void testUpdateOrder_ChangeQuantityAndPriority() throws OrderException {
-        int notificationsSize = orderItemRepository.findAll().size();
+        int orderItemsSize = orderItemRepository.findAll().size();
         OrderDTO orderDTO = createOrderDTOItemUpdate(1L, 1L);
 
         Order order = orderService.updateOrder(orderDTO);
@@ -59,7 +59,7 @@ public class OrderServiceIntegrationTests {
 
         assertEquals(INIT_QUANTITY1, orderItem.getQuantity());
         assertEquals(1, orderItem.getPriority());
-        assertEquals(notificationsSize, orderItemRepository.findAll().size());
+        assertEquals(orderItemsSize, orderItemRepository.findAll().size());
     }
 
     @Test @Transactional
