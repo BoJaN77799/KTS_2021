@@ -8,4 +8,7 @@ public class Constants {
 
     public static final String EMAIL_WITH_SALARIES = "headcook@maildrop.cc";
     public static final String EMAIL_WITHOUT_SALARIES = "cook@maildrop.cc";
+
+    public static final String MANAGER_EMAIL = "manager@maildrop.cc";
+    public static final String MANAGER_PWD = "manager";
 }

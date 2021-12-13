@@ -20,7 +20,7 @@ public class BonusController {
 
     @GetMapping(value = "/getBonusesOfEmployee/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
-    public List<BonusDTO> getBonusesofEmployee(@PathVariable String email) throws UserException {
+    public List<BonusDTO> getBonusesOfEmployee(@PathVariable String email) throws UserException {
         return bonusService.getBonusesOfEmployee(email);
     }
 
