@@ -50,6 +50,7 @@ public class SalaryServiceImpl implements SalaryService {
         if (e == null) throw new UserException("Invalid employee, email not found!");
         Salary salary = new Salary(salaryDTO);
         salary.setEmployee(e);
+        e.getSalaries().add(salary);
 
         SalaryUtils.CheckSalaryInfo(salary);
 

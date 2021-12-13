@@ -27,4 +27,6 @@ public class Constants {
     public static final String SECOND_NAME = "Gulas";
     public static final String THIRD_NAME = "Paprikas";
 
+    public static final String VALID_EMAIL = "headcook@maildrop.cc";
+    public static final String INVALID_EMAIL = "cook@maildrop.cc";
 }
