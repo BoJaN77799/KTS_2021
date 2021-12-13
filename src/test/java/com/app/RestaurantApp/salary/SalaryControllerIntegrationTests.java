@@ -84,6 +84,8 @@ public class SalaryControllerIntegrationTests {
                 .content(mapper.writeValueAsString(salaryDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value("Salary added successfully"));
+
+        assertEquals(salariesSize + 1, salaryRepository.findAll().size());
     }
 
 }
