@@ -14,6 +14,12 @@ public class TableCreateDTO {
 
     }
 
+    public TableCreateDTO(double x, double y, int floor) {
+        this.x = x;
+        this.y = y;
+        this.floor = floor;
+    }
+
     public double getX() {
         return x;
     }

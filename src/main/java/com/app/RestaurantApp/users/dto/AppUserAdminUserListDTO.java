@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.users.dto;
 
+import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.users.appUser.AppUser;
 
 public class AppUserAdminUserListDTO {
@@ -9,7 +10,7 @@ public class AppUserAdminUserListDTO {
     private String lastName;
     private String email;
     private String telephone;
-    private String userType;
+    private UserType userType;
     private boolean isPasswordChanged;
 
     public AppUserAdminUserListDTO() {
@@ -21,7 +22,7 @@ public class AppUserAdminUserListDTO {
         this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.telephone = user.getTelephone();
-        this.userType = user.getUserType().toString();
+        this.userType = user.getUserType();
         this.isPasswordChanged = user.isPasswordChanged();
     }
 
@@ -65,11 +66,11 @@ public class AppUserAdminUserListDTO {
         this.telephone = telephone;
     }
 
-    public String getUserType() {
+    public UserType getUserType() {
         return userType;
     }
 
-    public void setUserType(String userType) {
+    public void setUserType(UserType userType) {
         this.userType = userType;
     }
 
