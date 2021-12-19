@@ -29,7 +29,7 @@ public class TableRepositoryTests {
     @Test
     public void testFindByFloorAndActive(){
         List<Table> tableList = tableRepository.findByFloorAndActive(0, true);
-        assertEquals(10, tableList.size());
+        assertEquals(12, tableList.size());
         assertThat(tableList).extracting("active").containsOnly(true);
         assertThat(tableList).extracting("floor").containsOnly(0);
 
@@ -49,7 +49,7 @@ public class TableRepositoryTests {
     @Test
     public void testCountByFloorAndActive(){
         long count = tableRepository.countByFloorAndActive(0, true);
-        assertEquals(10, count);
+        assertEquals(12, count);
 
         count = tableRepository.countByFloorAndActive(1, true);
         assertEquals(4, count);
@@ -89,7 +89,7 @@ public class TableRepositoryTests {
     @Test
     public void testFindByFloorAndNoProgressOrders(){
         List<Table> tableList = tableRepository.findByFloorAndNoInProgressOrders(0);
-        assertEquals(3, tableList.size());
+        assertEquals(5, tableList.size());
 
         tableList.sort(Comparator.comparing(Table::getId));
         assertEquals(6, tableList.get(0).getId());

@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static com.app.RestaurantApp.users.appUser.Constants.UPDATE_LASTNAME;
@@ -32,7 +33,7 @@ public class TableServiceIntegrationTests {
     @Test
     public void testGetTablesFromFloor(){
         List<Table> tableList = tableService.getTablesFromFloor(0);
-        assertEquals(10, tableList.size());
+        assertEquals(12, tableList.size());
         assertThat(tableList).extracting("active").containsOnly(true);
         assertThat(tableList).extracting("floor").containsOnly(0);
 
@@ -104,16 +105,19 @@ public class TableServiceIntegrationTests {
     @Test
     public void testGetTablesWithActiveOrderIfItExists(){
         List<TableWaiterDTO> tableList = tableService.getTablesWithActiveOrderIfItExists(0);
-        assertFalse(tableList.get(0).isOccupied());
-        assertFalse(tableList.get(1).isOccupied());
-        assertFalse(tableList.get(2).isOccupied());
+        tableList.sort(Comparator.comparing(TableWaiterDTO::getId));
+        assertEquals("NEW", tableList.get(0).getOrderStatus());
+        assertEquals("NEW", tableList.get(1).getOrderStatus());
+        assertEquals("NEW", tableList.get(2).getOrderStatus());
         assertEquals("NEW", tableList.get(3).getOrderStatus());
         assertEquals("NEW", tableList.get(4).getOrderStatus());
-        assertEquals("NEW", tableList.get(5).getOrderStatus());
-        assertEquals("NEW", tableList.get(6).getOrderStatus());
-        assertEquals("NEW", tableList.get(7).getOrderStatus());
-        assertEquals("READY", tableList.get(8).getOrderStatus());
-        assertEquals("FINISHABLE", tableList.get(9).getOrderStatus());
+        assertEquals("TABLE FREE", tableList.get(5).getOrderStatus());
+        assertEquals("TABLE FREE", tableList.get(6).getOrderStatus());
+        assertEquals("TABLE FREE", tableList.get(7).getOrderStatus());
+        assertEquals("NEW", tableList.get(8).getOrderStatus());
+        assertEquals("READY", tableList.get(9).getOrderStatus());
+        assertEquals("TABLE FREE", tableList.get(10).getOrderStatus());
+        assertEquals("TABLE FREE", tableList.get(11).getOrderStatus());
 
         tableList = tableService.getTablesWithActiveOrderIfItExists(1);
         assertEquals(4, tableList.size());
