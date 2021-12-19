@@ -107,7 +107,7 @@ public class TableServiceUnitTests {
         doReturn(12L).when(tableRepositoryMock).countByFloorAndActive(0, true);
 
         TableException tableException = assertThrows(TableException.class, ()-> tableService.createTable(table));
-        assertEquals(tableException.getMessage(), "Can't add table! Too many tables on floor, limit is 12");
+        assertEquals(tableException.getMessage(), "Can't add table! Too many tables on floor, limit is 10");
     }
 
     @Test
