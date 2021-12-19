@@ -9,6 +9,12 @@ public class TableUpdateDTO {
 
     public TableUpdateDTO(){}
 
+    public TableUpdateDTO(Long id, double x, double y){
+        this.id = id;
+        this.x = x;
+        this.y = y;
+    }
+
     public Long getId() {
         return id;
     }

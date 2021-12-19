@@ -35,9 +35,8 @@ public class TableController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> createTable(@RequestBody TableCreateDTO tableCreateDTO){
-        Table table = tableCreateDTO.convertToTable();
         try{
-            tableService.createTable(table);
+            tableService.createTable(tableCreateDTO);
             return new ResponseEntity<>("Table created successfully", HttpStatus.OK);
         }catch (TableException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

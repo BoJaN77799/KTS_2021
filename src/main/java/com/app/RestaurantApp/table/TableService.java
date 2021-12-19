@@ -1,6 +1,6 @@
 package com.app.RestaurantApp.table;
 
-import com.app.RestaurantApp.table.dto.TableAdminDTO;
+import com.app.RestaurantApp.table.dto.TableCreateDTO;
 import com.app.RestaurantApp.table.dto.TableUpdateDTO;
 import com.app.RestaurantApp.table.dto.TableWaiterDTO;
 
@@ -10,11 +10,11 @@ public interface TableService {
 
     List<Table> getTablesFromFloor(int floor);
 
-    void updateTable(TableUpdateDTO tableAdminDTO) throws TableException;
+    Table updateTable(TableUpdateDTO tableAdminDTO) throws TableException;
 
     void deleteTable(Long id) throws TableException;
 
-    void createTable(Table table) throws TableException;
+    Table createTable(TableCreateDTO table) throws TableException;
 
     Table findById(Long id);
 

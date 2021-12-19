@@ -1,6 +1,6 @@
 package com.app.RestaurantApp.table;
 
-import com.app.RestaurantApp.table.dto.TableAdminDTO;
+import com.app.RestaurantApp.table.dto.TableCreateDTO;
 import com.app.RestaurantApp.table.dto.TableUpdateDTO;
 import com.app.RestaurantApp.table.dto.TableWaiterDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +26,8 @@ public class TableServiceImpl implements TableService{
     }
 
     @Override
-    public void updateTable(TableUpdateDTO tableAdminDTO) throws TableException{
-        Optional<Table> tableOptional = tableRepository.findById(tableAdminDTO.getId());
+    public Table updateTable(TableUpdateDTO tableAdminDTO) throws TableException{
+        Optional<Table> tableOptional = tableRepository.findByIdAndActive(tableAdminDTO.getId(), true);
         if (tableOptional.isEmpty()) throw new TableException("Invalid table to update!");
 
         Table table = tableOptional.get();
@@ -35,23 +35,21 @@ public class TableServiceImpl implements TableService{
         table.setY(tableAdminDTO.getY());
         //todo videti jos kasnije na frontu da li ce postojati ogranicenje za X i Y kod pozicije stolova
 
-        tableRepository.save(table);
+        return tableRepository.save(table);
     }
 
     @Override
     public void deleteTable(Long id) throws TableException{
-        Optional<Table> tableOptional = tableRepository.findById(id);
+        Optional<Table> tableOptional = tableRepository.findByIdAndActive(id, true);
         if (tableOptional.isEmpty()) throw new TableException("Invalid table to delete!");
 
         Table table = tableOptional.get();
-        if (!table.getActive()) throw new TableException("Can't delete already inactive table!");
-
         table.setActive(false);
         tableRepository.save(table);
     }
 
     @Override
-    public void createTable(Table table) throws TableException {
+    public Table createTable(TableCreateDTO tableDTO) throws TableException {
         String floors = env.getProperty("restaurant.floors");
         String maxTables = env.getProperty("restaurant.maxTablesPerFloor");
         if (floors == null) throw new TableException("Invalid property for number of floors!");
@@ -66,16 +64,17 @@ public class TableServiceImpl implements TableService{
             throw new TableException("Invalid properties of restaurant!");
         }
 
-        if (table.getFloor() < 0 || table.getFloor() > (floorsNum - 1)){
+        if (tableDTO.getFloor() < 0 || tableDTO.getFloor() > (floorsNum - 1)){
             throw new TableException("Invalid table floor (less than 0, or higher than max floor limit)!");
         }
 
-        long tablesAtFloor = tableRepository.countByFloorAndActive(table.getFloor(), true);
+        long tablesAtFloor = tableRepository.countByFloorAndActive(tableDTO.getFloor(), true);
         if (tablesAtFloor >= maxTablesPerFloor){
             throw new TableException("Can't add table! Too many tables on floor, limit is " + maxTablesPerFloor);
         }
+        Table table = tableDTO.convertToTable();
         table.setActive(true);
-        tableRepository.save(table);
+        return tableRepository.save(table);
     }
     
     @Override
