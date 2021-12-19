@@ -3,9 +3,7 @@ package com.app.RestaurantApp.order;
 import com.app.RestaurantApp.drinks.Drink;
 import com.app.RestaurantApp.enums.*;
 import com.app.RestaurantApp.food.Food;
-import com.app.RestaurantApp.food.FoodException;
 import com.app.RestaurantApp.item.Item;
-import com.app.RestaurantApp.item.ItemRepository;
 import com.app.RestaurantApp.item.ItemService;
 import com.app.RestaurantApp.notifications.OrderNotification;
 import com.app.RestaurantApp.notifications.OrderNotificationService;
@@ -21,11 +19,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import static com.app.RestaurantApp.order.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 
 import static com.app.RestaurantApp.order.Constants.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -65,6 +67,8 @@ public class OrderServiceUnitTests {
 
         Order order = new Order();
         order.setId(1L);
+        List<Order> orders = new ArrayList<>();
+        orders.add(order);
 
         OrderNotification orderNotification1 = new OrderNotification();
         OrderNotification orderNotification2 = new OrderNotification();
@@ -80,6 +84,8 @@ public class OrderServiceUnitTests {
 
         given(orderRepositoryMock.save(any(Order.class))).willReturn(order);
         given(orderNotificationServiceMock.notifyNewOrder(any(Order.class))).willReturn(orderNotifications);
+
+        given(orderRepositoryMock.findActiveOrderByTable(1L)).willReturn(new ArrayList<>());
     }
 
     @Test
@@ -176,6 +182,26 @@ public class OrderServiceUnitTests {
         Exception e = assertThrows(OrderException.class, () -> orderService.createOrder(orderDTO));
 
         assertEquals(INVALID_NOTE_MSG, e.getMessage());
+    }
+
+    @Test
+    public void testCreateOrder_TableInUse() throws OrderException {
+        Table table = new Table();
+        table.setId(120L);
+        Order order = new Order();
+        List<Order> orders = new ArrayList<>();
+        orders.add(order);
+
+        given(itemServiceMock.findAllWithIds(anyList())).willReturn(createItems());
+        given(tableServiceMock.findById(120L)).willReturn(table);
+        given(orderRepositoryMock.findActiveOrderByTable(120L)).willReturn(orders);
+
+        OrderDTO orderDTO = createOrderDTOWithOrderItems();
+        orderDTO.setTableId(120L);
+
+        Exception e = assertThrows(OrderException.class, () -> orderService.createOrder(orderDTO));
+
+        assertEquals(TABLE_IN_USE_MSG, e.getMessage());
     }
 
     @Test
@@ -420,6 +446,21 @@ public class OrderServiceUnitTests {
         assertNull(o);
     }
 
+    @Test
+    public void testSearchOrders() {
+        Pageable pageableSetup = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+        List<Order> ordersSetup = createOrders();
+        Page<Order> ordersPageSetup = new PageImpl<>(ordersSetup, pageableSetup, PAGEABLE_TOTAL_ELEMENTS);
+        given(orderRepositoryMock.searchOrders(SEARCH_FIELD, ORDER_STATUS_IP, pageableSetup)).willReturn(ordersPageSetup);
+
+        // Test invoke
+        Page<Order> ordersPage = orderService.searchOrders(SEARCH_FIELD, ORDER_STATUS_IP, pageableSetup);
+
+        // Verifying
+        assertNotNull(ordersPage);
+        assertEquals(2 , ordersPage.stream().toList().size());
+    }
+
     private Order createOrderForFinish(Long id) {
         Order order = new Order();
         order.setId(id);
@@ -643,6 +684,17 @@ public class OrderServiceUnitTests {
         StringBuilder sb = new StringBuilder();
         sb.append("a".repeat(302));
         return sb.toString();
+    }
+
+    private List<Order> createOrders() {
+        Employee waiter = new Employee(3L, "Dodik");
+        Employee cook = new Employee(4L);
+        Employee barman = new Employee(5L);
+        return new ArrayList<>(
+                Arrays.asList(
+                        new Order(OrderStatus.IN_PROGRESS, 1636730076405L, waiter, barman, cook),
+                        new Order(OrderStatus.IN_PROGRESS, 1636730076405L, waiter, null, cook))
+        );
     }
 
 }

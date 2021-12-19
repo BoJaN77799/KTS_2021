@@ -6,12 +6,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
+import static com.app.RestaurantApp.order.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -59,6 +64,40 @@ public class OrderRepositoryIntegrationTests {
 
         order = orderRepository.findOneWithOrderItems(-1L);
         assertNull(order);
+    }
+
+    @Test
+    public void testFindActiveOrderByTable() {
+        List<Order> orders;
+
+        orders = orderRepository.findActiveOrderByTable(1L);
+
+        assertTrue(orders.size() > 0);
+    }
+
+    @Test
+    public void testFindActiveOrderByTable2() {
+        List<Order> orders;
+
+        orders = orderRepository.findActiveOrderByTable(-1L);
+
+        assertEquals(0, orders.size());
+    }
+
+    @Test
+    public void testSearchOrders() {
+        Page<Order> ordersPage;
+        List<Order> orders;
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        // Test invoke
+        ordersPage = orderRepository.searchOrders(SEARCH_FIELD, ORDER_STATUS_IP, pg);
+        orders = ordersPage.getContent();
+
+        // Verifying
+
+        assertNotNull(orders);
+        assertEquals(4 , orders.size());
     }
 
     private List<OrderItem> sortHashSet(Set<OrderItem> orderItems) {

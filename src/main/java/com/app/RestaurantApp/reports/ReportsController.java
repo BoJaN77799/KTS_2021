@@ -28,20 +28,26 @@ public class ReportsController {
     @GetMapping(value = "/getReportsSales/{indicator}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
     public List<Sales> getReportsSales(@PathVariable String indicator) {
-        return reportsService.getReportsSales(indicator);
+        long dateFrom = reportsService.generateDateFrom(indicator);
+        long dateTo = System.currentTimeMillis();
+        return reportsService.getReportsSales(dateFrom, dateTo);
     }
 
     @GetMapping(value = "/getIncomeExpenses/{indicator}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
     public IncomeExpenses getIncomeExpenses(@PathVariable String indicator) {
-        return reportsService.getIncomeExpenses(indicator);
+        long dateFrom = reportsService.generateDateFrom(indicator);
+        long dateTo = System.currentTimeMillis();
+        return reportsService.getIncomeExpenses(dateFrom, dateTo);
     }
 
-    @GetMapping(value = "/activity")
+    @GetMapping(value = "/activity/{indicator}")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<List<UserReportDTO>> getActivityReport(@PathParam("reportParameter") String reportParameter) {
-        long dateFrom = reportsService.generateDateFrom(reportParameter);
+    public ResponseEntity<List<UserReportDTO>> getActivityReport(@PathVariable String indicator) {
+        long dateFrom = reportsService.generateDateFrom(indicator);
         List<UserReportDTO> users = reportsService.activityReport(dateFrom, System.currentTimeMillis());
+        if(users.isEmpty())
+            return new ResponseEntity<>(users, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }

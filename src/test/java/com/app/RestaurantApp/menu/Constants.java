@@ -21,4 +21,7 @@ public class Constants {
     public static final String ITEM_EXCEPTION = "Item does not exist!";
     public static final String NON_EXISTING_ITEM = "Item does not exist in menu!";
     public static final String EXISTING_ITEM = "Item already exists in menu!";
+
+    public static final String MENU_WITH_ITEMS = "Leto";
+    public static final String MENU_WITHOUT_ITEMS = "Jesenja Ponuda";
 }

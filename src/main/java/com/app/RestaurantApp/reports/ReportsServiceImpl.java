@@ -8,7 +8,6 @@ import com.app.RestaurantApp.reports.dto.IncomeExpenses;
 import com.app.RestaurantApp.reports.dto.Sales;
 import com.app.RestaurantApp.salary.Salary;
 import com.app.RestaurantApp.users.employee.Employee;
-import com.app.RestaurantApp.users.employee.EmployeeRepository;
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +16,7 @@ import java.time.*;
 import java.util.*;
 
 import com.app.RestaurantApp.enums.UserType;
-import com.app.RestaurantApp.order.Order;
-import com.app.RestaurantApp.order.OrderService;
 import com.app.RestaurantApp.reports.dto.UserReportDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ReportsServiceImpl implements ReportsService {
@@ -33,9 +28,9 @@ public class ReportsServiceImpl implements ReportsService {
     private EmployeeService employeeService;
 
     @Override
-    public long generateDateFrom(String reportParameter) {
+    public long generateDateFrom(String indicator) {
         LocalDate dateTo = LocalDate.now();
-        switch (reportParameter.toLowerCase()) {
+        switch (indicator.toLowerCase()) {
             case "monthly": {
                 return dateTo.minusMonths(1).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
             }
@@ -51,9 +46,7 @@ public class ReportsServiceImpl implements ReportsService {
     }
 
     @Override
-    public List<Sales> getReportsSales(String indikator) {
-        long dateFrom = generateDateFrom(indikator);
-        long dateTo = System.currentTimeMillis();
+    public List<Sales> getReportsSales(long dateFrom, long dateTo) {
         List<Order> orders = orderService.findAllOrderInIntervalOfDates(dateFrom, dateTo);
 
         Map<Long, Sales> maps = new HashMap<>();
@@ -73,13 +66,11 @@ public class ReportsServiceImpl implements ReportsService {
                 }
             }
         }
-        return maps.values().stream().toList();
+        return maps.values().stream().sorted(Comparator.comparingLong(Sales::getItemId)).toList();
     }
 
     @Override
-    public IncomeExpenses getIncomeExpenses(String indikator) {
-        long dateFrom = generateDateFrom(indikator);
-        long dateTo = System.currentTimeMillis();
+    public IncomeExpenses getIncomeExpenses(long dateFrom, long dateTo) {
         List<Order> orders = orderService.findAllOrderInIntervalOfDates(dateFrom, dateTo);
 
         IncomeExpenses ie = new IncomeExpenses();
@@ -111,21 +102,21 @@ public class ReportsServiceImpl implements ReportsService {
                     sum += b.getAmount();
             }
 
-            LocalDate dateFromLD = Instant.ofEpochMilli(dateFrom).atZone(ZoneId.systemDefault()).toLocalDate();
-            LocalDate dateToLD = Instant.ofEpochMilli(dateTo).atZone(ZoneId.systemDefault()).toLocalDate();
-            sum += calculateExpensesPerEmployee(dateFromLD, dateToLD, e);
+            sum += calculateExpensesPerEmployee(dateFrom, dateTo, e);
 
         }
 
-        return sum;
+        return Math.round(sum * 100.0) / 100.0;
     }
 
-    private double calculateExpensesPerEmployee(LocalDate dateFromLD, LocalDate dateToLD, Employee e) {
+    public double calculateExpensesPerEmployee(long dateFrom, long dateTo, Employee e) {
+        LocalDate dateFromLD = Instant.ofEpochMilli(dateFrom).atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate dateToLD = Instant.ofEpochMilli(dateTo).atZone(ZoneId.systemDefault()).toLocalDate();
         double sum = 0;
         // ide od najvecih ka manjim datumima je sortirano
         List<Salary> l = e.getSalaries().stream().sorted(Comparator.comparingLong(Salary::getDateFrom).reversed()).toList();
 
-        while (!dateFromLD.equals(dateToLD)) {
+        while (!dateFromLD.isAfter(dateToLD)) {
             for (Salary s : l) {
                 boolean indicator = false;
                 LocalDate dateOfSalary = Instant.ofEpochMilli(s.getDateFrom()).atZone(ZoneId.systemDefault()).toLocalDate();
@@ -138,7 +129,7 @@ public class ReportsServiceImpl implements ReportsService {
             }
             dateToLD = dateToLD.minusDays(1);
         }
-        return sum;
+        return Math.round(sum * 100.0) / 100.0;
     }
     
     @Override

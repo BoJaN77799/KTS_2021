@@ -145,31 +145,34 @@ insert into tables (active, x, y, floor) values (true, 14, 15, 1);
 insert into tables (active, x, y, floor) values (true, 5, 11, 1);
 insert into tables (active, x, y, floor) values (true, 22, 10, 1);
 
-insert into restaurant_order (status, created_at, note, table_id, waiter_id) values ('NEW', 1636730076405, 'Pozuri, galdan sam.', 1, 3);
+insert into restaurant_order (status, created_at, note, table_id, waiter_id) values ('NEW', 1637770076405, 'Pozuri, galdan sam.', 1, 3);
 
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (2, 'ORDERED', 300.0, 2, 1, 1);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (3, 'ORDERED', 600.0, 2, 1, 2);
 
-insert into restaurant_order (status, created_at, note, table_id, waiter_id) values ('NEW', 1636730076405, 'Pozuri, zedan sam.', 3, 3);
+insert into restaurant_order (status, created_at, note, table_id, waiter_id) values ('NEW', 1637770076405, 'Pozuri, zedan sam.', 3, 3);
 
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (4, 'ORDERED', 180.0, -1, 2, 7);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 140.0, -1, 2, 8);
 
-insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, barman_id) values ('IN_PROGRESS', 1636730076405, 'Pozuri, gladan i zedan sam.', 2, 3, 4, 5);
+insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, barman_id) values ('IN_PROGRESS', 1637770076405, 'Pozuri, gladan i zedan sam.', 2, 3, 4, 5);
 
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 280.0, 2, 3, 1);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 140.0, -1, 3, 8);
+
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id) values ('IN_PROGRESS', 1636730076405, 'Pozuri, gladan i zedan sam.',4, 3, 5);
 
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 600.0, 2, 4, 2);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'ORDERED', 160.0, -1, 4, 7);
 
+
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id, cook_id) values ('IN_PROGRESS', 1636730076405, 'Pozuri gladan sam.', 5, 3, 5, 4);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (11, 'ORDERED', 2500.0, 1, 5, 4);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (11, 'ORDERED', 160.0, -1, 5, 7);
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id) values ('FINISHED', 1636730076405, 'Pozuri, gladan i zedan sam.', 6, 3, 5);
+
 
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'DELIVERED', 600.0, -1, 4, 8);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'DELIVERED', 300.0, -1, 4, 7);
@@ -180,8 +183,10 @@ insert into order_item (quantity, status, price, priority, order_id, item_id) va
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id) values ('FINISHED', 1636730076405, 'Pozuri, gladan i zedan sam.', 7, 3, 4);
 
+
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'DELIVERED', 600.0, 2, 4, 2);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'DELIVERED', 300.0, 2, 4, 1);
+
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id, cook_id) values ('FINISHED', 1636730076405, 'Pozuri gladan sam.', 7, 3, 5, 4);
 
@@ -198,7 +203,9 @@ insert into restaurant_order (status, created_at, note, table_id, waiter_id, pro
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (4, 'FINISHED', 180.0, 2, 7, 1);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (1, 'DELIVERED', 140.0, -1, 7, 8);
 
+
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id, cook_id) values ('IN_PROGRESS', 1636730076405, 'Probam izmenu porudzbine.', 9, 3, 6, 4);
+
 
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (5, 'ORDERED', 2500.0, 1, 12, 4);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (5, 'ORDERED', 160.0, -1, 12, 7);

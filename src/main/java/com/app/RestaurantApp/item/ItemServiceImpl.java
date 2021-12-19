@@ -23,17 +23,6 @@ public class ItemServiceImpl implements ItemService {
     private ItemRepository itemRepository;
 
     @Override
-    public void insertItem(ItemDTO itemDTO) {
-        Item item = new Item(itemDTO);
-        itemRepository.save(item);
-    }
-
-    @Override
-    public boolean deleteItem(Long id) {
-        return false;
-    }
-
-    @Override
     public List<Item> findAllWithIds(List<Long> ids) {
         return itemRepository.findAllWithIds(ids);
     }
@@ -48,7 +37,7 @@ public class ItemServiceImpl implements ItemService {
         Item i = itemRepository.findByIdItemWithPrices(itemPriceDTO.getId());
         if (i == null) throw new ItemException("Item does not exist!");
 
-        if (itemPriceDTO.getNewPrice() <= 0) throw new ItemException("Price must be above 0");
+        if (itemPriceDTO.getNewPrice() <= 0) throw new ItemException("Price must be above 0!");
 
         Price p = new Price();
         p.setAmount(itemPriceDTO.getNewPrice());
@@ -58,9 +47,7 @@ public class ItemServiceImpl implements ItemService {
         i.getPrices().add(p);
         p.setItem(i);
 
-        boolean indicator = false;
-        if (i.getCurrentPrice() == 0)
-            indicator = true;
+        boolean indicator = i.getCurrentPrice() == 0;
 
         i.setCurrentPrice(itemPriceDTO.getNewPrice());
         itemRepository.save(i);

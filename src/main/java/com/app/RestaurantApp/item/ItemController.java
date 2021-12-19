@@ -30,11 +30,17 @@ public class ItemController {
 
     @PostMapping(value = "/createUpdatePriceOnItem")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<String> createUpdatePriceOnItem(@RequestBody ItemPriceDTO itemPriceDTO) throws ItemException {
-        if (itemService.createUpdatePriceOnItem(itemPriceDTO))
-            return new ResponseEntity<>("Price successfully created!", HttpStatus.OK);
-        else
-            return new ResponseEntity<>("Price successfully updated!", HttpStatus.OK);
+    public ResponseEntity<String> createUpdatePriceOnItem(@RequestBody ItemPriceDTO itemPriceDTO) {
+        try {
+            if (itemService.createUpdatePriceOnItem(itemPriceDTO))
+                return new ResponseEntity<>("Price successfully created!", HttpStatus.OK);
+            else
+                return new ResponseEntity<>("Price successfully updated!", HttpStatus.OK);
+        } catch (ItemException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Unknown error happened while creating/updating price on item !", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(value = "/getPricesOfItem/{id}")

@@ -3,10 +3,10 @@ package com.app.RestaurantApp.order;
 import com.app.RestaurantApp.order.dto.OrderDTO;
 import com.app.RestaurantApp.order.dto.OrderTableViewDTO;
 import com.app.RestaurantApp.order.dto.SimpleOrderDTO;
-import com.app.RestaurantApp.users.appUser.AppUser;
-import com.app.RestaurantApp.users.dto.AppUserAdminUserListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -153,11 +153,20 @@ public class OrderController {
     }
 
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<SimpleOrderDTO> searchOrders(@RequestParam(value = "searchField", required = false) String searchField,
+    @PreAuthorize("hasAnyRole('COOK', 'BARMAN')")
+    public ResponseEntity<List<SimpleOrderDTO>> searchOrders(@RequestParam(value = "searchField", required = false) String searchField,
                                              @RequestParam(value = "orderStatus", required = false) String orderStatus,
                                              Pageable pageable) {
-        List<Order> orders = orderService.searchOrders(searchField, orderStatus, pageable);
-        return orders.stream().map(SimpleOrderDTO::new).toList();
+        Page<Order> orders = orderService.searchOrders(searchField, orderStatus, pageable);
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("total-elements", Long.toString(orders.getTotalElements()));
+        responseHeaders.set("total-pages", Long.toString(orders.getTotalPages()));
+        responseHeaders.set("current-page", Integer.toString(orders.getNumber()));
+
+        if (orders.isEmpty())
+            return new ResponseEntity<>(orders.stream().map(SimpleOrderDTO::new).toList(), responseHeaders, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(orders.stream().map(SimpleOrderDTO::new).toList(), responseHeaders, HttpStatus.OK);
     }
 
     @GetMapping(value = "/getOrderForTable/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

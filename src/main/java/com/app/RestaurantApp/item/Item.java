@@ -39,7 +39,8 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Price> prices;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.DETACH}) // when food is deleted, all ingredients that are linked to
+                                                // that food loses references without removing
     @JoinTable(
             name = "item_ingredient",
             joinColumns = {@JoinColumn(name = "item_id")},
@@ -69,9 +70,16 @@ public class Item {
         this.description = itemDTO.getDescription();
         this.image = itemDTO.getImage();
         this.cost = itemDTO.getCost();
-        this.category = new Category(itemDTO.getCategory());
+        this.category = itemDTO.getCategory() != null ? new Category(itemDTO.getCategory()) : null;
         this.itemType = itemDTO.getItemType();
         this.deleted = itemDTO.isDeleted();
+    }
+
+    public Item(long id, String name, double currentPrice, double cost) {
+        this.id = id;
+        this.name = name;
+        this.currentPrice = currentPrice;
+        this.cost = cost;
     }
 
     public Long getId() {

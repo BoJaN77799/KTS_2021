@@ -16,6 +16,8 @@ public class Category {
 
     public Category(){}
 
+    public Category(Long id, String name){}
+
     public Category(CategoryDTO category) {
         this.id = category.getId();
         this.name = category.getName();

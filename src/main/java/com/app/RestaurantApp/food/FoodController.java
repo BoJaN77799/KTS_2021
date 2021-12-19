@@ -26,9 +26,9 @@ public class FoodController {
     @Autowired
     private FoodService foodService;
 
-    @GetMapping(consumes = "application/json")
+    @GetMapping
     @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<List<FoodWithPriceDTO>> getFoodWithPrice(@RequestBody FoodSearchDTO foodSearchDTO, Pageable pageable) {
+    public ResponseEntity<List<FoodWithPriceDTO>> getFoodWithPrice(FoodSearchDTO foodSearchDTO, Pageable pageable) {
         Page<Food> foodsPage = foodService.getFoodWithPrice(foodSearchDTO, pageable);
         List<Food> foods = foodsPage.getContent();
 
@@ -37,7 +37,7 @@ public class FoodController {
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("total-elements", Long.toString(foodsPage.getTotalElements()));
-        responseHeaders.set("total-pages", Long.toString(foodsPage.getTotalElements()));
+        responseHeaders.set("total-pages", Long.toString(foodsPage.getTotalPages()));
         responseHeaders.set("current-page", Integer.toString(foodsPage.getNumber()));
 
         return new ResponseEntity<>(foodsDTO, responseHeaders, HttpStatus.OK);
@@ -74,7 +74,7 @@ public class FoodController {
                 return new ResponseEntity<>("Food cannot be null", HttpStatus.BAD_REQUEST);
             }
             foodService.saveFood(foodDTO);
-            return new ResponseEntity<>("Food successfully updated", HttpStatus.CREATED);
+            return new ResponseEntity<>("Food successfully updated", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -86,9 +86,9 @@ public class FoodController {
         Food food = foodService.findOne(id);
 
         if (food == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Food does not exist with requested ID",HttpStatus.BAD_REQUEST);
         }
         foodService.deleteFood(food);
-        return new ResponseEntity<>("Food successfully deleted.", HttpStatus.OK);
+        return new ResponseEntity<>("Food successfully deleted", HttpStatus.OK);
     }
 }

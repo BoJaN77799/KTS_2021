@@ -23,6 +23,7 @@ import com.app.RestaurantApp.table.TableService;
 
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +67,8 @@ public class OrderServiceImpl implements OrderService{
         order.setNote(orderDTO.getNote());
         order.setTable(tableService.findById(orderDTO.getTableId()));
         OrderUtils.checkBasicOrderInfo(order);
+        if(orderRepository.findActiveOrderByTable(order.getTable().getId()).size() > 0)
+            throw new OrderException("Table in use!");
 
         Order savedOrder = orderRepository.save(order);
         List<OrderNotification> orderNotifications = orderNotificationService.notifyNewOrder(order);
@@ -116,7 +119,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public void acceptOrder(Long id, String email) throws OrderException, UserException{
+    public void acceptOrder(Long id, String email) throws OrderException, UserException {
         Order order = findOne(id);
         if(order == null) throw new OrderException("Order not found.");
 
@@ -189,7 +192,7 @@ public class OrderServiceImpl implements OrderService{
                     if(orderItemForUpdate.getItem() instanceof Drink)                                               // Ako je pice ne gleda se prioriter
                         orderItemForUpdate.setPriority(0);
                     OrderNotification on = orderNotificationService.notifyOrderItemChange(order, orderItemForUpdate, orderItemDTO.getQuantity(), orderItemDTO.getPriority());
-                    notificationsToSend.add(on);
+                    if(on != null) notificationsToSend.add(on);
                     orderItemForUpdate.setQuantity(orderItemDTO.getQuantity());
                     if(orderItemDTO.getPriority() != -1 && orderItemForUpdate.getItem() instanceof Food)            // Ako je neki broj i hrana podesi mu na taj broj
                         orderItemForUpdate.setPriority(orderItemDTO.getPriority());
@@ -287,7 +290,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public List<Order> searchOrders(String searchField, String orderStatus, Pageable pageable) {
+    public Page<Order> searchOrders(String searchField, String orderStatus, Pageable pageable) {
         if (searchField == null)
             searchField = "";
         if (orderStatus == null)

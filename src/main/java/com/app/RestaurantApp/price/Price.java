@@ -23,6 +23,12 @@ public class Price {
     public Price() {
     }
 
+    public Price(double amount, Long dateFrom, Item item) {
+        this.amount = amount;
+        this.dateFrom = dateFrom;
+        this.item = item;
+    }
+
     public Long getId() {
         return id;
     }

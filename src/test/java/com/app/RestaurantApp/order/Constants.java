@@ -30,6 +30,24 @@ public class Constants {
     public static final String INVALID_WAITER_MSG = "Invalid waiter id sent from front!";
     public static final String INVALID_TABLE_MSG = "Invalid table id sent from front!";
     public static final String INVALID_NOTE_MSG = "Maximum characters for note is 300!";
+    public static final String TABLE_IN_USE_MSG = "Table in use!";
 
     public static final String NOT_CHANGEABLE_ORDER_ITEM_MSG = "Order item with id: 1 does not exist in order or cannot be changed!";
+
+    public static final int PAGEABLE_PAGE = 0;
+    public static final int PAGEABLE_SIZE = 4;
+    public static final int PAGEABLE_TOTAL_ELEMENTS = 2;
+    public static final String SEARCH_FIELD = "Dodik";
+    public static final String ORDER_STATUS_IP = "IN_PROGRESS";
+
+
+    public static final String COOK_EMAIL = "headcook@maildrop.cc";
+    public static final String COOK_PWD = "cook";
+    public static final String WAITER_EMAIL = "waiter@maildrop.cc";
+    public static final String WAITER_PWD = "waiter";
+
+    public static final String ORDER_CREATED = "Order successfully created.";
+    public static final String ORDER_UPDATED = "Order successfully updated.";
+    public static final String ORDER_FINISHED = "Order successfully finished.";
+    public static final String ORDER_NOT_FOUND = "Order not found!";
 }

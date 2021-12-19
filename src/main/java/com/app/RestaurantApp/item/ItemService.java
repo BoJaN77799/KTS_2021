@@ -8,10 +8,6 @@ import java.util.List;
 
 public interface ItemService {
 
-    void insertItem(ItemDTO itemDTO);
-
-    boolean deleteItem(Long id);
-
     List<Item> findAllWithIds(List<Long> ids);
 
     Item findItemById(Long id);

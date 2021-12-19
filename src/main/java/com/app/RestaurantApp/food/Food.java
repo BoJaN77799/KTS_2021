@@ -29,7 +29,7 @@ public class Food extends Item {
         super(food);
         this.recipe = food.getRecipe();
         this.timeToMake = food.getTimeToMake();
-        this.type = FoodType.valueOf(food.getType());
+        this.type = food.getType() != null ? FoodType.valueOf(food.getType()) : null;
     }
 
     public String getRecipe() {
