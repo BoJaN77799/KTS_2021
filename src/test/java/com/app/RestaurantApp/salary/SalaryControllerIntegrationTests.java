@@ -2,6 +2,7 @@ package com.app.RestaurantApp.salary;
 
 import com.app.RestaurantApp.salary.dto.SalaryDTO;
 import com.app.RestaurantApp.security.auth.JwtAuthenticationRequest;
+import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.dto.UserTokenState;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,7 +58,7 @@ public class SalaryControllerIntegrationTests {
     }
 
     @Test
-    public void testGetSalariesOfEmployee() {
+    public void testGetSalariesOfEmployee_Valid() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
         ResponseEntity<SalaryDTO[]>  entity = restTemplate
@@ -70,8 +71,19 @@ public class SalaryControllerIntegrationTests {
     }
 
     @Test
+    public void testGetSalariesOfEmployee_UserException() {
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<UserException> entity = restTemplate
+                .exchange("/api/salaries/getSalariesOfEmployee/unknown@maildrop.cc",
+                        HttpMethod.GET, httpEntity, UserException.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
+    }
+
+    @Test
     @Transactional
-    public void testCreateBonus() throws Exception {
+    public void testCreateSalary_Valid() throws Exception {
         int salariesSize = salaryRepository.findAll().size();
         SalaryDTO salaryDTO = new SalaryDTO();
         salaryDTO.setEmail("headcook@maildrop.cc");
@@ -83,9 +95,40 @@ public class SalaryControllerIntegrationTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(salaryDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value("Salary added successfully"));
+                .andExpect(jsonPath("$").value("Salary added successfully!"));
 
         assertEquals(salariesSize + 1, salaryRepository.findAll().size());
     }
 
+    @Test
+    @Transactional
+    public void testCreateSalary_SalaryException() throws Exception {
+        SalaryDTO salaryDTO = new SalaryDTO();
+        salaryDTO.setEmail("headcook@maildrop.cc");
+        salaryDTO.setDateFrom("23.04.2020");
+        salaryDTO.setAmount(-10000);
+
+        mockMvc.perform(post("/api/salaries/createSalary")
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(salaryDTO)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").value("Salary can not be negative number or zero!"));
+    }
+
+    @Test
+    @Transactional
+    public void testCreateSalary_UserException() throws Exception {
+        SalaryDTO salaryDTO = new SalaryDTO();
+        salaryDTO.setEmail("unknown@maildrop.cc");
+        salaryDTO.setDateFrom("23.04.2020");
+        salaryDTO.setAmount(10000);
+
+        mockMvc.perform(post("/api/salaries/createSalary")
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(salaryDTO)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").value("Invalid employee, email not found!"));
+    }
 }

@@ -39,7 +39,7 @@ public class SalaryController {
         } catch (Exception e) {
             return new ResponseEntity<>("Unknown error happened while adding salary!", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Salary added successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Salary added successfully!", HttpStatus.OK);
 
     }
 
