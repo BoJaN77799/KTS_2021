@@ -21,13 +21,20 @@ public class SalaryController {
 
     @GetMapping(value = "/getSalariesOfEmployee/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
-    public List<SalaryDTO> getSalariesOfEmployee(@PathVariable String email) throws UserException {
-        return salaryService.getSalariesOfEmployee(email);
+    public ResponseEntity<List<SalaryDTO>> getSalariesOfEmployee(@PathVariable String email) {
+        try {
+            List<SalaryDTO> salaries = salaryService.getSalariesOfEmployee(email);
+            if (salaries.isEmpty())
+                return new ResponseEntity<>(salaries, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(salaries, HttpStatus.OK);
+        } catch (UserException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(value = "/createSalary")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<String> createSalary(@RequestBody SalaryDTO salaryDTO) throws SalaryException, UserException {
+    public ResponseEntity<String> createSalary(@RequestBody SalaryDTO salaryDTO) {
         try {
             salaryService.createSalary(salaryDTO);
         } catch (SalaryException | UserException e) {
@@ -35,7 +42,7 @@ public class SalaryController {
         } catch (Exception e) {
             return new ResponseEntity<>("Unknown error happened while adding salary!", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Salary added successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Salary added successfully!", HttpStatus.CREATED);
 
     }
 

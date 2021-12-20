@@ -20,8 +20,15 @@ public class BonusController {
 
     @GetMapping(value = "/getBonusesOfEmployee/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
-    public List<BonusDTO> getBonusesofEmployee(@PathVariable String email) throws UserException {
-        return bonusService.getBonusesOfEmployee(email);
+    public ResponseEntity<List<BonusDTO>> getBonusesOfEmployee(@PathVariable String email)  {
+        try {
+            List<BonusDTO> bonuses = bonusService.getBonusesOfEmployee(email);
+            if (bonuses.isEmpty())
+                return new ResponseEntity<>(bonuses, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(bonuses, HttpStatus.OK);
+        } catch (UserException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(value = "/createBonus")
@@ -34,7 +41,7 @@ public class BonusController {
         } catch (Exception e) {
             return new ResponseEntity<>("Unknown error happened while adding bonus!", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Bonus added successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Bonus added successfully!", HttpStatus.CREATED);
     }
 
 }

@@ -7,4 +7,7 @@ public class Constants {
 
     public static final String ITEM_EXCEPTION = "Item does not exist!";
     public static final String PRICE_EXCEPTION = "Price must be above 0!";
+
+    public static final String MANAGER_EMAIL = "manager@maildrop.cc";
+    public static final String MANAGER_PWD = "manager";
 }

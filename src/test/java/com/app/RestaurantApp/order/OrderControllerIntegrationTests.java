@@ -60,7 +60,6 @@ public class OrderControllerIntegrationTests {
                 restTemplate.postForEntity("/api/users/login",
                         new JwtAuthenticationRequest(COOK_EMAIL, COOK_PWD),
                         UserTokenState.class);
-
         String accessToken = Objects.requireNonNull(responseEntity.getBody()).getAccessToken();
         headers.add("Authorization", "Bearer " + accessToken);
     }

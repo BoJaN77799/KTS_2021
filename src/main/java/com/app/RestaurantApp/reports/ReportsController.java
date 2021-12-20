@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import javax.websocket.server.PathParam;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -25,20 +28,30 @@ public class ReportsController {
     @Autowired
     private ReportsService reportsService;
 
-    @GetMapping(value = "/getReportsSales/{indicator}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getReportsSales/{dateFrom}-{dateTo}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
-    public List<Sales> getReportsSales(@PathVariable String indicator) {
-        long dateFrom = reportsService.generateDateFrom(indicator);
-        long dateTo = System.currentTimeMillis();
-        return reportsService.getReportsSales(dateFrom, dateTo);
+    public ResponseEntity<List<Sales>> getReportsSales(@PathVariable String dateFrom, @PathVariable String dateTo) {
+        long dateFromL = LocalDate.parse(dateFrom, DateTimeFormatter.ofPattern("dd.MM.yyyy."))
+                .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
+        long dateToL = LocalDate.parse(dateTo, DateTimeFormatter.ofPattern("dd.MM.yyyy."))
+                .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
+        List<Sales> sales = reportsService.getReportsSales(dateFromL, dateToL);
+        if (sales.isEmpty())
+            return new ResponseEntity<>(sales, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(sales, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getIncomeExpenses/{indicator}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getIncomeExpenses/{dateFrom}-{dateTo}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
-    public IncomeExpenses getIncomeExpenses(@PathVariable String indicator) {
-        long dateFrom = reportsService.generateDateFrom(indicator);
-        long dateTo = System.currentTimeMillis();
-        return reportsService.getIncomeExpenses(dateFrom, dateTo);
+    public ResponseEntity<IncomeExpenses> getIncomeExpenses(@PathVariable String dateFrom, @PathVariable String dateTo) {
+        long dateFromL = LocalDate.parse(dateFrom, DateTimeFormatter.ofPattern("dd.MM.yyyy."))
+                .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
+        long dateToL = LocalDate.parse(dateTo, DateTimeFormatter.ofPattern("dd.MM.yyyy."))
+                .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
+        IncomeExpenses incomeExpenses = reportsService.getIncomeExpenses(dateFromL, dateToL);
+        if (incomeExpenses.getExpenses() == 0 && incomeExpenses.getIncome() == 0)
+            return new ResponseEntity<>(incomeExpenses, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(incomeExpenses, HttpStatus.OK);
     }
 
     @GetMapping(value = "/activity/{indicator}")
@@ -46,7 +59,7 @@ public class ReportsController {
     public ResponseEntity<List<UserReportDTO>> getActivityReport(@PathVariable String indicator) {
         long dateFrom = reportsService.generateDateFrom(indicator);
         List<UserReportDTO> users = reportsService.activityReport(dateFrom, System.currentTimeMillis());
-        if(users.isEmpty())
+        if (users.isEmpty())
             return new ResponseEntity<>(users, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
