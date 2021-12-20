@@ -21,13 +21,17 @@ public class SalaryController {
 
     @GetMapping(value = "/getSalariesOfEmployee/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
-    public List<SalaryDTO> getSalariesOfEmployee(@PathVariable String email) throws UserException {
-        return salaryService.getSalariesOfEmployee(email);
+    public ResponseEntity<List<SalaryDTO>> getSalariesOfEmployee(@PathVariable String email) {
+        try {
+            return new ResponseEntity<>(salaryService.getSalariesOfEmployee(email), HttpStatus.OK);
+        } catch (UserException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(value = "/createSalary")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<String> createSalary(@RequestBody SalaryDTO salaryDTO) throws SalaryException, UserException {
+    public ResponseEntity<String> createSalary(@RequestBody SalaryDTO salaryDTO) {
         try {
             salaryService.createSalary(salaryDTO);
         } catch (SalaryException | UserException e) {

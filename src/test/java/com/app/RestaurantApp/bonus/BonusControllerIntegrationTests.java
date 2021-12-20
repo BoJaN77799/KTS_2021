@@ -2,8 +2,11 @@ package com.app.RestaurantApp.bonus;
 
 import com.app.RestaurantApp.bonus.dto.BonusDTO;
 import com.app.RestaurantApp.security.auth.JwtAuthenticationRequest;
+import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.dto.UserTokenState;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.mail.iap.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +59,7 @@ public class BonusControllerIntegrationTests {
     }
 
     @Test
-    public void testGetBonusesOfEmployee() {
+    public void testGetBonusesOfEmployee_Valid() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
         ResponseEntity<BonusDTO[]> entity = restTemplate
@@ -69,8 +72,19 @@ public class BonusControllerIntegrationTests {
     }
 
     @Test
+    public void testGetBonnusesOfEmployee_UserException() {
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<UserException> entity = restTemplate
+                .exchange("/api/bonuses/getBonusesOfEmployee/unknown@maildrop.cc",
+                        HttpMethod.GET, httpEntity, UserException.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
+    }
+
+    @Test
     @Transactional
-    public void testCreateBonus() throws Exception {
+    public void testCreateBonus_Valid() throws Exception {
         int bonusesSize = bonusRepository.findAll().size();
         BonusDTO bonusDTO = new BonusDTO();
         bonusDTO.setEmail("headcook@maildrop.cc");
@@ -82,9 +96,41 @@ public class BonusControllerIntegrationTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(bonusDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value("Bonus added successfully"));
+                .andExpect(jsonPath("$").value("Bonus added successfully!"));
 
         assertEquals(bonusesSize + 1, bonusRepository.findAll().size());
     }
 
+    @Test
+    @Transactional
+    public void testCreateBonus_BonusException() throws Exception {
+        BonusDTO bonusDTO = new BonusDTO();
+        bonusDTO.setEmail("headcook@maildrop.cc");
+        bonusDTO.setAmount(-10000);
+        bonusDTO.setDate("23.04.2000");
+
+        mockMvc.perform(post("/api/bonuses/createBonus")
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(bonusDTO)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").value("Bonus can not be negative number or zero!"));
+    }
+
+
+    @Test
+    @Transactional
+    public void testCreateBonus_UserException() throws Exception {
+        BonusDTO bonusDTO = new BonusDTO();
+        bonusDTO.setEmail("unknown@maildrop.cc");
+        bonusDTO.setAmount(10000);
+        bonusDTO.setDate("23.04.2000");
+
+        mockMvc.perform(post("/api/bonuses/createBonus")
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(bonusDTO)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").value("Invalid employee, email not found!"));
+    }
 }
