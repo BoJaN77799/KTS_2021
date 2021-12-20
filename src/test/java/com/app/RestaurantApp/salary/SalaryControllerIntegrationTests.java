@@ -73,6 +73,19 @@ public class SalaryControllerIntegrationTests {
     }
 
     @Test
+    public void testGetSalariesOfEmployee_NotFound() {
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<SalaryDTO[]>  entity = restTemplate
+                .exchange("/api/salaries/getSalariesOfEmployee/cook@maildrop.cc",
+                        HttpMethod.GET, httpEntity, SalaryDTO[].class);
+        assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
+
+        List<SalaryDTO> salaries =  Arrays.stream(Objects.requireNonNull(entity.getBody())).toList();
+        assertEquals(0, salaries.size());
+    }
+
+    @Test
     public void testGetSalariesOfEmployee_UserException() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
@@ -96,7 +109,7 @@ public class SalaryControllerIntegrationTests {
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(salaryDTO)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$").value("Salary added successfully!"));
 
         assertEquals(salariesSize + 1, salaryRepository.findAll().size());

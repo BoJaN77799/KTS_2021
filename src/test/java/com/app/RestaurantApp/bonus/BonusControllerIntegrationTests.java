@@ -72,6 +72,19 @@ public class BonusControllerIntegrationTests {
     }
 
     @Test
+    public void testGetBonusesOfEmployee_NotFound() {
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<BonusDTO[]> entity = restTemplate
+                .exchange("/api/bonuses/getBonusesOfEmployee/cook@maildrop.cc",
+                        HttpMethod.GET, httpEntity, BonusDTO[].class);
+        assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
+
+        List<BonusDTO> bonuses = Arrays.stream(Objects.requireNonNull(entity.getBody())).toList();
+        assertEquals(0, bonuses.size());
+    }
+
+    @Test
     public void testGetBonnusesOfEmployee_UserException() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
@@ -95,7 +108,7 @@ public class BonusControllerIntegrationTests {
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(bonusDTO)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$").value("Bonus added successfully!"));
 
         assertEquals(bonusesSize + 1, bonusRepository.findAll().size());

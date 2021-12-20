@@ -22,7 +22,10 @@ public class BonusController {
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<List<BonusDTO>> getBonusesOfEmployee(@PathVariable String email)  {
         try {
-            return new ResponseEntity<>(bonusService.getBonusesOfEmployee(email), HttpStatus.OK);
+            List<BonusDTO> bonuses = bonusService.getBonusesOfEmployee(email);
+            if (bonuses.isEmpty())
+                return new ResponseEntity<>(bonuses, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(bonuses, HttpStatus.OK);
         } catch (UserException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -38,7 +41,7 @@ public class BonusController {
         } catch (Exception e) {
             return new ResponseEntity<>("Unknown error happened while adding bonus!", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Bonus added successfully!", HttpStatus.OK);
+        return new ResponseEntity<>("Bonus added successfully!", HttpStatus.CREATED);
     }
 
 }

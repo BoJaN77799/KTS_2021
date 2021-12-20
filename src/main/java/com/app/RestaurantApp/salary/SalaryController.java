@@ -23,7 +23,10 @@ public class SalaryController {
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<List<SalaryDTO>> getSalariesOfEmployee(@PathVariable String email) {
         try {
-            return new ResponseEntity<>(salaryService.getSalariesOfEmployee(email), HttpStatus.OK);
+            List<SalaryDTO> salaries = salaryService.getSalariesOfEmployee(email);
+            if (salaries.isEmpty())
+                return new ResponseEntity<>(salaries, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(salaries, HttpStatus.OK);
         } catch (UserException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -39,7 +42,7 @@ public class SalaryController {
         } catch (Exception e) {
             return new ResponseEntity<>("Unknown error happened while adding salary!", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Salary added successfully!", HttpStatus.OK);
+        return new ResponseEntity<>("Salary added successfully!", HttpStatus.CREATED);
 
     }
 

@@ -140,6 +140,7 @@ public class ItemControllerIntegrationTests {
         assertEquals(4, prices.size());
     }
 
+
     @Test
     public void testGetPricesOfItem_ItemException() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);

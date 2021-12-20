@@ -64,7 +64,7 @@ public class MenuControllerIntegrationTests {
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(NON_EXISTING_NAME))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$").value("Menu created successfully!"));
     }
 
@@ -91,6 +91,20 @@ public class MenuControllerIntegrationTests {
 
         List<ItemDTO> items = Arrays.stream(Objects.requireNonNull(entity.getBody())).toList();
         assertEquals(2, items.size());
+    }
+
+    @Test
+    public void testGetItemsOfMenu_NotFound() {
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<ItemDTO[]> entity = restTemplate
+                .exchange(String.format("/api/menus/getItemsOfMenu/%s", EMPTY_MENU),
+                        HttpMethod.GET, httpEntity, ItemDTO[].class);
+        assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
+        assertNotNull(entity.getBody());
+
+        List<ItemDTO> items = Arrays.stream(Objects.requireNonNull(entity.getBody())).toList();
+        assertEquals(0, items.size());
     }
 
     @Test

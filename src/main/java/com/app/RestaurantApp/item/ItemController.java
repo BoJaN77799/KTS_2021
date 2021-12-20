@@ -33,7 +33,7 @@ public class ItemController {
     public ResponseEntity<String> createUpdatePriceOnItem(@RequestBody ItemPriceDTO itemPriceDTO) {
         try {
             if (itemService.createUpdatePriceOnItem(itemPriceDTO))
-                return new ResponseEntity<>("Price successfully created!", HttpStatus.OK);
+                return new ResponseEntity<>("Price successfully created!", HttpStatus.CREATED);
             else
                 return new ResponseEntity<>("Price successfully updated!", HttpStatus.OK);
         } catch (ItemException e) {
@@ -47,7 +47,10 @@ public class ItemController {
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<List<ItemPriceDTO>> getPricesOfItem(@PathVariable String id)  {
         try {
-            return new ResponseEntity<>(itemService.getPricesOfItem(id), HttpStatus.OK);
+            List<ItemPriceDTO> prices = itemService.getPricesOfItem(id);
+            if (prices.isEmpty())
+                return new ResponseEntity<>(prices, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(prices, HttpStatus.OK);
         } catch (ItemException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }

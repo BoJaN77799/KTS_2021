@@ -24,7 +24,7 @@ public class  MenuController {
     public ResponseEntity<String> createUpdateMenu(@RequestBody String name) {
         try {
             if (menuService.createUpdateMenu(name))
-                return new ResponseEntity<>("Menu created successfully!", HttpStatus.OK);
+                return new ResponseEntity<>("Menu created successfully!", HttpStatus.CREATED);
             else
                 return new ResponseEntity<>("Menu updated successfully!", HttpStatus.OK);
         } catch (Exception e) {
@@ -36,7 +36,10 @@ public class  MenuController {
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<List<ItemDTO>> getItemsOfMenu(@PathVariable String name) {
         try {
-            return new ResponseEntity<>(menuService.getItemsOfMenu(name), HttpStatus.OK);
+            List<ItemDTO> items = menuService.getItemsOfMenu(name);
+            if (items.isEmpty())
+                return new ResponseEntity<>(items, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(items, HttpStatus.OK);
         } catch (MenuException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
