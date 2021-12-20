@@ -6,6 +6,7 @@ import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.dto.UserTokenState;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SalaryControllerIntegrationTests {
 
-    private final HttpHeaders headers = new HttpHeaders();
-
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -47,13 +46,16 @@ public class SalaryControllerIntegrationTests {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    @BeforeEach
-    void setup() {
+    private static HttpHeaders headers;
+
+    @BeforeAll
+    static void setup(@Autowired TestRestTemplate testRestTemplate) {
         ResponseEntity<UserTokenState> responseEntity =
-                restTemplate.postForEntity("/api/users/login", new JwtAuthenticationRequest(MANAGER_EMAIL, MANAGER_PWD),
+                testRestTemplate.postForEntity("/api/users/login", new JwtAuthenticationRequest(MANAGER_EMAIL, MANAGER_PWD),
                         UserTokenState.class);
 
         String accessToken = Objects.requireNonNull(responseEntity.getBody()).getAccessToken();
+        headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
     }
 

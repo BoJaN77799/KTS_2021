@@ -29,4 +29,10 @@ public class Constants {
 
     public static final String VALID_EMAIL = "headcook@maildrop.cc";
     public static final String INVALID_EMAIL = "cook@maildrop.cc";
+
+    public static final String CURRENT_DATE_STRING = "11.12.2021.";
+    public static final String LAST_THREE_MONTHS_STRING = "11.08.2021.";
+
+    public static final String INVALID_DATE_FROM_STRING = "10.10.2000.";
+    public static final String INVALID_DATE_TO_STRING = "10.11.2000.";
 }
