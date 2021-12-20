@@ -14,21 +14,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/menus")
-public class MenuController {
+public class  MenuController {
 
     @Autowired
     private MenuService menuService;
 
     @PostMapping(value = "/createUpdateMenu")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<String> createUpdateMenu(@RequestBody String name) throws MenuException {
+    public ResponseEntity<String> createUpdateMenu(@RequestBody String name) {
         try {
             if (menuService.createUpdateMenu(name))
-                return new ResponseEntity<>("Menu created successfully", HttpStatus.OK);
+                return new ResponseEntity<>("Menu created successfully!", HttpStatus.OK);
             else
-                return new ResponseEntity<>("Menu updated successfully", HttpStatus.OK);
-        } catch (MenuException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Menu updated successfully!", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Unknown error happened while adding/updating menu!", HttpStatus.BAD_REQUEST);
         }
@@ -36,8 +34,13 @@ public class MenuController {
 
     @GetMapping(value = "/getItemsOfMenu/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
-    public List<ItemDTO> getItemsOfMenu(@PathVariable String name) throws MenuException {
-        return menuService.getItemsOfMenu(name);
+    public ResponseEntity<List<ItemDTO>> getItemsOfMenu(@PathVariable String name) {
+        try {
+            return new ResponseEntity<>(menuService.getItemsOfMenu(name), HttpStatus.OK);
+        } catch (MenuException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @PostMapping(value = "/removeItemFromMenu")

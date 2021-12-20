@@ -24,4 +24,13 @@ public class Constants {
 
     public static final String MENU_WITH_ITEMS = "Leto";
     public static final String MENU_WITHOUT_ITEMS = "Jesenja Ponuda";
+
+    public static final String MANAGER_EMAIL = "manager@maildrop.cc";
+    public static final String MANAGER_PWD = "manager";
+
+    public static final String EXISTING_NAME = "Leto";
+    public static final String NON_EXISTING_NAME = "BlaBlaBla";
+
+    public static final String EXISTING_ITEM_ID = "1";
+    public static final String NON_EXISTING_ITEM_ID = "20";
 }
