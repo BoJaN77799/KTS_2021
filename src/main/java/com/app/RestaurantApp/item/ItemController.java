@@ -45,7 +45,11 @@ public class ItemController {
 
     @GetMapping(value = "/getPricesOfItem/{id}")
     @PreAuthorize("hasRole('MANAGER')")
-    public List<ItemPriceDTO> getPricesOfItem(@PathVariable String id) throws ItemException {
-        return itemService.getPricesOfItem(id);
+    public ResponseEntity<List<ItemPriceDTO>> getPricesOfItem(@PathVariable String id)  {
+        try {
+            return new ResponseEntity<>(itemService.getPricesOfItem(id), HttpStatus.OK);
+        } catch (ItemException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 }
