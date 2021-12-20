@@ -56,12 +56,12 @@ public class ReportsServiceIntegrationTests {
         assertEquals(4, sales.get(1).getItemCount());
 
         assertEquals(4L, sales.get(2).getItemId());
-        assertEquals(55000.0, sales.get(2).getPriceCount());
-        assertEquals(22, sales.get(2).getItemCount());
+        assertEquals(27500.0, sales.get(2).getPriceCount());
+        assertEquals(11, sales.get(2).getItemCount());
 
         assertEquals(7L, sales.get(3).getItemId());
-        assertEquals(3820.0, sales.get(3).getPriceCount());
-        assertEquals(23, sales.get(3).getItemCount());
+        assertEquals(2060.0, sales.get(3).getPriceCount());
+        assertEquals(12, sales.get(3).getItemCount());
 
         assertEquals(8L, sales.get(4).getItemId());
         assertEquals(740.0, sales.get(4).getPriceCount());
