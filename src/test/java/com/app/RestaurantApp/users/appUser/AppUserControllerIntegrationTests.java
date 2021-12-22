@@ -265,17 +265,12 @@ public class AppUserControllerIntegrationTests {
                 .andExpect(jsonPath("$").value("User updated successfully"));
     }
 
-    private CreateUserDTO getCreateUserDTO(){
-        CreateUserDTO createUserDTO = new CreateUserDTO();
-        createUserDTO.setFirstName("Djura");
-        createUserDTO.setLastName("Peric");
-        createUserDTO.setUserType(UserType.ADMINISTRATOR);
-        createUserDTO.setAddress("Luzicka");
-        createUserDTO.setEmail(EMAIL_2);
-        createUserDTO.setGender("MALE");
-        createUserDTO.setTelephone("9089089009");
-
-        return createUserDTO;
+    @Test @Transactional
+    public void testDeleteUser() throws Exception{
+        mockMvc.perform(delete("/api/users/2")
+                .headers(headers))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value("User deleted successfully"));
     }
 
     private UpdateUserDTO getUpdateUserDTO(){
