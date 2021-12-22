@@ -23,4 +23,7 @@ public class Constants {
 
     public static final String UPDATE_NAME = "Filip123";
     public static final String UPDATE_LASTNAME = "Markovic123";
+
+    public static final String ADMIN_USERNAME = "admin@maildrop.cc";
+    public static final String ADMIN_PASSWORD = "admin";
 }

@@ -112,6 +112,7 @@ public class AppUserController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateUser(@RequestBody UpdateUserDTO updateUserDTO){
+        //todo da moze da update profilnu
         try{
             appUserService.updateUser(updateUserDTO);
             return new ResponseEntity<>("User updated successfully", HttpStatus.OK);
