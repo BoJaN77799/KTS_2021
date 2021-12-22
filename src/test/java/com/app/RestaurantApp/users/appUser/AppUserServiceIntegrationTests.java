@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
@@ -118,6 +119,7 @@ public class AppUserServiceIntegrationTests {
     }
 
     @Test
+    @Transactional
     public void testUpdateUser(){
         UpdateUserDTO updateUserDTO = getUpdateUserDTO();
 
@@ -161,7 +163,7 @@ public class AppUserServiceIntegrationTests {
         assertNull(appUserService.getActiveUser(8L));
     }
 
-    @Test
+    @Test @Transactional
     public void testChangePassword(){
         long id = 1L;
         String newPw = "adminic22";
