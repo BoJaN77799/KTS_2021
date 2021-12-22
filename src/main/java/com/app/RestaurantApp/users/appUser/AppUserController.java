@@ -151,7 +151,7 @@ public class AppUserController {
         String jwt = tokenUtils.generateToken(user.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
 
-        mailService.sendmail("Login", "Login success.", user.getEmail());
+        //mailService.sendmail("Login", "Login success.", user.getEmail());
 
         // Vrati token kao odgovor na uspesnu autentifikaciju
         return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
