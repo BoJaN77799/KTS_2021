@@ -218,4 +218,80 @@ public class OrderServiceIntegrationTests {
         return null;
     }
 
+    @Test
+    public void testFindOneWithFood(){
+
+        // Test invoke
+        Order order =  orderRepository.findOneWithFood(ORDER_ID_FOOD);
+
+        // Verifying
+        assertNotNull(order);
+        assertEquals(2, order.getOrderItems().size());
+        assertNotNull(order.getOrderItems().stream().filter(orderItem -> orderItem.getItem().getName().equals(ORDER_ITEM_FOOD_NAME_1)).findAny().orElse(null));
+        assertNotNull(order.getOrderItems().stream().filter(orderItem -> orderItem.getItem().getName().equals(ORDER_ITEM_FOOD_NAME_2)).findAny().orElse(null));
+    }
+
+    @Test
+    public void testFindAllNewWithFood() {
+
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        // Test invoke
+        Page<Order> orders = orderRepository.findAllNewWithFood(pg);
+
+        // Verifying
+        assertNotNull(orders);
+        assertEquals(2, orders.stream().toList().size());
+    }
+
+    @Test
+    public void testFindAllMyWithFood() {
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        // Test invoke
+        Page<Order> orders = orderRepository.findAllMyWithFood(COOK_ID, pg);
+
+        // Verifying
+        assertNotNull(orders);
+        assertEquals(4, orders.stream().toList().size());
+    }
+
+    @Test
+    public void testFindOneWithDrinks() {
+
+        // Test invoke
+        Order order = orderRepository.findOneWithDrinks(ORDER_ID_DRINKS);
+
+        // Verifying
+        assertNotNull(order);
+        assertEquals(2, order.getOrderItems().size());
+        assertNotNull(order.getOrderItems().stream().filter(orderItem -> orderItem.getItem().getName().equals(ORDER_ITEM_DRINK_NAME_1)).findAny().orElse(null));
+        assertNotNull(order.getOrderItems().stream().filter(orderItem -> orderItem.getItem().getName().equals(ORDER_ITEM_DRINK_NAME_2)).findAny().orElse(null));
+    }
+
+    @Test
+    public void testFindAllNewWithDrinks() {
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        // Test invoke
+        Page<Order> orders = orderRepository.findAllNewWithDrinks(pg);
+
+        // Verifying
+        assertNotNull(orders);
+        assertEquals(2, orders.stream().toList().size());
+    }
+
+    @Test
+    public void testFindAllMyWithDrinks() {
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        // Test invoke
+        Page<Order> orders = orderRepository.findAllMyWithDrinks(BARMAN_ID, pg);
+
+        // Verifying
+        assertNotNull(orders);
+        assertEquals(3, orders.stream().toList().size());
+    }
+
+
 }

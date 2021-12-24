@@ -100,9 +100,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public Page<Order> findAllMyWithFood(Long id, Pageable pageable) {
-        return orderRepository.findAllMyWithFood(id, pageable);
-    }
+    public Page<Order> findAllMyWithFood(Long id, Pageable pageable) { return orderRepository.findAllMyWithFood(id, pageable); }
 
     @Override
     public Order findOneWithDrinks(Long id) {
@@ -110,14 +108,10 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public Page<Order> findAllNewWithDrinks(Pageable pageable) {
-        return orderRepository.findAllNewWithDrinks(pageable);
-    }
+    public Page<Order> findAllNewWithDrinks(Pageable pageable) { return orderRepository.findAllNewWithDrinks(pageable); }
 
     @Override
-    public Page<Order> findAllMyWithDrinks(Long id, Pageable pageable) {
-        return orderRepository.findAllMyWithDrinks(id, pageable);
-    }
+    public Page<Order> findAllMyWithDrinks(Long id, Pageable pageable) { return orderRepository.findAllMyWithDrinks(id, pageable); }
 
     @Override
     public void acceptOrder(Long id, String email) throws OrderException, UserException {
