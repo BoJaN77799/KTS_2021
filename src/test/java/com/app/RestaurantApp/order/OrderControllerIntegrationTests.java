@@ -193,8 +193,6 @@ public class OrderControllerIntegrationTests {
         // Verifying
         assertNotNull(order);
         assertEquals(2, order.getOrderItems().size());
-        assertNotNull(order.getOrderItems().stream().filter(orderItem -> orderItem.getItem().getName().equals(ORDER_ITEM_DRINK_NAME_1)).findAny().orElse(null));
-        assertNotNull(order.getOrderItems().stream().filter(orderItem -> orderItem.getItem().getName().equals(ORDER_ITEM_DRINK_NAME_2)).findAny().orElse(null));
     }
 
     @Test
