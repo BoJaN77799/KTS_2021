@@ -24,6 +24,7 @@ import com.app.RestaurantApp.table.TableService;
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -94,14 +95,12 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public List<Order> findAllNewWithFood() {
-        return orderRepository.findAllNewWithFood();
+    public Page<Order> findAllNewWithFood(Pageable pageable) {
+        return orderRepository.findAllNewWithFood(pageable);
     }
 
     @Override
-    public List<Order> findAllMyWithFood(Long id) {
-        return orderRepository.findAllMyWithFood(id);
-    }
+    public Page<Order> findAllMyWithFood(Long id, Pageable pageable) { return orderRepository.findAllMyWithFood(id, pageable); }
 
     @Override
     public Order findOneWithDrinks(Long id) {
@@ -109,14 +108,10 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public List<Order> findAllNewWithDrinks() {
-        return orderRepository.findAllNewWithDrinks();
-    }
+    public Page<Order> findAllNewWithDrinks(Pageable pageable) { return orderRepository.findAllNewWithDrinks(pageable); }
 
     @Override
-    public List<Order> findAllMyWithDrinks(Long id) {
-        return orderRepository.findAllMyWithDrinks(id);
-    }
+    public Page<Order> findAllMyWithDrinks(Long id, Pageable pageable) { return orderRepository.findAllMyWithDrinks(id, pageable); }
 
     @Override
     public void acceptOrder(Long id, String email) throws OrderException, UserException {

@@ -35,4 +35,8 @@ public class Constants {
 
     public static final String INVALID_DATE_FROM_STRING = "10.10.2000.";
     public static final String INVALID_DATE_TO_STRING = "10.11.2000.";
+    public static final String LAST_MONTH_STRING = "29.11.2021.";
+    public static final String LAST_THREE_MONTHS_ACTIVITY_STRING = "29.09.2021.";
+    public static final String DATE_TO_STRING = "29.12.2021.";
+
 }

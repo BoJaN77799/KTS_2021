@@ -125,13 +125,26 @@ public class ReportsControllerIntegrationTests {
         assertTrue(entity.getBody().getExpenses() == 0 && entity.getBody().getIncome() == 0);
     }
 
-    /*
     @Test
-    public void testActivityReport() {
+    public void testActivityReport_NOT_FOUND() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
         ResponseEntity<UserReportDTO[]> entity = restTemplate
-                .exchange("/api/reports/activity/{indicator}", HttpMethod.GET, httpEntity, UserReportDTO[].class, "monthly");
+                .exchange(String.format("/api/reports/activity/%s-%s", LAST_MONTH_STRING,
+                        DATE_TO_STRING), HttpMethod.GET, httpEntity, UserReportDTO[].class);
+
+        assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
+
+        assertEquals(0, Objects.requireNonNull(entity.getBody()).length);
+    }
+
+    @Test
+    public void testActivityReport_OK() {
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<UserReportDTO[]> entity = restTemplate
+                .exchange(String.format("/api/reports/activity/%s-%s", LAST_THREE_MONTHS_ACTIVITY_STRING,
+                        DATE_TO_STRING), HttpMethod.GET, httpEntity, UserReportDTO[].class);
 
         assertEquals(HttpStatus.OK, entity.getStatusCode());
 
@@ -143,5 +156,4 @@ public class ReportsControllerIntegrationTests {
         assertEquals( 3, users.stream().filter(user -> user.getUserType() == UserType.COOK).findAny().get().getOrdersAccomplished());
         assertEquals( 3, users.stream().filter(user -> user.getUserType() == UserType.BARMAN).findAny().get().getOrdersAccomplished());
     }
-    */
 }

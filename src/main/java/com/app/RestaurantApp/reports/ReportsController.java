@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import javax.websocket.server.PathParam;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -54,12 +52,15 @@ public class ReportsController {
         return new ResponseEntity<>(incomeExpenses, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/activity/{indicator}")
+    @GetMapping(value = "/activity/{dateFrom}-{dateTo}")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<List<UserReportDTO>> getActivityReport(@PathVariable String indicator) {
-        long dateFrom = reportsService.generateDateFrom(indicator);
-        List<UserReportDTO> users = reportsService.activityReport(dateFrom, System.currentTimeMillis());
-        if (users.isEmpty())
+    public ResponseEntity<List<UserReportDTO>> getActivityReport(@PathVariable String dateFrom, @PathVariable String dateTo) {
+        long dateFromL = LocalDate.parse(dateFrom, DateTimeFormatter.ofPattern("dd.MM.yyyy."))
+                .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
+        long dateToL = LocalDate.parse(dateTo, DateTimeFormatter.ofPattern("dd.MM.yyyy."))
+                .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
+        List<UserReportDTO> users = reportsService.activityReport(dateFromL, dateToL);
+        if(users.isEmpty())
             return new ResponseEntity<>(users, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }

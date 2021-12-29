@@ -1,6 +1,8 @@
 package com.app.RestaurantApp.order;
 
+import com.app.RestaurantApp.ControllerUtils;
 import com.app.RestaurantApp.order.dto.OrderDTO;
+import com.app.RestaurantApp.order.dto.OrderFindDTO;
 import com.app.RestaurantApp.order.dto.OrderTableViewDTO;
 import com.app.RestaurantApp.order.dto.SimpleOrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,62 +35,54 @@ public class OrderController {
 
     @GetMapping(value = "/forCook/{id}")
     @PreAuthorize("hasRole('COOK')")
-    public ResponseEntity<OrderDTO> findOneWithFood(@PathVariable Long id) {
+    public ResponseEntity<OrderFindDTO> findOneWithFood(@PathVariable Long id) {
         Order order = orderService.findOneWithFood(id);
 
         if(order == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        return new ResponseEntity<>(new OrderDTO(order), HttpStatus.OK);
+        return new ResponseEntity<>(new OrderFindDTO(order), HttpStatus.OK);
     }
 
     @GetMapping(value = "/forCook/all")
     @PreAuthorize("hasRole('COOK')")
-    public List<OrderDTO> findAllNewWithFood() {
-        List<Order> orders = orderService.findAllNewWithFood();
-
-        if(orders.size() == 0) return null;
-
-        return orders.stream().map(OrderDTO::new).toList();
+    public ResponseEntity<List<OrderFindDTO>> findAllNewWithFood(Pageable pageable) {
+        Page<Order> orders = orderService.findAllNewWithFood(pageable);
+        if(orders.isEmpty()) return new ResponseEntity<>(orders.stream().map(OrderFindDTO::new).toList(), ControllerUtils.createPageHeaderAttributes(orders), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(orders.stream().map(OrderFindDTO::new).toList(), ControllerUtils.createPageHeaderAttributes(orders), HttpStatus.OK);
     }
 
     @GetMapping(value = "/forCook/all/{id}")
     @PreAuthorize("hasRole('COOK')")
-    public List<OrderDTO> findAllMyWithFood(@PathVariable Long id) {
-        List<Order> orders = orderService.findAllMyWithFood(id);
-
-        if(orders.size() == 0) return null;
-
-        return orders.stream().map(OrderDTO::new).toList();
+    public ResponseEntity<List<OrderFindDTO>> findAllMyWithFood(@PathVariable Long id, Pageable pageable) {
+        Page<Order> orders = orderService.findAllMyWithFood(id, pageable);
+        if(orders.isEmpty()) return new ResponseEntity<>(orders.stream().map(OrderFindDTO::new).toList(), ControllerUtils.createPageHeaderAttributes(orders), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(orders.stream().map(OrderFindDTO::new).toList(), ControllerUtils.createPageHeaderAttributes(orders), HttpStatus.OK);
     }
 
     @GetMapping(value = "/forBarman/{id}")
     @PreAuthorize("hasRole('BARMAN')")
-    public ResponseEntity<OrderDTO> findOneWithDrinks(@PathVariable Long id) {
+    public ResponseEntity<OrderFindDTO> findOneWithDrinks(@PathVariable Long id) {
         Order order = orderService.findOneWithDrinks(id);
 
         if(order == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        return new ResponseEntity<>(new OrderDTO(order), HttpStatus.OK);
+        return new ResponseEntity<>(new OrderFindDTO(order), HttpStatus.OK);
     }
 
     @GetMapping(value = "/forBarman/all")
     @PreAuthorize("hasRole('BARMAN')")
-    public List<OrderDTO> findAllNewWithDrinks() {
-        List<Order> orders = orderService.findAllNewWithDrinks();
-
-        if(orders.size() == 0) return null;
-
-        return orders.stream().map(OrderDTO::new).toList();
+    public ResponseEntity<List<OrderFindDTO>> findAllNewWithDrinks(Pageable pageable) {
+        Page<Order> orders = orderService.findAllNewWithDrinks(pageable);
+        if(orders.isEmpty()) return new ResponseEntity<>(orders.stream().map(OrderFindDTO::new).toList(), ControllerUtils.createPageHeaderAttributes(orders), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(orders.stream().map(OrderFindDTO::new).toList(), ControllerUtils.createPageHeaderAttributes(orders), HttpStatus.OK);
     }
 
     @GetMapping(value = "/forBarman/all/{id}")
     @PreAuthorize("hasRole('BARMAN')")
-    public List<OrderDTO> findAllMyWithDrinks(@PathVariable Long id) {
-        List<Order> orders = orderService.findAllMyWithDrinks(id);
-
-        if(orders.size() == 0) return null;
-
-        return orders.stream().map(OrderDTO::new).toList();
+    public ResponseEntity<List<OrderFindDTO>> findAllMyWithDrinks(@PathVariable Long id, Pageable pageable) {
+        Page<Order> orders = orderService.findAllMyWithDrinks(id, pageable);
+        if(orders.isEmpty()) return new ResponseEntity<>(orders.stream().map(OrderFindDTO::new).toList(), ControllerUtils.createPageHeaderAttributes(orders), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(orders.stream().map(OrderFindDTO::new).toList(), ControllerUtils.createPageHeaderAttributes(orders), HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json")
@@ -152,21 +146,14 @@ public class OrderController {
         return new ResponseEntity<>("Order successfully finished.", HttpStatus.OK);
     }
 
-    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/search")
     @PreAuthorize("hasAnyRole('COOK', 'BARMAN')")
     public ResponseEntity<List<SimpleOrderDTO>> searchOrders(@RequestParam(value = "searchField", required = false) String searchField,
                                              @RequestParam(value = "orderStatus", required = false) String orderStatus,
                                              Pageable pageable) {
         Page<Order> orders = orderService.searchOrders(searchField, orderStatus, pageable);
-
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("total-elements", Long.toString(orders.getTotalElements()));
-        responseHeaders.set("total-pages", Long.toString(orders.getTotalPages()));
-        responseHeaders.set("current-page", Integer.toString(orders.getNumber()));
-
-        if (orders.isEmpty())
-            return new ResponseEntity<>(orders.stream().map(SimpleOrderDTO::new).toList(), responseHeaders, HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(orders.stream().map(SimpleOrderDTO::new).toList(), responseHeaders, HttpStatus.OK);
+        if (orders.isEmpty()) return new ResponseEntity<>(orders.stream().map(SimpleOrderDTO::new).toList(), ControllerUtils.createPageHeaderAttributes(orders), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(orders.stream().map(SimpleOrderDTO::new).toList(), ControllerUtils.createPageHeaderAttributes(orders), HttpStatus.OK);
     }
 
     @GetMapping(value = "/getOrderForTable/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
