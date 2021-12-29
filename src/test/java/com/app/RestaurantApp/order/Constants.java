@@ -43,6 +43,8 @@ public class Constants {
 
     public static final String COOK_EMAIL = "headcook@maildrop.cc";
     public static final String COOK_PWD = "cook";
+    public static final String BARMAN_EMAIL = "barman@maildrop.cc";
+    public static final String BARMAN_PWD = "barman";
     public static final String WAITER_EMAIL = "waiter@maildrop.cc";
     public static final String WAITER_PWD = "waiter";
 

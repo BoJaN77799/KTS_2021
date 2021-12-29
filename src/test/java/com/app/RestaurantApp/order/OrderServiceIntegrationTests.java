@@ -142,82 +142,6 @@ public class OrderServiceIntegrationTests {
         assertEquals(4 , ordersPage.stream().toList().size());
     }
 
-    private OrderDTO createOrderDTOItemsAdd(Long id) {
-        OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId(id);
-        orderDTO.setNote("Alora, ciao bella.");
-        orderDTO.setOrderItems(new ArrayList<>());
-        orderDTO.getOrderItems().add(createOrderItemDTOForAdding(5L, INIT_QUANTITY1, -1));
-        orderDTO.getOrderItems().add(createOrderItemDTOForAdding(6L, INIT_QUANTITY2, -1));
-
-        return orderDTO;
-    }
-
-    private OrderDTO createOrderDTOWithOrderItems() {
-        OrderDTO orderDTO = createBlankOrderDTO();
-
-        OrderItemOrderCreationDTO oi1DTO = new OrderItemOrderCreationDTO(null, 1L, INIT_QUANTITY1, PRICE1, 1);
-        OrderItemOrderCreationDTO oi2DTO = new OrderItemOrderCreationDTO(null, 2L, INIT_QUANTITY1, PRICE2, 2);
-        List<OrderItemOrderCreationDTO> ois = new ArrayList<>();
-        ois.add(oi1DTO);
-        ois.add(oi2DTO);
-        orderDTO.setOrderItems(ois);
-
-        return orderDTO;
-    }
-
-    private OrderDTO createBlankOrderDTO() {
-        OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId(null);
-        orderDTO.setWaiterId(3L);
-        orderDTO.setTableId(120L);
-
-        orderDTO.setCreatedAt(null);
-        orderDTO.setStatus(null);
-        orderDTO.setNote(NOTE);
-
-        orderDTO.setOrderItems(new ArrayList<>());
-
-        return orderDTO;
-    }
-
-    private OrderDTO createOrderDTOItemUpdate(Long orderId, Long itemId) {
-        OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId(orderId);
-        orderDTO.setNote("Alora, ciao bella.");
-        orderDTO.setOrderItems(new ArrayList<>());
-        orderDTO.getOrderItems().add(createOrderItemDTOForUpdate(itemId, INIT_QUANTITY1, 1));
-
-        return orderDTO;
-    }
-
-    private OrderItemOrderCreationDTO createOrderItemDTOForUpdate(Long id, int quantity, int priority) {
-        OrderItemOrderCreationDTO oi = new OrderItemOrderCreationDTO();
-        oi.setId(id);
-        oi.setQuantity(quantity);
-        oi.setPriority(priority);
-
-        return oi;
-    }
-
-    private OrderItemOrderCreationDTO createOrderItemDTOForAdding(Long id, int quantity, int priority) {
-        OrderItemOrderCreationDTO oi = new OrderItemOrderCreationDTO();
-        oi.setId(null);
-        oi.setItemId(id);
-        oi.setQuantity(quantity);
-        oi.setPriority(priority);
-
-        return oi;
-    }
-
-    private OrderItem findOrderItem(Order order, Long id) {
-        for(OrderItem orderItem : order.getOrderItems()) {
-            if(orderItem.getId() == id)
-                return orderItem;
-        }
-        return null;
-    }
-
     @Test
     public void testFindOneWithFood(){
 
@@ -293,5 +217,79 @@ public class OrderServiceIntegrationTests {
         assertEquals(3, orders.stream().toList().size());
     }
 
+    private OrderDTO createOrderDTOItemsAdd(Long id) {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setId(id);
+        orderDTO.setNote("Alora, ciao bella.");
+        orderDTO.setOrderItems(new ArrayList<>());
+        orderDTO.getOrderItems().add(createOrderItemDTOForAdding(5L, INIT_QUANTITY1, -1));
+        orderDTO.getOrderItems().add(createOrderItemDTOForAdding(6L, INIT_QUANTITY2, -1));
 
+        return orderDTO;
+    }
+
+    private OrderDTO createOrderDTOWithOrderItems() {
+        OrderDTO orderDTO = createBlankOrderDTO();
+
+        OrderItemOrderCreationDTO oi1DTO = new OrderItemOrderCreationDTO(null, 1L, INIT_QUANTITY1, PRICE1, 1);
+        OrderItemOrderCreationDTO oi2DTO = new OrderItemOrderCreationDTO(null, 2L, INIT_QUANTITY1, PRICE2, 2);
+        List<OrderItemOrderCreationDTO> ois = new ArrayList<>();
+        ois.add(oi1DTO);
+        ois.add(oi2DTO);
+        orderDTO.setOrderItems(ois);
+
+        return orderDTO;
+    }
+
+    private OrderDTO createBlankOrderDTO() {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setId(null);
+        orderDTO.setWaiterId(3L);
+        orderDTO.setTableId(120L);
+
+        orderDTO.setCreatedAt(null);
+        orderDTO.setStatus(null);
+        orderDTO.setNote(NOTE);
+
+        orderDTO.setOrderItems(new ArrayList<>());
+
+        return orderDTO;
+    }
+
+    private OrderDTO createOrderDTOItemUpdate(Long orderId, Long itemId) {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setId(orderId);
+        orderDTO.setNote("Alora, ciao bella.");
+        orderDTO.setOrderItems(new ArrayList<>());
+        orderDTO.getOrderItems().add(createOrderItemDTOForUpdate(itemId, INIT_QUANTITY1, 1));
+
+        return orderDTO;
+    }
+
+    private OrderItemOrderCreationDTO createOrderItemDTOForUpdate(Long id, int quantity, int priority) {
+        OrderItemOrderCreationDTO oi = new OrderItemOrderCreationDTO();
+        oi.setId(id);
+        oi.setQuantity(quantity);
+        oi.setPriority(priority);
+
+        return oi;
+    }
+
+    private OrderItemOrderCreationDTO createOrderItemDTOForAdding(Long id, int quantity, int priority) {
+        OrderItemOrderCreationDTO oi = new OrderItemOrderCreationDTO();
+        oi.setId(null);
+        oi.setItemId(id);
+        oi.setQuantity(quantity);
+        oi.setPriority(priority);
+
+        return oi;
+    }
+
+    private OrderItem findOrderItem(Order order, Long id) {
+        for (OrderItem orderItem : order.getOrderItems()) {
+            if (orderItem.getId() == id)
+                return orderItem;
+        }
+        return null;
+    }
 }
