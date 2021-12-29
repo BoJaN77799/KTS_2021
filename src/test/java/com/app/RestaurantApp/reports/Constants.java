@@ -27,4 +27,8 @@ public class Constants {
     public static final String SECOND_NAME = "Gulas";
     public static final String THIRD_NAME = "Paprikas";
 
+    public static final String LAST_MONTH_STRING = "29.11.2021.";
+    public static final String LAST_THREE_MONTHS_STRING = "29.09.2021.";
+    public static final String DATE_TO_STRING = "29.12.2021.";
+
 }
