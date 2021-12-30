@@ -65,6 +65,8 @@ public class Constants {
     public static final Long BARMAN_ID = 5L;
 
     public static final Long  ORDER_ID = 4L;
+    public static final Long  INVALID_ORDER_ID = -1L;
+    public static final String INVALID_COOK_EMAIL = "invalid@cook.email";
     public static final String BARMAN_NAME = "Brat";
     public static final String BARMAN_LASTNAME = "Dodik";
     public static final String COOK_NAME = "Igor";
