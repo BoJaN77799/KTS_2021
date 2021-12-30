@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.users.employee;
 
 import com.app.RestaurantApp.bonus.Bonus;
+import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.salary.Salary;
 import com.app.RestaurantApp.users.appUser.AppUser;
 
@@ -29,6 +30,11 @@ public class Employee extends AppUser {
 
     public Employee(Long id) {
         super(id);
+    }
+
+    public Employee(Long id, String email, String firstName, String lastName, UserType userType) {
+        super(id, email, firstName, lastName, userType);
+        salary = 0;
     }
 
     public Employee(Long id, String lastName) {

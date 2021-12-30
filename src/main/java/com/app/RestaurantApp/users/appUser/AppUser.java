@@ -3,8 +3,6 @@ package com.app.RestaurantApp.users.appUser;
 import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.users.Authority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -90,6 +88,14 @@ public class AppUser implements UserDetails {
     public AppUser (Long id, String lastName){
         this.id = id;
         this.lastName = lastName;
+    }
+
+    public AppUser (Long id, String email, String firstName, String lastName, UserType userType){
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userType = userType;
     }
 
     public Long getId() {

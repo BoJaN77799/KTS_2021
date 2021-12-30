@@ -24,7 +24,6 @@ import com.app.RestaurantApp.table.TableService;
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -116,19 +115,19 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public void acceptOrder(Long id, String email) throws OrderException, UserException {
         Order order = findOne(id);
-        if(order == null) throw new OrderException("Order not found.");
+        if(order == null) throw new OrderException("Order not found!");
 
         Employee employee = employeeService.findByEmail(email);
-        if(employee == null) throw new UserException("User not found.");
+        if(employee == null) throw new UserException("User not found!");
 
         if(employee.getUserType() == UserType.BARMAN)
             if(order.getBarman() != null)
-                throw new OrderException("Barman already accepted.");
+                throw new OrderException("Barman already accepted!");
             else
                 order.setBarman(employee);
         else
             if(order.getCook() != null)
-                throw new OrderException("Cook already accepted.");
+                throw new OrderException("Cook already accepted!");
             else
                 order.setCook(employee);
         if(order.getStatus() == OrderStatus.NEW)

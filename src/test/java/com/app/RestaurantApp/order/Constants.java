@@ -63,4 +63,16 @@ public class Constants {
 
     public static final Long COOK_ID = 4L;
     public static final Long BARMAN_ID = 5L;
+
+    public static final Long  ORDER_ID = 4L;
+    public static final String BARMAN_NAME = "Brat";
+    public static final String BARMAN_LASTNAME = "Dodik";
+    public static final String COOK_NAME = "Igor";
+    public static final String COOK_LASTNAME = "Dodik";
+    public static final String WAITER_NAME = "Milorad";
+    public static final String WAITER_LASTNAME = "Dodik";
+
+    public static final String USER_NOT_FOUND = "User not found!";
+    public static final String COOK_ALREADY_ACCEPTED = "Cook already accepted!";
+    public static final String BARMAN_ALREADY_ACCEPTED = "Barman already accepted!";
 }

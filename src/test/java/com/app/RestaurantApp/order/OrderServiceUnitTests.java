@@ -12,6 +12,7 @@ import com.app.RestaurantApp.orderItem.OrderItem;
 import com.app.RestaurantApp.orderItem.dto.OrderItemOrderCreationDTO;
 import com.app.RestaurantApp.table.Table;
 import com.app.RestaurantApp.table.TableService;
+import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.employee.Employee;
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.junit.jupiter.api.BeforeEach;
@@ -202,6 +203,106 @@ public class OrderServiceUnitTests {
         Exception e = assertThrows(OrderException.class, () -> orderService.createOrder(orderDTO));
 
         assertEquals(TABLE_IN_USE_MSG, e.getMessage());
+    }
+
+    @Test
+    public void testAcceptOrder() throws UserException, OrderException {
+        // Preparing data
+        Employee waiter = new Employee(3L, WAITER_EMAIL, WAITER_NAME, WAITER_LASTNAME, UserType.WAITER);
+        Employee cook = new Employee(4L, COOK_EMAIL, COOK_NAME, COOK_LASTNAME, UserType.COOK);
+        Order order = new Order(ORDER_ID, OrderStatus.NEW, 1636930800000L, waiter, null, null);
+
+        // Mocking
+        given(orderRepositoryMock.findById(ORDER_ID)).willReturn(Optional.of(order));
+        given(employeeServiceMock.findByEmail(COOK_EMAIL)).willReturn(cook);
+
+        // Test invoke
+        orderService.acceptOrder(ORDER_ID, COOK_EMAIL);
+
+        // Verifying
+        verify(orderRepositoryMock, times(1)).findById(ORDER_ID);
+        verify(employeeServiceMock, times(1)).findByEmail(COOK_EMAIL);
+        verify(orderRepositoryMock, times(1)).save(any(Order.class));
+    }
+
+    @Test
+    public void testAcceptOrder_OrderNotFound(){
+        // Mocking
+        given(orderRepositoryMock.findById(ORDER_ID)).willReturn(Optional.empty());
+
+        // Test invoke
+        Exception exception = assertThrows(OrderException.class, () -> orderService.acceptOrder(ORDER_ID, COOK_EMAIL));
+
+        // Verifying
+        assertEquals(ORDER_NOT_FOUND, exception.getMessage());
+        verify(orderRepositoryMock, times(1)).findById(ORDER_ID);
+        verify(employeeServiceMock, times(0)).findByEmail(COOK_EMAIL);
+        verify(orderRepositoryMock, times(0)).save(any(Order.class));
+
+    }
+
+    @Test
+    public void testAcceptOrder_UserNotFound(){
+        // Preparing data
+        Employee waiter = new Employee(3L, WAITER_EMAIL, WAITER_NAME, WAITER_LASTNAME, UserType.WAITER);
+        Employee cook = new Employee(4L, COOK_EMAIL, COOK_NAME, COOK_LASTNAME, UserType.COOK);
+        Order order = new Order(ORDER_ID, OrderStatus.NEW, 1636930800000L, waiter, null, null);
+
+        // Mocking
+        given(orderRepositoryMock.findById(ORDER_ID)).willReturn(Optional.of(order));
+        given(employeeServiceMock.findByEmail(COOK_EMAIL)).willReturn(null);
+
+        // Test invoke
+        Exception exception = assertThrows(UserException.class, () -> orderService.acceptOrder(ORDER_ID, COOK_EMAIL));
+
+        // Verifying
+        assertEquals(USER_NOT_FOUND, exception.getMessage());
+        verify(orderRepositoryMock, times(1)).findById(ORDER_ID);
+        verify(employeeServiceMock, times(1)).findByEmail(COOK_EMAIL);
+        verify(orderRepositoryMock, times(0)).save(any(Order.class));
+    }
+
+    @Test
+    public void testAcceptOrder_CookAlreadyAccepted(){
+        // Preparing data
+        Employee waiter = new Employee(3L, WAITER_EMAIL, WAITER_NAME, WAITER_LASTNAME, UserType.WAITER);
+        Employee cook = new Employee(4L, COOK_EMAIL, COOK_NAME, COOK_LASTNAME, UserType.COOK);
+        Order order = new Order(ORDER_ID, OrderStatus.NEW, 1636930800000L, waiter, null, cook);
+
+        // Mocking
+        given(orderRepositoryMock.findById(ORDER_ID)).willReturn(Optional.of(order));
+        given(employeeServiceMock.findByEmail(COOK_EMAIL)).willReturn(cook);
+
+        // Test invoke
+        Exception exception = assertThrows(OrderException.class, () -> orderService.acceptOrder(ORDER_ID, COOK_EMAIL));
+
+        // Verifying
+        assertEquals(COOK_ALREADY_ACCEPTED, exception.getMessage());
+        verify(orderRepositoryMock, times(1)).findById(ORDER_ID);
+        verify(employeeServiceMock, times(1)).findByEmail(COOK_EMAIL);
+        verify(orderRepositoryMock, times(0)).save(any(Order.class));
+    }
+
+    @Test
+    public void testAcceptOrder_BarmanAlreadyAccepted(){
+        // Preparing data
+        Employee waiter = new Employee(3L, WAITER_EMAIL, WAITER_NAME, WAITER_LASTNAME, UserType.WAITER);
+        Employee barman = new Employee(4L, BARMAN_EMAIL, BARMAN_NAME, BARMAN_LASTNAME, UserType.BARMAN);
+        Order order = new Order(ORDER_ID, OrderStatus.NEW, 1636930800000L, waiter, barman, null);
+
+        // Mocking
+        given(orderRepositoryMock.findById(ORDER_ID)).willReturn(Optional.of(order));
+        given(employeeServiceMock.findByEmail(BARMAN_EMAIL)).willReturn(barman);
+
+        // Test invoke
+        Exception exception = assertThrows(OrderException.class, () -> orderService.acceptOrder(ORDER_ID, BARMAN_EMAIL));
+
+        // Verifying
+        assertEquals(BARMAN_ALREADY_ACCEPTED, exception.getMessage());
+        verify(orderRepositoryMock, times(1)).findById(ORDER_ID);
+        verify(employeeServiceMock, times(1)).findByEmail(BARMAN_EMAIL);
+        verify(orderRepositoryMock, times(0)).save(any(Order.class));
+
     }
 
     @Test
@@ -692,8 +793,8 @@ public class OrderServiceUnitTests {
         Employee barman = new Employee(5L);
         return new ArrayList<>(
                 Arrays.asList(
-                        new Order(OrderStatus.IN_PROGRESS, 1636730076405L, waiter, barman, cook),
-                        new Order(OrderStatus.IN_PROGRESS, 1636730076405L, waiter, null, cook))
+                        new Order(1L, OrderStatus.IN_PROGRESS, 1636730076405L, waiter, barman, cook),
+                        new Order(2L, OrderStatus.IN_PROGRESS, 1636730076405L, waiter, null, cook))
         );
     }
 

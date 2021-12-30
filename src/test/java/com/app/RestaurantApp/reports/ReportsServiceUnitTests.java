@@ -62,11 +62,11 @@ public class ReportsServiceUnitTests {
         Employee barman = new Employee(5L);
         List<Order> mockedOrders = new ArrayList<>(
                 Arrays.asList(
-                        new Order(OrderStatus.FINISHED, 1637770076405L, waiter, barman, null),
-                        new Order(OrderStatus.FINISHED, 1637770076405L, waiter, barman, null),
-                        new Order(OrderStatus.FINISHED, 1637770076405L, waiter, null, cook),
-                        new Order(OrderStatus.FINISHED, 1637770076405L, waiter, null, null),
-                        new Order(OrderStatus.FINISHED, 1637770076405L, waiter, barman, cook))
+                        new Order(1L, OrderStatus.FINISHED, 1637770076405L, waiter, barman, null),
+                        new Order(2L, OrderStatus.FINISHED, 1637770076405L, waiter, barman, null),
+                        new Order(3L, OrderStatus.FINISHED, 1637770076405L, waiter, null, cook),
+                        new Order(4L, OrderStatus.FINISHED, 1637770076405L, waiter, null, null),
+                        new Order(5L, OrderStatus.FINISHED, 1637770076405L, waiter, barman, cook))
         );
         // Mocking
         given(orderServiceMock.getOrdersByDate(DATE_FROM, DATE_TO)).willReturn(mockedOrders);
