@@ -25,6 +25,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static com.app.RestaurantApp.reports.Constants.DATE_TO_STRING;
+import static com.app.RestaurantApp.reports.Constants.LAST_THREE_MONTHS_ACTIVITY_STRING;
 import static org.junit.jupiter.api.Assertions.*;
 import static com.app.RestaurantApp.order.Constants.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -46,6 +48,9 @@ public class OrderControllerIntegrationTests {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private OrderItemRepository orderItemRepository;
@@ -297,6 +302,53 @@ public class OrderControllerIntegrationTests {
     }
 
     @Test @Transactional
+    public void testAcceptOrder_OK_COOK() throws Exception {
+        logInAsCook();
+        // Test invoke
+        mockMvc.perform(post(String.format("/api/orders/accept/%d/by/%s", 1L, COOK_EMAIL))
+                        .headers(headers))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(ORDER_ACCEPTED));
+
+        // Verifying
+        Order order = orderService.findOne(1L); // find accepted order
+        assertNotNull(order);
+        assertEquals(COOK_EMAIL, order.getCook().getEmail());
+        assertEquals(OrderStatus.IN_PROGRESS, order.getStatus());
+    }
+
+    @Test @Transactional
+    public void testAcceptOrder_OK_BARMAN() throws Exception {
+        logInAsBarman();
+
+        // Test invoke
+        mockMvc.perform(post(String.format("/api/orders/accept/%d/by/%s", 2L, BARMAN_EMAIL))
+                        .headers(headers))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(ORDER_ACCEPTED));
+
+        // Verifying
+        Order order = orderService.findOne(2L); // find accepted order
+        assertNotNull(order);
+        assertEquals(BARMAN_EMAIL, order.getBarman().getEmail());
+        assertEquals(OrderStatus.IN_PROGRESS, order.getStatus());
+    }
+
+    @Test @Transactional
+    public void testAcceptOrder_NOT_FOUND(){
+        logInAsCook();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        // Test invoke
+        ResponseEntity<String> entity = restTemplate
+                .exchange(String.format("/api/orders/accept/%d/by/%s", -1L, COOK_EMAIL), HttpMethod.POST, httpEntity, String.class);
+
+        // Verifying
+        assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
+        assertEquals(ORDER_NOT_FOUND, entity.getBody());
+    }
+
+    @Test @Transactional
     public void testUpdateOrder_ChangeQuantityAndPriority() throws Exception {
         logInAsWaiter();
         int notificationsSize = orderItemRepository.findAll().size();
@@ -400,6 +452,17 @@ public class OrderControllerIntegrationTests {
         ResponseEntity<UserTokenState> responseEntity =
                 restTemplate.postForEntity("/api/users/login",
                         new JwtAuthenticationRequest(WAITER_EMAIL, WAITER_PWD),
+                        UserTokenState.class);
+
+        String accessToken = Objects.requireNonNull(responseEntity.getBody()).getAccessToken();
+
+        headers.set("Authorization", "Bearer " + accessToken);
+    }
+
+    private void logInAsCook() {
+        ResponseEntity<UserTokenState> responseEntity =
+                restTemplate.postForEntity("/api/users/login",
+                        new JwtAuthenticationRequest(COOK_EMAIL, COOK_PWD),
                         UserTokenState.class);
 
         String accessToken = Objects.requireNonNull(responseEntity.getBody()).getAccessToken();

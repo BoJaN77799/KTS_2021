@@ -105,7 +105,7 @@ public class OrderController {
     public ResponseEntity<String> acceptOrder(@PathVariable Long id, @PathVariable String email){
         try {
             orderService.acceptOrder(id, email);
-            return new ResponseEntity<>("Order successfully accepted", HttpStatus.CREATED);
+            return new ResponseEntity<>("Order successfully accepted!", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

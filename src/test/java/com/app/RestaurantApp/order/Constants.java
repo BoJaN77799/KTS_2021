@@ -77,4 +77,7 @@ public class Constants {
     public static final String USER_NOT_FOUND = "User not found!";
     public static final String COOK_ALREADY_ACCEPTED = "Cook already accepted!";
     public static final String BARMAN_ALREADY_ACCEPTED = "Barman already accepted!";
+
+    public static final String ORDER_ACCEPTED = "Order successfully accepted!";
+    public static final String NON_HEAD_COOK_EMAIL = "cook@maildrop.cc";
 }
