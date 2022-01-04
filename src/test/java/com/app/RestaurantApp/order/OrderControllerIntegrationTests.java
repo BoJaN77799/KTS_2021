@@ -3,6 +3,7 @@ package com.app.RestaurantApp.order;
 import com.app.RestaurantApp.enums.OrderStatus;
 import com.app.RestaurantApp.notifications.OrderNotificationRepository;
 import com.app.RestaurantApp.order.dto.OrderDTO;
+import com.app.RestaurantApp.order.dto.OrderFindDTO;
 import com.app.RestaurantApp.order.dto.SimpleOrderDTO;
 import com.app.RestaurantApp.orderItem.OrderItemRepository;
 import com.app.RestaurantApp.orderItem.dto.OrderItemOrderCreationDTO;
@@ -24,6 +25,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static com.app.RestaurantApp.reports.Constants.DATE_TO_STRING;
+import static com.app.RestaurantApp.reports.Constants.LAST_THREE_MONTHS_ACTIVITY_STRING;
 import static org.junit.jupiter.api.Assertions.*;
 import static com.app.RestaurantApp.order.Constants.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,6 +50,9 @@ public class OrderControllerIntegrationTests {
     private OrderRepository orderRepository;
 
     @Autowired
+    private OrderService orderService;
+
+    @Autowired
     private OrderItemRepository orderItemRepository;
 
     @Autowired
@@ -66,7 +72,7 @@ public class OrderControllerIntegrationTests {
 
     @Test
     public void testSearchOrders() {
-        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
 
         ResponseEntity<SimpleOrderDTO[]> entity = restTemplate
                 .exchange("/api/orders/search?page=0&sort=id,DESC&searchField=Dodik&orderStatus=IN_PROGRESS&size=4", HttpMethod.GET, httpEntity, SimpleOrderDTO[].class);
@@ -80,6 +86,200 @@ public class OrderControllerIntegrationTests {
         assertNotNull(orders.stream().filter(order -> order.getStatus().equals(OrderStatus.IN_PROGRESS.toString())).findAny().orElse(null));
     }
 
+    @Test
+    public void testFindOneWithFood_OK(){
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        // Test invoke
+        ResponseEntity<OrderFindDTO> entity = restTemplate
+                .exchange("/api/orders/forCook/1", HttpMethod.GET, httpEntity, OrderFindDTO.class);
+
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
+
+        OrderFindDTO order = entity.getBody();
+
+        // Verifying
+        assertNotNull(order);
+        assertEquals(2, order.getOrderItems().size());
+        assertNotNull(order.getOrderItems().stream().filter(orderItem -> orderItem.getItem().getName().equals(ORDER_ITEM_FOOD_NAME_1)).findAny().orElse(null));
+        assertNotNull(order.getOrderItems().stream().filter(orderItem -> orderItem.getItem().getName().equals(ORDER_ITEM_FOOD_NAME_2)).findAny().orElse(null));
+
+    }
+
+    @Test
+    public void testFindOneWithFood_NOT_FOUND(){
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        // Test invoke
+        ResponseEntity<OrderFindDTO> entity = restTemplate
+                .exchange("/api/orders/forCook/-1", HttpMethod.GET, httpEntity, OrderFindDTO.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
+
+        // Verifying
+        assertNull(entity.getBody());
+    }
+
+    @Test
+    public void testFindAllNewWithFood_OK() {
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        // Test invoke
+        ResponseEntity<OrderFindDTO[]> entity = restTemplate
+                .exchange("/api/orders/forCook/all?page=0&sort=id,DESC&size=4", HttpMethod.GET, httpEntity, OrderFindDTO[].class);
+
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
+
+        List<OrderFindDTO> orders =  Arrays.stream(Objects.requireNonNull(entity.getBody())).toList();
+
+        // Verifying
+        assertNotNull(orders);
+        assertEquals(2, orders.stream().toList().size());
+    }
+
+    @Test
+    public void testFindAllNewWithFood_NOT_FOUND() {
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        // Test invoke
+        ResponseEntity<OrderFindDTO[]> entity = restTemplate
+                .exchange("/api/orders/forCook/all?page=1&sort=id,DESC&size=4", HttpMethod.GET, httpEntity, OrderFindDTO[].class);
+
+        assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
+
+        // Verifying
+        assertEquals(0, Objects.requireNonNull(entity.getBody()).length);
+    }
+
+    @Test
+    public void testFindAllMyWithFood_OK() {
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        // Test invoke
+        ResponseEntity<OrderFindDTO[]> entity = restTemplate
+                .exchange("/api/orders/forCook/all/4?page=0&sort=id,DESC&size=4", HttpMethod.GET, httpEntity, OrderFindDTO[].class);
+
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
+
+        List<OrderFindDTO> orders =  Arrays.stream(Objects.requireNonNull(entity.getBody())).toList();
+
+        // Verifying
+        assertNotNull(orders);
+        assertEquals(4, orders.stream().toList().size());
+    }
+
+    @Test
+    public void testFindAllMyWithFood_NOT_FOUND() {
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        // Test invoke
+        ResponseEntity<OrderFindDTO[]> entity = restTemplate
+                .exchange("/api/orders/forCook/all/4?page=1&sort=id,DESC&size=4", HttpMethod.GET, httpEntity, OrderFindDTO[].class);
+
+        assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
+
+        // Verifying
+        assertEquals(0, Objects.requireNonNull(entity.getBody()).length);
+    }
+
+    @Test
+    public void testFindOneWithDrinks_OK() {
+        logInAsBarman();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        // Test invoke
+        ResponseEntity<OrderFindDTO> entity = restTemplate
+                .exchange("/api/orders/forBarman/2", HttpMethod.GET, httpEntity, OrderFindDTO.class);
+
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
+
+        OrderFindDTO order = entity.getBody();
+
+        // Verifying
+        assertNotNull(order);
+        assertEquals(2, order.getOrderItems().size());
+    }
+
+    @Test
+    public void testFindOneWithDrinks_NOT_FOUND() {
+        logInAsBarman();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        // Test invoke
+        ResponseEntity<OrderFindDTO> entity = restTemplate
+                .exchange("/api/orders/forBarman/-1", HttpMethod.GET, httpEntity, OrderFindDTO.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
+
+        // Verifying
+        assertNull(entity.getBody());
+    }
+
+    @Test
+    public void testFindAllNewWithDrinks_OK() {
+        logInAsBarman();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        // Test invoke
+        ResponseEntity<OrderFindDTO[]> entity = restTemplate
+                .exchange("/api/orders/forBarman/all?page=0&sort=id,DESC&size=4", HttpMethod.GET, httpEntity, OrderFindDTO[].class);
+
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
+
+        List<OrderFindDTO> orders = Arrays.stream(Objects.requireNonNull(entity.getBody())).toList();
+
+        // Verifying
+        assertNotNull(orders);
+        assertEquals(2, orders.stream().toList().size());
+    }
+
+    @Test
+    public void testFindAllNewWithDrinks_NOT_FOUND() {
+        logInAsBarman();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        // Test invoke
+        ResponseEntity<OrderFindDTO[]> entity = restTemplate
+                .exchange("/api/orders/forBarman/all?page=1&sort=id,DESC&size=4", HttpMethod.GET, httpEntity, OrderFindDTO[].class);
+
+        assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
+
+        // Verifying
+        assertEquals(0, Objects.requireNonNull(entity.getBody()).length);
+    }
+
+    @Test
+    public void testFindAllMyWithDrinks_OK() {
+        logInAsBarman();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        // Test invoke
+        ResponseEntity<OrderFindDTO[]> entity = restTemplate
+                .exchange("/api/orders/forBarman/all/5?page=0&sort=id,DESC&size=10", HttpMethod.GET, httpEntity, OrderFindDTO[].class);
+
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
+
+        List<OrderFindDTO> orders = Arrays.stream(Objects.requireNonNull(entity.getBody())).toList();
+
+        // Verifying
+        assertNotNull(orders);
+        assertEquals(3, orders.stream().toList().size());
+    }
+
+    @Test
+    public void testFindAllMyWithDrinks_NOT_FOUND() {
+        logInAsBarman();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        // Test invoke
+        ResponseEntity<OrderFindDTO[]> entity = restTemplate
+                .exchange("/api/orders/forBarman/all/5?page=1&sort=id,DESC&size=10", HttpMethod.GET, httpEntity, OrderFindDTO[].class);
+
+        assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
+
+        // Verifying
+        assertEquals(0, Objects.requireNonNull(entity.getBody()).length);
+    }
 
     @Test @Transactional
     public void testCreateOrder() throws Exception {
@@ -99,6 +299,53 @@ public class OrderControllerIntegrationTests {
 
         assertEquals(ordersSize + 1, orderRepository.findAll().size());
         assertEquals(orderItemsSize + 2, orderItemRepository.findAll().size());
+    }
+
+    @Test @Transactional
+    public void testAcceptOrder_OK_COOK() throws Exception {
+        logInAsCook();
+        // Test invoke
+        mockMvc.perform(post(String.format("/api/orders/accept/%d/by/%s", 1L, COOK_EMAIL))
+                        .headers(headers))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(ORDER_ACCEPTED));
+
+        // Verifying
+        Order order = orderService.findOne(1L); // find accepted order
+        assertNotNull(order);
+        assertEquals(COOK_EMAIL, order.getCook().getEmail());
+        assertEquals(OrderStatus.IN_PROGRESS, order.getStatus());
+    }
+
+    @Test @Transactional
+    public void testAcceptOrder_OK_BARMAN() throws Exception {
+        logInAsBarman();
+
+        // Test invoke
+        mockMvc.perform(post(String.format("/api/orders/accept/%d/by/%s", 2L, BARMAN_EMAIL))
+                        .headers(headers))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(ORDER_ACCEPTED));
+
+        // Verifying
+        Order order = orderService.findOne(2L); // find accepted order
+        assertNotNull(order);
+        assertEquals(BARMAN_EMAIL, order.getBarman().getEmail());
+        assertEquals(OrderStatus.IN_PROGRESS, order.getStatus());
+    }
+
+    @Test @Transactional
+    public void testAcceptOrder_NOT_FOUND(){
+        logInAsCook();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        // Test invoke
+        ResponseEntity<String> entity = restTemplate
+                .exchange(String.format("/api/orders/accept/%d/by/%s", -1L, COOK_EMAIL), HttpMethod.POST, httpEntity, String.class);
+
+        // Verifying
+        assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
+        assertEquals(ORDER_NOT_FOUND, entity.getBody());
     }
 
     @Test @Transactional
@@ -205,6 +452,28 @@ public class OrderControllerIntegrationTests {
         ResponseEntity<UserTokenState> responseEntity =
                 restTemplate.postForEntity("/api/users/login",
                         new JwtAuthenticationRequest(WAITER_EMAIL, WAITER_PWD),
+                        UserTokenState.class);
+
+        String accessToken = Objects.requireNonNull(responseEntity.getBody()).getAccessToken();
+
+        headers.set("Authorization", "Bearer " + accessToken);
+    }
+
+    private void logInAsCook() {
+        ResponseEntity<UserTokenState> responseEntity =
+                restTemplate.postForEntity("/api/users/login",
+                        new JwtAuthenticationRequest(COOK_EMAIL, COOK_PWD),
+                        UserTokenState.class);
+
+        String accessToken = Objects.requireNonNull(responseEntity.getBody()).getAccessToken();
+
+        headers.set("Authorization", "Bearer " + accessToken);
+    }
+
+    private void logInAsBarman() {
+        ResponseEntity<UserTokenState> responseEntity =
+                restTemplate.postForEntity("/api/users/login",
+                        new JwtAuthenticationRequest(BARMAN_EMAIL, BARMAN_PWD),
                         UserTokenState.class);
 
         String accessToken = Objects.requireNonNull(responseEntity.getBody()).getAccessToken();

@@ -43,6 +43,8 @@ public class Constants {
 
     public static final String COOK_EMAIL = "headcook@maildrop.cc";
     public static final String COOK_PWD = "cook";
+    public static final String BARMAN_EMAIL = "barman@maildrop.cc";
+    public static final String BARMAN_PWD = "barman";
     public static final String WAITER_EMAIL = "waiter@maildrop.cc";
     public static final String WAITER_PWD = "waiter";
 
@@ -50,4 +52,32 @@ public class Constants {
     public static final String ORDER_UPDATED = "Order successfully updated.";
     public static final String ORDER_FINISHED = "Order successfully finished.";
     public static final String ORDER_NOT_FOUND = "Order not found!";
+
+    public static final Long ORDER_ID_FOOD = 1L;
+    public static final Long ORDER_ID_DRINKS = 2L;
+    public static final String ORDER_ITEM_FOOD_NAME_1 = "Supa";
+    public static final String ORDER_ITEM_FOOD_NAME_2 = "Pohovani kackavalj";
+
+    public static final String ORDER_ITEM_DRINK_NAME_1 = "Coca Cola";
+    public static final String ORDER_ITEM_DRINK_NAME_2 = "Niksicko pivo";
+
+    public static final Long COOK_ID = 4L;
+    public static final Long BARMAN_ID = 5L;
+
+    public static final Long  ORDER_ID = 4L;
+    public static final Long  INVALID_ORDER_ID = -1L;
+    public static final String INVALID_COOK_EMAIL = "invalid@cook.email";
+    public static final String BARMAN_NAME = "Brat";
+    public static final String BARMAN_LASTNAME = "Dodik";
+    public static final String COOK_NAME = "Igor";
+    public static final String COOK_LASTNAME = "Dodik";
+    public static final String WAITER_NAME = "Milorad";
+    public static final String WAITER_LASTNAME = "Dodik";
+
+    public static final String USER_NOT_FOUND = "User not found!";
+    public static final String COOK_ALREADY_ACCEPTED = "Cook already accepted!";
+    public static final String BARMAN_ALREADY_ACCEPTED = "Barman already accepted!";
+
+    public static final String ORDER_ACCEPTED = "Order successfully accepted!";
+    public static final String NON_HEAD_COOK_EMAIL = "cook@maildrop.cc";
 }

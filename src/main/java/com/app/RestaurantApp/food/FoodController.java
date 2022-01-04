@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.food;
 
+import com.app.RestaurantApp.ControllerUtils;
 import com.app.RestaurantApp.food.FoodService;
 import com.app.RestaurantApp.food.dto.FoodDTO;
 import com.app.RestaurantApp.food.dto.FoodSearchDTO;
@@ -35,12 +36,8 @@ public class FoodController {
         List<FoodWithPriceDTO> foodsDTO = new ArrayList<>();
         foods.forEach(food -> foodsDTO.add(new FoodWithPriceDTO(food)));
 
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("total-elements", Long.toString(foodsPage.getTotalElements()));
-        responseHeaders.set("total-pages", Long.toString(foodsPage.getTotalPages()));
-        responseHeaders.set("current-page", Integer.toString(foodsPage.getNumber()));
-
-        return new ResponseEntity<>(foodsDTO, responseHeaders, HttpStatus.OK);
+        HttpHeaders httpHeaderAttributes = ControllerUtils.createPageHeaderAttributes(foodsPage);
+        return new ResponseEntity<>(foodsDTO, httpHeaderAttributes, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")

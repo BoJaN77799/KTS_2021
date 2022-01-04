@@ -19,15 +19,15 @@ public interface OrderService {
 
     Order findOneWithFood(Long id);
 
-    List<Order> findAllNewWithFood();
+    Page<Order> findAllNewWithFood(Pageable pageable);
 
-    List<Order> findAllMyWithFood(Long id);
+    Page<Order> findAllMyWithFood(Long id, Pageable pageable);
 
     Order findOneWithDrinks(Long id);
 
-    List<Order> findAllNewWithDrinks();
+    Page<Order> findAllNewWithDrinks(Pageable pageable);
 
-    List<Order> findAllMyWithDrinks(Long id);
+    Page<Order> findAllMyWithDrinks(Long id, Pageable pageable);
 
     void acceptOrder(Long id, String email) throws OrderException, UserException;
 

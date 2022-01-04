@@ -1,13 +1,11 @@
 package com.app.RestaurantApp.order;
 
-import com.app.RestaurantApp.bonus.Bonus;
 import com.app.RestaurantApp.enums.OrderStatus;
 import com.app.RestaurantApp.orderItem.OrderItem;
 import com.app.RestaurantApp.table.Table;
 import com.app.RestaurantApp.users.employee.Employee;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -48,7 +46,8 @@ public class Order {
 
     public Order() {}
 
-    public Order(OrderStatus status, Long createdAt, Employee waiter, Employee barman, Employee cook) {
+    public Order(Long id, OrderStatus status, Long createdAt, Employee waiter, Employee barman, Employee cook) {
+        this.id = id;
         this.status = status;
         this.createdAt = createdAt;
         this.waiter = waiter;

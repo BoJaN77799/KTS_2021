@@ -2,11 +2,14 @@ package com.app.RestaurantApp.order;
 
 import com.app.RestaurantApp.enums.OrderItemStatus;
 import com.app.RestaurantApp.enums.OrderStatus;
+import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.notifications.OrderNotificationRepository;
 import com.app.RestaurantApp.order.dto.OrderDTO;
 import com.app.RestaurantApp.orderItem.OrderItem;
 import com.app.RestaurantApp.orderItem.OrderItemRepository;
 import com.app.RestaurantApp.orderItem.dto.OrderItemOrderCreationDTO;
+import com.app.RestaurantApp.users.UserException;
+import com.app.RestaurantApp.users.employee.Employee;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,9 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.app.RestaurantApp.order.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class OrderServiceIntegrationTests {
@@ -47,6 +55,58 @@ public class OrderServiceIntegrationTests {
 
         assertEquals(ordersSize + 1, orderRepository.findAll().size());
         assertEquals(orderItemsSize + 2, orderItemRepository.findAll().size());
+    }
+
+    @Test
+    public void testAcceptOrder() throws UserException, OrderException {
+        // Test invoke
+        orderService.acceptOrder(1L, COOK_EMAIL);
+
+        // Verifying
+        Order order = orderService.findOne(1L);
+        assertNotNull(order);
+        assertEquals(COOK_EMAIL, order.getCook().getEmail());
+        assertEquals(OrderStatus.IN_PROGRESS, order.getStatus());
+    }
+
+    @Test
+    public void testAcceptOrder_OrderNotFound(){
+        // Test invoke
+        Exception exception = assertThrows(OrderException.class, () -> orderService.acceptOrder(INVALID_ORDER_ID, COOK_EMAIL));
+
+        // Verifying
+        assertNotNull(exception.getMessage());
+        assertEquals(ORDER_NOT_FOUND, exception.getMessage());
+    }
+
+    @Test
+    public void testAcceptOrder_UserNotFound(){
+        // Test invoke
+        Exception exception = assertThrows(UserException.class, () -> orderService.acceptOrder(ORDER_ID, INVALID_COOK_EMAIL));
+
+        // Verifying
+        assertNotNull(exception.getMessage());
+        assertEquals(USER_NOT_FOUND, exception.getMessage());
+    }
+
+    @Test
+    public void testAcceptOrder_CookAlreadyAccepted(){
+        // Test invoke
+        Exception exception = assertThrows(OrderException.class, () -> orderService.acceptOrder(5L, COOK_EMAIL));
+
+        // Verifying
+        assertNotNull(exception.getMessage());
+        assertEquals(COOK_ALREADY_ACCEPTED, exception.getMessage());
+    }
+
+    @Test
+    public void testAcceptOrder_BarmanAlreadyAccepted(){
+        // Test invoke
+        Exception exception = assertThrows(OrderException.class, () -> orderService.acceptOrder(ORDER_ID, BARMAN_EMAIL));
+
+        // Verifying
+        assertNotNull(exception.getMessage());
+        assertEquals(BARMAN_ALREADY_ACCEPTED, exception.getMessage());
     }
 
     @Test @Transactional
@@ -142,6 +202,81 @@ public class OrderServiceIntegrationTests {
         assertEquals(4 , ordersPage.stream().toList().size());
     }
 
+    @Test
+    public void testFindOneWithFood(){
+
+        // Test invoke
+        Order order =  orderRepository.findOneWithFood(ORDER_ID_FOOD);
+
+        // Verifying
+        assertNotNull(order);
+        assertEquals(2, order.getOrderItems().size());
+        assertNotNull(order.getOrderItems().stream().filter(orderItem -> orderItem.getItem().getName().equals(ORDER_ITEM_FOOD_NAME_1)).findAny().orElse(null));
+        assertNotNull(order.getOrderItems().stream().filter(orderItem -> orderItem.getItem().getName().equals(ORDER_ITEM_FOOD_NAME_2)).findAny().orElse(null));
+    }
+
+    @Test
+    public void testFindAllNewWithFood() {
+
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        // Test invoke
+        Page<Order> orders = orderRepository.findAllNewWithFood(pg);
+
+        // Verifying
+        assertNotNull(orders);
+        assertEquals(2, orders.stream().toList().size());
+    }
+
+    @Test
+    public void testFindAllMyWithFood() {
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        // Test invoke
+        Page<Order> orders = orderRepository.findAllMyWithFood(COOK_ID, pg);
+
+        // Verifying
+        assertNotNull(orders);
+        assertEquals(4, orders.stream().toList().size());
+    }
+
+    @Test
+    public void testFindOneWithDrinks() {
+
+        // Test invoke
+        Order order = orderRepository.findOneWithDrinks(ORDER_ID_DRINKS);
+
+        // Verifying
+        assertNotNull(order);
+        assertEquals(2, order.getOrderItems().size());
+        assertNotNull(order.getOrderItems().stream().filter(orderItem -> orderItem.getItem().getName().equals(ORDER_ITEM_DRINK_NAME_1)).findAny().orElse(null));
+        assertNotNull(order.getOrderItems().stream().filter(orderItem -> orderItem.getItem().getName().equals(ORDER_ITEM_DRINK_NAME_2)).findAny().orElse(null));
+    }
+
+    @Test
+    public void testFindAllNewWithDrinks() {
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        // Test invoke
+        Page<Order> orders = orderRepository.findAllNewWithDrinks(pg);
+
+        // Verifying
+        assertNotNull(orders);
+        assertEquals(2, orders.stream().toList().size());
+    }
+
+    @Test
+    public void testFindAllMyWithDrinks() {
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        // Test invoke
+        Page<Order> orders = orderRepository.findAllMyWithDrinks(BARMAN_ID, pg);
+
+        // Verifying
+        assertNotNull(orders);
+        assertEquals(3, orders.stream().toList().size());
+    }
+
     private OrderDTO createOrderDTOItemsAdd(Long id) {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(id);
@@ -211,11 +346,10 @@ public class OrderServiceIntegrationTests {
     }
 
     private OrderItem findOrderItem(Order order, Long id) {
-        for(OrderItem orderItem : order.getOrderItems()) {
-            if(orderItem.getId() == id)
+        for (OrderItem orderItem : order.getOrderItems()) {
+            if (orderItem.getId() == id)
                 return orderItem;
         }
         return null;
     }
-
 }

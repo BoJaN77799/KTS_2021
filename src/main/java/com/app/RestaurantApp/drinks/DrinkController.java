@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.drinks;
 
 
+import com.app.RestaurantApp.ControllerUtils;
 import com.app.RestaurantApp.drinks.dto.DrinkSearchDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkWithPriceDTO;
 import com.app.RestaurantApp.food.Food;
@@ -33,12 +34,8 @@ public class DrinkController {
         List<DrinkWithPriceDTO> drinksDTO = new ArrayList<>();
         drinks.forEach(drink -> drinksDTO.add(new DrinkWithPriceDTO(drink)));
 
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("total-elements", Long.toString(drinksPage.getTotalElements()));
-        responseHeaders.set("total-pages", Long.toString(drinksPage.getTotalPages()));
-        responseHeaders.set("current-page", Integer.toString(drinksPage.getNumber()));
-
-        return new ResponseEntity<>(drinksDTO, responseHeaders, HttpStatus.OK);
+        HttpHeaders httpHeaderAttributes = ControllerUtils.createPageHeaderAttributes(drinksPage);
+        return new ResponseEntity<>(drinksDTO, httpHeaderAttributes, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
