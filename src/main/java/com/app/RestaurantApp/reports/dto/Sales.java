@@ -1,19 +1,27 @@
 package com.app.RestaurantApp.reports.dto;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Sales {
 
     private Long itemId;
     private String name;
     private double priceCount;
     private int itemCount;
+    private Map<String, PriceItemDTO> salesPerMonth;
 
-    public Sales() {}
+    public Sales() {
+        this.salesPerMonth = new HashMap<>();
+    }
 
-    public Sales(Long itemId, String name, double priceCount, int itemCount) {
+    public Sales(Long itemId, String name, double priceCount, int itemCount, String month) {
+        this();
         this.itemId = itemId;
         this.name = name;
         this.priceCount = priceCount;
         this.itemCount = itemCount;
+        this.salesPerMonth.put(month, new PriceItemDTO(priceCount, itemCount));
     }
 
     public String getName() {
@@ -46,5 +54,13 @@ public class Sales {
 
     public void setItemId(Long itemId) {
         this.itemId = itemId;
+    }
+
+    public Map<String, PriceItemDTO> getSalesPerMonth() {
+        return salesPerMonth;
+    }
+
+    public void setSalesPerMonth(Map<String, PriceItemDTO> salesPerMonth) {
+        this.salesPerMonth = salesPerMonth;
     }
 }

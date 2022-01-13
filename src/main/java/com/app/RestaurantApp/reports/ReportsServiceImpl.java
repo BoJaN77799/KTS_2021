@@ -5,14 +5,18 @@ import com.app.RestaurantApp.order.Order;
 import com.app.RestaurantApp.order.OrderService;
 import com.app.RestaurantApp.orderItem.OrderItem;
 import com.app.RestaurantApp.reports.dto.IncomeExpenses;
+import com.app.RestaurantApp.reports.dto.PriceItemDTO;
 import com.app.RestaurantApp.reports.dto.Sales;
 import com.app.RestaurantApp.salary.Salary;
 import com.app.RestaurantApp.users.employee.Employee;
 import com.app.RestaurantApp.users.employee.EmployeeService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.annotation.Documented;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import com.app.RestaurantApp.enums.UserType;
@@ -49,8 +53,16 @@ public class ReportsServiceImpl implements ReportsService {
     public List<Sales> getReportsSales(long dateFrom, long dateTo) {
         List<Order> orders = orderService.findAllOrderInIntervalOfDates(dateFrom, dateTo);
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM.yyyy.");
+        List<String> allMonths = new ArrayList<>();
+
         Map<Long, Sales> maps = new HashMap<>();
         for (Order o : orders) {
+            LocalDate dateOrder = Instant.ofEpochMilli(o.getCreatedAt()).atZone(ZoneId.systemDefault()).toLocalDate();
+            String formattedDateOrder = dateOrder.format(formatter);
+            if (!allMonths.contains(formattedDateOrder))
+                allMonths.add(formattedDateOrder);
+
             for (OrderItem oi : o.getOrderItems()){
                 if (maps.containsKey(oi.getItem().getId())) {
                     int currentItemCount = maps.get(oi.getItem().getId()).getItemCount() + oi.getQuantity();
@@ -59,14 +71,41 @@ public class ReportsServiceImpl implements ReportsService {
                             .setItemCount(currentItemCount);
                     maps.get(oi.getItem().getId())
                             .setPriceCount(currentItemPrice);
+
+                    Sales s = maps.get(oi.getItem().getId());
+                    if (s.getSalesPerMonth().containsKey(formattedDateOrder)) {
+                        int currentItemCountInMonth = s.getSalesPerMonth().get(formattedDateOrder).getItemCount() +
+                                oi.getQuantity();
+                        double currentItemPriceInMonth = s.getSalesPerMonth().get(formattedDateOrder).getPriceCount() +
+                                oi.getPrice() * oi.getQuantity();
+                        s.getSalesPerMonth().get(formattedDateOrder).setItemCount(currentItemCountInMonth);
+                        s.getSalesPerMonth().get(formattedDateOrder).setPriceCount(currentItemPriceInMonth);
+                    } else {
+                        s.getSalesPerMonth().put(formattedDateOrder,
+                                new PriceItemDTO(oi.getPrice() * oi.getQuantity(), oi.getQuantity()));
+                    }
                 } else {
                     maps.put(oi.getItem().getId(),
                             new Sales(oi.getItem().getId(), oi.getItem().getName(),
-                                    oi.getPrice() * oi.getQuantity(), oi.getQuantity()));
+                                    oi.getPrice() * oi.getQuantity(),
+                                    oi.getQuantity(), formattedDateOrder));
                 }
             }
         }
+
+        sortMonths(maps, allMonths);
         return maps.values().stream().sorted(Comparator.comparingLong(Sales::getItemId)).toList();
+    }
+
+    private void sortMonths(Map<Long, Sales> maps, List<String> allMonths) {
+        for (Sales s : maps.values()) {
+            for (String month : allMonths)
+                if (!s.getSalesPerMonth().containsKey(month))
+                    s.getSalesPerMonth().put(month, new PriceItemDTO(0, 0));
+
+            Collections.sort(new ArrayList<String>(s.getSalesPerMonth().keySet()));
+        }
+
     }
 
     @Override
@@ -135,29 +174,61 @@ public class ReportsServiceImpl implements ReportsService {
     @Override
     public List<UserReportDTO> activityReport(long dateFrom, long dateTo) {
         List<Order> orders = orderService.getOrdersByDate(dateFrom, dateTo);
-        HashMap<Long, UserReportDTO> occurrenceMap = new HashMap<>();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM.yyyy.");
+        List<String> allMonths = new ArrayList<>();
+
+        Map<Long, UserReportDTO> occurrenceMap = new HashMap<>();
         orders.forEach((order -> {
+            LocalDate dateOrder = Instant.ofEpochMilli(order.getCreatedAt()).atZone(ZoneId.systemDefault()).toLocalDate();
+            String formattedDateOrder = dateOrder.format(formatter);
+            if (!allMonths.contains(formattedDateOrder))
+                allMonths.add(formattedDateOrder);
+
             Long barmenId = order.getBarman() != null ? order.getBarman().getId() : -1;
             Long cookId = order.getCook() != null ? order.getCook().getId() : -1;
             Long waiterId = order.getWaiter().getId();
-            if(barmenId != -1)
-                if(!occurrenceMap.containsKey(barmenId))
-                    occurrenceMap.put(barmenId, new UserReportDTO(barmenId, order.getBarman().getFirstName(), order.getBarman().getLastName(), UserType.BARMAN, 1L));
-                else
-                    occurrenceMap.get(barmenId).setOrdersAccomplished(occurrenceMap.get(barmenId).getOrdersAccomplished() + 1);
-            if(cookId != -1)
-                if(!occurrenceMap.containsKey(cookId))
-                    occurrenceMap.put(cookId, new UserReportDTO(cookId, order.getCook().getFirstName(), order.getCook().getLastName(), UserType.COOK, 1L));
-                else
-                    occurrenceMap.get(cookId).setOrdersAccomplished(occurrenceMap.get(cookId).getOrdersAccomplished() + 1);
+            if (barmenId != -1)
+                putEmployeeIntoMap(occurrenceMap, barmenId, order.getBarman().getFirstName(),
+                        order.getBarman().getLastName(), UserType.BARMAN, formattedDateOrder);
+            if (cookId != -1)
+                putEmployeeIntoMap(occurrenceMap, cookId, order.getCook().getFirstName(),
+                        order.getCook().getLastName(), UserType.COOK, formattedDateOrder);
 
-            if(!occurrenceMap.containsKey(waiterId))
-                occurrenceMap.put(waiterId, new UserReportDTO(waiterId, order.getWaiter().getFirstName(), order.getWaiter().getLastName(), UserType.WAITER, 1L));
-            else
-                occurrenceMap.get(waiterId).setOrdersAccomplished(occurrenceMap.get(waiterId).getOrdersAccomplished() + 1);
+            putEmployeeIntoMap(occurrenceMap, waiterId, order.getWaiter().getFirstName(),
+                    order.getWaiter().getLastName(), UserType.WAITER, formattedDateOrder);
         }));
         List<UserReportDTO> userReportDTOS = new ArrayList<>();
         occurrenceMap.forEach((key, value) -> userReportDTOS.add(value));
+        sortMonthsOfEmployee(userReportDTOS, allMonths);
         return userReportDTOS;
+    }
+
+    private void putEmployeeIntoMap(Map<Long, UserReportDTO> occurrenceMap, Long employeeId, String firstName,
+                                    String lastName, UserType userType, String formattedDateOrder) {
+        if (!occurrenceMap.containsKey(employeeId)) {
+            occurrenceMap.put(employeeId, new UserReportDTO(employeeId, firstName,
+                    lastName, userType, 1L, formattedDateOrder));
+        } else {
+            occurrenceMap.get(employeeId).setOrdersAccomplished(occurrenceMap.get(employeeId)
+                        .getOrdersAccomplished() + 1);
+            if (occurrenceMap.get(employeeId).getOrdersPerMonth().containsKey(formattedDateOrder)) {
+                occurrenceMap.get(employeeId).getOrdersPerMonth()
+                        .put(formattedDateOrder,
+                                occurrenceMap.get(employeeId).getOrdersPerMonth().get(formattedDateOrder) + 1);
+            } else {
+                occurrenceMap.get(employeeId).getOrdersPerMonth().put(formattedDateOrder, 1);
+            }
+        }
+    }
+
+    private void sortMonthsOfEmployee(List<UserReportDTO> userReportDTOS, List<String> allMonths) {
+        for (UserReportDTO userReportDTO : userReportDTOS) {
+            for (String month : allMonths)
+                if (!userReportDTO.getOrdersPerMonth().containsKey(month))
+                    userReportDTO.getOrdersPerMonth().put(month, 0);
+
+            Collections.sort(new ArrayList<String>(userReportDTO.getOrdersPerMonth().keySet()));
+        }
     }
 }

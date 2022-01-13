@@ -2,6 +2,9 @@ package com.app.RestaurantApp.reports.dto;
 
 import com.app.RestaurantApp.enums.UserType;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UserReportDTO {
 
     private Long id;
@@ -9,16 +12,20 @@ public class UserReportDTO {
     private String lastName;
     private UserType userType;
     private Long ordersAccomplished;
+    private Map<String, Integer> ordersPerMonth;
 
+    public UserReportDTO(){
+        this.ordersPerMonth = new HashMap<>();
+    }
 
-    public UserReportDTO(){}
-
-    public UserReportDTO(Long id, String firstName, String lastName, UserType userType, Long ordersAccomplished) {
+    public UserReportDTO(Long id, String firstName, String lastName, UserType userType, Long ordersAccomplished, String month) {
+        this();
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userType = userType;
         this.ordersAccomplished = ordersAccomplished;
+        this.ordersPerMonth.put(month, 1);
     }
 
     public Long getId() {
@@ -59,5 +66,13 @@ public class UserReportDTO {
 
     public void setOrdersAccomplished(Long ordersAccomplished) {
         this.ordersAccomplished = ordersAccomplished;
+    }
+
+    public Map<String, Integer> getOrdersPerMonth() {
+        return ordersPerMonth;
+    }
+
+    public void setOrdersPerMonth(Map<String, Integer> ordersPerMonth) {
+        this.ordersPerMonth = ordersPerMonth;
     }
 }
