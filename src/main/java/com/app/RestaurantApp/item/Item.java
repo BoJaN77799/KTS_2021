@@ -4,7 +4,6 @@ import com.app.RestaurantApp.category.Category;
 import com.app.RestaurantApp.enums.ItemType;
 import com.app.RestaurantApp.ingredient.Ingredient;
 import com.app.RestaurantApp.item.dto.ItemDTO;
-import com.app.RestaurantApp.menu.Menu;
 import com.app.RestaurantApp.price.Price;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
