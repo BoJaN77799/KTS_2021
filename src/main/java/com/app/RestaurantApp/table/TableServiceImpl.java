@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.table;
 
+import com.app.RestaurantApp.table.dto.FloorTableInfo;
 import com.app.RestaurantApp.table.dto.TableCreateDTO;
 import com.app.RestaurantApp.table.dto.TableUpdateDTO;
 import com.app.RestaurantApp.table.dto.TableWaiterDTO;
@@ -21,6 +22,31 @@ public class TableServiceImpl implements TableService{
     private Environment env;
 
     @Override
+    public FloorTableInfo getFloorTableInfo(){ //todo test, kasnije je dodata metoda
+        String floors = env.getProperty("restaurant.floors");
+        String maxTables = env.getProperty("restaurant.maxTablesPerFloor");
+        if (floors == null){
+            floors = "3";
+        }
+        if (maxTables == null){
+            maxTables = "12";
+        }
+        int floorsInt, maxTablesInt = 0;
+        try{
+            floorsInt = Integer.parseInt(floors);
+        }catch(NumberFormatException e){
+            floorsInt = 3;
+        }
+        try{
+            maxTablesInt = Integer.parseInt(maxTables);
+        }catch(NumberFormatException e){
+            maxTablesInt = 12;
+        }
+
+        return new FloorTableInfo(floorsInt, maxTablesInt);
+    }
+
+    @Override
     public List<Table> getTablesFromFloor(int floor){
         return tableRepository.findByFloorAndActive(floor, true);
     }
@@ -40,6 +66,7 @@ public class TableServiceImpl implements TableService{
 
     @Override
     public void deleteTable(Long id) throws TableException{
+        //todo obrisati fizicki iz baze ako nema ordera vezanih za njega
         Optional<Table> tableOptional = tableRepository.findByIdAndActive(id, true);
         if (tableOptional.isEmpty()) throw new TableException("Invalid table to delete!");
 

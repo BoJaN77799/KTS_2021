@@ -1,9 +1,6 @@
 package com.app.RestaurantApp.table;
 
-import com.app.RestaurantApp.table.dto.TableAdminDTO;
-import com.app.RestaurantApp.table.dto.TableCreateDTO;
-import com.app.RestaurantApp.table.dto.TableUpdateDTO;
-import com.app.RestaurantApp.table.dto.TableWaiterDTO;
+import com.app.RestaurantApp.table.dto.*;
 import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.appUser.AppUser;
 import com.app.RestaurantApp.users.dto.AppUserAdminUserListDTO;
@@ -25,6 +22,12 @@ public class TableController {
     @Autowired
     private TableService tableService;
 
+    @GetMapping(value = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
+    public FloorTableInfo getRestaurantFloorTablesInfo() {
+        return tableService.getFloorTableInfo();
+    }
+
     @GetMapping(value = "/{floor}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public List<TableAdminDTO> getAllTablesFromFloorAdmin(@PathVariable(value = "floor") int floor) {
@@ -34,14 +37,16 @@ public class TableController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> createTable(@RequestBody TableCreateDTO tableCreateDTO){
+    public ResponseEntity<TableAdminDTO> createTable(@RequestBody TableCreateDTO tableCreateDTO){
         try{
-            tableService.createTable(tableCreateDTO);
-            return new ResponseEntity<>("Table created successfully", HttpStatus.OK);
+            Table table = tableService.createTable(tableCreateDTO);
+            return new ResponseEntity<TableAdminDTO>(new TableAdminDTO(table), HttpStatus.OK);
         }catch (TableException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }catch (Exception e) {
-            return new ResponseEntity<>("Unknown error happened while creating user!", HttpStatus.BAD_REQUEST);
+            System.out.println("Unknown error happened while creating table!");
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
