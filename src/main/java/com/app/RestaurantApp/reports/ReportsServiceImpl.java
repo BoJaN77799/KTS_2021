@@ -66,7 +66,7 @@ public class ReportsServiceImpl implements ReportsService {
             for (OrderItem oi : o.getOrderItems()){
                 if (maps.containsKey(oi.getItem().getId())) {
                     int currentItemCount = maps.get(oi.getItem().getId()).getItemCount() + oi.getQuantity();
-                    double currentItemPrice = maps.get(oi.getItem().getId()).getPriceCount() + oi.getPrice();
+                    double currentItemPrice = maps.get(oi.getItem().getId()).getPriceCount() + oi.getPrice() * oi.getQuantity();
                     maps.get(oi.getItem().getId())
                             .setItemCount(currentItemCount);
                     maps.get(oi.getItem().getId())
@@ -77,17 +77,17 @@ public class ReportsServiceImpl implements ReportsService {
                         int currentItemCountInMonth = s.getSalesPerMonth().get(formattedDateOrder).getItemCount() +
                                 oi.getQuantity();
                         double currentItemPriceInMonth = s.getSalesPerMonth().get(formattedDateOrder).getPriceCount() +
-                                oi.getPrice();
+                                oi.getPrice() * oi.getQuantity();
                         s.getSalesPerMonth().get(formattedDateOrder).setItemCount(currentItemCountInMonth);
                         s.getSalesPerMonth().get(formattedDateOrder).setPriceCount(currentItemPriceInMonth);
                     } else {
                         s.getSalesPerMonth().put(formattedDateOrder,
-                                new PriceItemDTO(oi.getPrice(), oi.getQuantity()));
+                                new PriceItemDTO(oi.getPrice() * oi.getQuantity(), oi.getQuantity()));
                     }
                 } else {
                     maps.put(oi.getItem().getId(),
                             new Sales(oi.getItem().getId(), oi.getItem().getName(),
-                                    oi.getPrice(),
+                                    oi.getPrice() * oi.getQuantity(),
                                     oi.getQuantity(), formattedDateOrder));
                 }
             }

@@ -4,6 +4,7 @@ package com.app.RestaurantApp.users.employee;
 import java.util.List;
 import com.app.RestaurantApp.users.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -54,5 +55,10 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public List<Employee> findAllEmployeesWithSalariesAndBonuses(boolean deleted) {
         return employeeRepository.findAllEmployeesWithSalariesAndBonuses(deleted);
+    }
+
+    @Override
+    public Page<Employee> findAllEmployees(Pageable pageable) {
+        return employeeRepository.findAllEmployees(pageable);
     }
 }

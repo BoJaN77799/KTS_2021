@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.users.employee;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,8 +13,6 @@ import java.util.List;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Employee findByEmail(String email);
-
-    List<Employee> findByDeleted(boolean deleted);
 
     @Query("SELECT u FROM Employee u where u.deleted=false and  " +
             "( :search = '' " +
@@ -30,4 +29,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Query("select distinct e from Employee e left join fetch e.salaries left join fetch e.bonuses where e.deleted = ?1")
     List<Employee> findAllEmployeesWithSalariesAndBonuses(boolean deleted);
+
+    @Query(
+            value = "select distinct e from Employee e where e.deleted = 'False'",
+            countQuery = "select count(distinct e) from Employee e where e.deleted ='False'"
+    )
+    Page<Employee> findAllEmployees(Pageable pageable);
 }

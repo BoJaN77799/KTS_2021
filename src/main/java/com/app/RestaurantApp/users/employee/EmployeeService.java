@@ -2,6 +2,7 @@ package com.app.RestaurantApp.users.employee;
 
 import java.util.List;
 import com.app.RestaurantApp.users.UserException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface EmployeeService {
@@ -19,5 +20,7 @@ public interface EmployeeService {
     Employee findEmployeeWithSalaries(String email);
 
     List<Employee> findAllEmployeesWithSalariesAndBonuses(boolean deleted);
+
+    Page<Employee> findAllEmployees(Pageable pageable);
 }
 

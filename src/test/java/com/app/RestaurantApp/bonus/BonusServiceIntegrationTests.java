@@ -39,6 +39,8 @@ public class BonusServiceIntegrationTests {
     @Transactional
     public void testCreateBonus() throws BonusException, UserException {
         int bonusesSize = bonusRepository.findAll().size();
+        int bonusesOfEmployee = bonusService.getBonusesOfEmployee(EMAIL_WITH_BONUSES).size();
+        assertEquals(4, bonusesOfEmployee);
         assertEquals(4, bonusesSize);
 
         BonusDTO bonusDTO = new BonusDTO();

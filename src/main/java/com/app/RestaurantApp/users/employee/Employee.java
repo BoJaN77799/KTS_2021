@@ -15,7 +15,7 @@ public class Employee extends AppUser {
     @Column(name = "salary")
     private double salary;
 
-    @OneToMany(mappedBy="employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Salary> salaries;
 
     @OneToMany(mappedBy="employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

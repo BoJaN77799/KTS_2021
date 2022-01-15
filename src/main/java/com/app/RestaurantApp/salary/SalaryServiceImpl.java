@@ -46,7 +46,7 @@ public class SalaryServiceImpl implements SalaryService {
         // Postavljam da bude trenutan datum za kreiranje plate
         salaryDTO.setDateFrom(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy.")));
 
-        Employee e = employeeService.findByEmail(salaryDTO.getEmail());
+        Employee e = employeeService.findEmployeeWithSalaries(salaryDTO.getEmail());
         if (e == null) throw new UserException("Invalid employee, email not found!");
         Salary salary = new Salary(salaryDTO);
         salary.setEmployee(e);

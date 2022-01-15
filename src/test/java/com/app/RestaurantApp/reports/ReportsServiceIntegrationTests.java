@@ -104,10 +104,10 @@ public class ReportsServiceIntegrationTests {
 
     @Test
     public void testCalculateExpensesPerEmployee() {
-        Employee e = employeeService.findByEmail(VALID_EMAIL);
+        Employee e = employeeService.findEmployeeWithSalaries(VALID_EMAIL);
         assertEquals(496.13, reportsService.calculateExpensesPerEmployee(LAST_THREE_MONTHS, CURRENT_DATE, e));
 
-        e = employeeService.findByEmail(INVALID_EMAIL);
+        e = employeeService.findEmployeeWithSalaries(INVALID_EMAIL);
         assertEquals(0, reportsService.calculateExpensesPerEmployee(LAST_THREE_MONTHS, CURRENT_DATE, e));
     }
 

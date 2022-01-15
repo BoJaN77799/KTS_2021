@@ -37,7 +37,7 @@ public class SalaryServiceUnitTests {
 
     @BeforeEach
     public void setup() {
-        Employee e = createEmployeeWithBonuses();
+        Employee e = createEmployeeWithSalaries();
 
         given(employeeServiceMock.findByEmail(EMAIL)).willReturn(e);
         given(employeeServiceMock.findEmployeeWithSalaries(EMAIL)).willReturn(e);
@@ -73,20 +73,20 @@ public class SalaryServiceUnitTests {
     public void testCreateSalary_Valid() throws SalaryException, UserException {
         SalaryDTO salaryDTO = createSalaryDTO();
         Salary salaryMocked = new Salary(salaryDTO);
-        Employee e = employeeServiceMock.findByEmail(salaryDTO.getEmail());
+        Employee e = employeeServiceMock.findEmployeeWithSalaries(salaryDTO.getEmail());
         salaryMocked.setEmployee(e);
         given(salaryRepositoryMock.save(any())).willReturn(salaryMocked);
 
         salaryService.createSalary(salaryDTO);
 
-        verify(employeeServiceMock, times(2)).findByEmail(EMAIL);
+        verify(employeeServiceMock, times(2)).findEmployeeWithSalaries(EMAIL);
         verify(salaryRepositoryMock, times(1)).save(any());
 
     }
 
     @Test
     public void testCreateSalary_InvalidUser() {
-        given(employeeServiceMock.findByEmail(EMAIL)).willReturn(null);
+        given(employeeServiceMock.findEmployeeWithSalaries(EMAIL)).willReturn(null);
 
         Exception exception = assertThrows(UserException.class, () ->
         {
@@ -108,7 +108,7 @@ public class SalaryServiceUnitTests {
         assertEquals(INVALID_AMOUNT, exception.getMessage());
     }
 
-    private Employee createEmployeeWithBonuses() {
+    private Employee createEmployeeWithSalaries() {
         Employee e = new Employee();
         e.setEmail(EMAIL);
         e.setSalaries(new HashSet<>());

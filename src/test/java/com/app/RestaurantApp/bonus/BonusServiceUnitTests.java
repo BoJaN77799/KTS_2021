@@ -74,20 +74,20 @@ public class BonusServiceUnitTests {
     public void testCreateBonus_Valid() throws BonusException, UserException {
         BonusDTO bonusDTO = createBonusDTO();
         Bonus bonusMocked = new Bonus(bonusDTO);
-        Employee e = employeeServiceMock.findByEmail(bonusDTO.getEmail());
+        Employee e = employeeServiceMock.findEmployeeWithBonuses(bonusDTO.getEmail());
         bonusMocked.setEmployee(e);
         given(bonusRepositoryMock.save(any())).willReturn(bonusMocked);
 
         bonusService.createBonus(bonusDTO);
 
-        verify(employeeServiceMock, times(2)).findByEmail(EMAIL);
+        verify(employeeServiceMock, times(2)).findEmployeeWithBonuses(EMAIL);
         verify(bonusRepositoryMock, times(1)).save(any());
 
     }
 
     @Test
     public void testCreateBonus_InvalidUser() {
-        given(employeeServiceMock.findByEmail(EMAIL)).willReturn(null);
+        given(employeeServiceMock.findEmployeeWithBonuses(EMAIL)).willReturn(null);
 
         Exception exception = assertThrows(UserException.class, () ->
         {

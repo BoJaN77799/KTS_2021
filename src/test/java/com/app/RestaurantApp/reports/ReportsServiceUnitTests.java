@@ -203,6 +203,7 @@ public class ReportsServiceUnitTests {
         o1.setId(FIRST_ID);
         o1.setOrderItems(new HashSet<>());
         o1.setProfit(200.0);
+        o1.setCreatedAt(LAST_MONTH);
 
         OrderItem oi1 = new OrderItem(FIRST_ID, o1, i1, 100.0, 5);
         o1.getOrderItems().add(oi1);
@@ -220,6 +221,7 @@ public class ReportsServiceUnitTests {
         o2.setId(SECOND_ID);
         o2.setOrderItems(new HashSet<>());
         o2.setProfit(400.0);
+        o2.setCreatedAt(LAST_MONTH);
 
         OrderItem oi4 = new OrderItem(FOURTH_ID, o2, i1, 50, 2);
         o2.getOrderItems().add(oi4);
@@ -233,6 +235,7 @@ public class ReportsServiceUnitTests {
         Order o3 = new Order();
         o3.setId(THIRD_ID);
         o3.setOrderItems(new HashSet<>());
+        o3.setCreatedAt(LAST_MONTH);
 
         OrderItem oi6 = new OrderItem(SIXTH_ID, o3, i3, 400.0, 1);
         o3.getOrderItems().add(oi6);

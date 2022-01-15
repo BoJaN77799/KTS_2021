@@ -13,33 +13,47 @@ insert into app_user (dtype, password, first_name, last_name, email, gender, tel
 values ('U', '$2a$10$ZqRoZridlWZYrJhPbIek3.xOtlG4M8cZ3aWWpBPW2IU7yreEZd8jq', 'Petar', 'Djuric',
 'manager@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'MANAGER', null, 'Luzicka 32, Trebinje', false); --2
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+is_email_verified, user_type, salary, address, deleted, profile_photo)
 values ('E', '$2a$10$hB5YCgeGsfGSwJZLmG3tXeTn.CrfkyksuzfcNTKgIgoL0CjBwkIcq', 'Marko', 'Kraljevic',
-'waiter_marko@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'WAITER', 40000.0, 'Luzicka 32, Livno', false); --3
+'waiter_marko@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'WAITER', 40000.0, 'Luzicka 32, Livno', false,
+'http://localhost:8080/user_profile_photos/test/default.jpg'); --3
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+is_email_verified, user_type, salary, address, deleted, profile_photo)
 values ('E', '$2a$10$hB5YCgeGsfGSwJZLmG3tXeTn.CrfkyksuzfcNTKgIgoL0CjBwkIcq', 'Milorad', 'Dodik',
-'waiter_milorad@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'WAITER', 70000.0, 'Luzicka 15, Laktasi', false); --4
+'waiter_milorad@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'WAITER', 70000.0, 'Luzicka 15, Laktasi', false,
+'http://localhost:8080/user_profile_photos/test/default.jpg'); --4
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+ is_email_verified, user_type, salary, address, deleted, profile_photo)
 values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Igor', 'Dodik',
-'headcook_igor@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'HEAD_COOK', 100000.0, 'Dunavska 32, Novi Sad', false); --5
+'headcook_igor@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'HEAD_COOK', 100000.0, 'Dunavska 32, Novi Sad', false,
+'http://localhost:8080/user_profile_photos/test/default.jpg'); --5
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+is_email_verified, user_type, salary, address, deleted, profile_photo)
 values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Drasko', 'Stanivukovic',
-'cook_drasko@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'COOK', 30000.0, 'Luzicka 32, Gradiska', false); --6
+'cook_drasko@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'COOK', 30000.0, 'Luzicka 32, Gradiska', false,
+'http://localhost:8080/user_profile_photos/test/default.jpg'); --6
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+is_email_verified, user_type, salary, address, deleted, profile_photo)
 values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Milan', 'Obrenovic',
-'cook_milan@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'COOK', 35000.0, 'Luzicka 32, Gradiska', false); --7
+'cook_milan@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'COOK', 35000.0, 'Luzicka 32, Gradiska', false,
+'http://localhost:8080/user_profile_photos/test/default.jpg'); --7
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+ is_email_verified, user_type, salary, address, deleted, profile_photo)
 values ('E', '$2a$10$II8odOsKhUp4LS/cID0DFuuBFWWAcXAgdxYXtlstns6z5dxPjSRw2', 'Vuk', 'Karadzic',
-'barman_vuk@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'BARMAN', 40000.0, 'Luzicka 32, Becej', false); --8
+'barman_vuk@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'BARMAN', 40000.0, 'Luzicka 32, Becej', false,
+'http://localhost:8080/user_profile_photos/test/default.jpg'); --8
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+is_email_verified, user_type, salary, address, deleted, profile_photo)
 values ('E', '$2a$10$II8odOsKhUp4LS/cID0DFuuBFWWAcXAgdxYXtlstns6z5dxPjSRw2', 'Andrej', 'Vucic',
-'barman_andrej@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'BARMAN', 42000.0, 'Luzicka 32, Becej', false); --9
+'barman_andrej@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'BARMAN', 42000.0, 'Luzicka 32, Becej', false,
+'http://localhost:8080/user_profile_photos/test/default.jpg'); --9
 
 --- prva plata 1.11.2021
 insert into salary (amount, date_from, employee_id) values (3700, 1635721200000, 3);
@@ -290,117 +304,117 @@ insert into tables (active, x, y, floor) values (true, 22, 10, 1);
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, profit)
         values ('FINISHED', 1636930800000, 'Pozuri, galdan sam.', 1, 3, 6, 1120);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 600.0, 1, 1, 1); --govedja supa 250
+                values (2, 'DELIVERED', 300.0, 1, 1, 1); --govedja supa 250
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 1200.0, 1, 1, 3); --pohovani kackavalj 300
+                values (2, 'DELIVERED', 600.0, 1, 1, 3); --pohovani kackavalj 300
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 1920.0, 2, 1, 7); --pileca krilca 850
+                values (2, 'DELIVERED', 960.0, 2, 1, 7); --pileca krilca 850
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (4, 'DELIVERED', 1000.0, 3, 1, 10); --cheese-cake 200
+                values (4, 'DELIVERED', 200.0, 3, 1, 10); --cheese-cake 200
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, profit)
         values ('FINISHED', 1637190000000, 'Pozuri, zedan sam.', 2, 4, 7, 800);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 700.0, 1, 2, 2); --pileca supa 300
+                values (2, 'DELIVERED', 350.0, 1, 2, 2); --pileca supa 300
 insert into order_item (quantity, status, price, priority, order_id, item_id)
                 values (1, 'DELIVERED', 2500.0, 2, 2, 6); --jagnjece pecenje  2000
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 400.0, 3, 2, 9); --sladoled rumenko 100
+                values (2, 'DELIVERED', 200.0, 3, 2, 9); --sladoled rumenko 100
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, barman_id, profit)
     values ('FINISHED', 1637362800000, 'Pozuri', 3, 3, 6, 8, 660);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 700.0, 1, 3, 2); --pileca supa 300
+                values (2, 'DELIVERED', 350.0, 1, 3, 2); --pileca supa 300
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 1900.0, 2, 3, 5); --prsuta 750
+                values (2, 'DELIVERED', 950.0, 2, 3, 5); --prsuta 750
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 360.0, 1, 3, 15); --sprite 100
+                values (2, 'DELIVERED', 180.0, 1, 3, 15); --sprite 100
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, barman_id, profit)
     values ('FINISHED', 1637967600000 , 'Pozuri', 4, 4, 7, 9, 1320);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 1300.0, 1, 4, 4); --gorgonzola 400
+                values (2, 'DELIVERED', 650.0, 1, 4, 4); --gorgonzola 400
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 1920.0, 2, 4, 7); --pileca krilca 850
+                values (2, 'DELIVERED', 960.0, 2, 4, 7); --pileca krilca 850
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 800.0, 3, 4, 13); --nutela plazma palacinka 200
+                values (2, 'DELIVERED', 400.0, 3, 4, 13); --nutela plazma palacinka 200
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 400.0, 1, 4, 14); --cola 100
+                values (2, 'DELIVERED', 200.0, 1, 4, 14); --cola 100
 
 -------------- MJESEC (DECEMBAR)
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, barman_id, profit)
         values ('FINISHED', 1639263600000, 'Pozuri, galdan sam.', 1, 3, 6, 8, 680);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 600.0, 1, 5, 1); --govedja supa 250
+                values (2, 'DELIVERED', 300.0, 1, 5, 1); --govedja supa 250
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 1900.0, 1, 5, 5); --prsuta 750
+                values (2, 'DELIVERED', 950.0, 1, 5, 5); --prsuta 750
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 480.0, 1, 5, 21); --cappucino 150
+                values (2, 'DELIVERED', 240.0, 1, 5, 21); --cappucino 150
 
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, profit)
         values ('FINISHED', 1639695600000, 'Pozuri, zedan sam.', 3, 4, 7, 1000);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 700.0, 1, 6, 2); --pileca supa 300
+                values (2, 'DELIVERED', 350.0, 1, 6, 2); --pileca supa 300
 insert into order_item (quantity, status, price, priority, order_id, item_id)
                 values (1, 'DELIVERED', 2500.0, 2, 6, 6); --jagnjece pecenje 2000
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (4, 'DELIVERED', 800.0, 3, 6, 9); --sladoled rumenko 100
+                values (4, 'DELIVERED', 200.0, 3, 6, 9); --sladoled rumenko 100
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id, profit)
     values ('FINISHED', 1640214000000, 'Pozuri', 2, 3, 8, 570);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (3, 'DELIVERED', 600.0, 1, 7, 20); --espresso 110
+                values (3, 'DELIVERED', 200.0, 1, 7, 20); --espresso 110
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (3, 'DELIVERED', 600.0, 1, 7, 14); --cola 100
+                values (3, 'DELIVERED', 200.0, 1, 7, 14); --cola 100
 
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, barman_id, profit)
     values ('FINISHED', 1640732400000, 'Pozuri', 4, 4, 7, 9, 3000);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (5, 'DELIVERED', 3250.0, 1, 8, 4); --gorgonzola 400
+                values (5, 'DELIVERED', 650.0, 1, 8, 4); --gorgonzola 400
 insert into order_item (quantity, status, price, priority, order_id, item_id)
                 values (1, 'DELIVERED', 2500.0, 2, 8, 6); --jagnjece pecenje 2000
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (5, 'DELIVERED', 2250.0, 3, 8, 11); --ledena kocka 300
+                values (5, 'DELIVERED', 450.0, 3, 8, 11); --ledena kocka 300
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (5, 'DELIVERED', 1000.0, 1, 8, 14); --cola 100
+                values (5, 'DELIVERED', 200.0, 1, 8, 14); --cola 100
 
 --------------- MJESEC (JANUAR)
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, barman_id, profit)
         values ('FINISHED', 1641423600000, 'Pozuri, galdan sam.', 1, 3, 6, 8, 620);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 1900.0, 2, 9, 5); --prsuta 750
+                values (2, 'DELIVERED', 950.0, 2, 9, 5); --prsuta 750
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 440.0, 1, 9, 19); --banjalucko 110
+                values (2, 'DELIVERED', 220.0, 1, 9, 19); --banjalucko 110
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, barman_id, profit)
         values ('FINISHED', 1641855600000, 'Pozuri, zedan sam.', 3, 4, 6, 9, 2360);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (8, 'DELIVERED', 1760.0, 1, 10, 16); --bravo sok 100
+                values (8, 'DELIVERED', 220.0, 1, 10, 16); --bravo sok 100
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (4, 'DELIVERED', 1800.0, 3, 10, 11); --ledene kocke 300
+                values (4, 'DELIVERED', 450.0, 3, 10, 11); --ledene kocke 300
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (4, 'DELIVERED', 1600.0, 2, 10, 13); --palacinke slatke 200
+                values (4, 'DELIVERED', 400.0, 2, 10, 13); --palacinke slatke 200
 
 ------- NEW
 insert into restaurant_order (status, created_at, note, table_id, waiter_id)
         values ('NEW', 1642028400000, 'Pozuri, galdan sam.', 1, 3);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'ORDERED', 600.0, 1, 11, 1); --govednja supa 250
+                values (2, 'ORDERED', 300.0, 1, 11, 1); --govednja supa 250
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'ORDERED', 700.0, 1, 11, 2); --pileca supa 300
+                values (2, 'ORDERED', 350.0, 1, 11, 2); --pileca supa 300
 insert into order_item (quantity, status, price, priority, order_id, item_id)
                 values (1, 'ORDERED', 2500.0, 2, 11, 6); --jagnjece pecenje 2000
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id)
         values ('NEW', 1642028400000, 'Pozuri, zedan sam.', 4, 3);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'ORDERED', 440.0, 1, 12, 16); --bravo sok 100
+                values (2, 'ORDERED', 220.0, 1, 12, 16); --bravo sok 100
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'ORDERED', 900.0, 2, 12, 11); --ledene kocke 300
+                values (2, 'ORDERED', 450.0, 2, 12, 11); --ledene kocke 300
 
 
 
