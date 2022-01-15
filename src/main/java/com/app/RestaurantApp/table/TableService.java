@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.table;
 
+import com.app.RestaurantApp.table.dto.FloorTableInfo;
 import com.app.RestaurantApp.table.dto.TableCreateDTO;
 import com.app.RestaurantApp.table.dto.TableUpdateDTO;
 import com.app.RestaurantApp.table.dto.TableWaiterDTO;
@@ -21,4 +22,6 @@ public interface TableService {
     Table save(Table table);
 
     List<TableWaiterDTO> getTablesWithActiveOrderIfItExists(int floor);
+
+    FloorTableInfo getFloorTableInfo();
 }

@@ -131,20 +131,20 @@ insert into price (amount, date_from, item_id) values (150.0, 1636730076405, 9);
 insert into price (amount, date_from, item_id) values (160.0, 1636730076405, 10);
 
 
-insert into tables (active, x, y, floor) values (true, 1.0, 1.0, 0);
-insert into tables (active, x, y, floor) values (true, 2.0, 2.0, 0);
-insert into tables (active, x, y, floor) values (true, 3.0, 3.0, 0);
-insert into tables (active, x, y, floor) values (true, 4.0, 4.0, 0);
-insert into tables (active, x, y, floor) values (true, 5.0, 5.0, 0);
-insert into tables (active, x, y, floor) values (true, 10, 10, 0);
-insert into tables (active, x, y, floor) values (true, 20, 20, 0);
-insert into tables (active, x, y, floor) values (true, 30, 20, 0);
-insert into tables (active, x, y, floor) values (true, 40, 20, 0);
-insert into tables (active, x, y, floor) values (true, 50, 20, 0);
-insert into tables (active, x, y, floor) values (true, 10, 10, 1);
-insert into tables (active, x, y, floor) values (true, 14, 15, 1);
-insert into tables (active, x, y, floor) values (true, 5, 11, 1);
-insert into tables (active, x, y, floor) values (true, 22, 10, 1);
+insert into tables (active, x, y, floor) values (true, 53, 53, 0);
+insert into tables (active, x, y, floor) values (true, 161, 56, 0);
+insert into tables (active, x, y, floor) values (true, 272, 66, 0);
+insert into tables (active, x, y, floor) values (true, 397, 70, 0);
+insert into tables (active, x, y, floor) values (true, 508, 70, 0);
+insert into tables (active, x, y, floor) values (true, 52, 276, 0);
+insert into tables (active, x, y, floor) values (true, 163, 281, 0);
+insert into tables (active, x, y, floor) values (true, 283, 297, 0);
+insert into tables (active, x, y, floor) values (true, 396, 305, 0);
+insert into tables (active, x, y, floor) values (true, 504, 243, 0);
+insert into tables (active, x, y, floor) values (true, 53, 53, 1);
+insert into tables (active, x, y, floor) values (true, 161, 56, 1);
+insert into tables (active, x, y, floor) values (true, 272, 66, 1);
+insert into tables (active, x, y, floor) values (true, 397, 70, 1);
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id) values ('NEW', 1637770076405, 'Pozuri, galdan sam.', 1, 3);
 
