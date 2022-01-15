@@ -7,6 +7,7 @@ import com.app.RestaurantApp.enums.ItemType;
 import com.app.RestaurantApp.food.dto.FoodDTO;
 import com.app.RestaurantApp.food.dto.FoodSearchDTO;
 import com.app.RestaurantApp.item.ItemException;
+import com.app.RestaurantApp.order.Order;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class FoodServiceUnitTests {
 
         Category category = new Category(1L, "Supe");
         given(categoryServiceMock.findOne(category.getId())).willReturn(category);
-        given(categoryServiceMock.insertCategory(new CategoryDTO(category))).willReturn(category);
+        given(categoryServiceMock.insertCategory(category)).willReturn(category);
     }
 
     @Test
@@ -104,15 +105,15 @@ public class FoodServiceUnitTests {
         FoodDTO foodDTO = createFoodDTO();
         Food foodMocked = new Food(foodDTO);
         Category category = new Category(foodDTO.getCategory());
-        given(categoryServiceMock.findOne(CATEGORY_ID)).willReturn(category);
+        given(categoryServiceMock.findOneByName(CATEGORY_NAME)).willReturn(category);
         given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
 
         // Test invoke
         Food food = foodService.saveFood(foodDTO);
 
         // Verifying
-        verify(categoryServiceMock, times(1)).findOne(CATEGORY_ID);
-        verify(categoryServiceMock, times(0)).insertCategory(foodDTO.getCategory());
+        verify(categoryServiceMock, times(1)).findOneByName(CATEGORY_NAME);
+        verify(categoryServiceMock, times(0)).insertCategory(category);
         verify(foodRepositoryMock, times(1)).save(food);
 
         assertNotNull(food);
@@ -216,16 +217,16 @@ public class FoodServiceUnitTests {
         // Category is new one.
         Food foodMocked = new Food(foodDTO);
         Category category = new Category(CATEGORY_ID, CATEGORY_NAME);
-        given(categoryServiceMock.findOne(CATEGORY_ID)).willReturn(null); // category does not exist
-        given(categoryServiceMock.insertCategory(foodDTO.getCategory())).willReturn(category);
+        given(categoryServiceMock.findOneByName(CATEGORY_NAME)).willReturn(null); // category does not exist
+        given(categoryServiceMock.insertCategory(any(Category.class))).willReturn(category);
         given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
 
         // Test invoke
         Food food = foodService.saveFood(foodDTO);
 
         // Verifying
-        verify(categoryServiceMock, times(1)).findOne(CATEGORY_ID);
-        verify(categoryServiceMock, times(1)).insertCategory(foodDTO.getCategory());
+        verify(categoryServiceMock, times(1)).findOneByName(CATEGORY_NAME);
+        verify(categoryServiceMock, times(1)).insertCategory(any(Category.class));
         verify(foodRepositoryMock, times(1)).save(food);
 
         assertNotNull(food);

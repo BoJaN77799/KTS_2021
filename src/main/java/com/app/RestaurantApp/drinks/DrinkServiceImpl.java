@@ -47,7 +47,7 @@ public class DrinkServiceImpl implements DrinkService {
             Category category = categoryService.findOne(drinkDTO.getCategory().getId());
             if (category == null)
                 // need to make category first
-                category = categoryService.insertCategory(drinkDTO.getCategory());
+                category = categoryService.insertCategory(new Category(drinkDTO.getCategory()));
             drink.setCategory(category);
         }
         drinkRepository.save(drink);

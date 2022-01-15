@@ -52,10 +52,10 @@ public class FoodServiceImpl implements FoodService {
         Food food = new Food(foodDTO);
         FoodUtils.CheckFoodInfo(food);
         if (foodDTO.getCategory() != null) {
-            Category category = categoryService.findOne(foodDTO.getCategory().getId());
+            Category category = categoryService.findOneByName(foodDTO.getCategory().getName());
             if (category == null)
                 // need to make category first
-                category = categoryService.insertCategory(foodDTO.getCategory());
+                category = categoryService.insertCategory(new Category(foodDTO.getCategory()));
             food.setCategory(category);
         }
         foodRepository.save(food);

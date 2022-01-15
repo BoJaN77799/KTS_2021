@@ -52,7 +52,6 @@ public class FoodController {
     @PostMapping(consumes = "application/json")
     @PreAuthorize("hasRole('HEAD_COOK')")
     public ResponseEntity<String> saveFood(@RequestBody FoodDTO foodDTO) {
-        foodDTO.setDeleted(false);
         try {
             foodService.saveFood(foodDTO);
             return new ResponseEntity<>("Food successfully created", HttpStatus.CREATED);
