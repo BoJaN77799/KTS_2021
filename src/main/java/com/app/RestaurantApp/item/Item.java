@@ -9,6 +9,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -38,23 +39,21 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Price> prices;
 
-    @ManyToMany(cascade = {CascadeType.DETACH}) // when food is deleted, all ingredients that are linked to
-                                                // that food loses references without removing
-    @JoinTable(
-            name = "item_ingredient",
-            joinColumns = {@JoinColumn(name = "item_id")},
-            inverseJoinColumns = {@JoinColumn(name = "ingredient_id")}
+    @ManyToMany(cascade = {CascadeType.MERGE})
+    @JoinTable(name = "item_ingredient",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private Set<Ingredient> ingredients;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
-    @Column( name="current_price")
+    @Column(name = "current_price")
     private Double currentPrice;
 
     @Enumerated(EnumType.STRING)
-    @Column( name="item_type", nullable = false)
+    @Column(name = "item_type", nullable = false)
     private ItemType itemType;
 
     @Column(name = "deleted")
@@ -72,6 +71,7 @@ public class Item {
         this.category = itemDTO.getCategory() != null ? new Category(itemDTO.getCategory()) : null;
         this.itemType = itemDTO.getItemType();
         this.deleted = itemDTO.isDeleted();
+        this.ingredients = new HashSet<>();
     }
 
     public Item(long id, String name, double currentPrice, double cost) {
