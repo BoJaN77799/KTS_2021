@@ -10,6 +10,7 @@ import com.app.RestaurantApp.users.dto.UpdateUserDTO;
 import com.app.RestaurantApp.users.employee.Employee;
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,12 +45,12 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public List<AppUser> getAllUsersButAdmin(Long adminID) {
-        return appUserRepository.findAllUsersButAdmin(adminID);
+    public Page<AppUser> getAllUsersButAdmin(String adminID, Pageable pageable) {
+        return appUserRepository.findAllUsersButAdmin(adminID, pageable);
     }
 
     @Override
-    public List<AppUser> searchUsersAdmin(String searchField, String userType, Pageable pageable){
+    public Page<AppUser> searchUsersAdmin(String searchField, String userType, Pageable pageable){
         if (searchField == null)
             searchField = "";
 

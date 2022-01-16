@@ -49,7 +49,7 @@ public class AppUserServiceIntegrationTests {
 
     @Test
     public void getAllUsersButAdmin(){
-        List<AppUser> users = appUserService.getAllUsersButAdmin(1L);
+        List<AppUser> users = appUserService.getAllUsersButAdmin("admin@maildrop.cc", null).stream().toList();
 
         assertEquals(6, users.size());
         assertNotEquals(UserType.ADMINISTRATOR, users.get(0).getUserType());
@@ -64,19 +64,19 @@ public class AppUserServiceIntegrationTests {
     public void testSearchUsersAdmin() {
         List<AppUser> appUserList =
                 appUserService.searchUsersAdmin(null, null, PageRequest.of(0, 10)
-                        .withSort(Sort.by("id")));
+                        .withSort(Sort.by("id"))).stream().toList();
         assertEquals(7, appUserList.size());
 
-        appUserList = appUserService.searchUsersAdmin(null, COOK, null);
+        appUserList = appUserService.searchUsersAdmin(null, COOK, null).stream().toList();
         assertEquals(2, appUserList.size());
         assertEquals(UserType.COOK, appUserList.get(0).getUserType());
         assertEquals(UserType.COOK, appUserList.get(1).getUserType());
 
-        appUserList = appUserService.searchUsersAdmin(SEARCH_VAL_3, null, null);
+        appUserList = appUserService.searchUsersAdmin(SEARCH_VAL_3, null, null).stream().toList();
         assertEquals(0, appUserList.size());
 
         appUserList = appUserService.searchUsersAdmin(SEARCH_VAL_1, null,
-                PageRequest.of(0,2).withSort(Sort.by("firstName").descending()));
+                PageRequest.of(0,2).withSort(Sort.by("firstName").descending())).stream().toList();
         assertEquals(appUserList.size(), 2);
         assertEquals(2, appUserList.get(0).getId());
         assertEquals(1, appUserList.get(1).getId());

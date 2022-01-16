@@ -6,6 +6,7 @@ import com.app.RestaurantApp.users.appUser.AppUser;
 public class AppUserAdminUserListDTO {
 
     private Long id;
+    private boolean active;
     private String firstName;
     private String lastName;
     private String email;
@@ -24,6 +25,15 @@ public class AppUserAdminUserListDTO {
         this.telephone = user.getTelephone();
         this.userType = user.getUserType();
         this.isPasswordChanged = user.isPasswordChanged();
+        this.active = !user.isDeleted();
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public Long getId() {

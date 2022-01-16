@@ -24,7 +24,7 @@ public class AppUserRepositoryTests {
 
     @Test
     public void testFindAllUsersButAdmin() {
-        List<AppUser> users = appUserRepository.findAllUsersButAdmin(1L);
+        List<AppUser> users = appUserRepository.findAllUsersButAdmin("admin@maildrop.cc", null).stream().toList();
 
         assertEquals(6, users.size());
         assertNotEquals(UserType.ADMINISTRATOR, users.get(0).getUserType());
@@ -39,23 +39,23 @@ public class AppUserRepositoryTests {
     public void testSearchUsersAdmin() {
         List<AppUser> users;
         users = appUserRepository.searchUsersAdmin(SEARCH_VAL_1, EMPTY_OR_ALL_TYPES,
-                PageRequest.of(0,2).withSort(Sort.by("firstName").descending()));
+                PageRequest.of(0,2).withSort(Sort.by("firstName").descending())).stream().toList();
         assertEquals(users.size(), 2);
         assertEquals(2, users.get(0).getId());
         assertEquals(1, users.get(1).getId());
         assertTrue(users.get(0).getLastName().toLowerCase().contains(SEARCH_VAL_1) &&
                 users.get(1).getLastName().toLowerCase().contains(SEARCH_VAL_1));
 
-        users = appUserRepository.searchUsersAdmin(SEARCH_VAL_2, COOK, null);
+        users = appUserRepository.searchUsersAdmin(SEARCH_VAL_2, COOK, null).stream().toList();
         assertEquals(4, users.get(0).getId());
         assertTrue(users.get(0).getFirstName().toLowerCase().contains(SEARCH_VAL_2));
 
-        users = appUserRepository.searchUsersAdmin(EMPTY_SEARCH_FIELD, COOK, null);
+        users = appUserRepository.searchUsersAdmin(EMPTY_SEARCH_FIELD, COOK, null).stream().toList();
         assertEquals(2, users.size());
         assertTrue(users.get(0).getUserType() == UserType.COOK && users.get(1).getUserType() == UserType.COOK);
 
         users = appUserRepository.searchUsersAdmin(EMPTY_SEARCH_FIELD, EMPTY_OR_ALL_TYPES,
-                PageRequest.of(0, 10).withSort(Sort.by("firstName").ascending()));
+                PageRequest.of(0, 10).withSort(Sort.by("firstName").ascending())).stream().toList();
         assertEquals(users.size(), 7);
         assertEquals(users.get(0).getId(), 6);
         assertEquals(users.get(1).getId(), 1);
