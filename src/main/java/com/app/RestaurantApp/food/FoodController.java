@@ -4,7 +4,10 @@ import com.app.RestaurantApp.ControllerUtils;
 import com.app.RestaurantApp.food.FoodService;
 import com.app.RestaurantApp.food.dto.FoodDTO;
 import com.app.RestaurantApp.food.dto.FoodSearchDTO;
+import com.app.RestaurantApp.food.dto.FoodWithIngredientsDTO;
 import com.app.RestaurantApp.food.dto.FoodWithPriceDTO;
+import com.app.RestaurantApp.ingredient.Ingredient;
+import com.app.RestaurantApp.ingredient.dto.IngredientDTO;
 import com.app.RestaurantApp.item.ItemException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,10 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("api/food")
@@ -51,8 +51,7 @@ public class FoodController {
 
     @PostMapping(consumes = "application/json")
     @PreAuthorize("hasRole('HEAD_COOK')")
-    public ResponseEntity<String> saveFood(@RequestBody FoodDTO foodDTO) {
-        foodDTO.setDeleted(false);
+    public ResponseEntity<String> saveFood(@RequestBody FoodWithIngredientsDTO foodDTO) {
         try {
             foodService.saveFood(foodDTO);
             return new ResponseEntity<>("Food successfully created", HttpStatus.CREATED);
@@ -70,7 +69,7 @@ public class FoodController {
             if (food == null) {
                 return new ResponseEntity<>("Food cannot be null", HttpStatus.BAD_REQUEST);
             }
-            foodService.saveFood(foodDTO);
+            foodService.updateFood(foodDTO);
             return new ResponseEntity<>("Food successfully updated", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

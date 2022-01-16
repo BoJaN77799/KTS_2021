@@ -1,6 +1,10 @@
 package com.app.RestaurantApp.food;
 
 import com.app.RestaurantApp.food.dto.FoodSearchDTO;
+import com.app.RestaurantApp.food.dto.FoodWithIngredientsDTO;
+import com.app.RestaurantApp.ingredient.Ingredient;
+import com.app.RestaurantApp.ingredient.dto.IngredientDTO;
+import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static com.app.RestaurantApp.food.Constants.*;
@@ -89,7 +95,7 @@ public class FoodServiceIntegrationTests {
     @Test
     @Transactional
     public void testSaveFood() throws ItemException, FoodException {
-        FoodDTO foodDTO = createFoodDTO(); // Creating test object
+        FoodWithIngredientsDTO foodDTO = createFoodDTO(); // Creating test object
 
         // Test invoke
         Food food = foodService.saveFood(foodDTO);
@@ -130,10 +136,13 @@ public class FoodServiceIntegrationTests {
         assertTrue(food.size() >= 5); // condition is independent of test order
     }
 
-    private FoodDTO createFoodDTO(){
+    private FoodWithIngredientsDTO createFoodDTO(){
         // This method creates testing object
         CategoryDTO category = new CategoryDTO(1L, "Supe");
-        return new FoodDTO(1L, "Supa", 250.0, "Bas je slana", "putanja/supa", category, ItemType.FOOD, false, "Ma lako se pravi", 20, "APPETIZER");
+        HashSet<IngredientDTO> ingredients = new HashSet<>(List.of(
+                new IngredientDTO(3L, "Brasno", false),
+                new IngredientDTO(6L, "Voda", false)));
+        return new FoodWithIngredientsDTO(1L, "Supa", 250.0, "Bas je slana", "putanja/supa", category, ItemType.FOOD, false, "Ma lako se pravi", 20, "APPETIZER", ingredients);
     }
 
 }

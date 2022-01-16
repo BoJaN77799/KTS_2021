@@ -4,7 +4,10 @@ import com.app.RestaurantApp.category.dto.CategoryDTO;
 import com.app.RestaurantApp.enums.ItemType;
 import com.app.RestaurantApp.food.dto.FoodDTO;
 import com.app.RestaurantApp.food.dto.FoodSearchDTO;
+import com.app.RestaurantApp.food.dto.FoodWithIngredientsDTO;
 import com.app.RestaurantApp.food.dto.FoodWithPriceDTO;
+import com.app.RestaurantApp.ingredient.Ingredient;
+import com.app.RestaurantApp.ingredient.dto.IngredientDTO;
 import com.app.RestaurantApp.security.auth.JwtAuthenticationRequest;
 import com.app.RestaurantApp.users.dto.UserTokenState;
 import org.hamcrest.Matchers;
@@ -197,8 +200,10 @@ public class FoodControllerIntegrationTests {
     }
 
     private FoodDTO createFoodDTO(){
-        // This method creates testing object
         CategoryDTO category = new CategoryDTO(1L, "Supe");
-        return new FoodDTO(null, "Supa", 250.0, "Bas je slana", "putanja/supa", category, ItemType.FOOD, false, "Ma lako se pravi", 20, "APPETIZER");
+        HashSet<IngredientDTO> ingredients = new HashSet<>(List.of(
+                new IngredientDTO(3L, "Brasno", false),
+                new IngredientDTO(6L, "Voda", false)));
+        return new FoodWithIngredientsDTO(null, "Supa", 250.0, "Bas je slana", "putanja/supa", category, ItemType.FOOD, false, "Ma lako se pravi", 20, "APPETIZER", ingredients);
     }
 }

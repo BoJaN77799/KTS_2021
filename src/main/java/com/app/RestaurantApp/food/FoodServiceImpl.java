@@ -1,22 +1,25 @@
 package com.app.RestaurantApp.food;
 
+import com.app.RestaurantApp.category.Category;
+import com.app.RestaurantApp.category.CategoryService;
 import com.app.RestaurantApp.food.dto.FoodDTO;
 import com.app.RestaurantApp.food.dto.FoodSearchDTO;
-import com.app.RestaurantApp.food.dto.FoodWithPriceDTO;
+import com.app.RestaurantApp.food.dto.FoodWithIngredientsDTO;
+import com.app.RestaurantApp.ingredient.IngredientRepository;
+import com.app.RestaurantApp.ingredient.dto.IngredientDTO;
 import com.app.RestaurantApp.item.ItemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import com.app.RestaurantApp.category.Category;
-import com.app.RestaurantApp.category.CategoryService;
 
 @Service
 public class FoodServiceImpl implements FoodService {
+
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
     @Autowired
     private CategoryService categoryService;
@@ -48,14 +51,32 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public Food saveFood(FoodDTO foodDTO) throws ItemException, FoodException {
+    public Food saveFood(FoodWithIngredientsDTO foodDTO) throws ItemException, FoodException {
         Food food = new Food(foodDTO);
         FoodUtils.CheckFoodInfo(food);
         if (foodDTO.getCategory() != null) {
-            Category category = categoryService.findOne(foodDTO.getCategory().getId());
+            Category category = categoryService.findOneByName(foodDTO.getCategory().getName());
             if (category == null)
                 // need to make category first
-                category = categoryService.insertCategory(foodDTO.getCategory());
+                category = categoryService.insertCategory(new Category(foodDTO.getCategory()));
+            food.setCategory(category);
+        }
+        for (IngredientDTO ingredient : foodDTO.getIngredients()) {
+            ingredientRepository.findById(ingredient.getId()).ifPresent(ingredientFromDb -> food.getIngredients().add(ingredientFromDb));
+        }
+        foodRepository.save(food);
+        return food;
+    }
+
+    @Override
+    public Food updateFood(FoodDTO foodDTO) throws ItemException, FoodException {
+        Food food = new Food(foodDTO);
+        FoodUtils.CheckFoodInfo(food);
+        if (foodDTO.getCategory() != null) {
+            Category category = categoryService.findOneByName(foodDTO.getCategory().getName());
+            if (category == null)
+                // need to make category first
+                category = categoryService.insertCategory(new Category(foodDTO.getCategory()));
             food.setCategory(category);
         }
         foodRepository.save(food);
