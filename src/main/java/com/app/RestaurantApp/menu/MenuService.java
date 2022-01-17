@@ -1,18 +1,14 @@
 package com.app.RestaurantApp.menu;
 
-import com.app.RestaurantApp.item.ItemException;
-import com.app.RestaurantApp.item.dto.ItemDTO;
-import com.app.RestaurantApp.menu.dto.MenuItemDTO;
-
 import java.util.List;
 
 public interface MenuService {
 
+    Menu findByName(String name);
+
     boolean createUpdateMenu(String name) throws MenuException;
 
-    List<ItemDTO> getItemsOfMenu(String name) throws MenuException;
+    List<Menu> findAllWithSpecificStatus(boolean activeMenu);
 
-    void removeItemFromMenu(MenuItemDTO mi) throws MenuException, ItemException;
-
-    void addItemToMenu(MenuItemDTO mi) throws MenuException, ItemException;
+    List<String> findAllActiveMenuNames();
 }

@@ -2,8 +2,14 @@ package com.app.RestaurantApp.item;
 
 import com.app.RestaurantApp.item.dto.ItemDTO;
 import com.app.RestaurantApp.item.dto.ItemPriceDTO;
+import com.app.RestaurantApp.item.dto.MenuItemDTO;
+import com.app.RestaurantApp.menu.Menu;
+import com.app.RestaurantApp.menu.MenuException;
+import com.app.RestaurantApp.menu.MenuService;
 import com.app.RestaurantApp.price.Price;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,6 +27,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private ItemRepository itemRepository;
+
+    @Autowired
+    private MenuService menuService;
 
     @Override
     public List<Item> findAllWithIds(List<Long> ids) {
@@ -70,6 +79,39 @@ public class ItemServiceImpl implements ItemService {
             ++i;
         }
         return items;
+    }
+
+    @Override
+    public void addItemToMenu(MenuItemDTO mi) throws MenuException, ItemException {
+        Menu m = menuService.findByName(mi.getMenuName());
+        if (m == null) throw new MenuException("Menu does not exist!");
+
+        Item i = itemRepository.findById(Long.valueOf(mi.getItemId())).orElse(null);
+        if (i == null) throw new ItemException("Item does not exist!");
+
+        if (i.getMenu().equals(m.getName())) throw new MenuException("Item already exists in menu!");
+
+        i.setMenu(m.getName());
+        itemRepository.save(i);
+    }
+
+    @Override
+    public void removeItemFromMenu(MenuItemDTO mi) throws MenuException, ItemException {
+        Menu m = menuService.findByName(mi.getMenuName());
+        if (m == null) throw new MenuException("Menu does not exist!");
+
+        Item i = itemRepository.findById(Long.valueOf(mi.getItemId())).orElse(null);
+        if (i == null) throw new ItemException("Item does not exist!");
+
+        if (!i.getMenu().equals(m.getName())) throw new MenuException("Item does not exist in menu!");
+
+        i.setMenu("Nedefinisan");
+        itemRepository.save(i);
+    }
+
+    @Override
+    public Page<Item> findAllItemsWithMenuName(String name, Pageable pageable) {
+        return itemRepository.findAllItemsWithMenuName(name, pageable);
     }
 
 }

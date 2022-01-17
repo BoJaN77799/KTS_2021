@@ -113,115 +113,94 @@ insert into category (name) values ('Bezalkoholna pica'); --8
 insert into category (name) values ('Alkoholna pica'); --9
 insert into category (name) values ('Kafe'); --10
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Govedja supa', 'Bas je slana.', 'putanja/supa', 250.0, 1, 300, 'FOOD', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Govedja supa', 'Bas je slana.', 'putanja/supa', 250.0, 1, 300, 'FOOD', 'Stalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (1, 'Ma lako se pravi.', 20, 'APPETIZER'); --1
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Pileca supa', 'Bas je ukusna.', 'putanja/supa', 300.0, 1, 350, 'FOOD', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Pileca supa', 'Bas je ukusna.', 'putanja/supa', 300.0, 1, 350, 'FOOD', 'Specijalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (2, 'Ma lako se pravi.', 20, 'APPETIZER'); --2
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Pohovani kackavalj', 'I on je slan.', 'putanja/kackavalj', 300.0, 2, 600, 'FOOD', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Pohovani kackavalj', 'I on je slan.', 'putanja/kackavalj', 300.0, 2, 600, 'FOOD', 'Leto', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (3, 'Brzo se pravi.', 15, 'APPETIZER'); --3
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Gorgonzola', 'Jako ukusna.', 'putanja/kackavalj', 400.0, 2, 650, 'FOOD', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Gorgonzola', 'Jako ukusna.', 'putanja/kackavalj', 400.0, 2, 650, 'FOOD', 'Stalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (4, 'Brzo se pravi.', 20, 'APPETIZER'); --4
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Prsuta', 'Bas je mnogo slana', 'putanja/prsuta', 750.0, 3, 950, 'FOOD', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Prsuta', 'Bas je mnogo slana', 'putanja/prsuta', 750.0, 3, 950, 'FOOD', 'Specijalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (5, 'Dugo se susi.', 5, 'APPETIZER'); --5
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Jagnjece pecenje', 'Bas je ultro slano.', 'putanja/mmm', 2000.0, 3, 2500, 'FOOD', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Jagnjece pecenje', 'Bas je ultro slano.', 'putanja/mmm', 2000.0, 3, 2500, 'FOOD', 'Zima', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (6, 'Treba dobro osoliti.', 120, 'MAIN_DISH'); --6
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Pileca krilca', 'Mogu se zaljutiti.', 'putanja/krila', 850.0, 3, 960, 'FOOD', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Pileca krilca', 'Mogu se zaljutiti.', 'putanja/krila', 850.0, 3, 960, 'FOOD', 'Specijalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (7, 'Treba ti pile sa bar jednim krilom.', 30, 'MAIN_DISH'); --7
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Sladoled Kapri', 'Zaledjen.', 'putanja/sladoled', 150.0, 4, 240, 'FOOD', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Sladoled Kapri', 'Zaledjen.', 'putanja/sladoled', 150.0, 4, 240, 'FOOD', 'Stalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (8, 'Treba mlijeka i sladera.', 2, 'DESERT'); --8
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Sladoled Rumenko', 'Zaledjen.', 'putanja/sladoled', 100.0, 4, 200, 'FOOD', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Sladoled Rumenko', 'Zaledjen.', 'putanja/sladoled', 100.0, 4, 200, 'FOOD', 'Specijalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (9, 'Treba vode i secera.', 2, 'DESERT'); --9
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Cheese-Cake', 'Kora meka napravljena od plazme.', 'putanja/kolac', 200.0, 5, 500, 'FOOD', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Cheese-Cake', 'Kora meka napravljena od plazme.', 'putanja/kolac', 200.0, 5, 500, 'FOOD', 'Nedefinisan', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (10, 'Treba sira, malina i plazma.', 15, 'DESERT'); --10
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Ledene kocke', 'Ledno, slatko i preukusno.', 'putanja/kolac', 300.0, 5, 450, 'FOOD', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Ledene kocke', 'Ledno, slatko i preukusno.', 'putanja/kolac', 300.0, 5, 450, 'FOOD', 'Specijalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (11, 'Treba dosta cokolade.', 40, 'DESERT'); --11
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Pohovana palacinka', 'Slana je.', 'putanja/palacinka', 200.0, 6, 500, 'FOOD', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Pohovana palacinka', 'Slana je.', 'putanja/palacinka', 200.0, 6, 500, 'FOOD', 'Stalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (12, 'Peces, napunis, pa onda pohujes.', 10, 'MAIN_DISH'); --12
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Nutela plazma palacinka', 'Slatka je.', 'putanja/palacinka', 200.0, 6, 400, 'FOOD', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Nutela plazma palacinka', 'Slatka je.', 'putanja/palacinka', 200.0, 6, 400, 'FOOD', 'Zima', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (13, 'Klasicna palacinka koja se napuni sa nutelom i plazmom.', 10, 'DESERT'); --13
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Coca Cola', 'Bas je gazirana.', 'putanja/cola', 100.0, 7, 200, 'DRINK', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Coca Cola', 'Bas je gazirana.', 'putanja/cola', 100.0, 7, 200, 'DRINK', 'Leto', 'False');
 insert into drink (id, volume) values (14, 0.3); --14
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Sprite', 'Bas je gazirana.', 'putanja/sprite', 100.0, 7, 180, 'DRINK', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Sprite', 'Bas je gazirana.', 'putanja/sprite', 100.0, 7, 180, 'DRINK', 'Specijalni meni', 'False');
 insert into drink (id, volume) values (15, 0.3); --15
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Bravo orange', 'Nerealno slatko.', 'putanja/sok', 100.0, 8, 220, 'DRINK', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Bravo orange', 'Nerealno slatko.', 'putanja/sok', 100.0, 8, 220, 'DRINK', 'Stalni meni', 'False');
 insert into drink (id, volume) values (16, 0.3); --16
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Exotic kruska', 'Bolja je limeta.', 'putanja/sok', 100.0, 8, 180, 'DRINK', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Exotic kruska', 'Bolja je limeta.', 'putanja/sok', 100.0, 8, 180, 'DRINK', 'Zima', 'False');
 insert into drink (id, volume) values (17, 0.3); --17
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Niksicko pivo', 'Osvezavajuce.', 'putanja/vopi', 110.0, 9, 200, 'DRINK', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Niksicko pivo', 'Osvezavajuce.', 'putanja/vopi', 110.0, 9, 200, 'DRINK', 'Leto', 'False');
 insert into drink (id, volume ) values (18, 0.5); --18
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Banjalucko pivo', 'Gorko kao djavo.', 'putanja/vopi', 110.0, 9, 220, 'DRINK', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Banjalucko pivo', 'Gorko kao djavo.', 'putanja/vopi', 110.0, 9, 220, 'DRINK', 'Nedefinisan', 'False');
 insert into drink (id, volume ) values (19, 0.5); --19
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Espresso', 'Za dobro jutro.', 'putanja/vopi', 110.0, 10, 200, 'DRINK', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Espresso', 'Za dobro jutro.', 'putanja/vopi', 110.0, 10, 200, 'DRINK', 'Stalni meni', 'False');
 insert into drink (id, volume ) values (20, 0.1); --20
 
-insert into item (name, description, image, cost, category_id, current_price, item_type, deleted)
-            values ('Cappucino', '5cm pjene.', 'putanja/vopi', 150.0, 10, 240, 'DRINK', 'False');
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+            values ('Cappucino', '5cm pjene.', 'putanja/vopi', 150.0, 10, 240, 'DRINK', 'Stalni meni', 'False');
 insert into drink (id, volume ) values (21, 0.1); --21
 
 insert into menu (name, active_menu) values ('Stalni meni', 'True');
+insert into menu (name, active_menu) values ('Specijalni meni', 'True');
 insert into menu (name, active_menu) values ('Leto', 'False');
 insert into menu (name, active_menu) values ('Zima', 'False');
-
-insert into menu_item (menu_id, item_id) values (1, 1);
-insert into menu_item (menu_id, item_id) values (1, 2);
-insert into menu_item (menu_id, item_id) values (1, 3);
-insert into menu_item (menu_id, item_id) values (1, 4);
-insert into menu_item (menu_id, item_id) values (1, 5);
-insert into menu_item (menu_id, item_id) values (1, 6);
-insert into menu_item (menu_id, item_id) values (1, 7);
-insert into menu_item (menu_id, item_id) values (1, 8);
-insert into menu_item (menu_id, item_id) values (1, 9);
-insert into menu_item (menu_id, item_id) values (1, 10);
-insert into menu_item (menu_id, item_id) values (1, 11);
-insert into menu_item (menu_id, item_id) values (1, 12);
-insert into menu_item (menu_id, item_id) values (1, 13);
-insert into menu_item (menu_id, item_id) values (1, 14);
-insert into menu_item (menu_id, item_id) values (1, 15);
-insert into menu_item (menu_id, item_id) values (1, 16);
-insert into menu_item (menu_id, item_id) values (1, 17);
-insert into menu_item (menu_id, item_id) values (1, 18);
-insert into menu_item (menu_id, item_id) values (1, 19);
-insert into menu_item (menu_id, item_id) values (1, 20);
-insert into menu_item (menu_id, item_id) values (1, 21);
 
 insert into item_ingredient (item_id, ingredient_id) values (1,3);
 insert into item_ingredient (item_id, ingredient_id) values (2,2);

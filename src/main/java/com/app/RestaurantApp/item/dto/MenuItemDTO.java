@@ -1,4 +1,4 @@
-package com.app.RestaurantApp.menu.dto;
+package com.app.RestaurantApp.item.dto;
 
 public class MenuItemDTO {
     private String menuName;

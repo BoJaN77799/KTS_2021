@@ -1,14 +1,11 @@
 package com.app.RestaurantApp.menu;
 
 import com.app.RestaurantApp.item.dto.ItemDTO;
-import com.app.RestaurantApp.item.dto.ItemPriceDTO;
-import com.app.RestaurantApp.menu.dto.MenuItemDTO;
+import com.app.RestaurantApp.item.dto.MenuItemDTO;
 import com.app.RestaurantApp.security.auth.JwtAuthenticationRequest;
 import com.app.RestaurantApp.users.dto.UserTokenState;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,7 +15,6 @@ import org.springframework.http.*;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;

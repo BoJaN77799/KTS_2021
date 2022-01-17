@@ -59,6 +59,9 @@ public class Item {
     @Column(name = "deleted")
     private boolean deleted;
 
+    @Column(name = "menu")
+    private String menu;
+
     public Item() {
     }
 
@@ -171,5 +174,13 @@ public class Item {
 
     public void setIngredients(Set<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public String getMenu() {
+        return menu;
+    }
+
+    public void setMenu(String menu) {
+        this.menu = menu;
     }
 }
