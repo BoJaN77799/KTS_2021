@@ -22,4 +22,6 @@ public interface FoodService {
     void deleteFood(Food food);
 
     List<Food> findAll();
+
+    List<String> findAllFoodCategories();
 }

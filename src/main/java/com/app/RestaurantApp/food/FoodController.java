@@ -87,4 +87,12 @@ public class FoodController {
         foodService.deleteFood(food);
         return new ResponseEntity<>("Food successfully deleted", HttpStatus.OK);
     }
+
+    @GetMapping(value = "/categories")
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<List<String>> findAllFoodCategories() {
+        List<String> categories = foodService.findAllFoodCategories();
+
+        return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
 }
