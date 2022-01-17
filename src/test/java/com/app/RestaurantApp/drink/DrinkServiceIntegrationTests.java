@@ -117,6 +117,13 @@ public class DrinkServiceIntegrationTests {
         assertTrue(drinks.size() >= 3); // condition is independent of test order
     }
 
+    @Test
+    public void testfindAllDrinkCategories() {
+        List<String> categories = drinkService.findAllDrinkCategories();
+
+        assertEquals(categories.size(), 2);
+    }
+
     private DrinkDTO createDrinkDTO() {
         CategoryDTO category = new CategoryDTO(7L, "Alkoholna pica");
         return new DrinkDTO(7L, "Coca cola", 140.0, "Bas je gazirana", "putanja/cola", category, ItemType.DRINK, false, 0.5);
