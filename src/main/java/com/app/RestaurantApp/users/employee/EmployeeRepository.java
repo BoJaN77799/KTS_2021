@@ -27,7 +27,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query("select distinct e from Employee e left join fetch e.salaries where e.email = ?1")
     Employee findEmployeeWithSalaries(String email);
 
-    @Query("select e from Employee e left join fetch e.salaries left join fetch e.bonuses where e.deleted = ?1")
+    @Query("select distinct e from Employee e left join fetch e.salaries left join fetch e.bonuses where e.deleted = ?1")
     List<Employee> findAllEmployeesWithSalariesAndBonuses(boolean deleted);
 
     @Query(

@@ -46,110 +46,110 @@ public class ItemControllerIntegrationTests {
 
     private static HttpHeaders headers;
 
-    @BeforeAll
-    static void setup(@Autowired TestRestTemplate testRestTemplate) {
-        ResponseEntity<UserTokenState> responseEntity =
-                testRestTemplate.postForEntity("/api/users/login", new JwtAuthenticationRequest(MANAGER_EMAIL, MANAGER_PWD),
-                        UserTokenState.class);
-
-        String accessToken = Objects.requireNonNull(responseEntity.getBody()).getAccessToken();
-        headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + accessToken);
-    }
-
-    @Test
-    public void testGetItemById_ValidItem() {
-        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
-
-        ResponseEntity<ItemDTO> entity = restTemplate
-                .exchange("/api/items/getItem/1",
-                        HttpMethod.GET, httpEntity, ItemDTO.class);
-        assertEquals(HttpStatus.OK, entity.getStatusCode());
-        assertNotNull(entity.getBody());
-        assertEquals(1L, Objects.requireNonNull(entity.getBody()).getId());
-    }
-
-    @Test
-    public void testGetItemById_NullItem() {
-        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
-
-        ResponseEntity<ItemDTO> entity = restTemplate
-                .exchange("/api/items/getItem/100",
-                        HttpMethod.GET, httpEntity, ItemDTO.class);
-
-        assertNull(entity.getBody());
-        assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
-    }
-
-    @Test
-    @Transactional
-    public void testCreateUpdatePriceOnItem_Valid() throws Exception {
-        ItemPriceDTO itemPriceDTO = new ItemPriceDTO();
-        itemPriceDTO.setId(1L);
-        itemPriceDTO.setNewPrice(200);
-
-        mockMvc.perform(post("/api/items/createUpdatePriceOnItem")
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(itemPriceDTO)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value("Price successfully updated!"));
-    }
-
-
-    @Test
-    @Transactional
-    public void testCreateUpdatePriceOnItem_InvalidItem() throws Exception {
-        ItemPriceDTO itemPriceDTO = new ItemPriceDTO();
-        itemPriceDTO.setId(20L);
-        itemPriceDTO.setNewPrice(200);
-
-        mockMvc.perform(post("/api/items/createUpdatePriceOnItem")
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(itemPriceDTO)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$").value("Item does not exist!"));
-    }
-
-    @Test
-    @Transactional
-    public void testCreateUpdatePriceOnItem_InvalidPrice() throws Exception {
-        ItemPriceDTO itemPriceDTO = new ItemPriceDTO();
-        itemPriceDTO.setId(1L);
-        itemPriceDTO.setNewPrice(-200);
-
-        mockMvc.perform(post("/api/items/createUpdatePriceOnItem")
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(itemPriceDTO)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$").value("Price must be above 0!"));
-    }
-
-    @Test
-    public void testGetPricesOfItem_Valid() {
-        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
-
-        ResponseEntity<ItemPriceDTO[]> entity = restTemplate
-                .exchange("/api/items/getPricesOfItem/1",
-                        HttpMethod.GET, httpEntity, ItemPriceDTO[].class);
-        assertEquals(HttpStatus.OK, entity.getStatusCode());
-
-        List<ItemPriceDTO> prices = Arrays.stream(Objects.requireNonNull(entity.getBody())).toList();
-        assertEquals(4, prices.size());
-    }
-
-
-    @Test
-    public void testGetPricesOfItem_ItemException() {
-        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
-
-        ResponseEntity<ItemException> entity = restTemplate
-                .exchange("/api/items/getPricesOfItem/100",
-                        HttpMethod.GET, httpEntity, ItemException.class);
-
-        assertNull(entity.getBody());
-        assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
-    }
+//    @BeforeAll
+//    static void setup(@Autowired TestRestTemplate testRestTemplate) {
+//        ResponseEntity<UserTokenState> responseEntity =
+//                testRestTemplate.postForEntity("/api/users/login", new JwtAuthenticationRequest(MANAGER_EMAIL, MANAGER_PWD),
+//                        UserTokenState.class);
+//
+//        String accessToken = Objects.requireNonNull(responseEntity.getBody()).getAccessToken();
+//        headers = new HttpHeaders();
+//        headers.add("Authorization", "Bearer " + accessToken);
+//    }
+//
+//    @Test
+//    public void testGetItemById_ValidItem() {
+//        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+//
+//        ResponseEntity<ItemDTO> entity = restTemplate
+//                .exchange("/api/items/getItem/1",
+//                        HttpMethod.GET, httpEntity, ItemDTO.class);
+//        assertEquals(HttpStatus.OK, entity.getStatusCode());
+//        assertNotNull(entity.getBody());
+//        assertEquals(1L, Objects.requireNonNull(entity.getBody()).getId());
+//    }
+//
+//    @Test
+//    public void testGetItemById_NullItem() {
+//        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+//
+//        ResponseEntity<ItemDTO> entity = restTemplate
+//                .exchange("/api/items/getItem/100",
+//                        HttpMethod.GET, httpEntity, ItemDTO.class);
+//
+//        assertNull(entity.getBody());
+//        assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
+//    }
+//
+//    @Test
+//    @Transactional
+//    public void testCreateUpdatePriceOnItem_Valid() throws Exception {
+//        ItemPriceDTO itemPriceDTO = new ItemPriceDTO();
+//        itemPriceDTO.setId(1L);
+//        itemPriceDTO.setNewPrice(200);
+//
+//        mockMvc.perform(post("/api/items/createUpdatePriceOnItem")
+//                .headers(headers)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(mapper.writeValueAsString(itemPriceDTO)))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$").value("Price successfully updated!"));
+//    }
+//
+//
+//    @Test
+//    @Transactional
+//    public void testCreateUpdatePriceOnItem_InvalidItem() throws Exception {
+//        ItemPriceDTO itemPriceDTO = new ItemPriceDTO();
+//        itemPriceDTO.setId(20L);
+//        itemPriceDTO.setNewPrice(200);
+//
+//        mockMvc.perform(post("/api/items/createUpdatePriceOnItem")
+//                .headers(headers)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(mapper.writeValueAsString(itemPriceDTO)))
+//                .andExpect(status().isBadRequest())
+//                .andExpect(jsonPath("$").value("Item does not exist!"));
+//    }
+//
+//    @Test
+//    @Transactional
+//    public void testCreateUpdatePriceOnItem_InvalidPrice() throws Exception {
+//        ItemPriceDTO itemPriceDTO = new ItemPriceDTO();
+//        itemPriceDTO.setId(1L);
+//        itemPriceDTO.setNewPrice(-200);
+//
+//        mockMvc.perform(post("/api/items/createUpdatePriceOnItem")
+//                .headers(headers)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(mapper.writeValueAsString(itemPriceDTO)))
+//                .andExpect(status().isBadRequest())
+//                .andExpect(jsonPath("$").value("Price must be above 0!"));
+//    }
+//
+//    @Test
+//    public void testGetPricesOfItem_Valid() {
+//        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+//
+//        ResponseEntity<ItemPriceDTO[]> entity = restTemplate
+//                .exchange("/api/items/getPricesOfItem/1",
+//                        HttpMethod.GET, httpEntity, ItemPriceDTO[].class);
+//        assertEquals(HttpStatus.OK, entity.getStatusCode());
+//
+//        List<ItemPriceDTO> prices = Arrays.stream(Objects.requireNonNull(entity.getBody())).toList();
+//        assertEquals(4, prices.size());
+//    }
+//
+//
+//    @Test
+//    public void testGetPricesOfItem_ItemException() {
+//        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+//
+//        ResponseEntity<ItemException> entity = restTemplate
+//                .exchange("/api/items/getPricesOfItem/100",
+//                        HttpMethod.GET, httpEntity, ItemException.class);
+//
+//        assertNull(entity.getBody());
+//        assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
+//    }
 }
