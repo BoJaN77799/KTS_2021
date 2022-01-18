@@ -188,6 +188,18 @@ public class FoodControllerIntegrationTests {
         assertEquals(1, Objects.requireNonNull(responseEntity.getBody()).length);
     }
 
+    @Test
+    public void testFindAllFoodCategories() {
+        logInAsWaiter();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<String[]> responseEntity = restTemplate
+                .exchange("/api/food/categories", HttpMethod.GET, httpEntity, String[].class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(5, Objects.requireNonNull(responseEntity.getBody()).length);
+    }
+
     private void logInAsWaiter() {
         ResponseEntity<UserTokenState> responseEntity =
                 restTemplate.postForEntity("/api/users/login",

@@ -77,5 +77,12 @@ public class DrinkRepositoryIntegrationTests {
         assertEquals("Coca Cola", drinks.get(0).getName());
     }
 
+    @Test
+    public void testfindAllDrinkCategories() {
+        List<String> categories = drinkRepository.findAllDrinkCategories();
+
+        assertEquals(categories.size(), 2);
+    }
+
 
 }

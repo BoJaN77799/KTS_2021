@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public interface FoodRepository extends JpaRepository<Food, Long> {
@@ -17,4 +19,7 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
             "and (:type = 'ALL' or lower(f.type) = lower(:type)) ")
     Page<Food> findAllWithPriceByCriteria(@Param("name") String name, @Param("category") String category,
                                           @Param("type") String type, Pageable pageable);
+
+    @Query("select distinct f.category.name from Food f")
+    List<String> findAllFoodCategories();
 }

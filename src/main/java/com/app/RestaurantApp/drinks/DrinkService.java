@@ -19,4 +19,6 @@ public interface DrinkService {
     void deleteDrink(Drink drink);
 
     List<Drink> findAll();
+
+    List<String> findAllDrinkCategories();
 }

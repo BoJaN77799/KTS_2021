@@ -112,4 +112,11 @@ public class FoodRepositoryIntegrationTests {
         assertEquals(6, foodsPage.getTotalElements());
         assertEquals("Supa", foods.get(0).getName());
     }
+
+    @Test
+    public void testfindAllFoodCategories() {
+        List<String> categories = foodRepository.findAllFoodCategories();
+
+        assertEquals(categories.size(), 5);
+    }
 }

@@ -92,4 +92,10 @@ public class FoodServiceImpl implements FoodService {
     public List<Food> findAll() {
         return foodRepository.findAll();
     }
+
+    @Override
+    public List<String> findAllFoodCategories() {
+        return foodRepository.findAllFoodCategories();
+    }
+
 }

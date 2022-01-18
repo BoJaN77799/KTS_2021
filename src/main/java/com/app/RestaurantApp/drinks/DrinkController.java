@@ -4,7 +4,6 @@ package com.app.RestaurantApp.drinks;
 import com.app.RestaurantApp.ControllerUtils;
 import com.app.RestaurantApp.drinks.dto.DrinkSearchDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkWithPriceDTO;
-import com.app.RestaurantApp.food.Food;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.app.RestaurantApp.drinks.dto.DrinkDTO;
@@ -86,5 +85,13 @@ public class DrinkController {
         }
         drinkService.deleteDrink(drink);
         return new ResponseEntity<>("Drink successfully deleted", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/categories")
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<List<String>> findAllDrinkCategories() {
+        List<String> categories = drinkService.findAllDrinkCategories();
+
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 }

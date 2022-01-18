@@ -2,16 +2,12 @@ package com.app.RestaurantApp.food;
 
 import com.app.RestaurantApp.food.dto.FoodSearchDTO;
 import com.app.RestaurantApp.food.dto.FoodWithIngredientsDTO;
-import com.app.RestaurantApp.ingredient.Ingredient;
 import com.app.RestaurantApp.ingredient.dto.IngredientDTO;
-import org.assertj.core.util.Arrays;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import com.app.RestaurantApp.category.dto.CategoryDTO;
 import com.app.RestaurantApp.enums.ItemType;
-import com.app.RestaurantApp.food.dto.FoodDTO;
 import com.app.RestaurantApp.item.ItemException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static com.app.RestaurantApp.food.Constants.*;
@@ -134,6 +129,13 @@ public class FoodServiceIntegrationTests {
         // Verifying
         assertNotNull(food);
         assertTrue(food.size() >= 5); // condition is independent of test order
+    }
+
+    @Test
+    public void testfindAllFoodCategories() {
+        List<String> categories = foodService.findAllFoodCategories();
+
+        assertEquals(categories.size(), 5);
     }
 
     private FoodWithIngredientsDTO createFoodDTO(){
