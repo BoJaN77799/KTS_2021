@@ -6,7 +6,9 @@ public interface MenuService {
 
     Menu findByName(String name);
 
-    boolean createUpdateMenu(String name) throws MenuException;
+    void createMenu(String name) throws MenuException;
+
+    void updateMenu(String name) throws MenuException;
 
     List<Menu> findAllWithSpecificStatus(boolean activeMenu);
 

@@ -15,6 +15,8 @@ public class Menu {
     @Column(name = "active_menu", nullable = false)
     private boolean activeMenu;
 
+    public Menu() {}
+
     public Menu(String name) {
         this.name = name;
         this.activeMenu = true;

@@ -18,19 +18,21 @@ public class MenuServiceImpl implements MenuService{
     }
 
     @Override
-    public boolean createUpdateMenu(String name){
+    public void createMenu(String name) throws MenuException {
         Menu m = menuRepository.findByName(name);
-        boolean indicator = false;
-        if (m == null) {
-            m = new Menu(name);
-            indicator = true;
-        }
-        else
-            m.setActiveMenu(!m.isActiveMenu());
+        System.out.println("MENI JE : " + m);
+        if (m != null) throw new MenuException("Menu already exists!");
+        m = new Menu(name);
         menuRepository.save(m);
-        return indicator;
     }
 
+    @Override
+    public void updateMenu(String name) throws MenuException{
+        Menu m = menuRepository.findByName(name);
+        if (m == null) throw new MenuException("Menu does not exists!");
+        m.setActiveMenu(!m.isActiveMenu());
+        menuRepository.save(m);
+    }
 
     @Override
     public List<Menu> findAllWithSpecificStatus(boolean activeMenu) {
