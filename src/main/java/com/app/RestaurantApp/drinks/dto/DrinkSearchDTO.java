@@ -6,11 +6,14 @@ public class DrinkSearchDTO {
 
     private String category;
 
+    private String menu;
+
     public DrinkSearchDTO() { }
 
-    public DrinkSearchDTO(String name, String category) {
+    public DrinkSearchDTO(String name, String category, String menu) {
         this.name = name;
         this.category = category;
+        this.menu = menu;
     }
 
     public String getName() {
@@ -27,5 +30,13 @@ public class DrinkSearchDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getMenu() {
+        return menu;
+    }
+
+    public void setMenu(String menu) {
+        this.menu = menu;
     }
 }

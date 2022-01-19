@@ -15,7 +15,7 @@ public class Constants {
 
     public static final String ALL = "ALL";
     public static final String NAME1 = "pivo";
-    public static final String NAME2 = "zajecar";
+    public static final String NAME2 = "gard";
     public static final String NAME3 = "cola";
 
     public static final String CATEGORY1 = "Alkoholna pica";
@@ -37,4 +37,8 @@ public class Constants {
 
     public static final double UPDATE_VOLUME = 1.0;
 
+    public static final String STALNI_MENI = "Stalni meni";
+    public static final String SPECIJALNI_MENI = "Specijalni meni";
+    public static final String LETNJI_MENI = "Leto";
+    public static final String BLANK = "";
 }

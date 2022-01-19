@@ -16,9 +16,10 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
     @Query(value = "select f from Food f " +
             "where (:name = 'ALL' or lower(f.name) like lower(concat('%', :name, '%'))) " +
             "and (:category = 'ALL' or lower(f.category.name) = lower(:category)) " +
-            "and (:type = 'ALL' or lower(f.type) = lower(:type)) ")
+            "and (:type = 'ALL' or lower(f.type) = lower(:type)) " +
+            "and (lower(f.menu) = lower(:menu)) " )
     Page<Food> findAllWithPriceByCriteria(@Param("name") String name, @Param("category") String category,
-                                          @Param("type") String type, Pageable pageable);
+                                          @Param("type") String type, @Param("menu") String menu, Pageable pageable);
 
     @Query("select distinct f.category.name from Food f")
     List<String> findAllFoodCategories();

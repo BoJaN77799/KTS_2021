@@ -134,8 +134,8 @@ public class FoodControllerIntegrationTests {
                 .exchange("/api/food?name=&category=&type=&page=0&size=5", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(5, Objects.requireNonNull(responseEntity.getBody()).length);
-        assertEquals(1L, responseEntity.getBody()[0].getId());
+        assertEquals(4, Objects.requireNonNull(responseEntity.getBody()).length);
+        assertEquals(2L, responseEntity.getBody()[0].getId());
     }
 
     @Test
@@ -169,7 +169,20 @@ public class FoodControllerIntegrationTests {
         HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
 
         ResponseEntity<FoodWithPriceDTO[]> responseEntity = restTemplate
-                .exchange("/api/food?name=&category=sladoledi&type=&page=0&size=5", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
+                .exchange("/api/food?name=&category=Mlecni proizvodi&type=&page=0&size=5", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, Objects.requireNonNull(responseEntity.getBody()).length);
+        assertEquals(2L, responseEntity.getBody()[0].getId());
+    }
+
+    @Test
+    public void testGetFoodWithPrice_WithCategoryOtherMenu() {
+        logInAsWaiter();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<FoodWithPriceDTO[]> responseEntity = restTemplate
+                .exchange("/api/food?name=&category=sladoledi&type=&page=0&size=5&menu=Specijalni meni", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(1, Objects.requireNonNull(responseEntity.getBody()).length);

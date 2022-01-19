@@ -49,4 +49,10 @@ public class Constants {
     public static final String WAITER_PWD = "waiter";
 
     public static int UPDATE_TIME_TO_MAKE = 45;
+
+    public static final String STALNI_MENI = "Stalni meni";
+    public static final String SPECIJALNI_MENI = "Specijalni meni";
+    public static final String BLANK = "";
+
+
 }

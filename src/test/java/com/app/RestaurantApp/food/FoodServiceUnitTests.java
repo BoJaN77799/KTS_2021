@@ -47,10 +47,10 @@ public class FoodServiceUnitTests {
         List<Food> foodsSetup = createFoods();
         Page<Food> foodsPageSetup = new PageImpl<>(foodsSetup, pageableSetup, PAGEABLE_TOTAL_ELEMENTS);
 
-        given(foodRepositoryMock.findAllWithPriceByCriteria(NAME2, ALL, ALL, pageableSetup)).willReturn(foodsPageSetup);
-        given(foodRepositoryMock.findAllWithPriceByCriteria(ALL, CATEGORY1, ALL, pageableSetup)).willReturn(foodsPageSetup);
-        given(foodRepositoryMock.findAllWithPriceByCriteria(ALL, ALL, MAIN_DISH, pageableSetup)).willReturn(foodsPageSetup);
-        given(foodRepositoryMock.findAllWithPriceByCriteria(ALL, ALL, ALL, pageableSetup)).willReturn(foodsPageSetup);
+        given(foodRepositoryMock.findAllWithPriceByCriteria(NAME2, ALL, ALL, STALNI_MENI, pageableSetup)).willReturn(foodsPageSetup);
+        given(foodRepositoryMock.findAllWithPriceByCriteria(ALL, CATEGORY1, ALL, STALNI_MENI, pageableSetup)).willReturn(foodsPageSetup);
+        given(foodRepositoryMock.findAllWithPriceByCriteria(ALL, ALL, MAIN_DISH, STALNI_MENI, pageableSetup)).willReturn(foodsPageSetup);
+        given(foodRepositoryMock.findAllWithPriceByCriteria(ALL, ALL, ALL, STALNI_MENI, pageableSetup)).willReturn(foodsPageSetup);
 
         Category category = new Category(1L, "Supe");
         given(categoryServiceMock.findOne(category.getId())).willReturn(category);
@@ -60,45 +60,45 @@ public class FoodServiceUnitTests {
     @Test
     public void testGetFoodWithPrice_WithName() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        FoodSearchDTO foodSearchDTO = new FoodSearchDTO(NAME2, ALL, ALL);
+        FoodSearchDTO foodSearchDTO = new FoodSearchDTO(NAME2, ALL, ALL, BLANK);
         Page<Food> foodsPage = foodService.getFoodWithPrice(foodSearchDTO, pageable);
-        verify(foodRepositoryMock, times(1)).findAllWithPriceByCriteria(NAME2, ALL, ALL, pageable);
+        verify(foodRepositoryMock, times(1)).findAllWithPriceByCriteria(NAME2, ALL, ALL, STALNI_MENI, pageable);
         assertEquals(2, foodsPage.getNumberOfElements());
     }
 
     @Test
     public void testGetFoodWithPrice_WithCategory() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        FoodSearchDTO foodSearchDTO = new FoodSearchDTO(ALL, CATEGORY1, ALL);
+        FoodSearchDTO foodSearchDTO = new FoodSearchDTO(ALL, CATEGORY1, ALL, BLANK);
         Page<Food> foodsPage = foodService.getFoodWithPrice(foodSearchDTO, pageable);
-        verify(foodRepositoryMock, times(1)).findAllWithPriceByCriteria(ALL, CATEGORY1, ALL, pageable);
+        verify(foodRepositoryMock, times(1)).findAllWithPriceByCriteria(ALL, CATEGORY1, ALL, STALNI_MENI, pageable);
         assertEquals(2, foodsPage.getNumberOfElements());
     }
 
     @Test
     public void testGetFoodWithPrice_WithType() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        FoodSearchDTO foodSearchDTO = new FoodSearchDTO(ALL, ALL, TYPE1);
+        FoodSearchDTO foodSearchDTO = new FoodSearchDTO(ALL, ALL, TYPE1, BLANK);
         Page<Food> foodsPage = foodService.getFoodWithPrice(foodSearchDTO, pageable);
-        verify(foodRepositoryMock, times(1)).findAllWithPriceByCriteria(ALL, ALL, TYPE1, pageable);
+        verify(foodRepositoryMock, times(1)).findAllWithPriceByCriteria(ALL, ALL, TYPE1, STALNI_MENI, pageable);
         assertEquals(2, foodsPage.getNumberOfElements());
     }
 
     @Test
     public void testGetFoodWithPrice_WithNulls() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        FoodSearchDTO foodSearchDTO = new FoodSearchDTO(null, null, null);
+        FoodSearchDTO foodSearchDTO = new FoodSearchDTO(null, null, null, null);
         Page<Food> foodsPage = foodService.getFoodWithPrice(foodSearchDTO, pageable);
-        verify(foodRepositoryMock, times(1)).findAllWithPriceByCriteria(ALL, ALL, ALL, pageable);
+        verify(foodRepositoryMock, times(1)).findAllWithPriceByCriteria(ALL, ALL, ALL, STALNI_MENI, pageable);
         assertEquals(2, foodsPage.getNumberOfElements());
     }
 
     @Test
     public void testGetFoodWithPrice_WithBlanks() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        FoodSearchDTO foodSearchDTO = new FoodSearchDTO("", "", "");
+        FoodSearchDTO foodSearchDTO = new FoodSearchDTO("", "", "", "");
         Page<Food> foodsPage = foodService.getFoodWithPrice(foodSearchDTO, pageable);
-        verify(foodRepositoryMock, times(1)).findAllWithPriceByCriteria(ALL, ALL, ALL, pageable);
+        verify(foodRepositoryMock, times(1)).findAllWithPriceByCriteria(ALL, ALL, ALL, STALNI_MENI, pageable);
         assertEquals(2, foodsPage.getNumberOfElements());
     }
 

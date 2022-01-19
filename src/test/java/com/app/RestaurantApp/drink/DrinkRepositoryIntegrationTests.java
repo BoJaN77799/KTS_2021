@@ -33,11 +33,10 @@ public class DrinkRepositoryIntegrationTests {
         List<Drink> drinks;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
 
-        drinksPage = drinkRepository.findAllWithPriceByCriteria(NAME1, ALL, pg);
+        drinksPage = drinkRepository.findAllWithPriceByCriteria(NAME1, ALL, LETNJI_MENI, pg);
         drinks = drinksPage.getContent();
-        assertEquals(2, drinks.size());
+        assertEquals(1, drinks.size());
         assertEquals("Niksicko pivo", drinks.get(0).getName());
-        assertEquals("Zajecarsko pivo", drinks.get(1).getName());
     }
 
     @Test
@@ -46,11 +45,11 @@ public class DrinkRepositoryIntegrationTests {
         List<Drink> drinks;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
 
-        drinksPage = drinkRepository.findAllWithPriceByCriteria(ALL, CATEGORY1, pg);
+        drinksPage = drinkRepository.findAllWithPriceByCriteria(ALL, CATEGORY1, LETNJI_MENI, pg);
         drinks = drinksPage.getContent();
         assertEquals(3, drinks.size());
         assertEquals("Niksicko pivo", drinks.get(0).getName());
-        assertEquals("Jelen", drinks.get(2).getName());
+        assertEquals("Blanc", drinks.get(2).getName());
     }
 
     @Test
@@ -59,10 +58,22 @@ public class DrinkRepositoryIntegrationTests {
         List<Drink> drinks;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
 
-        drinksPage = drinkRepository.findAllWithPriceByCriteria(NAME2, CATEGORY1, pg);
+        drinksPage = drinkRepository.findAllWithPriceByCriteria(NAME2, CATEGORY1, LETNJI_MENI, pg);
         drinks = drinksPage.getContent();
         assertEquals(1, drinks.size());
-        assertEquals("Zajecarsko pivo", drinks.get(0).getName());
+        assertEquals("Hoegarden", drinks.get(0).getName());
+    }
+
+    @Test
+    public void testFindAllWithPriceByCriteria_OtherMenuAll() {
+        Page<Drink> drinksPage;
+        List<Drink> drinks;
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        drinksPage = drinkRepository.findAllWithPriceByCriteria(ALL, ALL, LETNJI_MENI, pg);
+        drinks = drinksPage.getContent();
+        assertEquals(4, drinks.size());
+        assertEquals("Niksicko pivo", drinks.get(0).getName());
     }
 
     @Test
@@ -71,10 +82,9 @@ public class DrinkRepositoryIntegrationTests {
         List<Drink> drinks;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
 
-        drinksPage = drinkRepository.findAllWithPriceByCriteria(ALL, ALL, pg);
+        drinksPage = drinkRepository.findAllWithPriceByCriteria(ALL, ALL, STALNI_MENI, pg);
         drinks = drinksPage.getContent();
-        assertEquals(4, drinks.size());
-        assertEquals("Coca Cola", drinks.get(0).getName());
+        assertEquals(0, drinks.size());
     }
 
     @Test

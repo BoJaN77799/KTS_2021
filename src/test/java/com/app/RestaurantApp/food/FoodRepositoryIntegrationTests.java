@@ -35,7 +35,7 @@ public class FoodRepositoryIntegrationTests {
         List<Food> foods;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
 
-        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME2,  CATEGORY1, MAIN_DISH, pg);
+        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME2,  CATEGORY1, MAIN_DISH, STALNI_MENI, pg);
         foods = foodsPage.getContent();
         assertEquals(1, foodsPage.getTotalElements());
         assertEquals("Jagnjece pecenje", foods.get(0).getName());
@@ -47,7 +47,7 @@ public class FoodRepositoryIntegrationTests {
         List<Food> foods;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
 
-        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME1, ALL, ALL, pg);
+        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME1, ALL, ALL, STALNI_MENI, pg);
         foods = foodsPage.getContent();
         assertEquals(1, foodsPage.getTotalElements());
         assertEquals("Supa", foods.get(0).getName());
@@ -59,7 +59,7 @@ public class FoodRepositoryIntegrationTests {
         List<Food> foods;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
 
-        foodsPage = foodRepository.findAllWithPriceByCriteria(ALL,  ALL, APPETIZER, pg);
+        foodsPage = foodRepository.findAllWithPriceByCriteria(ALL,  ALL, APPETIZER, STALNI_MENI, pg);
         foods = foodsPage.getContent();
         assertEquals(3, foodsPage.getTotalElements());
         assertEquals("Supa", foods.get(0).getName());
@@ -71,7 +71,7 @@ public class FoodRepositoryIntegrationTests {
         List<Food> foods;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
 
-        foodsPage = foodRepository.findAllWithPriceByCriteria(ALL,  CATEGORY1, ALL, pg);
+        foodsPage = foodRepository.findAllWithPriceByCriteria(ALL,  CATEGORY1, ALL, STALNI_MENI, pg);
         foods = foodsPage.getContent();
         assertEquals(2, foodsPage.getTotalElements());
         assertEquals("Prsuta", foods.get(0).getName());
@@ -83,7 +83,7 @@ public class FoodRepositoryIntegrationTests {
         List<Food> foods;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
 
-        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME3, CATEGORY1, ALL, pg);
+        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME3, CATEGORY1, ALL, STALNI_MENI, pg);
         foods = foodsPage.getContent();
         assertEquals(2, foodsPage.getTotalElements());
         assertEquals("Prsuta", foods.get(0).getName());
@@ -95,7 +95,7 @@ public class FoodRepositoryIntegrationTests {
         List<Food> foods;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
 
-        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME2,  ALL, MAIN_DISH, pg);
+        foodsPage = foodRepository.findAllWithPriceByCriteria(NAME2,  ALL, MAIN_DISH, STALNI_MENI, pg);
         foods = foodsPage.getContent();
         assertEquals(1, foodsPage.getTotalElements());
         assertEquals("Jagnjece pecenje", foods.get(0).getName());
@@ -107,10 +107,22 @@ public class FoodRepositoryIntegrationTests {
         List<Food> foods;
         Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
 
-        foodsPage = foodRepository.findAllWithPriceByCriteria(ALL,  ALL, ALL, pg);
+        foodsPage = foodRepository.findAllWithPriceByCriteria(ALL,  ALL, ALL, STALNI_MENI, pg);
         foods = foodsPage.getContent();
-        assertEquals(6, foodsPage.getTotalElements());
+        assertEquals(5, foodsPage.getTotalElements());
         assertEquals("Supa", foods.get(0).getName());
+    }
+
+    @Test
+    public void testFindAllWithPriceByCriteria_WithBlanksSpecialMenu() {
+        Page<Food> foodsPage;
+        List<Food> foods;
+        Pageable pg = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+
+        foodsPage = foodRepository.findAllWithPriceByCriteria(ALL,  ALL, ALL, SPECIJALNI_MENI, pg);
+        foods = foodsPage.getContent();
+        assertEquals(1, foodsPage.getTotalElements());
+        assertEquals("Sladoled Kapri", foods.get(0).getName());
     }
 
     @Test

@@ -40,7 +40,10 @@ public class FoodServiceImpl implements FoodService {
         String type = (searchDTO != null) ? searchDTO.getType() : null;
         type = (type == null || type.equals("")) ? "ALL" : type;
 
-        foodsPage = foodRepository.findAllWithPriceByCriteria(name, category, type, pageable);
+        String menu = (searchDTO != null) ? searchDTO.getMenu() : null;
+        menu = (menu == null || menu.equals("")) ? "Stalni meni" : menu;
+
+        foodsPage = foodRepository.findAllWithPriceByCriteria(name, category, type, menu, pageable);
 
         return foodsPage;
     }

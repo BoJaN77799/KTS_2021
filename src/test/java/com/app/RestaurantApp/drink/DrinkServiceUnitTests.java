@@ -53,44 +53,44 @@ public class DrinkServiceUnitTests {
         List<Drink> drinksSetup = createDrinks();
         Page<Drink> drinksPageSetup = new PageImpl<>(drinksSetup, pageableSetup, PAGEABLE_TOTAL_ELEMENTS);
 
-        given(drinkRepositoryMock.findAllWithPriceByCriteria(NAME3, ALL, pageableSetup)).willReturn(drinksPageSetup);
-        given(drinkRepositoryMock.findAllWithPriceByCriteria(ALL, CATEGORY2, pageableSetup)).willReturn(drinksPageSetup);
-        given(drinkRepositoryMock.findAllWithPriceByCriteria(ALL, ALL, pageableSetup)).willReturn(drinksPageSetup);
+        given(drinkRepositoryMock.findAllWithPriceByCriteria(NAME3, ALL, LETNJI_MENI, pageableSetup)).willReturn(drinksPageSetup);
+        given(drinkRepositoryMock.findAllWithPriceByCriteria(ALL, CATEGORY2, LETNJI_MENI, pageableSetup)).willReturn(drinksPageSetup);
+        given(drinkRepositoryMock.findAllWithPriceByCriteria(ALL, ALL, LETNJI_MENI, pageableSetup)).willReturn(drinksPageSetup);
     }
 
     @Test
     public void testGetDrinksWithPrice_WithName() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(NAME3, ALL);
+        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(NAME3, ALL, LETNJI_MENI);
         Page<Drink> drinksPage = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);
-        verify(drinkRepositoryMock, times(1)).findAllWithPriceByCriteria(NAME3, ALL, pageable);
+        verify(drinkRepositoryMock, times(1)).findAllWithPriceByCriteria(NAME3, ALL, LETNJI_MENI, pageable);
         assertEquals(2, drinksPage.getNumberOfElements());
     }
 
     @Test
     public void testGetDrinksWithPrice_WithCategory() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(ALL, CATEGORY2);
+        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(ALL, CATEGORY2, LETNJI_MENI);
         Page<Drink> drinksPage = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);
-        verify(drinkRepositoryMock, times(1)).findAllWithPriceByCriteria(ALL, CATEGORY2, pageable);
+        verify(drinkRepositoryMock, times(1)).findAllWithPriceByCriteria(ALL, CATEGORY2, LETNJI_MENI, pageable);
         assertEquals(2, drinksPage.getNumberOfElements());
     }
 
     @Test
-    public void testGetDrinksWithPrice_WithBlanks() {
+    public void testGetDrinksWithPrice_WithBlanksOtherMenu() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(ALL, ALL);
+        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(ALL, ALL, LETNJI_MENI);
         Page<Drink> drinksPage = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);
-        verify(drinkRepositoryMock, times(1)).findAllWithPriceByCriteria(ALL, ALL, pageable);
+        verify(drinkRepositoryMock, times(1)).findAllWithPriceByCriteria(ALL, ALL, LETNJI_MENI, pageable);
         assertEquals(2, drinksPage.getNumberOfElements());
     }
 
     @Test
-    public void testGetDrinksWithPrice_WithNulls() {
+    public void testGetDrinksWithPrice_WithNullsOtherMenu() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(null, null);
+        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(null, null, LETNJI_MENI);
         Page<Drink> drinksPage = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);
-        verify(drinkRepositoryMock, times(1)).findAllWithPriceByCriteria(ALL, ALL, pageable);
+        verify(drinkRepositoryMock, times(1)).findAllWithPriceByCriteria(ALL, ALL, LETNJI_MENI, pageable);
         assertEquals(2, drinksPage.getNumberOfElements());
     }
 

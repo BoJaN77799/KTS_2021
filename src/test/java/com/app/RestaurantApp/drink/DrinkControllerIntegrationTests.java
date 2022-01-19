@@ -131,8 +131,20 @@ public class DrinkControllerIntegrationTests {
                 .exchange("/api/drinks?name=&category=&page=0&size=5", HttpMethod.GET, httpEntity, DrinkWithPriceDTO[].class);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(0, Objects.requireNonNull(responseEntity.getBody()).length, 1);
+    }
+
+    @Test
+    public void testGetDrinkWithPrice_AllOtherMenu() {
+        logInAsWaiter();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<DrinkWithPriceDTO[]> responseEntity = restTemplate
+                .exchange("/api/drinks?name=&category=&page=0&size=5&menu=Leto", HttpMethod.GET, httpEntity, DrinkWithPriceDTO[].class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(4, Objects.requireNonNull(responseEntity.getBody()).length, 1);
-        assertEquals(7L, responseEntity.getBody()[0].getId());
+        assertEquals(8L, responseEntity.getBody()[0].getId());
     }
 
     @Test
@@ -142,6 +154,18 @@ public class DrinkControllerIntegrationTests {
 
         ResponseEntity<FoodWithPriceDTO[]> responseEntity = restTemplate
                 .exchange("/api/drinks?name=niksicko&category=&page=0&size=5", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(0, Objects.requireNonNull(responseEntity.getBody()).length);
+    }
+
+    @Test
+    public void testGetDrinkWithPrice_WithNameOtherMenu() {
+        logInAsWaiter();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<FoodWithPriceDTO[]> responseEntity = restTemplate
+                .exchange("/api/drinks?name=niksicko&category=&page=0&size=5&menu=Leto", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(1, Objects.requireNonNull(responseEntity.getBody()).length);
@@ -155,6 +179,18 @@ public class DrinkControllerIntegrationTests {
 
         ResponseEntity<FoodWithPriceDTO[]> responseEntity = restTemplate
                 .exchange("/api/drinks?name=&category=Alkoholna pica&page=0&size=5", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(0, Objects.requireNonNull(responseEntity.getBody()).length, 1);
+    }
+
+    @Test
+    public void testGetDrinkWithPrice_WithCategoryOtherMenu() {
+        logInAsWaiter();
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<FoodWithPriceDTO[]> responseEntity = restTemplate
+                .exchange("/api/drinks?name=&category=Alkoholna pica&page=0&size=5&menu=Leto", HttpMethod.GET, httpEntity, FoodWithPriceDTO[].class);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(3, Objects.requireNonNull(responseEntity.getBody()).length, 1);

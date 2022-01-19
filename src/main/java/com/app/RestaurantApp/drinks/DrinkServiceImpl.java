@@ -31,7 +31,10 @@ public class DrinkServiceImpl implements DrinkService {
         String category = (searchDTO != null) ? searchDTO.getCategory() : null;
         category = (category == null || category.equals("")) ? "ALL" : category;
 
-        drinksPage = drinkRepository.findAllWithPriceByCriteria(name, category, pageable);
+        String menu = (searchDTO != null) ? searchDTO.getMenu() : null;
+        menu = (menu == null || menu.equals("")) ? "Stalni meni" : menu;
+
+        drinksPage = drinkRepository.findAllWithPriceByCriteria(name, category, menu, pageable);
         return drinksPage;
     }
 

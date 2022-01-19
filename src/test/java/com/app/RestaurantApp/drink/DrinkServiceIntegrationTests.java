@@ -31,7 +31,7 @@ public class DrinkServiceIntegrationTests {
     @Test
     public void testGetDrinksWithPrice_WithName() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(NAME3, ALL);
+        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(NAME3, ALL, SPECIJALNI_MENI);
 
         Page<Drink> drinksPage = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);
         assertEquals(1, drinksPage.getContent().size());
@@ -40,7 +40,7 @@ public class DrinkServiceIntegrationTests {
     @Test
     public void testGetDrinksWithPrice_WithCategory() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(ALL, CATEGORY1);
+        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(ALL, CATEGORY1, LETNJI_MENI);
 
         Page<Drink> drinksPage = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);
         assertEquals(3, drinksPage.getContent().size());
@@ -49,7 +49,16 @@ public class DrinkServiceIntegrationTests {
     @Test
     public void testGetDrinksWithPrice_WithBlanks() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO("", "");
+        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO("", "", "");
+
+        Page<Drink> drinksPage = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);
+        assertEquals(0, drinksPage.getContent().size());
+    }
+
+    @Test
+    public void testGetDrinksWithPrice_WithBlanksOtherMenu() {
+        Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO("", "", LETNJI_MENI);
 
         Page<Drink> drinksPage = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);
         assertEquals(4, drinksPage.getContent().size());
@@ -58,7 +67,16 @@ public class DrinkServiceIntegrationTests {
     @Test
     public void testGetDrinksWithPrice_WithNulls() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(null, null);
+        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(null, null, null);
+
+        Page<Drink> drinksPage = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);
+        assertEquals(0, drinksPage.getContent().size());
+    }
+
+    @Test
+    public void testGetDrinksWithPrice_WithNullsOtherMenu() {
+        Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+        DrinkSearchDTO drinkSearchDTO = new DrinkSearchDTO(null, null, LETNJI_MENI);
 
         Page<Drink> drinksPage = drinkService.getDrinksWithPrice(drinkSearchDTO, pageable);
         assertEquals(4, drinksPage.getContent().size());

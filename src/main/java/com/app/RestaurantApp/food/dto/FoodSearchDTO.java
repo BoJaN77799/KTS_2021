@@ -8,12 +8,15 @@ public class FoodSearchDTO {
 
     private String type;
 
+    private String menu;
+
     public FoodSearchDTO() { }
 
-    public FoodSearchDTO(String name, String category, String type) {
+    public FoodSearchDTO(String name, String category, String type, String menu) {
         this.name = name;
         this.category = category;
         this.type = type;
+        this.menu = menu;
     }
 
     public String getName() {
@@ -38,5 +41,13 @@ public class FoodSearchDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getMenu() {
+        return menu;
+    }
+
+    public void setMenu(String menu) {
+        this.menu = menu;
     }
 }

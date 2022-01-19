@@ -101,6 +101,22 @@ insert into item (name, description, image, cost, category_id, current_price, it
 values ('Jelen', 'Piva', 'putanja/rogonja', 140.0, 7, 170, 'DRINK', 'Nedefinisan', 'False');
 insert into drink (id, volume ) values (10, 0.5);
 
+-- Dodati zbog testiranja jer su svi u cudnim menijima
+
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+values ('Hoegarden', 'Piva', 'putanja/vopi', 140.0, 7, 170, 'DRINK', 'Leto', 'False');
+insert into drink (id, volume ) values (11, 0.5);
+
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+values ('Blanc', 'Piva', 'putanja/blanc', 140.0, 7, 170, 'DRINK', 'Leto', 'False');
+insert into drink (id, volume ) values (12, 0.5);
+
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+values ('Limunada', 'Ladna kao led', 'putanja/limunada', 170.0, 2, 250, 'DRINK', 'Leto', 'False');
+insert into drink (id, volume ) values (13, 0.25);
+
+-------------------------------------------------------
+
 insert into menu (name, active_menu) values ('Stalni meni', 'True');
 insert into menu (name, active_menu) values ('Specijalni meni', 'True');
 insert into menu (name, active_menu) values ('Leto', 'False');
