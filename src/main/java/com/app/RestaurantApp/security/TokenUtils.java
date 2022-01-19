@@ -32,7 +32,7 @@ public class TokenUtils {
 
 	private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
-	public String generateToken(String email, String userType) {
+	public String generateToken(String email, String userType, Long id) {
 		return Jwts.builder()
 				.setIssuer(APP_NAME)
 				.setSubject(email)
@@ -42,6 +42,7 @@ public class TokenUtils {
 				// .claim("key", value) //moguce je postavljanje proizvoljnih podataka u telo JWT tokena
 				.claim("role", userType) //moguce je i staviti string koji ce predstavljati listu rola korisnika kao
 											//ali svakako kod nas moze imati samo jednu rolu tj usertype
+				.claim("userId", id)
 				.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
 	}
 

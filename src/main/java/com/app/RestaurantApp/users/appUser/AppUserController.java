@@ -148,7 +148,7 @@ public class AppUserController {
 
         // Kreiraj token za tog korisnika
         AppUser user = (AppUser) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getEmail(), user.getUserType().toString());
+        String jwt = tokenUtils.generateToken(user.getEmail(), user.getUserType().toString(), user.getId());
         int expiresIn = tokenUtils.getExpiredIn();
 
         //mailService.sendmail("Login", "Login success.", user.getEmail());
