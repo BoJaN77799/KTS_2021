@@ -92,7 +92,6 @@ public class ItemController {
     @GetMapping(value = "/findAllItemsWithMenuName")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<List<ItemMenuDTO>> findAllItemsWithMenuName(String name, Pageable pageable) {
-        System.out.println("JE LI UDJEEE");
         Page<Item> itemPage = itemService.findAllItemsWithMenuName(name, pageable);
         return new ResponseEntity<>(itemPage.stream().map(ItemMenuDTO::new).toList(),
                 ControllerUtils.createPageHeaderAttributes(itemPage), HttpStatus.OK);

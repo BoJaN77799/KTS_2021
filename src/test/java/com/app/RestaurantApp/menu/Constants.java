@@ -22,5 +22,5 @@ public class Constants {
 
     public static final String MANAGER_EMAIL = "manager@maildrop.cc";
     public static final String MANAGER_PWD = "manager";
-    
+
 }

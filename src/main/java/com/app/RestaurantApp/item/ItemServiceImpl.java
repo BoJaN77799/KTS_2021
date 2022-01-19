@@ -17,10 +17,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -86,13 +83,14 @@ public class ItemServiceImpl implements ItemService {
         Menu m = menuService.findByName(mi.getMenuName());
         if (m == null) throw new MenuException("Menu does not exist!");
 
-        Item i = itemRepository.findById(Long.valueOf(mi.getItemId())).orElse(null);
-        if (i == null) throw new ItemException("Item does not exist!");
+        Optional<Item> i = itemRepository.findById(Long.valueOf(mi.getItemId()));
+        if (i.isEmpty()) throw new ItemException("Item does not exist!");
 
-        if (i.getMenu().equals(m.getName())) throw new MenuException("Item already exists in menu!");
 
-        i.setMenu(m.getName());
-        itemRepository.save(i);
+        if ((i.get().getMenu().equals(m.getName()))) throw new MenuException("Item already exists in menu!");
+
+        i.get().setMenu(m.getName());
+        itemRepository.save(i.get());
     }
 
     @Override
