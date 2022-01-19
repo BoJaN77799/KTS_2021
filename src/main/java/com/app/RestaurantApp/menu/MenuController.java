@@ -51,7 +51,7 @@ public class  MenuController {
     }
 
     @GetMapping(value = "/findAllActiveMenuNames")
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'WAITER')")
     public ResponseEntity<List<String>> findAllActiveMenuNames() {
         List<String> menuNames = menuService.findAllActiveMenuNames();
         if (menuNames.isEmpty())
