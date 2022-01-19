@@ -2,35 +2,25 @@ package com.app.RestaurantApp.menu;
 
 public class Constants {
 
-    public static final String VALID_NAME = "Leto";
-    public static final String EMPTY_MENU = "Jesenja Ponuda";
+    public static final String VALID_NAME = "Stalni meni";
     public static final String INVALID_NAME = "Nepostojko";
 
-    public static final String MENU_NAME = "Test";
-    public static final String FIRST_ITEM = "Piletina";
-    public static final String SECOND_ITEM = "Prsuta";
-    public static final String THIRD_ITEM = "Riba";
-    public static final String FOURTH_ITEM = "Supa";
+    public static final String FIRST_ACTIVE_MENU = VALID_NAME;
+    public static final String SECOND_ACTIVE_MENU = "Specijalni meni";
+    public static final String FIRST_INACTIVE_MENU = "Leto";
+    public static final String SECOND_INACTIVE_MENU = "Zima";
+    public static final String UNDEFINED_NAME_MENU = "Nedefinisan";
 
-    public static final Long FIRST_ID = 1L;
-    public static final Long SECOND_ID = 2L;
-    public static final Long THIRD_ID = 3L;
-    public static final Long FOURTH_ID = 4L;
+    public static final String VALID_CREATING_NAME = INVALID_NAME;
+    public static final String INVALID_CREATING_NAME = VALID_NAME;
 
-    public static final String MENU_EXCEPTION = "Menu does not exist!";
-    public static final String ITEM_EXCEPTION = "Item does not exist!";
-    public static final String NON_EXISTING_ITEM = "Item does not exist in menu!";
-    public static final String EXISTING_ITEM = "Item already exists in menu!";
+    public static final String VALID_UPDATING_NAME = VALID_NAME;
+    public static final String INVALID_UPDATING_NAME = INVALID_NAME;
 
-    public static final String MENU_WITH_ITEMS = "Leto";
-    public static final String MENU_WITHOUT_ITEMS = "Jesenja Ponuda";
+    public static final String EXISTING_MENU_EXCEPTION = "Menu already exists!";
+    public static final String NON_EXISTING_MENU_EXCEPTION = "Menu does not exist!";
 
     public static final String MANAGER_EMAIL = "manager@maildrop.cc";
     public static final String MANAGER_PWD = "manager";
-
-    public static final String EXISTING_NAME = "Leto";
-    public static final String NON_EXISTING_NAME = "BlaBlaBla";
-
-    public static final String EXISTING_ITEM_ID = "1";
-    public static final String NON_EXISTING_ITEM_ID = "20";
+    
 }

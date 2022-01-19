@@ -41,22 +41,31 @@ public class  MenuController {
             return new ResponseEntity<>("Unknown error happened while updating menu!", HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping(value = "/findAllWithSpecificStatus/{status}")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<List<Menu>> findAllWithSpecificStatus(@PathVariable boolean status) {
-        List<Menu> menus = menuService.findAllWithSpecificStatus(status);
-        if (menus.isEmpty())
-            return new ResponseEntity<>(menus, HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(menus, HttpStatus.OK);
+        try {
+            List<Menu> menus = menuService.findAllWithSpecificStatus(status);
+            if (menus.isEmpty())
+                return new ResponseEntity<>(menus, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(menus, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(value = "/findAllActiveMenuNames")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<List<String>> findAllActiveMenuNames() {
-        List<String> menuNames = menuService.findAllActiveMenuNames();
-        if (menuNames.isEmpty())
-            return new ResponseEntity<>(menuNames, HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(menuNames, HttpStatus.OK);
+        try {
+            List<String> menuNames = menuService.findAllActiveMenuNames();
+            if (menuNames.isEmpty())
+                return new ResponseEntity<>(menuNames, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(menuNames, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

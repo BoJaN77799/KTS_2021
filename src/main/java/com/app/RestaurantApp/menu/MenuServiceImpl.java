@@ -20,7 +20,6 @@ public class MenuServiceImpl implements MenuService{
     @Override
     public void createMenu(String name) throws MenuException {
         Menu m = menuRepository.findByName(name);
-        System.out.println("MENI JE : " + m);
         if (m != null) throw new MenuException("Menu already exists!");
         m = new Menu(name);
         menuRepository.save(m);
@@ -29,7 +28,7 @@ public class MenuServiceImpl implements MenuService{
     @Override
     public void updateMenu(String name) throws MenuException{
         Menu m = menuRepository.findByName(name);
-        if (m == null) throw new MenuException("Menu does not exists!");
+        if (m == null) throw new MenuException("Menu does not exist!");
         m.setActiveMenu(!m.isActiveMenu());
         menuRepository.save(m);
     }
