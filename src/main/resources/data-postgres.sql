@@ -190,12 +190,28 @@ insert into item (name, description, image, cost, category_id, current_price, it
 insert into drink (id, volume ) values (19, 0.5); --19
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-            values ('Espresso', 'Za dobro jutro.', 'putanja/vopi', 110.0, 10, 200, 'DRINK', 'Stalni meni', 'False');
+            values ('Espresso', 'Za dobro jutro.', 'putanja/coffee', 110.0, 10, 200, 'DRINK', 'Stalni meni', 'False');
 insert into drink (id, volume ) values (20, 0.1); --20
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-            values ('Cappucino', '5cm pjene.', 'putanja/vopi', 150.0, 10, 240, 'DRINK', 'Stalni meni', 'False');
+            values ('Cappuccino', '5cm pjene.', 'putanja/coffee', 150.0, 10, 240, 'DRINK', 'Stalni meni', 'False');
 insert into drink (id, volume ) values (21, 0.1); --21
+
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+    values ('Irish cream cappuccino', '2cm pjene.', 'putanja/coffee', 170.0, 10, 280, 'DRINK', 'Stalni meni', 'False');
+insert into drink (id, volume ) values (22, 0.1); --22
+
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+    values ('Chocolate Cappuccino', '2cm pjene.', 'putanja/coffee', 170.0, 10, 280, 'DRINK', 'Stalni meni', 'False');
+insert into drink (id, volume ) values (23, 0.1); --23
+
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+    values ('Macchiato', '1cm pjene.', 'putanja/coffee', 180.0, 10, 290, 'DRINK', 'Stalni meni', 'False');
+insert into drink (id, volume ) values (24, 0.1); --24
+
+insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
+    values ('Chardonnay', 'Penusavo, ozbiljno, osvezenje.', 'putanja/champagne', 2000, 9, 3400, 'DRINK', 'Stalni meni', 'False');
+insert into drink (id, volume ) values (25, 0.7); --25
 
 insert into menu (name, active_menu) values ('Stalni meni', 'True');
 insert into menu (name, active_menu) values ('Specijalni meni', 'True');
