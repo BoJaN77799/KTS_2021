@@ -17,7 +17,7 @@ import static com.app.RestaurantApp.users.employee.Constants.*;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class EmployeeRepositoryTests {
+public class EmployeeRepositoryIntegrationTests {
 
     @Autowired
     private EmployeeRepository employeeRepository;

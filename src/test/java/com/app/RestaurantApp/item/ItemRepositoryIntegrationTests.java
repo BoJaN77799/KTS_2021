@@ -20,7 +20,7 @@ import static com.app.RestaurantApp.item.Constants.*;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class ItemRepositoryControllerTests {
+public class ItemRepositoryIntegrationTests {
 
     @Autowired
     private ItemRepository itemRepository;

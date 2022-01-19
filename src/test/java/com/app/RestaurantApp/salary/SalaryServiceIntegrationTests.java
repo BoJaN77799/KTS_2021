@@ -15,7 +15,7 @@ import static com.app.RestaurantApp.salary.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SalaryServiseIntegrationTests {
+public class SalaryServiceIntegrationTests {
 
     @Autowired
     private SalaryService salaryService;
