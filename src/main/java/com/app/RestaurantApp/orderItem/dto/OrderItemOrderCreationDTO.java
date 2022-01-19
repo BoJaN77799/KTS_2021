@@ -9,19 +9,22 @@ public class OrderItemOrderCreationDTO {
     private Integer quantity;
     private Double price;
     private Integer priority;
+    private String name;
 
     public OrderItemOrderCreationDTO() { }
 
-    public OrderItemOrderCreationDTO(Long id, Long itemId, Integer quantity, Double price, Integer priority) {
+    public OrderItemOrderCreationDTO(Long id, Long itemId, Integer quantity, Double price, Integer priority, String name) {
         this.id = id;
         this.itemId = itemId;
         this.quantity = quantity;
         this.price = price;
         this.priority = priority;
+        this.name = name;
     }
 
     public OrderItemOrderCreationDTO(OrderItem orderItem){
-        this(orderItem.getId(), orderItem.getItem().getId(), orderItem.getQuantity(),  orderItem.getPrice(), orderItem.getPriority());
+        this(orderItem.getId(), orderItem.getItem().getId(), orderItem.getQuantity(),  orderItem.getPrice(), orderItem.getPriority(),
+                orderItem.getItem().getName());
     }
 
     public Long getId() {
@@ -63,4 +66,8 @@ public class OrderItemOrderCreationDTO {
     public void setPriority(Integer priority) {
         this.priority = priority;
     }
+
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
 }

@@ -80,4 +80,6 @@ public class Constants {
 
     public static final String ORDER_ACCEPTED = "Order successfully accepted!";
     public static final String NON_HEAD_COOK_EMAIL = "cook@maildrop.cc";
+
+    public static final String DUMMY = "Dummy";
 }
