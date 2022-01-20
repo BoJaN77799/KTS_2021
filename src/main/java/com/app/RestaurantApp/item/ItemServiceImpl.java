@@ -52,9 +52,10 @@ public class ItemServiceImpl implements ItemService {
                 .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
         i.getPrices().add(p);
         p.setItem(i);
-        i.setCurrentPrice(itemPriceDTO.getNewPrice()); // podesimo trenutnu cijenu
 
         boolean indicator = i.getCurrentPrice() == 0;
+
+        i.setCurrentPrice(itemPriceDTO.getNewPrice()); // podesimo trenutnu cijenu
 
         i.setCurrentPrice(itemPriceDTO.getNewPrice());
         itemRepository.save(i);
