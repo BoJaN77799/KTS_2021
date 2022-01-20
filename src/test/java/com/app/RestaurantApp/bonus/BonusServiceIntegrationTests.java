@@ -26,13 +26,16 @@ public class BonusServiceIntegrationTests {
     private EmployeeService employeeService;
 
     @Test
-    @Transactional
     public void testGetBonusesOfEmployee() throws UserException {
         List<BonusDTO> bonuses = bonusService.getBonusesOfEmployee(EMAIL_WITH_BONUSES);
         assertEquals(4, bonuses.size());
 
         bonuses = bonusService.getBonusesOfEmployee(EMAIL_WITHOUT_BONUSES);
         assertEquals(0, bonuses.size());
+
+        Exception exception = assertThrows(UserException.class,
+                () -> bonusService.getBonusesOfEmployee("unknown@maildrop.cc"));
+        assertEquals(INVALID_USER_MESSAGE,exception.getMessage());
     }
 
     @Test
@@ -52,5 +55,18 @@ public class BonusServiceIntegrationTests {
         assertEquals(5, bonuses.size());
 
         assertEquals(5, bonusRepository.findAll().size());
+
+        bonusDTO.setEmail("unknown@maildrop.cc");
+
+        Exception exception = assertThrows(UserException.class,
+                () -> bonusService.createBonus(bonusDTO));
+        assertEquals(INVALID_USER_MESSAGE,exception.getMessage());
+
+        bonusDTO.setAmount(-100);
+        bonusDTO.setEmail(EMAIL_WITH_BONUSES);
+
+        exception = assertThrows(BonusException.class,
+                () -> bonusService.createBonus(bonusDTO));
+        assertEquals(INVALID_AMOUNT,exception.getMessage());
     }
 }

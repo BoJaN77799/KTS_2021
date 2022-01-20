@@ -35,7 +35,7 @@ public class ItemRepositoryIntegrationTests {
         items = itemRepository.findAllWithIds(ids);
         assertEquals(10, items.size());
 
-        ids = Arrays.asList(11L, 12L);
+        ids = Arrays.asList(21L, 22L);
         items = itemRepository.findAllWithIds(ids);
         assertEquals(0, items.size());
     }
@@ -44,7 +44,7 @@ public class ItemRepositoryIntegrationTests {
     public void testFindByIdItemWithPrices() {
         Long firstId = 1L;
         Long secondId = 2L;
-        Long unknownId = 11L;
+        Long unknownId = 21L;
 
         Item firstItem = itemRepository.findByIdItemWithPrices(firstId);
         assertNotNull(firstItem);
