@@ -291,8 +291,8 @@ public class OrderServiceIntegrationTests {
     private OrderDTO createOrderDTOWithOrderItems() {
         OrderDTO orderDTO = createBlankOrderDTO();
 
-        OrderItemOrderCreationDTO oi1DTO = new OrderItemOrderCreationDTO(null, 1L, INIT_QUANTITY1, PRICE1, 1, DUMMY);
-        OrderItemOrderCreationDTO oi2DTO = new OrderItemOrderCreationDTO(null, 2L, INIT_QUANTITY1, PRICE2, 2, DUMMY);
+        OrderItemOrderCreationDTO oi1DTO = new OrderItemOrderCreationDTO(null, 1L, INIT_QUANTITY1, PRICE1, 1, DUMMY, ITF);
+        OrderItemOrderCreationDTO oi2DTO = new OrderItemOrderCreationDTO(null, 2L, INIT_QUANTITY1, PRICE2, 2, DUMMY, ITF);
         List<OrderItemOrderCreationDTO> ois = new ArrayList<>();
         ois.add(oi1DTO);
         ois.add(oi2DTO);
