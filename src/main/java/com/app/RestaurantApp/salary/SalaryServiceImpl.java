@@ -51,6 +51,7 @@ public class SalaryServiceImpl implements SalaryService {
         Salary salary = new Salary(salaryDTO);
         salary.setEmployee(e);
         e.getSalaries().add(salary);
+        e.setSalary(salary.getAmount()); // podesimo novu platu
 
         SalaryUtils.CheckSalaryInfo(salary);
 
