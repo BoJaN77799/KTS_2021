@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -17,7 +19,7 @@ import static com.app.RestaurantApp.users.employee.Constants.*;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class EmployeeRepositoryTests {
+public class EmployeeRepositoryIntegrationTests {
 
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -90,5 +92,24 @@ public class EmployeeRepositoryTests {
         employees = employeeRepository.searchEmployeesManager(EMPTY, EMPTY,
                 PageRequest.of(0, 10).withSort(Sort.by("firstName").ascending()));
         assertEquals(4, employees.size());
+    }
+
+    @Test
+    public void testFindAllEmployees() {
+        Pageable pageable = PageRequest.of(0, 2, Sort.by("id"));
+        Page<Employee> page = employeeRepository.findAllEmployees(pageable);
+        List<Employee> employees = page.get().toList();
+
+        assertEquals(2, employees.size());
+        assertEquals(3L, employees.get(0).getId());
+        assertEquals(4L, employees.get(1).getId());
+
+        pageable = PageRequest.of(1, 2, Sort.by("id"));
+        page = employeeRepository.findAllEmployees(pageable);
+        employees = page.get().toList();
+
+        assertEquals(2, employees.size());
+        assertEquals(5L, employees.get(0).getId());
+        assertEquals(6L, employees.get(1).getId());
     }
 }

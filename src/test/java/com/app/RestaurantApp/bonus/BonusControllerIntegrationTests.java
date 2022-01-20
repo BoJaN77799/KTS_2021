@@ -85,7 +85,7 @@ public class BonusControllerIntegrationTests {
     }
 
     @Test
-    public void testGetBonnusesOfEmployee_UserException() {
+    public void testGetBonusesOfEmployee_UserException() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
         ResponseEntity<UserException> entity = restTemplate
