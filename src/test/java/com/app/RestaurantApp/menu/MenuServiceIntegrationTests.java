@@ -18,61 +18,72 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class MenuServiceIntegrationTests {
 
-//    @Autowired
-//    private MenuService menuService;
-//
-//    @Autowired
-//    private MenuRepository menuRepository;
-//
-//    @Autowired
-//    private ItemService itemService;
-//
-//    @Test
-//    @Transactional
-//    public void testCreateUpdateMenu() throws MenuException {
-//        int menuCount = menuRepository.findAll().size();
-//
-//        assertFalse(menuService.createUpdateMenu(VALID_NAME));
-//        assertEquals(menuCount, menuRepository.findAll().size());
-//
-//        assertTrue(menuService.createUpdateMenu(INVALID_NAME));
-//        assertEquals(menuCount + 1, menuRepository.findAll().size());
-//    }
-//
-//    @Test
-//    @Transactional
-//    public void testGetItemsOfMenu() throws MenuException {
-//         List<ItemDTO> items = menuService.getItemsOfMenu(MENU_WITH_ITEMS);
-//         assertEquals(2, items.size());
-//
-//         items = menuService.getItemsOfMenu(MENU_WITHOUT_ITEMS);
-//         assertEquals(0, items.size());
-//    }
-//
-//    @Test
-//    @Transactional
-//    public void testRemoveItemFromMenu() throws MenuException, ItemException {
-//        MenuItemDTO menuItemDTO = new MenuItemDTO();
-//        menuItemDTO.setMenuName(MENU_WITH_ITEMS);
-//        menuItemDTO.setItemId("1");
-//
-//        List<ItemDTO> items = menuService.getItemsOfMenu(MENU_WITH_ITEMS);
-//        assertEquals(2, items.size());
-//
-//        menuService.removeItemFromMenu(menuItemDTO);
-//        items = menuService.getItemsOfMenu(MENU_WITH_ITEMS);
-//        assertEquals(1, items.size());
-//    }
-//
-//    @Test
-//    @Transactional
-//    public void testAddItemToMenu() throws MenuException, ItemException {
-//        MenuItemDTO menuItemDTO = new MenuItemDTO();
-//        menuItemDTO.setMenuName(MENU_WITH_ITEMS);
-//        menuItemDTO.setItemId("3");
-//
-//        menuService.addItemToMenu(menuItemDTO);
-//        assertEquals(3, menuService.getItemsOfMenu(MENU_WITH_ITEMS).size());
-//    }
+    @Autowired
+    private MenuService menuService;
+
+    @Autowired
+    private MenuRepository menuRepository;
+
+    @Test
+    public void testFindByName() {
+        Menu m = menuService.findByName(VALID_NAME);
+        assertNotNull(m);
+        assertEquals(VALID_NAME, m.getName());
+        assertTrue(m.isActiveMenu());
+
+        m = menuService.findByName(INVALID_NAME);
+        assertNull(m);
+    }
+
+    @Test
+    @Transactional
+    public void testCreateMenu() throws MenuException {
+        int menuCount = menuRepository.findAll().size();
+        assertEquals(4, menuCount);
+
+        menuService.createMenu(VALID_CREATING_NAME);
+        assertEquals(5, menuCount + 1);
+        Menu m = menuRepository.findByName(VALID_CREATING_NAME);
+        assertNotNull(m);
+        assertEquals(VALID_CREATING_NAME, m.getName());
+        assertTrue(m.isActiveMenu());
+
+        Exception exception = assertThrows(MenuException.class, () ->
+                menuService.createMenu(INVALID_CREATING_NAME));
+        assertEquals(5, menuCount + 1);
+        assertEquals(EXISTING_MENU_EXCEPTION, exception.getMessage());
+    }
+
+    @Test
+    @Transactional
+    public void testUpdateMenu() throws MenuException {
+        Menu m = menuRepository.findByName(VALID_NAME);
+        assertTrue(m.isActiveMenu());
+
+        menuService.updateMenu(VALID_NAME);
+        m = menuRepository.findByName(VALID_NAME);
+        assertFalse(m.isActiveMenu());
+
+        Exception exception = assertThrows(MenuException.class, () ->
+                menuService.updateMenu(INVALID_UPDATING_NAME));
+        assertEquals(NON_EXISTING_MENU_EXCEPTION, exception.getMessage());
+    }
+
+    @Test
+    @Transactional
+    public void testFindAllWithSpecificStatus() {
+        List<Menu> menus = menuService.findAllWithSpecificStatus(true);
+        assertEquals(2, menus.size());
+
+        menus = menuService.findAllWithSpecificStatus(false);
+        assertEquals(2, menus.size());
+    }
+
+    @Test
+    @Transactional
+    public void testFindAllActiveMenuNames() {
+        List<String> names = menuService.findAllActiveMenuNames();
+        assertEquals(3, names.size());
+    }
 
 }
