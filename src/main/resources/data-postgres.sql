@@ -323,7 +323,7 @@ insert into order_item (quantity, status, price, priority, order_id, item_id)
 insert into order_item (quantity, status, price, priority, order_id, item_id)
                 values (2, 'DELIVERED', 950.0, 2, 3, 5); --prsuta 750
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 180.0, 1, 3, 15); --sprite 100
+                values (2, 'DELIVERED', 180.0, 0, 3, 15); --sprite 100
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, barman_id, profit)
     values ('FINISHED', 1637967600000 , 'Pozuri', 4, 4, 7, 9, 1320);
@@ -334,7 +334,7 @@ insert into order_item (quantity, status, price, priority, order_id, item_id)
 insert into order_item (quantity, status, price, priority, order_id, item_id)
                 values (2, 'DELIVERED', 400.0, 3, 4, 13); --nutela plazma palacinka 200
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 200.0, 1, 4, 14); --cola 100
+                values (2, 'DELIVERED', 200.0, 0, 4, 14); --cola 100
 
 -------------- MJESEC (DECEMBAR)
 
@@ -345,7 +345,7 @@ insert into order_item (quantity, status, price, priority, order_id, item_id)
 insert into order_item (quantity, status, price, priority, order_id, item_id)
                 values (2, 'DELIVERED', 950.0, 1, 5, 5); --prsuta 750
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 240.0, 1, 5, 21); --cappucino 150
+                values (2, 'DELIVERED', 240.0, 0, 5, 21); --cappucino 150
 
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, profit)
@@ -360,9 +360,9 @@ insert into order_item (quantity, status, price, priority, order_id, item_id)
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id, profit)
     values ('FINISHED', 1640214000000, 'Pozuri', 2, 3, 8, 570);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (3, 'DELIVERED', 200.0, 1, 7, 20); --espresso 110
+                values (3, 'DELIVERED', 200.0, 0, 7, 20); --espresso 110
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (3, 'DELIVERED', 200.0, 1, 7, 14); --cola 100
+                values (3, 'DELIVERED', 200.0, 0, 7, 14); --cola 100
 
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, barman_id, profit)
@@ -374,7 +374,7 @@ insert into order_item (quantity, status, price, priority, order_id, item_id)
 insert into order_item (quantity, status, price, priority, order_id, item_id)
                 values (5, 'DELIVERED', 450.0, 3, 8, 11); --ledena kocka 300
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (5, 'DELIVERED', 200.0, 1, 8, 14); --cola 100
+                values (5, 'DELIVERED', 200.0, 0, 8, 14); --cola 100
 
 --------------- MJESEC (JANUAR)
 
@@ -383,7 +383,7 @@ insert into restaurant_order (status, created_at, note, table_id, waiter_id, coo
 insert into order_item (quantity, status, price, priority, order_id, item_id)
                 values (2, 'DELIVERED', 950.0, 2, 9, 5); --prsuta 750
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'DELIVERED', 220.0, 1, 9, 19); --banjalucko 110
+                values (2, 'DELIVERED', 220.0, 0, 9, 19); --banjalucko 110
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, cook_id, barman_id, profit)
         values ('FINISHED', 1641855600000, 'Pozuri, zedan sam.', 3, 4, 6, 9, 2360);
@@ -407,9 +407,15 @@ insert into order_item (quantity, status, price, priority, order_id, item_id)
 insert into restaurant_order (status, created_at, note, table_id, waiter_id)
         values ('NEW', 1642028400000, 'Pozuri, zedan sam.', 4, 3);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (2, 'ORDERED', 220.0, 1, 12, 16); --bravo sok 100
+                values (2, 'ORDERED', 220.0, 0, 12, 16); --bravo sok 100
 insert into order_item (quantity, status, price, priority, order_id, item_id)
                 values (2, 'ORDERED', 450.0, 2, 12, 11); --ledene kocke 300
 
-
+------- IN_PROGRESS
+insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id, profit)
+    values ('IN_PROGRESS', 1640214000000, 'Pozuri', 2, 4, 8, 570);
+insert into order_item (quantity, status, price, priority, order_id, item_id)
+                values (3, 'ORDERED', 200.0, 0, 13, 20); --espresso 110
+insert into order_item (quantity, status, price, priority, order_id, item_id)
+                values (3, 'DELIVERED', 200.0, 0, 13, 14); --cola 100
 

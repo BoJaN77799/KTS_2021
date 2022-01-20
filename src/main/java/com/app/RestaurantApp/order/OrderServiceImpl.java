@@ -139,6 +139,7 @@ public class OrderServiceImpl implements OrderService{
     public Order findOneWithOrderItemsForUpdate(Long id) {
         Order order = orderRepository.findOneWithOrderItems(id);
         if(order == null) return null;
+        if(order.getStatus() == OrderStatus.FINISHED) return null;
 
         order.getOrderItems().removeIf(orderItem -> orderItem.getStatus() != OrderItemStatus.ORDERED);
 

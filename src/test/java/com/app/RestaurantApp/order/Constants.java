@@ -1,5 +1,7 @@
 package com.app.RestaurantApp.order;
 
+import com.app.RestaurantApp.enums.ItemType;
+
 public class Constants {
     public static final String NOTE = "Some note";
     public static final String FOOD_NAME = "Food";
@@ -82,4 +84,7 @@ public class Constants {
     public static final String NON_HEAD_COOK_EMAIL = "cook@maildrop.cc";
 
     public static final String DUMMY = "Dummy";
+
+    public static final ItemType ITF = ItemType.FOOD;
+    public static final ItemType ITD = ItemType.DRINK;
 }
