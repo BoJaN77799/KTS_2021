@@ -2,12 +2,12 @@ package com.app.RestaurantApp.drinks;
 
 
 import com.app.RestaurantApp.ControllerUtils;
+import com.app.RestaurantApp.drinks.dto.DrinkDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkSearchDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkWithPriceDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import com.app.RestaurantApp.drinks.dto.DrinkDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +49,6 @@ public class DrinkController {
     @PostMapping(consumes = "application/json")
     @PreAuthorize("hasRole('BARMAN')")
     public ResponseEntity<String> saveDrink(@RequestBody DrinkDTO drinkDTO) {
-        drinkDTO.setDeleted(false);
         try {
             drinkService.saveDrink(drinkDTO);
             return new ResponseEntity<>("Drink successfully created", HttpStatus.CREATED);
@@ -81,7 +80,7 @@ public class DrinkController {
         Drink drink = drinkService.findOne(id);
 
         if (drink == null) {
-            return new ResponseEntity<>("Drink does not exist with requested ID",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Drink does not exist with requested ID", HttpStatus.BAD_REQUEST);
         }
         drinkService.deleteDrink(drink);
         return new ResponseEntity<>("Drink successfully deleted", HttpStatus.OK);

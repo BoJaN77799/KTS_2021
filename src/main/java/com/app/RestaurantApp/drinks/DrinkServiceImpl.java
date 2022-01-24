@@ -1,5 +1,7 @@
 package com.app.RestaurantApp.drinks;
 
+import com.app.RestaurantApp.category.Category;
+import com.app.RestaurantApp.category.CategoryService;
 import com.app.RestaurantApp.drinks.dto.DrinkDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkSearchDTO;
 import com.app.RestaurantApp.item.ItemException;
@@ -7,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.app.RestaurantApp.category.Category;
-import com.app.RestaurantApp.category.CategoryService;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class DrinkServiceImpl implements DrinkService {
         Drink drink = new Drink(drinkDTO);
         DrinkUtils.CheckDrinkInfo(drink);
         if (drinkDTO.getCategory() != null) {
-            Category category = categoryService.findOne(drinkDTO.getCategory().getId());
+            Category category = categoryService.findOneByName(drinkDTO.getCategory().getName());
             if (category == null)
                 // need to make category first
                 category = categoryService.insertCategory(new Category(drinkDTO.getCategory()));
