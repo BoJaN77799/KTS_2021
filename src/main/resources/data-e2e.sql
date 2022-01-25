@@ -15,43 +15,43 @@ values ('U', '$2a$10$ZqRoZridlWZYrJhPbIek3.xOtlG4M8cZ3aWWpBPW2IU7yreEZd8jq', 'Pe
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
 is_email_verified, user_type, salary, address, deleted, profile_photo)
-values ('E', '$2a$10$hB5YCgeGsfGSwJZLmG3tXeTn.CrfkyksuzfcNTKgIgoL0CjBwkIcq', 'MarkoE2E', 'KraljevicE2E',
+values ('E', '$2a$10$hB5YCgeGsfGSwJZLmG3tXeTn.CrfkyksuzfcNTKgIgoL0CjBwkIcq', 'Marko', 'Bjelica',
 'waiter_marko@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'WAITER', 4000.0, 'Luzicka 32, Livno', false,
 'http://localhost:8080/user_profile_photos/test/default.jpg'); --3
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
 is_email_verified, user_type, salary, address, deleted, profile_photo)
-values ('E', '$2a$10$hB5YCgeGsfGSwJZLmG3tXeTn.CrfkyksuzfcNTKgIgoL0CjBwkIcq', 'Milorad', 'Dodik',
+values ('E', '$2a$10$hB5YCgeGsfGSwJZLmG3tXeTn.CrfkyksuzfcNTKgIgoL0CjBwkIcq', 'Darko', 'Tica',
 'waiter_milorad@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'WAITER', 7000.0, 'Luzicka 15, Laktasi', false,
 'http://localhost:8080/user_profile_photos/test/default.jpg'); --4
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
  is_email_verified, user_type, salary, address, deleted, profile_photo)
-values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Igor', 'Dodik',
+values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Bojan', 'Baskalo',
 'headcook_igor@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'HEAD_COOK', 10000.0, 'Dunavska 32, Novi Sad', false,
 'http://localhost:8080/user_profile_photos/test/default.jpg'); --5
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
 is_email_verified, user_type, salary, address, deleted, profile_photo)
-values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Drasko', 'Stanivukovic',
+values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Veljko', 'Tomic',
 'cook_drasko@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'COOK', 3000.0, 'Luzicka 32, Gradiska', false,
 'http://localhost:8080/user_profile_photos/test/default.jpg'); --6
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
 is_email_verified, user_type, salary, address, deleted, profile_photo)
-values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Milan', 'Obrenovic',
+values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Cvetko', 'Anova',
 'cook_milan@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'COOK', 3500.0, 'Luzicka 32, Gradiska', false,
 'http://localhost:8080/user_profile_photos/test/default.jpg'); --7
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
  is_email_verified, user_type, salary, address, deleted, profile_photo)
-values ('E', '$2a$10$II8odOsKhUp4LS/cID0DFuuBFWWAcXAgdxYXtlstns6z5dxPjSRw2', 'Vuk', 'Karadzic',
-'barman_vuk@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'BARMAN', 4000.0, 'Luzicka 32, Becej', false,
+values ('E', '$2a$10$II8odOsKhUp4LS/cID0DFuuBFWWAcXAgdxYXtlstns6z5dxPjSRw2', 'Dunjica', 'Slatkica',
+'barman_vuk@maildrop.cc', 'FEMALE', '0642312341', 'False', 'False', 'BARMAN', 4000.0, 'Luzicka 32, Becej', false,
 'http://localhost:8080/user_profile_photos/test/default.jpg'); --8
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
 is_email_verified, user_type, salary, address, deleted, profile_photo)
-values ('E', '$2a$10$II8odOsKhUp4LS/cID0DFuuBFWWAcXAgdxYXtlstns6z5dxPjSRw2', 'Andrej', 'Vucic',
+values ('E', '$2a$10$II8odOsKhUp4LS/cID0DFuuBFWWAcXAgdxYXtlstns6z5dxPjSRw2', 'Mica', 'Bradina',
 'barman_andrej@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'BARMAN', 4200.0, 'Luzicka 32, Becej', false,
 'http://localhost:8080/user_profile_photos/test/default.jpg'); --9
 
@@ -114,19 +114,19 @@ insert into category (name) values ('Alkoholna pica'); --9
 insert into category (name) values ('Kafe'); --10
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-            values ('Govedja supa', 'Bas je slana.', 'putanja/supa', 250.0, 1, 300, 'FOOD', 'Stalni meni', 'False');
+            values ('Govedja supa', 'Ukusna i slana', 'putanja/supa', 250.0, 1, 300, 'FOOD', 'Stalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (1, 'Ma lako se pravi.', 20, 'APPETIZER'); --1
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-            values ('Pileca supa', 'Bas je ukusna.', 'putanja/supa', 300.0, 1, 350, 'FOOD', 'Specijalni meni', 'False');
+            values ('Pileca supa', 'Dobra kao dobar dan.', 'putanja/supa', 300.0, 1, 350, 'FOOD', 'Specijalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (2, 'Ma lako se pravi.', 20, 'APPETIZER'); --2
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-            values ('Pohovani kackavalj', 'I on je slan.', 'putanja/kackavalj', 300.0, 2, 600, 'FOOD', 'Leto', 'False');
+            values ('Pohovani kackavalj', 'Pohovan i slan.', 'putanja/kackavalj', 300.0, 2, 600, 'FOOD', 'Leto', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (3, 'Brzo se pravi.', 15, 'APPETIZER'); --3
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-            values ('Gorgonzola', 'Jako ukusna.', 'putanja/kackavalj', 400.0, 2, 650, 'FOOD', 'Stalni meni', 'False');
+            values ('Gorgonzola', 'Da je ukusnija ne bi valjala.', 'putanja/kackavalj', 400.0, 2, 650, 'FOOD', 'Stalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (4, 'Brzo se pravi.', 20, 'APPETIZER'); --4
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
@@ -134,19 +134,19 @@ insert into item (name, description, image, cost, category_id, current_price, it
 insert into food (id, recipe, time_to_make, food_type) values (5, 'Dugo se susi.', 5, 'APPETIZER'); --5
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-            values ('Jagnjece pecenje', 'Bas je ultro slano.', 'putanja/mmm', 2000.0, 3, 2500, 'FOOD', 'Zima', 'False');
+            values ('Jagnjece pecenje', 'Velja ovo dobro zasolio.', 'putanja/mmm', 2000.0, 3, 2500, 'FOOD', 'Zima', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (6, 'Treba dobro osoliti.', 120, 'MAIN_DISH'); --6
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-            values ('Pileca krilca', 'Mogu se zaljutiti.', 'putanja/krila', 850.0, 3, 960, 'FOOD', 'Specijalni meni', 'False');
+            values ('Pileca krilca', 'Tope se u ustima.', 'putanja/krila', 850.0, 3, 960, 'FOOD', 'Specijalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (7, 'Treba ti pile sa bar jednim krilom.', 30, 'MAIN_DISH'); --7
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-            values ('Sladoled Kapri', 'Zaledjen.', 'putanja/sladoled', 150.0, 4, 240, 'FOOD', 'Stalni meni', 'False');
+            values ('Sladoled Kapri', 'Bolji od kinga.', 'putanja/sladoled', 150.0, 4, 240, 'FOOD', 'Stalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (8, 'Treba mlijeka i sladera.', 2, 'DESERT'); --8
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-            values ('Sladoled Rumenko', 'Zaledjen.', 'putanja/sladoled', 100.0, 4, 200, 'FOOD', 'Specijalni meni', 'False');
+            values ('Sladoled Rumenko', 'Niskobudzetno cudo.', 'putanja/sladoled', 100.0, 4, 200, 'FOOD', 'Specijalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (9, 'Treba vode i secera.', 2, 'DESERT'); --9
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
@@ -154,7 +154,7 @@ insert into item (name, description, image, cost, category_id, current_price, it
 insert into food (id, recipe, time_to_make, food_type) values (10, 'Treba sira, malina i plazma.', 15, 'DESERT'); --10
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-            values ('Ledene kocke', 'Ledno, slatko i preukusno.', 'putanja/kolac', 300.0, 5, 450, 'FOOD', 'Specijalni meni', 'False');
+            values ('Ledene kocke', 'Ledno, slatko, preukusno i kockasto.', 'putanja/kolac', 300.0, 5, 450, 'FOOD', 'Specijalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type) values (11, 'Treba dosta cokolade.', 40, 'DESERT'); --11
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
@@ -215,6 +215,7 @@ insert into drink (id, volume ) values (25, 0.7); --25
 
 insert into menu (name, active_menu) values ('Stalni meni', 'True');
 insert into menu (name, active_menu) values ('Specijalni meni', 'True');
+insert into menu (name, active_menu) values ('Meni za ljubitelje slatkog', 'True');
 insert into menu (name, active_menu) values ('Leto', 'False');
 insert into menu (name, active_menu) values ('Zima', 'False');
 
