@@ -2,6 +2,8 @@ package com.app.RestaurantApp.orderItem;
 
 import com.app.RestaurantApp.enums.OrderItemStatus;
 import com.app.RestaurantApp.notifications.OrderNotificationService;
+import com.app.RestaurantApp.order.Order;
+import com.app.RestaurantApp.order.OrderService;
 import com.app.RestaurantApp.orderItem.dto.OrderItemChangeStatusDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class OrderItemServiceImpl implements OrderItemService{
+public class OrderItemServiceImpl implements OrderItemService {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
@@ -17,15 +19,25 @@ public class OrderItemServiceImpl implements OrderItemService{
     @Autowired
     private OrderNotificationService orderNotificationService;
 
+    @Autowired
+    private OrderService orderService;
+
     @Override
     public OrderItem changeStatus(OrderItemChangeStatusDTO orderItemChangeStatusDTO) throws OrderItemException {
         OrderItem orderItem = orderItemRepository.findById(orderItemChangeStatusDTO.getId()).orElse(null);
+        // Is it valid transition of OrderItemStatus
         OrderItemUtils.checkOrderItemChangeStatusInfo(orderItem, orderItemChangeStatusDTO.getStatus());
 
+        // Does anyone have higher priority?
+        Order order = orderService.findOneWithOrderItems(orderItem.getOrder().getId());
+        for (OrderItem orderItemInItem : order.getOrderItems()) {
+            if (orderItemInItem.getStatus() == OrderItemStatus.IN_PROGRESS && orderItem.getPriority() < orderItemInItem.getPriority())
+                throw new OrderItemException("Denied - There is a order item with a higher priority.");
+        }
         orderItem.setStatus(OrderItemStatus.valueOf(orderItemChangeStatusDTO.getStatus()));
 
         orderItemRepository.save(orderItem);
-        if(orderItem.getStatus() == OrderItemStatus.FINISHED)
+        if (orderItem.getStatus() == OrderItemStatus.FINISHED)
             orderNotificationService.notifyWaiterOrderItemStatusFinished(orderItem);
 
         return orderItem;

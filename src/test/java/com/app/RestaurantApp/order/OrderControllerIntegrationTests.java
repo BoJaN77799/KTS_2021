@@ -25,12 +25,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static com.app.RestaurantApp.reports.Constants.DATE_TO_STRING;
-import static com.app.RestaurantApp.reports.Constants.LAST_THREE_MONTHS_ACTIVITY_STRING;
-import static org.junit.jupiter.api.Assertions.*;
 import static com.app.RestaurantApp.order.Constants.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -61,7 +58,7 @@ public class OrderControllerIntegrationTests {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
-    void setup(){
+    void setup() {
         ResponseEntity<UserTokenState> responseEntity =
                 restTemplate.postForEntity("/api/users/login",
                         new JwtAuthenticationRequest(COOK_EMAIL, COOK_PWD),
@@ -87,7 +84,7 @@ public class OrderControllerIntegrationTests {
     }
 
     @Test
-    public void testFindOneWithFood_OK(){
+    public void testFindOneWithFood_OK() {
         HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
 
         // Test invoke
@@ -107,7 +104,7 @@ public class OrderControllerIntegrationTests {
     }
 
     @Test
-    public void testFindOneWithFood_NOT_FOUND(){
+    public void testFindOneWithFood_NOT_FOUND() {
         HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
 
         // Test invoke
@@ -130,7 +127,7 @@ public class OrderControllerIntegrationTests {
 
         assertEquals(HttpStatus.OK, entity.getStatusCode());
 
-        List<OrderFindDTO> orders =  Arrays.stream(Objects.requireNonNull(entity.getBody())).toList();
+        List<OrderFindDTO> orders = Arrays.stream(Objects.requireNonNull(entity.getBody())).toList();
 
         // Verifying
         assertNotNull(orders);
@@ -161,7 +158,7 @@ public class OrderControllerIntegrationTests {
 
         assertEquals(HttpStatus.OK, entity.getStatusCode());
 
-        List<OrderFindDTO> orders =  Arrays.stream(Objects.requireNonNull(entity.getBody())).toList();
+        List<OrderFindDTO> orders = Arrays.stream(Objects.requireNonNull(entity.getBody())).toList();
 
         // Verifying
         assertNotNull(orders);
@@ -281,7 +278,8 @@ public class OrderControllerIntegrationTests {
         assertEquals(0, Objects.requireNonNull(entity.getBody()).length);
     }
 
-    @Test @Transactional
+    @Test
+    @Transactional
     public void testCreateOrder() throws Exception {
         logInAsWaiter();
         int ordersSize = orderRepository.findAll().size();
@@ -291,9 +289,9 @@ public class OrderControllerIntegrationTests {
         String jsonOrderDTO = mapper.writeValueAsString(orderDTO);
 
         mockMvc.perform(post("/api/orders")
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonOrderDTO))
+                        .headers(headers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonOrderDTO))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$").value(ORDER_CREATED));
 
@@ -301,11 +299,12 @@ public class OrderControllerIntegrationTests {
         assertEquals(orderItemsSize + 2, orderItemRepository.findAll().size());
     }
 
-    @Test @Transactional
+    @Test
+    @Transactional
     public void testAcceptOrder_OK_COOK() throws Exception {
         logInAsCook();
         // Test invoke
-        mockMvc.perform(post(String.format("/api/orders/accept/%d/by/%s", 1L, COOK_EMAIL))
+        mockMvc.perform(get(String.format("/api/orders/accept?id=%d&email=%s", 1L, COOK_EMAIL))
                         .headers(headers))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(ORDER_ACCEPTED));
@@ -317,12 +316,13 @@ public class OrderControllerIntegrationTests {
         assertEquals(OrderStatus.IN_PROGRESS, order.getStatus());
     }
 
-    @Test @Transactional
+    @Test
+    @Transactional
     public void testAcceptOrder_OK_BARMAN() throws Exception {
         logInAsBarman();
 
         // Test invoke
-        mockMvc.perform(post(String.format("/api/orders/accept/%d/by/%s", 2L, BARMAN_EMAIL))
+        mockMvc.perform(get(String.format("/api/orders/accept?id=%d&email=%s", 2L, BARMAN_EMAIL))
                         .headers(headers))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(ORDER_ACCEPTED));
@@ -334,21 +334,23 @@ public class OrderControllerIntegrationTests {
         assertEquals(OrderStatus.IN_PROGRESS, order.getStatus());
     }
 
-    @Test @Transactional
-    public void testAcceptOrder_NOT_FOUND(){
+    @Test
+    @Transactional
+    public void testAcceptOrder_NOT_FOUND() {
         logInAsCook();
         HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
 
         // Test invoke
         ResponseEntity<String> entity = restTemplate
-                .exchange(String.format("/api/orders/accept/%d/by/%s", -1L, COOK_EMAIL), HttpMethod.POST, httpEntity, String.class);
+                .exchange(String.format("/api/orders/accept?id=%d&email=%s", -1L, COOK_EMAIL), HttpMethod.GET, httpEntity, String.class);
 
         // Verifying
         assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
         assertEquals(ORDER_NOT_FOUND, entity.getBody());
     }
 
-    @Test @Transactional
+    @Test
+    @Transactional
     public void testUpdateOrder_ChangeQuantityAndPriority() throws Exception {
         logInAsWaiter();
         int notificationsSize = orderItemRepository.findAll().size();
@@ -357,16 +359,17 @@ public class OrderControllerIntegrationTests {
         String jsonOrderDTO = mapper.writeValueAsString(orderDTO);
 
         mockMvc.perform(put("/api/orders")
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonOrderDTO))
+                        .headers(headers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonOrderDTO))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(ORDER_UPDATED));
 
         assertEquals(notificationsSize, orderItemRepository.findAll().size());
     }
 
-    @Test @Transactional
+    @Test
+    @Transactional
     public void testUpdateOrder_ChangeQuantityAndPriorityInProgress() throws Exception {
         logInAsWaiter();
         int notificationsSize = orderNotificationRepository.findAll().size();
@@ -375,16 +378,17 @@ public class OrderControllerIntegrationTests {
         String jsonOrderDTO = mapper.writeValueAsString(orderDTO);
 
         mockMvc.perform(put("/api/orders")
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonOrderDTO))
+                        .headers(headers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonOrderDTO))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(ORDER_UPDATED));
 
         assertEquals(notificationsSize + 1, orderNotificationRepository.findAll().size());
     }
 
-    @Test @Transactional
+    @Test
+    @Transactional
     public void testUpdateOrder_Delete() throws Exception {
         logInAsWaiter();
         int notificationsSize = orderNotificationRepository.findAll().size();
@@ -394,9 +398,9 @@ public class OrderControllerIntegrationTests {
         String jsonOrderDTO = mapper.writeValueAsString(orderDTO);
 
         mockMvc.perform(put("/api/orders")
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonOrderDTO))
+                        .headers(headers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonOrderDTO))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(ORDER_UPDATED));
 
@@ -404,7 +408,8 @@ public class OrderControllerIntegrationTests {
         assertEquals(orderItemsSize - 1, orderItemRepository.findAll().size());
     }
 
-    @Test @Transactional
+    @Test
+    @Transactional
     public void testUpdateOrder_AddItems() throws Exception {
         logInAsWaiter();
         int notificationsSize = orderNotificationRepository.findAll().size();
@@ -413,9 +418,9 @@ public class OrderControllerIntegrationTests {
         String jsonOrderDTO = mapper.writeValueAsString(orderDTO);
 
         mockMvc.perform(put("/api/orders")
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonOrderDTO))
+                        .headers(headers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonOrderDTO))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(ORDER_UPDATED));
 
@@ -424,26 +429,35 @@ public class OrderControllerIntegrationTests {
 
     }
 
-    @Test @Transactional
+    @Test
+    @Transactional
     public void testFinishOrder() throws Exception {
         logInAsWaiter();
         int notificationsSize = orderNotificationRepository.findAll().size();
+        String orderId = mapper.writeValueAsString(12);
 
-        mockMvc.perform(put("/api/orders/finish/12")
-                .headers(headers))
+        mockMvc.perform(put("/api/orders/finish")
+                        .headers(headers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(orderId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(ORDER_FINISHED));
+
 
         assertEquals(notificationsSize - 2, orderNotificationRepository.findAll().size());
     }
 
-    @Test @Transactional
+    @Test
+    @Transactional
     public void testFinishOrder_NotFound() throws Exception {
         logInAsWaiter();
         int notificationsSize = orderNotificationRepository.findAll().size();
+        String orderId = mapper.writeValueAsString(122);
 
-        mockMvc.perform(put("/api/orders/finish/122")
-                        .headers(headers))
+        mockMvc.perform(put("/api/orders/finish")
+                        .headers(headers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(orderId))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$").value(ORDER_NOT_FOUND));
     }

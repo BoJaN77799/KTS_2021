@@ -5,7 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/orderItems")
@@ -16,16 +19,14 @@ public class OrderItemController {
 
 
     @PutMapping(value = "/changeStatus", consumes = "application/json")
-    @PreAuthorize("hasAnyRole('WAITER', 'COOK', 'BARMAN')")
-    public ResponseEntity<String> changeStatus(@RequestBody OrderItemChangeStatusDTO orderItemDTO){
+    @PreAuthorize("hasAnyRole('COOK', 'BARMAN')")
+    public ResponseEntity<String> changeStatus(@RequestBody OrderItemChangeStatusDTO orderItemDTO) {
         try {
             orderItemService.changeStatus(orderItemDTO);
-            return new ResponseEntity<>("Order item status successfully changed.", HttpStatus.BAD_REQUEST);
-        }
-        catch (OrderItemException e) {
+            return new ResponseEntity<>("Order item status successfully changed.", HttpStatus.OK);
+        } catch (OrderItemException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>("Unknown error happened while changing status of order item!", HttpStatus.BAD_REQUEST);
         }
     }
