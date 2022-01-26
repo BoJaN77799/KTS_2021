@@ -262,3 +262,11 @@ insert into price (amount, date_from, item_id) values (300.0, 1640995199, 1);
 
 insert into order_notification(seen, message, order_id, employee_id) values ('False', 'New order from table #1', 12, 6);
 insert into order_notification(seen, message, order_id, employee_id) values ('False', 'New order from table #1', 12, 4);
+
+-- dodao Veljko 26.01.2022 u 22:11
+insert into order_notification(seen, message, order_id, employee_id) values ('False', 'New order from table #1', 12, 3);
+insert into order_notification(seen, message, order_id, employee_id) values ('False', 'New order from table #1', 12, 3);
+insert into order_notification(seen, message, order_id, employee_id) values ('False', 'New order from table #1', 12, 3);
+insert into order_notification(seen, message, order_id, employee_id) values ('False', 'New order from table #1', 12, 3);
+
+

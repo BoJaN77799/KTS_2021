@@ -444,7 +444,7 @@ public class OrderControllerIntegrationTests {
                 .andExpect(jsonPath("$").value(ORDER_FINISHED));
 
 
-        assertEquals(notificationsSize - 2, orderNotificationRepository.findAll().size());
+        assertEquals(notificationsSize - 6, orderNotificationRepository.findAll().size());
     }
 
     @Test

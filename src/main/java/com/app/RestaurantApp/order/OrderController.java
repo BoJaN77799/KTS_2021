@@ -21,7 +21,7 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<OrderDTO> findOneWithOrderItems(@PathVariable Long id) {

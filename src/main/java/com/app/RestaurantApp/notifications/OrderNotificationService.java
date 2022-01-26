@@ -21,4 +21,10 @@ public interface OrderNotificationService {
     OrderNotification notifyWaiterOrderItemStatusFinished(OrderItem orderItem);
 
     void saveAll(List<OrderNotification> orderNotifications);
+
+    void setSeenAllByEmployee(Long employeeId) throws OrderNotificationException;
+
+    List<OrderNotification> findAllByEmployeeNotSeen(Long employeeId);
+
+    void setSeen(Long id) throws OrderNotificationException;
 }
