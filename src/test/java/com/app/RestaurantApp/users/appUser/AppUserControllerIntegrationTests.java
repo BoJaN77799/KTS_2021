@@ -77,7 +77,7 @@ public class AppUserControllerIntegrationTests {
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
         ResponseEntity<AppUserAdminUserListDTO[]> responseEntity = restTemplate
-                .exchange("/api/users/1", HttpMethod.GET, httpEntity, AppUserAdminUserListDTO[].class);
+                .exchange("/api/users", HttpMethod.GET, httpEntity, AppUserAdminUserListDTO[].class);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());

@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.users.appUser;
 
+import com.app.RestaurantApp.ControllerUtils;
 import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.mail.MailService;
 import com.app.RestaurantApp.security.TokenUtils;
@@ -9,6 +10,7 @@ import com.app.RestaurantApp.users.dto.*;
 import com.app.RestaurantApp.users.employee.Employee;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -41,12 +44,12 @@ public class AppUserController {
     @Autowired
     private MailService mailService;
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<AppUserAdminUserListDTO>> findAllAdmin(@PathVariable(value = "id") Long id) {
-        //todo dodati pageable ovde
-        List<AppUser> users = appUserService.getAllUsersButAdmin(id);
-        return new ResponseEntity<>(users.stream().map(AppUserAdminUserListDTO::new).toList(), HttpStatus.OK);
+    public ResponseEntity<List<AppUserAdminUserListDTO>> findAllAdmin(Pageable pageable) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Page<AppUser> users = appUserService.getAllUsersButAdmin(userDetails.getUsername(), pageable);
+        return new ResponseEntity<>(users.stream().map(AppUserAdminUserListDTO::new).toList(), ControllerUtils.createPageHeaderAttributes(users), HttpStatus.OK);
     }
 
     @GetMapping(value = "/get_user_info/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -89,11 +92,12 @@ public class AppUserController {
 
     @GetMapping(value = "/admin_search", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public List<AppUserAdminUserListDTO> searchUsersAdmin(@RequestParam(value = "searchField", required = false) String searchField,
-                                                          @RequestParam(value = "userType", required = false) String userType,
-                                                          Pageable pageable) {
-        List<AppUser> users = appUserService.searchUsersAdmin(searchField, userType, pageable);
-        return users.stream().map(AppUserAdminUserListDTO::new).toList();
+    public ResponseEntity<List<AppUserAdminUserListDTO>> searchUsersAdmin(
+            @RequestParam(value = "searchField", required = false) String searchField,
+            @RequestParam(value = "userType", required = false) String userType,
+            Pageable pageable) {
+        Page<AppUser> users = appUserService.searchUsersAdmin(searchField, userType, pageable);
+        return new ResponseEntity<>(users.stream().map(AppUserAdminUserListDTO::new).toList(), ControllerUtils.createPageHeaderAttributes(users), HttpStatus.OK);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -110,9 +114,8 @@ public class AppUserController {
         return new ResponseEntity<>("User added successfully", HttpStatus.OK);
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateUser(@RequestBody UpdateUserDTO updateUserDTO){
-        //todo da moze da update profilnu
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> updateUser(@ModelAttribute UpdateUserDTO updateUserDTO){
         try{
             appUserService.updateUser(updateUserDTO);
             return new ResponseEntity<>("User updated successfully", HttpStatus.OK);

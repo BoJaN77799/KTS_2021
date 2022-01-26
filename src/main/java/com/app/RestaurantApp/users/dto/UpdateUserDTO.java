@@ -1,5 +1,7 @@
 package com.app.RestaurantApp.users.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class UpdateUserDTO {
 
     private Long id;
@@ -7,6 +9,7 @@ public class UpdateUserDTO {
     private String lastName;
     private String address;
     private String telephone;
+    private MultipartFile image;
 
     public UpdateUserDTO() {}
 
@@ -48,5 +51,13 @@ public class UpdateUserDTO {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 }
