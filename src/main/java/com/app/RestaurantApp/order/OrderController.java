@@ -136,9 +136,9 @@ public class OrderController {
         }
     }
 
-    @PutMapping(value = "/finish/{id}")
+    @PutMapping(value = "/finish")
     @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<String> finishOrder(@PathVariable Long id){
+    public ResponseEntity<String> finishOrder(@RequestBody Long id){
         Order order = orderService.finishOrder(id);
 
         if(order == null) return new ResponseEntity<>("Order not found!", HttpStatus.NOT_FOUND);
