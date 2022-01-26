@@ -7,6 +7,10 @@ import com.app.RestaurantApp.users.employee.Employee;
 public class UserInfoDTO {
     private Long id;
 
+    private boolean active;
+
+    private String profilePhoto;
+
     private String firstName;
 
     private String lastName;
@@ -37,6 +41,8 @@ public class UserInfoDTO {
         this.address = appUser.getAddress();
         this.userType = appUser.getUserType();
         this.isPasswordChanged = appUser.isPasswordChanged();
+        this.profilePhoto = appUser.getProfilePhoto();
+        this.active = !appUser.isDeleted();
     }
 
     public UserInfoDTO(Employee appUser){
@@ -50,6 +56,24 @@ public class UserInfoDTO {
         this.userType = appUser.getUserType();
         this.isPasswordChanged = appUser.isPasswordChanged();
         this.salary = appUser.getSalary();
+        this.profilePhoto = appUser.getProfilePhoto();
+        this.active = !appUser.isDeleted();
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
     public Long getId() {

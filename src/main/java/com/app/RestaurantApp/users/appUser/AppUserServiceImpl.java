@@ -124,6 +124,20 @@ public class AppUserServiceImpl implements AppUserService {
         us.setAddress(updateUserDTO.getAddress());
         us.setTelephone(updateUserDTO.getTelephone());
 
+        if (updateUserDTO.getImage() != null){
+            try {
+                String fileName = StringUtils.cleanPath(Objects.requireNonNull(updateUserDTO.getImage().getOriginalFilename()));
+                String uploadDir = "user_profile_photos/" + us.getId();
+
+                String path = FileUploadUtil.saveFile(uploadDir, fileName, updateUserDTO.getImage());
+
+                us.setProfilePhoto(uploadDir + "/" + fileName);
+            }catch (NullPointerException | IOException e){
+                System.out.println(e.getMessage());
+                us.setProfilePhoto(null);
+            }
+        }
+
         UserUtils.CheckUserInfo(us);
         return appUserRepository.save(us);
     }

@@ -114,9 +114,8 @@ public class AppUserController {
         return new ResponseEntity<>("User added successfully", HttpStatus.OK);
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateUser(@RequestBody UpdateUserDTO updateUserDTO){
-        //todo da moze da update profilnu
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> updateUser(@ModelAttribute UpdateUserDTO updateUserDTO){
         try{
             appUserService.updateUser(updateUserDTO);
             return new ResponseEntity<>("User updated successfully", HttpStatus.OK);
