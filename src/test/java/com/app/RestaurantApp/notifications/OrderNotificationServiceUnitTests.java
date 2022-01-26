@@ -5,6 +5,7 @@ import com.app.RestaurantApp.enums.OrderItemStatus;
 import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.food.Food;
 import com.app.RestaurantApp.order.Order;
+import com.app.RestaurantApp.order.OrderException;
 import com.app.RestaurantApp.orderItem.OrderItem;
 import com.app.RestaurantApp.table.Table;
 import com.app.RestaurantApp.users.employee.Employee;
@@ -17,10 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.app.RestaurantApp.notifications.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -271,6 +269,45 @@ public class OrderNotificationServiceUnitTests {
         OrderNotification orderNotification = orderNotificationService.notifyWaiterOrderItemStatusFinished(oi);
         assertEquals(Long.valueOf(1), orderNotification.getEmployee().getId());
         assertEquals(ORDER_ITEM_DRINK_FINISHED_MSG, orderNotification.getMessage());
+    }
+
+    @Test
+    public void testSetSeenAllByEmployee_InvalidEmployeeId() {
+        given(employeeService.findById(3L)).willReturn(null);
+
+        Exception e = assertThrows(OrderNotificationException.class, () -> orderNotificationService.setSeenAllByEmployee(3L));
+
+        assertEquals(INVALID_EMPLOYEE_MSG, e.getMessage());
+    }
+
+    @Test
+    public void testSetSeenAllByEmployee() throws OrderNotificationException {
+        Employee employee = new Employee();
+        employee.setId(3L);
+
+        given(employeeService.findById(3L)).willReturn(employee);
+        orderNotificationService.setSeenAllByEmployee(3L);
+        verify(orderNotificationRepository, times(1)).setSeenAllByEmployee(3L);
+    }
+
+    @Test
+    public void testSetSeen_InvalidId() throws OrderNotificationException {
+        given(orderNotificationRepository.findById(-1L)).willReturn(Optional.empty());
+
+        Exception e = assertThrows(OrderNotificationException.class, () -> orderNotificationService.setSeen(-1L));
+
+        assertEquals(INVALID_ORDER_NOTIF_MSG, e.getMessage());
+    }
+
+    @Test
+    public void testSetSeen() throws OrderNotificationException {
+        OrderNotification orderNotification = new OrderNotification();
+        given(orderNotificationRepository.findById(1L)).willReturn(Optional.of(orderNotification));
+
+        orderNotificationService.setSeen(1L);
+
+        assertTrue(orderNotification.isSeen());
+        verify(orderNotificationRepository, times(1)).save(orderNotification);
     }
 
     private Order createBlankOrder() {
