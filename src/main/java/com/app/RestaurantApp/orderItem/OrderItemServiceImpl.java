@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.orderItem;
 
+import com.app.RestaurantApp.enums.NotificationType;
 import com.app.RestaurantApp.enums.OrderItemStatus;
 import com.app.RestaurantApp.notifications.OrderNotification;
 import com.app.RestaurantApp.notifications.OrderNotificationService;
@@ -47,7 +48,7 @@ public class OrderItemServiceImpl implements OrderItemService {
         if (orderItem.getStatus() == OrderItemStatus.FINISHED) {
             List<OrderNotification> orderNotifications = List.of(orderNotificationService.notifyWaiterOrderItemStatusFinished(orderItem));
             orderNotificationService.saveAll(orderNotifications);
-            webSocketService.sendNotifications(orderNotifications);
+            webSocketService.sendNotifications(orderNotifications, NotificationType.FINISH_ORDER_ITEM); // Slanje poruka na ws
         }
 
         return orderItem;

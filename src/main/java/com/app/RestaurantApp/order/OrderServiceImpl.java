@@ -1,10 +1,7 @@
 package com.app.RestaurantApp.order;
 
 import com.app.RestaurantApp.drinks.Drink;
-import com.app.RestaurantApp.enums.FoodType;
-import com.app.RestaurantApp.enums.OrderItemStatus;
-import com.app.RestaurantApp.enums.OrderStatus;
-import com.app.RestaurantApp.enums.UserType;
+import com.app.RestaurantApp.enums.*;
 import com.app.RestaurantApp.food.Food;
 import com.app.RestaurantApp.item.Item;
 import com.app.RestaurantApp.item.ItemService;
@@ -77,7 +74,7 @@ public class OrderServiceImpl implements OrderService{
         Order savedOrder = orderRepository.save(order);
         List<OrderNotification> orderNotifications = orderNotificationService.notifyNewOrder(order);
         orderNotificationService.saveAll(orderNotifications);
-        webSocketService.sendNotifications(orderNotifications); //Slanje poruka na ws
+        webSocketService.sendNotifications(orderNotifications, NotificationType.CREATE_ORDER); //Slanje poruka na ws
 
         order.setId(savedOrder.getId());
         return order;
@@ -216,7 +213,7 @@ public class OrderServiceImpl implements OrderService{
         Order savedOrder = orderRepository.save(finalOrder);    // Cuvanje order-a (svih order item-a)
         orderItemService.deleteAll(orderItemsToDelete);         // Brisanje svih koji koji imaju kvantitet nula
         orderNotificationService.saveAll(notificationsToSend);  // Cuvanje (slanje) svih notifikacija
-        webSocketService.sendNotifications(notificationsToSend);// Slanje poruka na ws
+        webSocketService.sendNotifications(notificationsToSend, NotificationType.UPDATE_ORDER);// Slanje poruka na ws
 
         order.setId(savedOrder.getId());
         return order;
