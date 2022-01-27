@@ -95,6 +95,19 @@ public class ReportsControllerIntegrationTests {
     }
 
     @Test
+    public void testGetReportsSales_BadRequest() {
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<Sales[]> entity = restTemplate
+                .exchange(("/api/reports/getReportsSales/23.-sa"),
+                        HttpMethod.GET, httpEntity, Sales[].class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
+
+        assertNull(entity.getBody());
+    }
+
+    @Test
     public void testGetIncomeExpenses_OK() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
@@ -126,7 +139,20 @@ public class ReportsControllerIntegrationTests {
     }
 
     @Test
-    public void testActivityReport_NOT_FOUND() {
+    public void testGetIncomeExpenses_BadRequest() {
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<IncomeExpenses> entity = restTemplate
+                .exchange(("/api/reports/getIncomeExpenses/as-ds"),
+                        HttpMethod.GET, httpEntity, IncomeExpenses.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
+
+        assertNull(entity.getBody());
+    }
+
+    @Test
+    public void testActivityReport_NotFound() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
         ResponseEntity<UserReportDTO[]> entity = restTemplate
@@ -136,6 +162,17 @@ public class ReportsControllerIntegrationTests {
         assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
 
         assertEquals(0, Objects.requireNonNull(entity.getBody()).length);
+    }
+
+    @Test
+    public void testActivityReport_BadRequest() {
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<UserReportDTO[]> entity = restTemplate
+                .exchange(("/api/reports/activity/01.-"), HttpMethod.GET, httpEntity, UserReportDTO[].class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
+        assertNull(entity.getBody());
     }
 
     @Test
