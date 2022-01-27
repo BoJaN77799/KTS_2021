@@ -40,7 +40,7 @@ public class OrderNotificationServiceIntegrationTests {
 
         orderNotificationService.deleteOrderNotifications(order);
 
-        assertEquals(size -2, orderNotificationRepository.findAll().size());
+        assertEquals(size - 6, orderNotificationRepository.findAll().size());
     }
 
     @Test @Transactional
@@ -51,6 +51,26 @@ public class OrderNotificationServiceIntegrationTests {
         orderNotificationService.saveAll(ons);
 
         assertEquals(size + 3, orderNotificationRepository.findAll().size());
+    }
+
+    @Test
+    public void testFindAllByEmployeeNotSeen() throws OrderNotificationException {
+        assertEquals(4, orderNotificationRepository.findAllByEmployeeNotSeen(3L).size());
+    }
+
+    @Test
+    @Transactional
+    public void testSetSeenAllByEmployee() throws OrderNotificationException {
+        orderNotificationService.setSeenAllByEmployee(3L);
+
+        assertEquals(0, orderNotificationRepository.findAllByEmployeeNotSeen(3L).size());
+    }
+
+    @Test
+    @Transactional
+    public void testSetSeen() throws OrderNotificationException {
+        orderNotificationService.setSeen(3L);
+        assertTrue(orderNotificationRepository.findById(3L).get().isSeen());
     }
 
     private Order createOrder() {

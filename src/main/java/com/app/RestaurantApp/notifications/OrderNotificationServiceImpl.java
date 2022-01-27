@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -180,6 +181,28 @@ public class OrderNotificationServiceImpl implements OrderNotificationService {
     @Override
     public void saveAll(List<OrderNotification> orderNotifications) {
         orderNotificationRepository.saveAll(orderNotifications);
+    }
+
+    @Override
+    public List<OrderNotification> findAllByEmployeeNotSeen(Long employeeId) {
+        return orderNotificationRepository.findAllByEmployeeNotSeen(employeeId);
+    }
+
+    @Override
+    public void setSeenAllByEmployee(Long employeeId) throws OrderNotificationException {
+        if(employeeService.findById(employeeId) == null)
+            throw new OrderNotificationException("There is no employee with given id.");
+        orderNotificationRepository.setSeenAllByEmployee(employeeId);
+    }
+
+    @Override
+    public void setSeen(Long id) throws OrderNotificationException {
+        Optional<OrderNotification> orderNotification = orderNotificationRepository.findById(id);
+        if(!orderNotification.isPresent()) {
+            throw new OrderNotificationException("Invalid order notification id sent from front!");
+        }
+        orderNotification.get().setSeen(true);
+        orderNotificationRepository.save(orderNotification.get());
     }
 
 

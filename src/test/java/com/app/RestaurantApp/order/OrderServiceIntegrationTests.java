@@ -171,7 +171,7 @@ public class OrderServiceIntegrationTests {
 
         assertEquals(OrderStatus.FINISHED, order.getStatus());
         assertEquals(Double.valueOf(0), order.getProfit());
-        assertEquals(notificationsSize - 2, orderNotificationRepository.findAll().size());
+        assertEquals(notificationsSize - 6, orderNotificationRepository.findAll().size());
     }
 
     @Test
