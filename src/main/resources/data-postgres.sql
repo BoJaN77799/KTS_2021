@@ -71,45 +71,66 @@ values ('E', '$2a$10$II8odOsKhUp4LS/cID0DFuuBFWWAcXAgdxYXtlstns6z5dxPjSRw2', 'An
         'http://localhost:8080/user_profile_photos/test/default.jpg');
 --9
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('U','$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
-        'admin1@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej', false); --1
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+                      is_email_verified, user_type, salary, address, deleted)
+values ('U', '$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
+        'admin1@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej',
+        false); --1
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('U','$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
-        'admin2@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej', false); --1
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+                      is_email_verified, user_type, salary, address, deleted)
+values ('U', '$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
+        'admin2@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej',
+        false); --1
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('U','$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
-        'admin3@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej', false); --1
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+                      is_email_verified, user_type, salary, address, deleted)
+values ('U', '$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
+        'admin3@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej',
+        false); --1
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('U','$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
-        'admin4@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej', false); --1
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+                      is_email_verified, user_type, salary, address, deleted)
+values ('U', '$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
+        'admin4@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej',
+        false); --1
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('U','$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
-        'admin5@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej', false); --1
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+                      is_email_verified, user_type, salary, address, deleted)
+values ('U', '$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
+        'admin5@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej',
+        false); --1
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('U','$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
-        'admin6@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej', false); --1
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+                      is_email_verified, user_type, salary, address, deleted)
+values ('U', '$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
+        'admin6@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej',
+        false); --1
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('U','$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
-        'admin7@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej', false); --1
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+                      is_email_verified, user_type, salary, address, deleted)
+values ('U', '$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
+        'admin7@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej',
+        false); --1
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('U','$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
-        'admin8@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej', false); --1
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+                      is_email_verified, user_type, salary, address, deleted)
+values ('U', '$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
+        'admin8@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej',
+        false); --1
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('U','$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
-        'admin9@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej', false); --1
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+                      is_email_verified, user_type, salary, address, deleted)
+values ('U', '$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
+        'admin9@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej',
+        false); --1
 
-insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
-values ('U','$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
-        'admin10@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej', false); --1
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
+                      is_email_verified, user_type, salary, address, deleted)
+values ('U', '$2a$10$L0RXf3.bj4pIw8jmzIgha..M3Cb1JRZBPV0HKCISz/btBeh3hO0Lq', 'Filip', 'Markovic',
+        'admin10@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'ADMINISTRATOR', null, 'Luzicka 32, Becej',
+        false);
+--1
 
 --- prva plata 1.11.2021
 insert into salary (amount, date_from, employee_id)
@@ -636,13 +657,15 @@ values (2, 'ORDERED', 2500.0, 2, 13, 6); --jagnjece pecenje 2000
 insert into restaurant_order (status, created_at, note, table_id, waiter_id)
 values ('NEW', 1643216540339, 'Budu li ledene kocke previse ledene...', 5, 4);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
+values (1, 'ORDERED', 300.0, 1, 14, 1); --govednja supa 250
+insert into order_item (quantity, status, price, priority, order_id, item_id)
 values (1, 'ORDERED', 220.0, 0, 14, 16); --bravo sok 100
 insert into order_item (quantity, status, price, priority, order_id, item_id)
 values (1, 'ORDERED', 450.0, 2, 14, 11); --ledene kocke 300
 
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id)
-values ('NEW', 1643216540339, 'Odvojite nam pecenje u dva tanjira.', 1, 3);
+values ('NEW', 1643216540339, 'Odvojite nam pecenje u dva tanjira.', 3, 3);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
 values (2, 'ORDERED', 300.0, 2, 15, 1); --govednja supa 250
 insert into order_item (quantity, status, price, priority, order_id, item_id)
@@ -660,3 +683,60 @@ values (3, 'ORDERED', 200.0, 0, 16, 20); --espresso 110
 insert into order_item (quantity, status, price, priority, order_id, item_id)
 values (3, 'DELIVERED', 200.0, 0, 16, 14); --cola 100
 
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 1.', 11, 5); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 1.', 11, 6); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 1.', 11, 7); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 4.', 12, 5); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 4.', 12, 6); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 4.', 12, 7); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 4.', 12, 8); -- barman
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 4.', 12, 9); -- barman
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 2.', 13, 5); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 2.', 13, 6); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 2.', 13, 7); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 5.', 14, 5); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 5.', 14, 6); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 5.', 14, 7); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 5.', 14, 8); -- barman
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 5.', 14, 9); -- barman
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 3.', 15, 5); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 3.', 15, 6); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 3.', 15, 7); -- cook

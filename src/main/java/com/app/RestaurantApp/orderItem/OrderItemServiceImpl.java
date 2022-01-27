@@ -29,16 +29,18 @@ public class OrderItemServiceImpl implements OrderItemService {
         OrderItemUtils.checkOrderItemChangeStatusInfo(orderItem, orderItemChangeStatusDTO.getStatus());
 
         // Does anyone have higher priority?
-        Order order = orderService.findOneWithOrderItems(orderItem.getOrder().getId());
-        for (OrderItem orderItemInItem : order.getOrderItems()) {
-            if (orderItemInItem.getStatus() == OrderItemStatus.IN_PROGRESS && orderItem.getPriority() < orderItemInItem.getPriority())
-                throw new OrderItemException("Denied - There is a order item with a higher priority.");
+        if (OrderItemStatus.valueOf(orderItemChangeStatusDTO.getStatus()).equals(OrderItemStatus.FINISHED)) {
+            Order order = orderService.findOneWithOrderItems(orderItem.getOrder().getId());
+            for (OrderItem orderItemInItem : order.getOrderItems()) {
+                if (orderItemInItem.getStatus() == OrderItemStatus.IN_PROGRESS && orderItem.getPriority() < orderItemInItem.getPriority())
+                    throw new OrderItemException("Denied - There is a order item with a higher priority.");
+            }
         }
         orderItem.setStatus(OrderItemStatus.valueOf(orderItemChangeStatusDTO.getStatus()));
 
         orderItemRepository.save(orderItem);
         if (orderItem.getStatus() == OrderItemStatus.FINISHED)
-            orderNotificationService.notifyWaiterOrderItemStatusFinished(orderItem);
+            orderNotificationService.saveAll(List.of(orderNotificationService.notifyWaiterOrderItemStatusFinished(orderItem)));
 
         return orderItem;
     }

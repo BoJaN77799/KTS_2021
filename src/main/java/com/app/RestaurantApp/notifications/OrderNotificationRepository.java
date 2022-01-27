@@ -20,6 +20,7 @@ public interface OrderNotificationRepository extends JpaRepository<OrderNotifica
     List<OrderNotification> findAllByEmployeeNotSeen(Long employeeId);
 
     @Modifying
+    @Transactional
     @Query("UPDATE OrderNotification orderNotif SET orderNotif.seen = true WHERE orderNotif.employee.id = ?1")
     public void setSeenAllByEmployee(Long employeeId);
 }
