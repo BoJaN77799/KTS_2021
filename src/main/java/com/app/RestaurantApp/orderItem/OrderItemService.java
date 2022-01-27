@@ -12,4 +12,6 @@ public interface OrderItemService {
 
     void deleteAll(List<OrderItem> orderItems);
 
+    void deliverOrderItem(Long id) throws OrderItemException;
+
 }

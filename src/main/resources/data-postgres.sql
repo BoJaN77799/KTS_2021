@@ -665,7 +665,7 @@ values (1, 'ORDERED', 450.0, 2, 14, 11); --ledene kocke 300
 
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id)
-values ('NEW', 1643216540339, 'Odvojite nam pecenje u dva tanjira.', 3, 3);
+values ('NEW', 1643216540339, 'Odvojite nam pecenje u dva tanjira.', 8, 3);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
 values (2, 'ORDERED', 300.0, 2, 15, 1); --govednja supa 250
 insert into order_item (quantity, status, price, priority, order_id, item_id)
@@ -677,9 +677,9 @@ values (1, 'ORDERED', 2500.0, 2, 15, 6);
 
 ------- IN_PROGRESS
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id, profit)
-values ('IN_PROGRESS', 1640214000000, 'Pozuri', 2, 4, 8, 570);
+values ('IN_PROGRESS', 1640214000000, 'Pozuri', 7, 4, 8, 570);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-values (3, 'ORDERED', 200.0, 0, 16, 20); --espresso 110
+values (3, 'IN_PROGRESS', 200.0, 0, 16, 20); --espresso 110
 insert into order_item (quantity, status, price, priority, order_id, item_id)
 values (3, 'DELIVERED', 200.0, 0, 16, 14); --cola 100
 

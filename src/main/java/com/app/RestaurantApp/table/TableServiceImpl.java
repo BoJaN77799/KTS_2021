@@ -9,6 +9,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,14 +116,25 @@ public class TableServiceImpl implements TableService{
     }
 
     @Override
-    public List<TableWaiterDTO> getTablesWithActiveOrderIfItExists(int floor) {
-        List<Table> listica1 = tableRepository.findByFloorAndNoInProgressOrders(floor);
-        List<Table> listica2 = tableRepository.findByFloorAndInProgressOrders(floor);
+    public List<TableWaiterDTO> getTablesWithActiveOrderIfItExists(int floor, String waiterEmail) {
+        List<TableWaiterDTO> resultList = new ArrayList<>();
+        List<Long> listIds = new ArrayList<>();
 
-        List<TableWaiterDTO> resultList = new ArrayList<>(listica1.size() + listica2.size());
-        listica1.forEach((el) -> resultList.add(new TableWaiterDTO(el, false)));
-        listica2.forEach((el) -> resultList.add(new TableWaiterDTO(el, true)));
+        List<Table> listica1 = tableRepository.findByFloorAndInProgressOrders(floor);
+        listica1.forEach((el) ->
+            {
+                resultList.add(new TableWaiterDTO(el, waiterEmail));
+                listIds.add(el.getId());
+            });
+        List<Table> listica2 = new ArrayList<>();
+        if (!listica1.isEmpty()) {
+            listica2 = tableRepository.findByFloorAndNoInProgressOrders(floor, listIds);
+        }else{
+            listica2 = tableRepository.findByFloorAndActive(floor, true);
+        }
+        listica2.forEach((el) -> resultList.add(new TableWaiterDTO(el)));
         // znam da je uga buga da dva puta vraca iz baze, ali posto spring jpa ne podrzava 'with' prilikom fetchovanja...
+        resultList.sort(Comparator.comparing(TableWaiterDTO::getId));
         return resultList;
     }
 }

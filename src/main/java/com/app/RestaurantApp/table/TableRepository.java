@@ -21,8 +21,12 @@ public interface TableRepository extends JpaRepository<Table, Long>{
             " where t.active=true and t.floor=?1 and o.status <> 'FINISHED'")
     List<Table> findByFloorAndInProgressOrders(int floor); //ako sto ima bar jednu porudzbinu koja nije finished
 
-    @Query("select distinct t from Table t left join t.orders o" +
-            " where t.active=true and t.floor=?1 and (o.id is null or o.status = 'FINISHED')")
-    List<Table> findByFloorAndNoInProgressOrders(int floor); //ako sto nema porudzbina ili su sve finished
+    @Query("select distinct t from Table t where t.active=true and t.floor=?1 " +
+            " and t.id not in ?2")
+    List<Table> findByFloorAndNoInProgressOrders(int floor, List<Long> ids); //ako sto ima bar jednu porudzbinu koja nije finished
+
+//    @Query("select distinct t from Table t left join t.orders o" +
+//            " where t.active=true and t.floor=?1 and (o.id is null or o.status = 'FINISHED')")
+//    List<Table> findByFloorAndNoInProgressOrders(int floor); //ako sto nema porudzbina ili su sve finished
 
 }
