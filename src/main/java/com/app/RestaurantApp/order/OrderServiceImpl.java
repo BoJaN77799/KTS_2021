@@ -22,6 +22,7 @@ import com.app.RestaurantApp.table.TableService;
 
 
 import com.app.RestaurantApp.users.employee.EmployeeService;
+import com.app.RestaurantApp.websocket.WebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,6 +52,9 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     private OrderNotificationService orderNotificationService;
 
+    @Autowired
+    private WebSocketService webSocketService;
+
     @Override
     public Order createOrder(OrderDTO orderDTO) throws OrderException {
         List<OrderItemOrderCreationDTO> orderItemOrderCreationDTOS = orderDTO.getOrderItems();
@@ -73,6 +77,7 @@ public class OrderServiceImpl implements OrderService{
         Order savedOrder = orderRepository.save(order);
         List<OrderNotification> orderNotifications = orderNotificationService.notifyNewOrder(order);
         orderNotificationService.saveAll(orderNotifications);
+        webSocketService.sendNotifications(orderNotifications); //Slanje poruka na ws
 
         order.setId(savedOrder.getId());
         return order;
@@ -211,6 +216,7 @@ public class OrderServiceImpl implements OrderService{
         Order savedOrder = orderRepository.save(finalOrder);    // Cuvanje order-a (svih order item-a)
         orderItemService.deleteAll(orderItemsToDelete);         // Brisanje svih koji koji imaju kvantitet nula
         orderNotificationService.saveAll(notificationsToSend);  // Cuvanje (slanje) svih notifikacija
+        webSocketService.sendNotifications(notificationsToSend);// Slanje poruka na ws
 
         order.setId(savedOrder.getId());
         return order;

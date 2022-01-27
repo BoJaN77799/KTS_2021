@@ -15,6 +15,7 @@ import com.app.RestaurantApp.table.TableService;
 import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.employee.Employee;
 import com.app.RestaurantApp.users.employee.EmployeeService;
+import com.app.RestaurantApp.websocket.WebSocketService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,9 @@ public class OrderServiceUnitTests {
 
     @MockBean
     private ItemService itemServiceMock;
+
+    @MockBean
+    private WebSocketService webSocketServiceMock;
 
     @BeforeEach
     public void setup() {

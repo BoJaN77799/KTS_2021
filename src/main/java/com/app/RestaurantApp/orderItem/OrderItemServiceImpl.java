@@ -1,10 +1,12 @@
 package com.app.RestaurantApp.orderItem;
 
 import com.app.RestaurantApp.enums.OrderItemStatus;
+import com.app.RestaurantApp.notifications.OrderNotification;
 import com.app.RestaurantApp.notifications.OrderNotificationService;
 import com.app.RestaurantApp.order.Order;
 import com.app.RestaurantApp.order.OrderService;
 import com.app.RestaurantApp.orderItem.dto.OrderItemChangeStatusDTO;
+import com.app.RestaurantApp.websocket.WebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,9 @@ public class OrderItemServiceImpl implements OrderItemService {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private WebSocketService webSocketService;
 
     @Override
     public OrderItem changeStatus(OrderItemChangeStatusDTO orderItemChangeStatusDTO) throws OrderItemException {
@@ -39,8 +44,11 @@ public class OrderItemServiceImpl implements OrderItemService {
         orderItem.setStatus(OrderItemStatus.valueOf(orderItemChangeStatusDTO.getStatus()));
 
         orderItemRepository.save(orderItem);
-        if (orderItem.getStatus() == OrderItemStatus.FINISHED)
-            orderNotificationService.saveAll(List.of(orderNotificationService.notifyWaiterOrderItemStatusFinished(orderItem)));
+        if (orderItem.getStatus() == OrderItemStatus.FINISHED) {
+            List<OrderNotification> orderNotifications = List.of(orderNotificationService.notifyWaiterOrderItemStatusFinished(orderItem));
+            orderNotificationService.saveAll(orderNotifications);
+            webSocketService.sendNotifications(orderNotifications);
+        }
 
         return orderItem;
     }

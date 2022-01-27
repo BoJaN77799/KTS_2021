@@ -19,17 +19,17 @@ public class WebSocketController {
     @MessageMapping("/send/message")
     public Map<String, String> broadcastNotification(String message) {
         Map<String, String> messageConverted = parseMessage(message);
-//        if (messageConverted != null) {
-//            if (messageConverted.containsKey("toId") && messageConverted.get("toId") != null
-//                    && !messageConverted.get("toId").equals("")) {
-//                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + messageConverted.get("toId"),
-//                        messageConverted);
-//                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + messageConverted.get("fromId"),
-//                        messageConverted);
-//            } else {
-//                this.simpMessagingTemplate.convertAndSend("/socket-publisher", messageConverted);
-//            }
-//        }
+        if (messageConverted != null) {
+            if (messageConverted.containsKey("toId") && messageConverted.get("toId") != null
+                    && !messageConverted.get("toId").equals("")) {
+                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + messageConverted.get("toId"),
+                        messageConverted);
+                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + messageConverted.get("fromId"),
+                        messageConverted);
+            } else {
+                this.simpMessagingTemplate.convertAndSend("/socket-publisher", messageConverted);
+            }
+        }
 
         if (messageConverted != null) {
             this.simpMessagingTemplate.convertAndSend("/socket-publisher", messageConverted);
