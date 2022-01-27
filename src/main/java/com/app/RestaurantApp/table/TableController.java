@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +25,7 @@ public class TableController {
     private TableService tableService;
 
     @GetMapping(value = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAITER')")
     public FloorTableInfo getRestaurantFloorTablesInfo() {
         return tableService.getFloorTableInfo();
     }
@@ -79,7 +81,8 @@ public class TableController {
     @GetMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('WAITER')")
     public List<TableWaiterDTO> getTablesFromFloor(@RequestParam(value = "floor") int floor){
-        return tableService.getTablesWithActiveOrderIfItExists(floor);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return tableService.getTablesWithActiveOrderIfItExists(floor, userDetails.getUsername());
     }
 
 }

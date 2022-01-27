@@ -17,23 +17,30 @@ public class TableWaiterDTO {
 
     private boolean occupied;
 
-    private String orderStatus;  //new, in progress, ready, finishable (ako su sva jela donesena i moze da se zavrsi porudzbina)
+    private String orderStatus;  //new, in progress, ready, table free, finishable (ako su sva jela donesena i moze da se zavrsi porudzbina)
+
+    private boolean orderIsMine;
 
     public TableWaiterDTO() {
     }
 
-    public TableWaiterDTO(Table table, boolean hasActiveOrders) {
+    public TableWaiterDTO(Table table, String waiterEmail) {
         this.id = table.getId();
         this.x = table.getX();
         this.y = table.getY();
-        if (hasActiveOrders) {
-            this.occupied = true;
-            Optional<Order> order = table.getOrders().stream().findFirst();
-            order.ifPresent(value -> this.orderStatus = determineOrderStatus(value));
-        }else{
-            this.occupied = false;
-            this.orderStatus = "TABLE FREE";
-        }
+        this.occupied = true;
+        Optional<Order> order = table.getOrders().stream().findFirst();
+        order.ifPresent(value -> this.orderStatus = determineOrderStatus(value));
+        order.ifPresent(value -> this.orderIsMine = value.getWaiter().getEmail().equals(waiterEmail));
+    }
+
+    public TableWaiterDTO(Table table) {
+        this.id = table.getId();
+        this.x = table.getX();
+        this.y = table.getY();
+        this.occupied = false;
+        this.orderStatus = "TABLE FREE";
+        this.orderIsMine = false;
     }
 
     public Long getId() {
@@ -96,5 +103,13 @@ public class TableWaiterDTO {
         if (orderIsNew)
             return "NEW";
         return "FINISHABLE";
+    }
+
+    public boolean isOrderIsMine() {
+        return orderIsMine;
+    }
+
+    public void setOrderIsMine(boolean orderIsMine) {
+        this.orderIsMine = orderIsMine;
     }
 }

@@ -161,7 +161,7 @@ public class OrderController {
         Order order = orderService.findOrderAtTable(id);
         if (order == null)
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(new OrderTableViewDTO(order), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new OrderTableViewDTO(order), HttpStatus.OK);
     }
 
 }

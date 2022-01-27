@@ -53,5 +53,17 @@ public class OrderItemServiceImpl implements OrderItemService {
         orderItemRepository.deleteAll(orderItems);
     }
 
+    @Override
+    public void deliverOrderItem(Long id) throws OrderItemException {
+        //todo testovi
+        OrderItem orderItem = orderItemRepository.findById(id).orElse(null);
+        if (orderItem == null)
+            throw new OrderItemException("No order item with that id exists!");
 
+        if (orderItem.getStatus() != OrderItemStatus.FINISHED)
+            throw new OrderItemException("Can't deliver unfinished order!");
+
+        orderItem.setStatus(OrderItemStatus.DELIVERED);
+        orderItemRepository.save(orderItem);
+    }
 }

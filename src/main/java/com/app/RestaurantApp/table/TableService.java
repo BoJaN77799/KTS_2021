@@ -21,7 +21,7 @@ public interface TableService {
 
     Table save(Table table);
 
-    List<TableWaiterDTO> getTablesWithActiveOrderIfItExists(int floor);
+    List<TableWaiterDTO> getTablesWithActiveOrderIfItExists(int floor, String waiterEmail);
 
     FloorTableInfo getFloorTableInfo();
 }
