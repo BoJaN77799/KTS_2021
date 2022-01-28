@@ -1,5 +1,6 @@
 package e2e.utils;
 
+import e2e.Utilities;
 import org.openqa.selenium.WebDriver;
 
 public abstract class GeneralPage {

@@ -1,7 +1,7 @@
 package e2e.reports.pages;
 
 import e2e.utils.Constants;
-import e2e.utils.Utilities;
+import e2e.Utilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

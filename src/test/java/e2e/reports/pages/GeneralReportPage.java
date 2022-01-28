@@ -1,6 +1,6 @@
 package e2e.reports.pages;
 
-import e2e.utils.Utilities;
+import e2e.Utilities;
 import e2e.utils.GeneralPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

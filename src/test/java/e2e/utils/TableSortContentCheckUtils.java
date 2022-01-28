@@ -1,5 +1,6 @@
 package e2e.utils;
 
+import e2e.Utilities;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
