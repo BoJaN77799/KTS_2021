@@ -1,8 +1,9 @@
 package e2e.reports.tests;
 
+import e2e.utils.Constants;
 import e2e.commonPages.LoginPage;
 import e2e.commonPages.ManagerPage;
-import e2e.reports.pages.SalesTablePage;
+import e2e.reports.pages.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,10 @@ public class ReportsTest {
     private static LoginPage loginPage;
     private static ManagerPage managerPage;
     private static SalesTablePage salesTablePage;
+    private static SalesChartPage salesChartPage;
+    private static IncomeExpensesChartPage incomeExpensesChartPage;
+    private static ActivityTablePage activityTablePage;
+    private static ActivityChartPage activityChartPage;
 
     @BeforeAll
     public static void setupSelenium() {
@@ -26,60 +31,69 @@ public class ReportsTest {
         driver = new ChromeDriver();
 
         driver.manage().window().maximize();
-        driver.navigate().to("http://localhost:4200/");
+        driver.navigate().to(Constants.BASE_URL);
 
         loginPage = PageFactory.initElements(driver, LoginPage.class);
         managerPage = PageFactory.initElements(driver, ManagerPage.class);
         salesTablePage = PageFactory.initElements(driver, SalesTablePage.class);
+        salesChartPage = PageFactory.initElements(driver, SalesChartPage.class);
+        incomeExpensesChartPage = PageFactory.initElements(driver, IncomeExpensesChartPage.class);
+        activityTablePage = PageFactory.initElements(driver, ActivityTablePage.class);
+        activityChartPage = PageFactory.initElements(driver, ActivityChartPage.class);
     }
 
     @Test
     public void testReports() {
-        assertEquals("http://localhost:4200/rest-app/auth/login", driver.getCurrentUrl());
         // login as manager
-        loginPage.setEmailInput("manager@maildrop.cc");
-        loginPage.setPasswordInput("manager");
+        loginPage.setEmailInput(Constants.MANAGER_EMAIL);
+        loginPage.setPasswordInput(Constants.MANAGER_PASSWORD);
         loginPage.loginButtonClick();
 
+        // go to sales table
         managerPage.reportsNavBarClick();
         managerPage.reportsLinksClickIndex(0);
-        assertEquals("http://localhost:4200/rest-app/reports/reports-manager/sales-table", driver.getCurrentUrl());
-
-        salesTablePage.reportsButtonClick(); // empty list
-        // togle date-picker
-        salesTablePage.dateFormClick();
-        salesTablePage.dateFormToggleClick();
-        salesTablePage.previousMonthButtonClick();
-        salesTablePage.dateFromButtonClick();
-        salesTablePage.dateToButtonClick();
+        assertTrue(salesTablePage.getUrl());
+        salesTablePage.setupDateFrom();
         salesTablePage.reportsButtonClick();
-
-        // check table content
         assertTrue(salesTablePage.getTableContentCheck());
+        assertTrue(salesTablePage.generalSortAction());
 
-        assertTrue(salesTablePage.sortButtonClickAndCheck(0, true));
-        assertTrue(salesTablePage.sortButtonClickAndCheck(0, false));
-        assertTrue(salesTablePage.sortButtonClickAndCheck(1, true));
-        assertTrue(salesTablePage.sortButtonClickAndCheck(1, false));
-        assertTrue(salesTablePage.sortButtonClickAndCheck(2, true));
-        assertTrue(salesTablePage.sortButtonClickAndCheck(2, false));
-        assertTrue(salesTablePage.sortButtonClickAndCheck(3, true));
-        assertTrue(salesTablePage.sortButtonClickAndCheck(3, false));
-
-
+        // go to sales chart
         managerPage.reportsNavBarClick();
         managerPage.reportsLinksClickIndex(1);
-        assertEquals("http://localhost:4200/rest-app/reports/reports-manager/sales-chart", driver.getCurrentUrl());
+        assertTrue(salesChartPage.getUrl());
+        salesChartPage.setupDateFrom();
+        salesChartPage.reportsButtonClick();
 
-        salesTablePage.dateFormClick();
-        salesTablePage.dateFormToggleClick();
-        salesTablePage.previousMonthButtonClick();
-        salesTablePage.dateFromButtonClick();
-        salesTablePage.dateToButtonClick();
-        salesTablePage.reportsButtonClick();
+        // go to income expenses chart
+        managerPage.reportsNavBarClick();
+        managerPage.reportsLinksClickIndex(2);
+        assertTrue(incomeExpensesChartPage.getUrl());
+        assertTrue(incomeExpensesChartPage.expensesParagraphCheckText("Expenses: 70932.58 RSD"));
+        assertTrue(incomeExpensesChartPage.incomeParagraphCheckText("Income: 12130 RSD"));
+        incomeExpensesChartPage.setupDateFrom();
+        incomeExpensesChartPage.reportsButtonClick();
+        assertTrue(incomeExpensesChartPage.expensesParagraphCheckText("Expenses: 11922.58 RSD"));
+        assertTrue(incomeExpensesChartPage.incomeParagraphCheckText("Income: 680 RSD"));
+
+        // go to activity table
+        managerPage.reportsNavBarClick();
+        managerPage.reportsLinksClickIndex(3);
+        assertTrue(activityTablePage.getUrl());
+        activityTablePage.setupDateFrom();
+        activityTablePage.reportsButtonClick();
+        assertTrue(activityTablePage.getTableContentCheck());
+        assertTrue(activityTablePage.generalSortAction());
+
+        // go to activity chart
+        managerPage.reportsNavBarClick();
+        managerPage.reportsLinksClickIndex(4);
+        assertTrue(activityChartPage.getUrl());
+        activityChartPage.setupDateFrom();
+        activityChartPage.reportsButtonClick();
 
         // logout
-        //managerPage.logOutLinkClick();
+        managerPage.logOutLinkClick();
     }
 
     @AfterAll
