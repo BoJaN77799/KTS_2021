@@ -3,6 +3,7 @@ package com.app.RestaurantApp.bonus;
 import com.app.RestaurantApp.bonus.dto.BonusDTO;
 import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.employee.Employee;
+import com.app.RestaurantApp.users.employee.EmployeeRepository;
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class BonusServiceImpl implements BonusService {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Override
     public List<BonusDTO> getBonusesOfEmployee(String email) throws UserException {
@@ -43,6 +47,7 @@ public class BonusServiceImpl implements BonusService {
         e.getBonuses().add(bonus);
         BonusUtils.CheckBonusInfo(bonus);
 
+        employeeRepository.save(e);
         return bonusRepository.save(bonus);
 
     }
