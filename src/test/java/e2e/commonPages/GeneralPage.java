@@ -1,4 +1,4 @@
-package e2e.utils;
+package e2e.commonPages;
 
 import e2e.Utilities;
 import org.openqa.selenium.WebDriver;
