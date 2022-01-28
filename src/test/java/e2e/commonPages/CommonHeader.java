@@ -15,6 +15,9 @@ public class CommonHeader {
     @FindBy(xpath = "//a[@id='profile']")
     protected WebElement profileLink;
 
+    @FindBy(xpath = "//snack-bar-container/div/div/simple-snack-bar/span")
+    protected WebElement snackBarSpan;
+
     public CommonHeader(WebDriver driver) {
         this.driver = driver;
     }
@@ -26,4 +29,8 @@ public class CommonHeader {
     public void logOutLinkClick() {
         Utilities.clickableWait(driver, this.logOutLink, 10).click();
     }
+
+    public WebElement getSnackBar() { return Utilities.visibilityWait(driver, this.snackBarSpan, 10); }
+
+    public boolean isSnackBarContainsMessage(String message){ return Utilities.textWait(driver, snackBarSpan, message, 10); }
 }
