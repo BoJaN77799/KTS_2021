@@ -47,8 +47,6 @@ public class BonusServiceImpl implements BonusService {
         e.getBonuses().add(bonus);
         BonusUtils.CheckBonusInfo(bonus);
 
-        employeeRepository.save(e);
         return bonusRepository.save(bonus);
-
     }
 }

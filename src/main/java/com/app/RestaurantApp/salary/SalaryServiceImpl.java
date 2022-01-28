@@ -59,7 +59,8 @@ public class SalaryServiceImpl implements SalaryService {
         SalaryUtils.CheckSalaryInfo(salary);
 
         employeeRepository.save(e);
-        return salaryRepository.save(salary);
+        //return salaryRepository.save(salary);
+        return salary;
     }
 
 }

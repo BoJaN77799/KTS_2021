@@ -73,7 +73,8 @@ public class EmployeesTest {
         employeesPage.closeSalariesBonusesDialogButtonClick();
         employeesPage.closeProfileInfoButtonClick();
 
-        // managerPage.logOutLinkClick();
+        assertTrue(employeesPage.checkCardContent("8000"));
+        managerPage.logOutLinkClick();
     }
 
     @AfterAll

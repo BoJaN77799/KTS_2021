@@ -3,18 +3,11 @@ package e2e.employees.pages;
 import e2e.utils.Constants;
 import e2e.Utilities;
 import e2e.commonPages.GeneralPage;
-import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 
-import java.time.Duration;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.function.Function;
 
 public class EmployeesPage extends GeneralPage {
 
@@ -38,6 +31,9 @@ public class EmployeesPage extends GeneralPage {
 
     @FindBy(xpath = "//button[@id='money-view-cancel-button']")
     private WebElement closeSalariesBonusesDialogButton;
+
+    @FindBy(xpath = "//p[@class='card-text']")
+    private List<WebElement> cardsContent;
 //
 //    private Wait<WebDriver> wait;
 
@@ -88,5 +84,11 @@ public class EmployeesPage extends GeneralPage {
 
     public void closeSalariesBonusesDialogButtonClick() {
         Utilities.clickableWait(this.driver, this.closeSalariesBonusesDialogButton, 10).click();
+    }
+
+    public boolean checkCardContent(String text) {
+        List<WebElement> elems = Utilities.visibilityOfElements(this.driver, this.cardsContent, 10);
+        WebElement el = elems.get(2);
+        return el.getText().contains(text);
     }
 }
