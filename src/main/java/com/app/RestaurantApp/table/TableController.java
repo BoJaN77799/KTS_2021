@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -83,6 +84,19 @@ public class TableController {
     public List<TableWaiterDTO> getTablesFromFloor(@RequestParam(value = "floor") int floor){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return tableService.getTablesWithActiveOrderIfItExists(floor, userDetails.getUsername());
+    }
+
+    @GetMapping(value = "/tableInfo/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<TableWaiterDTO> getTableAndOrderInfo(@PathVariable Long id){
+        //todo test
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        try {
+            TableWaiterDTO resp = tableService.getTableOrderInfo(id, userDetails.getUsername());
+            return new ResponseEntity<>(resp, HttpStatus.OK);
+        }catch(TableException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

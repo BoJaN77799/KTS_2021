@@ -24,4 +24,6 @@ public interface TableService {
     List<TableWaiterDTO> getTablesWithActiveOrderIfItExists(int floor, String waiterEmail);
 
     FloorTableInfo getFloorTableInfo();
+
+    TableWaiterDTO getTableOrderInfo(Long tableId, String email) throws TableException;
 }

@@ -76,7 +76,7 @@ public class AppUserController {
         return new ResponseEntity<>(new UserInfoDTO(user), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/change_password/{id}")
+    @PutMapping(value = "/change_password/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> changePassword(@PathVariable("id") Long userId, @RequestBody ChangePasswordDTO changePassword) {
         String oldPassword = changePassword.getOldPassword();
         String newPassword = changePassword.getNewPassword();

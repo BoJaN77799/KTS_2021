@@ -137,4 +137,16 @@ public class TableServiceImpl implements TableService{
         resultList.sort(Comparator.comparing(TableWaiterDTO::getId));
         return resultList;
     }
+
+    @Override
+    public TableWaiterDTO getTableOrderInfo(Long tableId, String email) throws TableException {
+        //todo test
+        TableWaiterDTO retVal;
+        Optional<Table> table = tableRepository.findTableByIdAndGetActiveIfExists(tableId);
+        if (table.isEmpty())
+            throw new TableException("Table not found!");
+
+        retVal = new TableWaiterDTO(table.get(), email);
+        return retVal;
+    }
 }

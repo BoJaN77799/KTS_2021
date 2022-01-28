@@ -98,11 +98,9 @@ public class TableWaiterDTO {
                 orderIsNew = true;
             }
         }
-        if (orderIsInProgress)
-            return "IN PROGRESS";
-        if (orderIsNew)
-            return "NEW";
-        return "FINISHABLE";
+        if (orderIsNew || orderIsInProgress)
+            return "CREATED";
+        return "DELIVERED";
     }
 
     public boolean isOrderIsMine() {
