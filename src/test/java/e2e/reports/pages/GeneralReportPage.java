@@ -9,11 +9,21 @@ public abstract class GeneralReportPage {
 
     protected WebDriver driver;
 
-    @FindBy(xpath = "//input[@id='start']")
-    protected WebElement inputDateStart;
+    @FindBy(xpath = "//div[@id='date-form']//mat-form-field")
+    protected WebElement dateForm;
 
-    @FindBy(xpath = "//input[@id='end']")
-    protected WebElement inputDateEnd;
+    @FindBy(xpath = "//mat-datepicker-toggle")
+    protected WebElement dateFormToggle;
+
+    @FindBy(xpath = "//button" +
+            "[@class='mat-focus-indicator mat-calendar-previous-button mat-icon-button mat-button-base']")
+    protected WebElement previousMonthButton;
+
+    @FindBy(xpath = "//td[@data-mat-row='1' and @data-mat-col='1']")
+    protected WebElement dateFromButton;
+
+    @FindBy(xpath = "//td[@data-mat-row='2' and @data-mat-col='4']")
+    protected  WebElement dateToButton;
 
     @FindBy(xpath = "//button[@id='reports-button']")
     protected WebElement reportsButton;
@@ -22,24 +32,24 @@ public abstract class GeneralReportPage {
         this.driver = driver;
     }
 
-    public WebElement getInputDateStart() {
-        return Utilities.visibilityWait(driver, this.inputDateStart, 10);
+    public void dateFormClick() {
+        Utilities.clickableWait(driver, this.dateForm, 10).click();
     }
 
-    public void setInputDateStartText(String text) {
-        WebElement el = getInputDateStart();
-        el.clear();
-        el.sendKeys(text);
+    public void dateFormToggleClick() {
+        Utilities.clickableWait(driver, this.dateFormToggle, 10).click();
     }
 
-    public WebElement getInputDateEnd() {
-        return Utilities.visibilityWait(driver, this.inputDateEnd, 10);
+    public void dateFromButtonClick() {
+        Utilities.clickableWait(driver, this.dateFromButton, 10).click();
     }
 
-    public void setInputDateEndText(String text) {
-        WebElement el = getInputDateEnd();
-        el.clear();
-        el.sendKeys(text);
+    public void dateToButtonClick() {
+        Utilities.clickableWait(driver, this.dateToButton, 10).click();
+    }
+
+    public void previousMonthButtonClick() {
+        Utilities.clickableWait(driver, this.previousMonthButton, 10).click();
     }
 
     public void reportsButtonClick() {
