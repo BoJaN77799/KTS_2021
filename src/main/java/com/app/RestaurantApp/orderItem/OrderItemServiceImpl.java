@@ -34,13 +34,13 @@ public class OrderItemServiceImpl implements OrderItemService {
         // Is it valid transition of OrderItemStatus
         OrderItemUtils.checkOrderItemChangeStatusInfo(orderItem, orderItemChangeStatusDTO.getStatus());
 
-        // Does anyone have higher priority?
+        // Does anyone whose IN_PROGRESS have higher priority?
         if (OrderItemStatus.valueOf(orderItemChangeStatusDTO.getStatus()).equals(OrderItemStatus.FINISHED)) {
-            Order order = orderService.findOneWithOrderItems(orderItem.getOrder().getId());
-            for (OrderItem orderItemInItem : order.getOrderItems()) {
-                if (orderItemInItem.getStatus() == OrderItemStatus.IN_PROGRESS && orderItem.getPriority() < orderItemInItem.getPriority())
-                    throw new OrderItemException("Denied - There is a order item with a higher priority.");
-            }
+            checkPriority(orderItem, OrderItemStatus.IN_PROGRESS);
+        }
+        // Does anyone whose ORDERED have higher priority?
+        if (OrderItemStatus.valueOf(orderItemChangeStatusDTO.getStatus()).equals(OrderItemStatus.IN_PROGRESS)) {
+            checkPriority(orderItem, OrderItemStatus.ORDERED);
         }
         orderItem.setStatus(OrderItemStatus.valueOf(orderItemChangeStatusDTO.getStatus()));
 
@@ -52,6 +52,15 @@ public class OrderItemServiceImpl implements OrderItemService {
         }
 
         return orderItem;
+    }
+
+    private void checkPriority(OrderItem orderItem, OrderItemStatus referencingStatus) throws OrderItemException {
+        Order order = orderService.findOneWithOrderItems(orderItem.getOrder().getId());
+        for (OrderItem orderItemInItem : order.getOrderItems()) {
+            if (orderItemInItem.getStatus() == referencingStatus && orderItem.getPriority() < orderItemInItem.getPriority())
+                throw new OrderItemException("Denied - There is a order item with a higher priority.");
+        }
+
     }
 
     @Override

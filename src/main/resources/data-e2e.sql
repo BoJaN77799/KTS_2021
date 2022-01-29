@@ -419,3 +419,24 @@ insert into order_item (quantity, status, price, priority, order_id, item_id)
                 values (3, 'ORDERED', 200.0, 0, 13, 20); --espresso 110
 insert into order_item (quantity, status, price, priority, order_id, item_id)
                 values (3, 'DELIVERED', 200.0, 0, 13, 14); --cola 100
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 1.', 11, 5); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 1.', 11, 6); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 1.', 11, 7); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 4.', 12, 5); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 4.', 12, 6); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 4.', 12, 7); -- cook
+
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 4.', 12, 9); -- cook

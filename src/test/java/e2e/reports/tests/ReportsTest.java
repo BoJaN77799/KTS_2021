@@ -1,7 +1,7 @@
 package e2e.reports.tests;
 
 import e2e.utils.Constants;
-import e2e.commonPages.LoginPage;
+import e2e.users.pages.LoginPage;
 import e2e.commonPages.ManagerPage;
 import e2e.reports.pages.*;
 import org.junit.jupiter.api.AfterAll;

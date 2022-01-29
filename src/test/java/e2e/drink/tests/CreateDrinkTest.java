@@ -3,21 +3,17 @@ package e2e.drink.tests;
 import e2e.Utilities;
 import e2e.commonPages.BarmanPage;
 import e2e.drink.pages.CreateDrinkPage;
-import e2e.commonPages.LoginPage;
-import jdk.jshell.execution.Util;
+import e2e.users.pages.LoginPage;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
-import java.util.Objects;
 
-import static e2e.commonPages.Constants.*;
+import static e2e.utils.Constants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -45,7 +41,7 @@ public class CreateDrinkTest {
     @Test
     public void testCreateDrink() {
         assertEquals("http://localhost:4200/rest-app/auth/login", driver.getCurrentUrl());
-        // ulogujemo se kao manager
+        // ulogujemo se kao barman
         loginPage.setEmailInput(BARMAN_EMAIL);
         loginPage.setPasswordInput(BARMAN_PASSWORD);
         loginPage.loginButtonClick();

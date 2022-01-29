@@ -2,7 +2,7 @@ package e2e.orders.tests;
 
 import com.app.RestaurantApp.enums.ItemType;
 import e2e.Utilities;
-import e2e.commonPages.LoginPage;
+import e2e.users.pages.LoginPage;
 import e2e.orders.pages.OrderInfoPage;
 import e2e.orders.pages.OrdersPage;
 import org.junit.jupiter.api.AfterAll;
@@ -18,9 +18,7 @@ import org.openqa.selenium.support.PageFactory;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static e2e.commonPages.Constants.*;
+import static e2e.utils.Constants.*;
 
 public class InfoOrderTest {
 
@@ -56,7 +54,7 @@ public class InfoOrderTest {
         //assertTrue(ordersPage.getTableNewOrdersBodyContent().size() >= 1);
         ordersPage.infoButtonFirstRowButtonClick();
 
-        assertEquals("Details: Order on Table 4", orderInfoPage.getOrderInfoTitle());
+        assertEquals("Details: Order on Table 13", orderInfoPage.getOrderInfoTitle());
         assertEquals("Order was created at January 13th 2022.", orderInfoPage.getOrderCreatedInfoTitle());
 
         assertEquals(1, orderInfoPage.getTableOrderItemsBodyContent().size());
@@ -66,9 +64,8 @@ public class InfoOrderTest {
         assertEquals("220", cells.get(2).getText());
         assertEquals("2", cells.get(3).getText());
         assertEquals("0", cells.get(4).getText());
-        assertFalse(orderInfoPage.getFinishCell().isDisplayed());
 
-        assertEquals("Pozuri, zedan sam.", orderInfoPage.getNoteElementText());
+        assertEquals("Pozuri, zedan sam za stolom 13.", orderInfoPage.getNoteElementText());
 
         Actions action = new Actions(driver);
         action.sendKeys(Keys.ESCAPE).build().perform(); // gasenje modala

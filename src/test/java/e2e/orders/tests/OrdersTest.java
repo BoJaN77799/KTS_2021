@@ -1,6 +1,7 @@
 package e2e.orders.tests;
 
-import e2e.commonPages.LoginPage;
+import e2e.Utilities;
+import e2e.users.pages.LoginPage;
 import e2e.orders.pages.OrdersPage;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -14,7 +15,7 @@ import org.openqa.selenium.support.PageFactory;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static e2e.commonPages.Constants.*;
+import static e2e.utils.Constants.*;
 
 public class OrdersTest {
 
@@ -43,19 +44,20 @@ public class OrdersTest {
         loginPage.setPasswordInput(BARMAN_PASSWORD);
         loginPage.loginButtonClick();
 
-        //assertEquals("http://localhost:4200/rest-app/orders/orders-page", driver.getCurrentUrl());
+        Utilities.urlWait(driver, "http://localhost:4200/rest-app/orders/orders-page", 10);
+        assertEquals("http://localhost:4200/rest-app/orders/orders-page", driver.getCurrentUrl());
 
         ordersPage.optionsLinkClick();
         ordersPage.newOrdersLinkClick();
 
         assertEquals("http://localhost:4200/rest-app/orders/orders-page", driver.getCurrentUrl()); // that's the same url
 
-        assertEquals(1, ordersPage.getTableNewOrdersBodyContent().size());
+        assertEquals(5, ordersPage.getTableNewOrdersBodyContent().size());
         List<WebElement> cells = ordersPage.getTableNewOrdersBodyContent().get(0).findElements(By.xpath("//td"));
-        assertEquals("12", cells.get(0).getText());
+        assertEquals("14", cells.get(0).getText());
         assertEquals("January 13th 2022", cells.get(1).getText());
-        assertEquals("Pozuri, zedan sam.", cells.get(2).getText());
-        assertEquals("4", cells.get(3).getText());
+        assertEquals("Pozuri, zedan sam za stolom 13.", cells.get(2).getText());
+        assertEquals("13", cells.get(3).getText());
         assertEquals("1", cells.get(4).getText());
 
         ordersPage.logOutLinkClick();
@@ -78,11 +80,12 @@ public class OrdersTest {
         assertEquals(String.format("http://localhost:4200/rest-app/orders/my-orders-page/%d", BARMAN_ID), driver.getCurrentUrl()); // that's the same url
 
         // assertEquals(1, ordersPage.getTableMyOrdersBodyContent().size());
-        List<WebElement> cells = ordersPage.getTableMyOrdersBodyContent().get(0).findElements(By.xpath("//td"));
-        assertEquals("13", cells.get(0).getText());
-        assertEquals("December 23rd 2021", cells.get(1).getText());
-        assertEquals("Pozuri", cells.get(2).getText());
-        assertEquals("2", cells.get(3).getText());
+        int size = ordersPage.getTableMyOrdersBodyContent().size();
+        List<WebElement> cells = ordersPage.getTableMyOrdersBodyContent().get(size-1).findElements(By.xpath("//td"));
+        assertEquals("12", cells.get(0).getText());
+        assertEquals("January 13th 2022", cells.get(1).getText());
+        assertEquals("Pozuri, zedan sam.", cells.get(2).getText());
+        assertEquals("4", cells.get(3).getText());
 
         ordersPage.logOutLinkClick();
         assertEquals("http://localhost:4200/rest-app/auth/login", driver.getCurrentUrl());
