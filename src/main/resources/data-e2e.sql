@@ -428,42 +428,43 @@ insert into order_item (quantity, status, price, priority, order_id, item_id)
 insert into restaurant_order (status, created_at, note, table_id, waiter_id) -- Order to update
 values ('NEW', 1642028400000, 'Pozuri, zedan sam za stolom 13.', 13, 4);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
+values (2, 'ORDERED', 220.0, 0, 13, 16); --bravo sok 100
+insert into order_item (quantity, status, price, priority, order_id, item_id)
+values (2, 'ORDERED', 450.0, 2, 13, 11); --ledene kocke 300
+
+insert into restaurant_order (status, created_at, note, table_id, waiter_id) -- Order to finish
+values ('NEW', 1642028400000, 'Pozuri, zedan sam za stolom 14.', 14, 4);
+insert into order_item (quantity, status, price, priority, order_id, item_id)
 values (2, 'ORDERED', 220.0, 0, 14, 16); --bravo sok 100
 insert into order_item (quantity, status, price, priority, order_id, item_id)
 values (2, 'ORDERED', 450.0, 2, 14, 11); --ledene kocke 300
 
-insert into restaurant_order (status, created_at, note, table_id, waiter_id) -- Order to finish
-values ('NEW', 1642028400000, 'Pozuri, zedan sam za stolom 14.', 14, 4);
+insert into restaurant_order (status, created_at, note, table_id, waiter_id) -- Order to finish from table view
+values ('NEW', 1642028400000, 'Pozuri, zedan sam za stolom 11.', 11, 4);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
 values (2, 'ORDERED', 220.0, 0, 15, 16); --bravo sok 100
 insert into order_item (quantity, status, price, priority, order_id, item_id)
 values (2, 'ORDERED', 450.0, 2, 15, 11); --ledene kocke 300
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id) -- Order to finish from table view
-values ('NEW', 1642028400000, 'Pozuri, zedan sam za stolom 11.', 11, 4);
-insert into order_item (quantity, status, price, priority, order_id, item_id)
-values (2, 'ORDERED', 220.0, 0, 16, 16); --bravo sok 100
-insert into order_item (quantity, status, price, priority, order_id, item_id)
-values (2, 'ORDERED', 450.0, 2, 16, 11); --ledene kocke 300
-
-insert into restaurant_order (status, created_at, note, table_id, waiter_id) -- Order to finish from table view
 values ('NEW', 1642028400000, 'Pozuri, zedan sam za stolom 11.', 10, 4);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-values (2, 'FINISHED', 220.0, 0, 17, 16); --bravo sok 100
+values (2, 'FINISHED', 220.0, 0, 16, 16); --bravo sok 100
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-values (2, 'ORDERED', 450.0, 2, 17, 11); --ledene kocke 300
-insert into order_notification(seen, message, order_id, employee_id)
-values (False, 'New order from table 1.', 11, 5); -- cook
+values (2, 'ORDERED', 450.0, 2, 16, 11); --ledene kocke 300
 
 ------- IN_PROGRESS
 insert into restaurant_order (status, created_at, note, table_id, waiter_id, barman_id, profit)
     values ('IN_PROGRESS', 1640214000000, 'Pozuri', 2, 4, 8, 570);
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (3, 'ORDERED', 200.0, 0, 13, 20); --espresso 110
+                values (3, 'ORDERED', 200.0, 0, 17, 20); --espresso 110
 insert into order_item (quantity, status, price, priority, order_id, item_id)
-                values (3, 'DELIVERED', 200.0, 0, 13, 14); --cola 100
+                values (3, 'DELIVERED', 200.0, 0, 17, 14); --cola 100
 
 -- notifications
+insert into order_notification(seen, message, order_id, employee_id)
+values (False, 'New order from table 1.', 11, 5); -- cook
+
 insert into order_notification(seen, message, order_id, employee_id)
 values (False, 'New order from table 1.', 11, 6); -- cook
 
