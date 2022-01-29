@@ -1,12 +1,11 @@
 package com.app.RestaurantApp.orderItem;
 
-import com.app.RestaurantApp.order.dto.OrderFindDTO;
+import com.app.RestaurantApp.enums.OrderItemStatus;
+import com.app.RestaurantApp.orderItem.dto.OrderItemChangeStatusDTO;
 import com.app.RestaurantApp.security.auth.JwtAuthenticationRequest;
-import com.app.RestaurantApp.users.appUser.AppUserRepository;
 import com.app.RestaurantApp.users.dto.UserTokenState;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +15,17 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
 import static com.app.RestaurantApp.order.Constants.WAITER_EMAIL;
 import static com.app.RestaurantApp.order.Constants.WAITER_PWD;
-import static com.app.RestaurantApp.users.appUser.Constants.ADMIN_PASSWORD;
-import static com.app.RestaurantApp.users.appUser.Constants.ADMIN_USERNAME;
+import static com.app.RestaurantApp.orderItem.Constants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
@@ -36,6 +37,9 @@ public class OrderItemControllerIntegrationTests {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     private static HttpHeaders headers;
 
@@ -66,5 +70,69 @@ public class OrderItemControllerIntegrationTests {
 
         String result = entity.getBody();
         assertEquals("Order item delivered!", result);
+    }
+
+    @Test
+    @Transactional
+    public void testChangeStatus() throws Exception {
+        OrderItemChangeStatusDTO oiDTO = new OrderItemChangeStatusDTO(25L, "IN_PROGRESS");
+        String jsonOiDTO = mapper.writeValueAsString(oiDTO);
+        mockMvc.perform(put("/api/orderItems/changeStatus")
+                        .headers(headers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonOiDTO))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").value(OI_SUCC_CHANGED));
+
+        OrderItemStatus oiStatus = orderItemRepository.findById(25L).get().getStatus();
+        assertEquals(OrderItemStatus.IN_PROGRESS, oiStatus);
+    }
+
+    @Test
+    public void testChangeStatus_invalidOrderItem() throws Exception {
+        OrderItemChangeStatusDTO oiDTO = new OrderItemChangeStatusDTO(-1L, "IN_PROGRESS");
+        String jsonOiDTO = mapper.writeValueAsString(oiDTO);
+        mockMvc.perform(put("/api/orderItems/changeStatus")
+                        .headers(headers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonOiDTO))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").value(INVALID_OI_MSG));
+    }
+
+    @Test
+    public void testChangeStatus_invalidOrderItemStatus() throws Exception {
+        OrderItemChangeStatusDTO oiDTO = new OrderItemChangeStatusDTO(25L, "ASDF");
+        String jsonOiDTO = mapper.writeValueAsString(oiDTO);
+        mockMvc.perform(put("/api/orderItems/changeStatus")
+                        .headers(headers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonOiDTO))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").value(INVALID_OI_STATUS_MSG));
+    }
+
+    @Test
+    public void testChangeStatus_invalidStatusTransition() throws Exception {
+        OrderItemChangeStatusDTO oiDTO = new OrderItemChangeStatusDTO(26L, "IN_PROGRESS");
+        String jsonOiDTO = mapper.writeValueAsString(oiDTO);
+        mockMvc.perform(put("/api/orderItems/changeStatus")
+                        .headers(headers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonOiDTO))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").value(INVALID_TRANSITION_MSG1));
+    }
+
+    @Test
+    public void testChangeStatus_higherPriorityAlreadyExists() throws Exception {
+        OrderItemChangeStatusDTO oiDTO = new OrderItemChangeStatusDTO(6L, "IN_PROGRESS");
+        String jsonOiDTO = mapper.writeValueAsString(oiDTO);
+        mockMvc.perform(put("/api/orderItems/changeStatus")
+                        .headers(headers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonOiDTO))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").value(PRIORITY_DENIED));
     }
 }
