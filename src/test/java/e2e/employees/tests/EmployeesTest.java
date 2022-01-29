@@ -3,7 +3,6 @@ package e2e.employees.tests;
 import e2e.commonPages.ConfirmationDialog;
 import e2e.commonPages.LoginPage;
 import e2e.commonPages.ManagerPage;
-import e2e.commonPages.PaginationComponentPage;
 import e2e.employees.pages.EmployeesPage;
 import e2e.utils.Constants;
 import org.junit.jupiter.api.AfterAll;
@@ -24,7 +23,6 @@ public class EmployeesTest {
     private static ManagerPage managerPage;
     private static EmployeesPage employeesPage;
     private static ConfirmationDialog confirmationDialog;
-    private static PaginationComponentPage paginationComponentPage;
 
     @BeforeAll
     public static void setupSelenium() {
@@ -38,7 +36,7 @@ public class EmployeesTest {
         managerPage = PageFactory.initElements(driver, ManagerPage.class);
         employeesPage = PageFactory.initElements(driver, EmployeesPage.class);
         confirmationDialog = PageFactory.initElements(driver, ConfirmationDialog.class);
-        paginationComponentPage = PageFactory.initElements(driver, PaginationComponentPage.class);
+
     }
 
     @Test
