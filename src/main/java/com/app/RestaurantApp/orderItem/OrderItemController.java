@@ -17,7 +17,7 @@ public class OrderItemController {
 
 
     @PutMapping(value = "/changeStatus", consumes = "application/json")
-    @PreAuthorize("hasAnyRole('COOK', 'BARMAN')")
+    @PreAuthorize("hasAnyRole('COOK', 'BARMAN', 'WAITER')")
     public ResponseEntity<String> changeStatus(@RequestBody OrderItemChangeStatusDTO orderItemDTO) {
         try {
             orderItemService.changeStatus(orderItemDTO);
