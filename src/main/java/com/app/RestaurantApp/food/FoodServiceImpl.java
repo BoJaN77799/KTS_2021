@@ -58,7 +58,7 @@ public class FoodServiceImpl implements FoodService {
         Food food = new Food(foodDTO);
         FoodUtils.CheckFoodInfo(food);
         if (foodDTO.getCategory() != null) {
-            Category category = categoryService.findOneByName(foodDTO.getCategory().getName());
+            Category category = categoryService.findOneByName(foodDTO.getCategory());
             if (category == null)
                 // need to make category first
                 category = categoryService.insertCategory(new Category(foodDTO.getCategory()));
@@ -76,7 +76,7 @@ public class FoodServiceImpl implements FoodService {
         Food food = new Food(foodDTO);
         FoodUtils.CheckFoodInfo(food);
         if (foodDTO.getCategory() != null) {
-            Category category = categoryService.findOneByName(foodDTO.getCategory().getName());
+            Category category = categoryService.findOneByName(foodDTO.getCategory());
             if (category == null)
                 // need to make category first
                 category = categoryService.insertCategory(new Category(foodDTO.getCategory()));

@@ -70,7 +70,7 @@ public class DrinkControllerIntegrationTests {
         DrinkDTO modifiedDrinkDTO = createDrinkDTO();
         modifiedDrinkDTO.setId(DRINK_ID);
         modifiedDrinkDTO.setVolume(UPDATE_VOLUME);
-        modifiedDrinkDTO.setCategory(category);
+        modifiedDrinkDTO.setCategory(category.getName());
 
         HttpEntity<DrinkDTO> httpEntity = new HttpEntity<>(modifiedDrinkDTO, headers);
 
@@ -222,7 +222,7 @@ public class DrinkControllerIntegrationTests {
 
     private DrinkDTO createDrinkDTO() {
         CategoryDTO category = new CategoryDTO(7L, "Alkoholna pica");
-        return new DrinkDTO(null, "Coca cola", 140.0, "Bas je gazirana", "putanja/cola", category, ItemType.DRINK, false, 0.5);
+        return new DrinkDTO(null, "Coca cola", 140.0, "Bas je gazirana", "putanja/cola", category.getName(), ItemType.DRINK, false, 0.5);
     }
     
 }

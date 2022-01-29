@@ -26,9 +26,9 @@ public class ItemUtils {
             throw new ItemException("Description cannot be greater than 256 characters!");
         }
 
-        if (item.getImage().isBlank()) {
-            throw new ItemException("Image path cannot be blank!");
-        }
+//        if (item.getImage().isBlank()) {
+//            throw new ItemException("Image path cannot be blank!");
+//        }
 
         if(item.getCategory() != null)
             if (item.getCategory().getName().isBlank()) {

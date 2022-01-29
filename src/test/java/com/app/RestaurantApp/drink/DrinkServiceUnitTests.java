@@ -7,6 +7,7 @@ import com.app.RestaurantApp.drinks.Drink;
 import com.app.RestaurantApp.drinks.DrinkException;
 import com.app.RestaurantApp.drinks.DrinkRepository;
 import com.app.RestaurantApp.drinks.DrinkService;
+import com.app.RestaurantApp.drinks.dto.DrinkCreateDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkSearchDTO;
 import com.app.RestaurantApp.enums.ItemType;
@@ -94,7 +95,7 @@ public class DrinkServiceUnitTests {
     @Test
     public void testSaveDrink() throws ItemException, DrinkException {
         // Test represent scenario where drinkDTO has expected data
-        DrinkDTO drinkDTO = createDrinkDTO();
+        DrinkCreateDTO drinkDTO = createDrinkDTO();
         Drink drinkMocked = new Drink(drinkDTO);
         Category category = new Category(drinkDTO.getCategory());
         given(categoryServiceMock.findOneByName(CATEGORY_NAME)).willReturn(category);
@@ -112,13 +113,13 @@ public class DrinkServiceUnitTests {
         assertNotNull(drink);
         assertEquals(drinkDTO.getVolume(), drink.getVolume());
         assertEquals(drinkDTO.getCost(), drink.getCost());
-        assertEquals(drinkDTO.getCategory().getName(), drink.getCategory().getName());
+        assertEquals(drinkDTO.getCategory(), drink.getCategory().getName());
     }
 
     @Test
     public void testSaveDrink_NewCategory() throws ItemException, DrinkException {
         // Test represent scenario where drinkDTO has expected data
-        DrinkDTO drinkDTO = createDrinkDTO();
+        DrinkCreateDTO drinkDTO = createDrinkDTO();
         Drink drinkMocked = new Drink(drinkDTO);
         Category category = new Category(CATEGORY_ID, CATEGORY_NAME);
         given(categoryServiceMock.findOneByName(CATEGORY_NAME)).willReturn(null); // category does not exist
@@ -141,7 +142,7 @@ public class DrinkServiceUnitTests {
 
     @Test
     public void testSaveDrink_VolumeEqualsOrLowerThanZero() {
-        DrinkDTO drinkDTO = createDrinkDTO();
+        DrinkCreateDTO drinkDTO = createDrinkDTO();
         // Volume is lower than zero
         drinkDTO.setVolume(-0.33);
         Drink drinkMocked = new Drink(drinkDTO);
@@ -154,9 +155,9 @@ public class DrinkServiceUnitTests {
         assertEquals(VOLUME_EQUALS_OR_LOWER_THAN_ZERO, exception.getMessage());
     }
 
-    private DrinkDTO createDrinkDTO() {
+    private DrinkCreateDTO createDrinkDTO() {
         CategoryDTO category = new CategoryDTO(7L, "Alkoholna pica");
-        return new DrinkDTO(7L, "Coca cola", 140.0, "Bas je gazirana", "putanja/cola", category, ItemType.DRINK, false, 0.5);
+        return new DrinkCreateDTO(7L, "Coca cola", 140.0, "Bas je gazirana", "putanja/cola", category, ItemType.DRINK, false, 0.5);
     }
 
     private List<Drink> createDrinks() {

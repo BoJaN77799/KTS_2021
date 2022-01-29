@@ -14,14 +14,14 @@ public class FoodDTO extends ItemDTO {
     public FoodDTO() {}
 
     public FoodDTO(Long id, String name, Double cost, String description, String image, CategoryDTO category, ItemType itemType, boolean deleted, String recipe, Integer timeToMake, String type) {
-        super(id, name, cost, description, image, category, itemType, deleted);
+        super(id, name, cost, description, image, category.getName(), itemType, deleted);
         this.recipe = recipe;
         this.timeToMake = timeToMake;
         this.type = type;
     }
 
     public FoodDTO(Food food) {
-        super(food.getId(), food.getName(), food.getCost(), food.getDescription(), food.getImage(), new CategoryDTO(food.getCategory()), food.getItemType(), food.isDeleted());
+        super(food.getId(), food.getName(), food.getCost(), food.getDescription(), food.getImage(), food.getCategory().getName(), food.getItemType(), food.isDeleted());
         this.recipe = food.getRecipe();
         this.timeToMake = food.getTimeToMake();
         this.type = food.getType().toString();

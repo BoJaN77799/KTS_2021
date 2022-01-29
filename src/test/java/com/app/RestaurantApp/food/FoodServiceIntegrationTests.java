@@ -124,7 +124,7 @@ public class FoodServiceIntegrationTests {
         assertEquals(foodDTO.getImage(), food.getImage());
         assertEquals(foodDTO.getDescription(), food.getDescription());
         assertFalse(food.isDeleted());
-        assertEquals(foodDTO.getCategory().getName(), food.getCategory().getName());
+        assertEquals(foodDTO.getCategory(), food.getCategory().getName());
     }
 
     @Test

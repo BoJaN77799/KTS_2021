@@ -2,6 +2,7 @@ package com.app.RestaurantApp.drinks;
 
 
 import com.app.RestaurantApp.ControllerUtils;
+import com.app.RestaurantApp.drinks.dto.DrinkCreateDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkSearchDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkWithPriceDTO;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -46,9 +48,9 @@ public class DrinkController {
         return new ResponseEntity<>(new DrinkDTO(drink), HttpStatus.FOUND);
     }
 
-    @PostMapping(consumes = "application/json")
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('BARMAN')")
-    public ResponseEntity<String> saveDrink(@RequestBody DrinkDTO drinkDTO) {
+    public ResponseEntity<String> saveDrink(@ModelAttribute DrinkCreateDTO drinkDTO) {
         try {
             drinkService.saveDrink(drinkDTO);
             return new ResponseEntity<>("Drink successfully created", HttpStatus.CREATED);
@@ -57,9 +59,9 @@ public class DrinkController {
         }
     }
 
-    @PutMapping(consumes = "application/json")
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('BARMAN')")
-    public ResponseEntity<String> updateDrink(@RequestBody DrinkDTO drinkDTO) {
+    public ResponseEntity<String> updateDrink(@ModelAttribute DrinkCreateDTO drinkDTO) {
 
         try {
             Drink drink = drinkService.findOne(drinkDTO.getId());

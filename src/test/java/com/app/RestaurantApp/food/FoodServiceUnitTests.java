@@ -121,7 +121,7 @@ public class FoodServiceUnitTests {
 
         assertNotNull(food);
         assertEquals(foodDTO.getName(), food.getName());
-        assertEquals(foodDTO.getCategory().getName(), food.getCategory().getName());
+        assertEquals(foodDTO.getCategory(), food.getCategory().getName());
     }
 
     @Test
@@ -331,7 +331,8 @@ public class FoodServiceUnitTests {
     public void testSaveFood_CategoryNameBlank() {
         FoodWithIngredientsDTO foodDTO = createFoodDTO();
         // Category name is blank
-        foodDTO.setCategory(new CategoryDTO(1L, ""));
+        CategoryDTO blankCategory = new CategoryDTO(1L, "");
+        foodDTO.setCategory(blankCategory.getName());
         Food foodMocked = new Food(foodDTO);
         given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
 

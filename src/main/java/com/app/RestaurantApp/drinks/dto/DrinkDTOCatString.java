@@ -3,24 +3,24 @@ package com.app.RestaurantApp.drinks.dto;
 import com.app.RestaurantApp.category.dto.CategoryDTO;
 import com.app.RestaurantApp.drinks.Drink;
 import com.app.RestaurantApp.enums.ItemType;
-import com.app.RestaurantApp.item.dto.ItemDTO;
+import com.app.RestaurantApp.item.dto.ItemDTOCatString;
 
-public class DrinkDTO extends ItemDTO {
+public class DrinkDTOCatString  extends ItemDTOCatString {
 
     private double volume;
 
-    public DrinkDTO() {}
+    public DrinkDTOCatString() {}
 
-    public DrinkDTO(double volume) {
+    public DrinkDTOCatString(double volume) {
         this.volume = volume;
     }
 
-    public DrinkDTO(Long id, String name, Double cost, String description, String image, String category, ItemType itemType, boolean deleted, Double volume) {
+    public DrinkDTOCatString(Long id, String name, Double cost, String description, String image, String category, ItemType itemType, boolean deleted, Double volume) {
         super(id, name, cost, description, image, category, itemType, deleted);
         this.volume = volume;
     }
 
-    public DrinkDTO(Drink drink) {
+    public DrinkDTOCatString(Drink drink) {
         super(drink.getId(), drink.getName(), drink.getCost(), drink.getDescription(), drink.getImage(), drink.getCategory().getName(), drink.getItemType(), drink.isDeleted());
         this.volume = drink.getVolume();
     }
