@@ -85,7 +85,9 @@ public class AppUserServiceImpl implements AppUserService {
         user.setEmailVerified(false);
         user.setPasswordChanged(false);
 
-        List<Authority> authorityList = authorityService.findByName("ROLE_" + user.getUserType());
+        String roleName = user.getUserType() == UserType.ADMINISTRATOR ? "ROLE_ADMIN" : "ROLE_" + user.getUserType();
+
+        List<Authority> authorityList = authorityService.findByName(roleName);
         if (user.getUserType() == UserType.HEAD_COOK){
             authorityList.addAll(authorityService.findByName("ROLE_" + UserType.COOK.toString()));
         }

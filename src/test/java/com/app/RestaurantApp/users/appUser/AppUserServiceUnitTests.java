@@ -4,6 +4,8 @@ import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.mail.MailService;
 import com.app.RestaurantApp.users.FileUploadUtil;
 import com.app.RestaurantApp.users.UserException;
+import com.app.RestaurantApp.users.authority.Authority;
+import com.app.RestaurantApp.users.authority.AuthorityService;
 import com.app.RestaurantApp.users.dto.CreateUserDTO;
 import com.app.RestaurantApp.users.dto.UpdateUserDTO;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,9 @@ public class AppUserServiceUnitTests {
 
     @MockBean
     private AppUserRepository appUserRepositoryMock;
+
+    @MockBean
+    private AuthorityService authorityService;
 
     @MockBean
     private MailService mailServiceMock;
@@ -77,7 +82,7 @@ public class AppUserServiceUnitTests {
         AppUser appUser = createUserDTO.convertToAppUser();
         appUser.setId(3L);
         doReturn(appUser).when(appUserRepositoryMock).save(any()); //zbog getId kod definisanja naziva profilne
-
+        doReturn(new ArrayList<Authority>()).when(authorityService).findByName("ROLE_ADMIN");
 
         doReturn(Optional.empty()).when(appUserRepositoryMock).findByEmail(EMAIL_1);
         doNothing().when(mailServiceMock).sendmail(anyString(), anyString(), anyString());
