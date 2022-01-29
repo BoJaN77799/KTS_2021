@@ -241,7 +241,7 @@ insert into category (name)
 values ('Kafe'); --10
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-values ('Govedja supa', 'Bas je slana.', 'putanja/supa', 250.0, 1, 300, 'FOOD', 'Stalni meni', 'False');
+values ('Govedja supa', 'Bas je slana.', 'food_photos/1/govedja_supa.jpg', 250.0, 1, 300, 'FOOD', 'Stalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type)
 values (1, 'Ma lako se pravi.', 20, 'APPETIZER'); --1
 
@@ -256,7 +256,7 @@ insert into food (id, recipe, time_to_make, food_type)
 values (3, 'Brzo se pravi.', 15, 'APPETIZER'); --3
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-values ('Gorgonzola', 'Jako ukusna.', 'putanja/kackavalj', 400.0, 2, 650, 'FOOD', 'Stalni meni', 'False');
+values ('Gorgonzola', 'Jako ukusna.', 'food_photos/4/gorgonzola.jpg', 400.0, 2, 650, 'FOOD', 'Stalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type)
 values (4, 'Brzo se pravi.', 20, 'APPETIZER'); --4
 
@@ -276,7 +276,7 @@ insert into food (id, recipe, time_to_make, food_type)
 values (7, 'Treba ti pile sa bar jednim krilom.', 30, 'MAIN_DISH'); --7
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-values ('Sladoled Kapri', 'Zaledjen.', 'putanja/sladoled', 150.0, 4, 240, 'FOOD', 'Stalni meni', 'False');
+values ('Sladoled Kapri', 'Zaledjen.', 'food_photos/8/kapri.jpg', 150.0, 4, 240, 'FOOD', 'Stalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type)
 values (8, 'Treba mlijeka i sladera.', 2, 'DESERT'); --8
 
@@ -298,7 +298,7 @@ insert into food (id, recipe, time_to_make, food_type)
 values (11, 'Treba dosta cokolade.', 40, 'DESERT'); --11
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-values ('Pohovana palacinka', 'Slana je.', 'putanja/palacinka', 200.0, 6, 500, 'FOOD', 'Stalni meni', 'False');
+values ('Pohovana palacinka', 'Slana je.', 'food_photos/12/pohovana_palacinka.jpg', 200.0, 6, 500, 'FOOD', 'Stalni meni', 'False');
 insert into food (id, recipe, time_to_make, food_type)
 values (12, 'Peces, napunis, pa onda pohujes.', 10, 'MAIN_DISH'); --12
 
@@ -318,7 +318,7 @@ insert into drink (id, volume)
 values (15, 0.3); --15
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-values ('Bravo orange', 'Nerealno slatko.', 'putanja/sok', 100.0, 8, 220, 'DRINK', 'Stalni meni', 'False');
+values ('Bravo orange', 'Nerealno slatko.', 'drink_photos/16/bravo_sok.jpg', 100.0, 8, 220, 'DRINK', 'Stalni meni', 'False');
 insert into drink (id, volume)
 values (16, 0.3); --16
 
@@ -338,32 +338,32 @@ insert into drink (id, volume)
 values (19, 0.5); --19
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-values ('Espresso', 'Za dobro jutro.', 'putanja/coffee', 110.0, 10, 200, 'DRINK', 'Stalni meni', 'False');
+values ('Espresso', 'Za dobro jutro.', 'drink_photos/20/espresso.jpg', 110.0, 10, 200, 'DRINK', 'Stalni meni', 'False');
 insert into drink (id, volume)
 values (20, 0.1); --20
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-values ('Cappuccino', '5cm pjene.', 'putanja/coffee', 150.0, 10, 240, 'DRINK', 'Stalni meni', 'False');
+values ('Cappuccino', '5cm pjene.', 'drink_photos/21/cappuccino.jpg', 150.0, 10, 240, 'DRINK', 'Stalni meni', 'False');
 insert into drink (id, volume)
 values (21, 0.1); --21
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-values ('Irish cream cappuccino', '2cm pjene.', 'putanja/coffee', 170.0, 10, 280, 'DRINK', 'Stalni meni', 'False');
+values ('Irish cream cappuccino', '2cm pjene.', 'drink_photos/22/irish_cream.jpg', 170.0, 10, 280, 'DRINK', 'Stalni meni', 'False');
 insert into drink (id, volume)
 values (22, 0.1); --22
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-values ('Chocolate Cappuccino', '2cm pjene.', 'putanja/coffee', 170.0, 10, 280, 'DRINK', 'Stalni meni', 'False');
+values ('Chocolate Cappuccino', '2cm pjene.', 'drink_photos/23/chocolate_cappuccino.jpg', 170.0, 10, 280, 'DRINK', 'Stalni meni', 'False');
 insert into drink (id, volume)
 values (23, 0.1); --23
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-values ('Macchiato', '1cm pjene.', 'putanja/coffee', 180.0, 10, 290, 'DRINK', 'Stalni meni', 'False');
+values ('Macchiato', '1cm pjene.', 'drink_photos/24/macchiato.jpg', 180.0, 10, 290, 'DRINK', 'Stalni meni', 'False');
 insert into drink (id, volume)
 values (24, 0.1); --24
 
 insert into item (name, description, image, cost, category_id, current_price, item_type, menu, deleted)
-values ('Chardonnay', 'Penusavo, ozbiljno, osvezenje.', 'putanja/champagne', 2000, 9, 3400, 'DRINK', 'Stalni meni',
+values ('Chardonnay', 'Penusavo, ozbiljno, osvezenje.', 'drink_photos/25/chardonnay.jpg', 2000, 9, 3400, 'DRINK', 'Stalni meni',
         'False');
 insert into drink (id, volume)
 values (25, 0.7); --25

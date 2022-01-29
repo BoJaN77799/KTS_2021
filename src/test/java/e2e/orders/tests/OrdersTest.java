@@ -54,7 +54,7 @@ public class OrdersTest {
 
         assertEquals(5, ordersPage.getTableNewOrdersBodyContent().size());
         List<WebElement> cells = ordersPage.getTableNewOrdersBodyContent().get(0).findElements(By.xpath("//td"));
-        assertEquals("14", cells.get(0).getText());
+        assertEquals("13", cells.get(0).getText());
         assertEquals("January 13th 2022", cells.get(1).getText());
         assertEquals("Pozuri, zedan sam za stolom 13.", cells.get(2).getText());
         assertEquals("13", cells.get(3).getText());
