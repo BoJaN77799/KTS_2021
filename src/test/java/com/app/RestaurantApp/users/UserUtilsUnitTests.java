@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserUtilsUnitTests {
-    //todo password test ako treba uopste
 
     @Test
     public void testCheckUserInfo_NullData(){
@@ -140,5 +139,11 @@ public class UserUtilsUnitTests {
         assertDoesNotThrow(()->{
             UserUtils.CheckUserInfo(appUser);
         });
+    }
+
+    @Test
+    public void testGeneratePassword(){
+        String pw  = UserUtils.generatePassword(10);
+        assertEquals(10, pw.length());
     }
 }

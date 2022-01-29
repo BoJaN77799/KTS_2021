@@ -28,8 +28,7 @@ import java.util.List;
 import static com.app.RestaurantApp.users.appUser.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith({SpringExtension.class})
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AppUserServiceIntegrationTests {
 
     @Autowired
@@ -44,6 +43,7 @@ public class AppUserServiceIntegrationTests {
     @Test
     public void testFindByEmail() {
         assertNotNull(appUserService.findByEmail("admin@maildrop.cc"));
+        assertEquals("admin@maildrop.cc", appUserService.findByEmail("admin@maildrop.cc").getEmail());
         assertNull(appUserService.findByEmail("perica@gmail.com"));
     }
 
@@ -128,6 +128,13 @@ public class AppUserServiceIntegrationTests {
 
             assertEquals(UPDATE_NAME, appUser.getFirstName());
             assertEquals(UPDATE_LASTNAME, appUser.getLastName());
+
+            String pfpPath = "user_profile_photos/" + appUser.getId() + "/" + TEST_PFP_FILENAME;
+            assertEquals(pfpPath, appUser.getProfilePhoto());
+
+            Path resultPath = Paths.get(pfpPath);
+            assertTrue(resultPath.toFile().exists() && !resultPath.toFile().isDirectory());
+
         } catch (UserException e) {
             fail();
         }
@@ -221,6 +228,9 @@ public class AppUserServiceIntegrationTests {
         updateUserDTO.setLastName(UPDATE_LASTNAME);
         updateUserDTO.setAddress("Kisacka");
         updateUserDTO.setTelephone("9089089009");
+
+        MultipartFile image = FileUploadUtilTest.getMultipartTestFile();
+        updateUserDTO.setImage(image);
 
         return updateUserDTO;
     }

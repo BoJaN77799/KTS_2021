@@ -9,7 +9,7 @@ public class OrderItemUtils {
             throw new OrderItemException("Invalid order item sent from front!");
         }
 
-        OrderItemStatus newOrderItemStatus = OrderItemStatus.IN_PROGRESS;
+        OrderItemStatus newOrderItemStatus;
         try {
             newOrderItemStatus = OrderItemStatus.valueOf(newStatus);
         }

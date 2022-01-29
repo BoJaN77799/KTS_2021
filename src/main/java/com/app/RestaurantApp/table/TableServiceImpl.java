@@ -23,7 +23,7 @@ public class TableServiceImpl implements TableService{
     private Environment env;
 
     @Override
-    public FloorTableInfo getFloorTableInfo(){ //todo test, kasnije je dodata metoda
+    public FloorTableInfo getFloorTableInfo(){
         String floors = env.getProperty("restaurant.floors");
         String maxTables = env.getProperty("restaurant.maxTablesPerFloor");
         if (floors == null){
@@ -60,14 +60,12 @@ public class TableServiceImpl implements TableService{
         Table table = tableOptional.get();
         table.setX(tableAdminDTO.getX());
         table.setY(tableAdminDTO.getY());
-        //todo videti jos kasnije na frontu da li ce postojati ogranicenje za X i Y kod pozicije stolova
 
         return tableRepository.save(table);
     }
 
     @Override
     public void deleteTable(Long id) throws TableException{
-        //todo obrisati fizicki iz baze ako nema ordera vezanih za njega
         Optional<Table> tableOptional = tableRepository.findByIdAndActive(id, true);
         if (tableOptional.isEmpty()) throw new TableException("Invalid table to delete!");
 
@@ -140,12 +138,15 @@ public class TableServiceImpl implements TableService{
 
     @Override
     public TableWaiterDTO getTableOrderInfo(Long tableId, String email) throws TableException {
-        //todo test
         TableWaiterDTO retVal;
-        Optional<Table> table = tableRepository.findTableByIdAndGetActiveIfExists(tableId);
-        if (table.isEmpty())
-            throw new TableException("Table not found!");
-
+        Optional<Table> table = tableRepository.findTableByIdIfHasActiveOrders(tableId);
+        if (table.isEmpty()) {
+            table = tableRepository.findByIdAndActive(tableId, true);
+            if (table.isEmpty()){
+                throw new TableException("Table not found!");
+            }
+            return new TableWaiterDTO(table.get());
+        }
         retVal = new TableWaiterDTO(table.get(), email);
         return retVal;
     }

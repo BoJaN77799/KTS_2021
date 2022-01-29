@@ -19,10 +19,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
@@ -248,21 +250,39 @@ public class AppUserControllerIntegrationTests {
             Path resultPath = Paths.get(pfp);
             assertTrue(resultPath.toFile().exists() && !resultPath.toFile().isDirectory());
             assertTrue(resultPath.toFile().delete());
-            //todo srediti i da izbrise parent folder kasnije
         }
     }
 
     @Test @Transactional
     public void testUpdateUser() throws Exception{
-        UpdateUserDTO updateUserDTO = getUpdateUserDTO();
-        String json = mapper.writeValueAsString(updateUserDTO);
+        MockMultipartFile image = new MockMultipartFile("image", "zuck.jpg",
+                MediaType.IMAGE_JPEG_VALUE, FileUploadUtilTest.getTestFileInputStream());
 
-        mockMvc.perform(put("/api/users")
+        mockMvc.perform(multipart("/api/users")
+                .file(image)
                 .headers(headers)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+                .param("firstName", "Filip123")
+                .param("lastName", "Markovic123")
+                .param("id", "1")
+                .param("telephone", "9089089009")
+                .param("address", "Luzicka").with(new RequestPostProcessor() {
+                    @Override
+                    public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+                        request.setMethod("PUT");
+                        return request;
+                    }
+                }))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value("User updated successfully"));
+
+        //cleanup
+        Optional<AppUser> appUser = appUserRepository.findById(1L);
+        if (appUser.isPresent()){
+            String pfp = appUser.get().getProfilePhoto();
+            Path resultPath = Paths.get(pfp);
+            assertTrue(resultPath.toFile().exists() && !resultPath.toFile().isDirectory());
+            assertTrue(resultPath.toFile().delete());
+        }
     }
 
     @Test @Transactional

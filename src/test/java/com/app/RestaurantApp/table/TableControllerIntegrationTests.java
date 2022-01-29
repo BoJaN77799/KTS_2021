@@ -2,10 +2,7 @@ package com.app.RestaurantApp.table;
 
 import com.app.RestaurantApp.enums.UserType;
 import com.app.RestaurantApp.security.auth.JwtAuthenticationRequest;
-import com.app.RestaurantApp.table.dto.TableAdminDTO;
-import com.app.RestaurantApp.table.dto.TableCreateDTO;
-import com.app.RestaurantApp.table.dto.TableUpdateDTO;
-import com.app.RestaurantApp.table.dto.TableWaiterDTO;
+import com.app.RestaurantApp.table.dto.*;
 import com.app.RestaurantApp.users.appUser.AppUserRepository;
 import com.app.RestaurantApp.users.dto.AppUserAdminUserListDTO;
 import com.app.RestaurantApp.users.dto.UpdateUserDTO;
@@ -24,13 +21,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 import static com.app.RestaurantApp.users.appUser.Constants.ADMIN_PASSWORD;
 import static com.app.RestaurantApp.users.appUser.Constants.ADMIN_USERNAME;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -64,6 +63,19 @@ public class TableControllerIntegrationTests {
     }
 
     @Test
+    public void testGetRestaurantFloorTablesInfo(){
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<FloorTableInfo> responseEntity = restTemplate
+                .exchange("/api/tables/info", HttpMethod.GET, httpEntity, FloorTableInfo.class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+        assertEquals(10, responseEntity.getBody().getMaxNumberOfTables());
+        assertEquals(3, responseEntity.getBody().getNumberOfFloors());
+    }
+
+    @Test
     public void testGetAllTablesFromFloorAdmin(){
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
@@ -90,7 +102,9 @@ public class TableControllerIntegrationTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value("Table created successfully"));
+                .andExpect(jsonPath("$.id").value(122))
+                .andExpect(jsonPath("$.active").value(true))
+                .andExpect(jsonPath("$.floor").value(1));
     }
 
     @Test @Transactional
@@ -105,8 +119,7 @@ public class TableControllerIntegrationTests {
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$").value("Can't add table! Too many tables on floor, limit is 10"));
+                .andExpect(status().isBadRequest());
     }
 
     @Test @Transactional
@@ -143,6 +156,37 @@ public class TableControllerIntegrationTests {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
         assertEquals(12, responseEntity.getBody().length);
+
+        List<TableWaiterDTO> tableList = Arrays.asList(responseEntity.getBody());
+        tableList.sort(Comparator.comparing(TableWaiterDTO::getId));
+        assertEquals("CREATED", tableList.get(0).getOrderStatus());
+        assertEquals("CREATED", tableList.get(1).getOrderStatus());
+        assertEquals("CREATED", tableList.get(2).getOrderStatus());
+        assertEquals("CREATED", tableList.get(3).getOrderStatus());
+        assertEquals("CREATED", tableList.get(4).getOrderStatus());
+        assertEquals("TABLE FREE", tableList.get(5).getOrderStatus());
+        assertEquals("TABLE FREE", tableList.get(6).getOrderStatus());
+        assertEquals("TABLE FREE", tableList.get(7).getOrderStatus());
+        assertEquals("CREATED", tableList.get(8).getOrderStatus());
+        assertEquals("READY", tableList.get(9).getOrderStatus());
+        assertEquals("TABLE FREE", tableList.get(10).getOrderStatus());
+        assertEquals("TABLE FREE", tableList.get(11).getOrderStatus());
+    }
+
+    @Test
+    public void testGetTableAndOrderInfo(){
+        HttpEntity<Object> httpEntity = new HttpEntity<>(loginAsWaiter());
+
+        ResponseEntity<TableWaiterDTO> responseEntity = restTemplate
+                .exchange("/api/tables/tableInfo/1", HttpMethod.GET, httpEntity, TableWaiterDTO.class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+
+        TableWaiterDTO table = responseEntity.getBody();
+        assertEquals("CREATED", table.getOrderStatus());
+        assertTrue(table.isOrderIsMine());
+        assertTrue(table.isOccupied());
     }
 
     private HttpHeaders loginAsWaiter(){

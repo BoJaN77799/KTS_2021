@@ -28,8 +28,6 @@ import java.util.Optional;
 @Service
 public class AppUserServiceImpl implements AppUserService {
 
-    //todo dodati aktivacioni link u mail kad se kreira account
-
     @Autowired
     private AppUserRepository appUserRepository;
 
@@ -145,7 +143,6 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public void deleteUser(Long id) throws UserException{
         Optional<AppUser> user = appUserRepository.findByIdAndDeleted(id, false);
-        //todo pitati - provera da li je osoba busy trenutno (kuvar, sanker, konobar...)
         if (user.isEmpty()) throw new UserException("Invalid user for deletion!");
         AppUser appUser = user.get();
         appUser.setDeleted(true);

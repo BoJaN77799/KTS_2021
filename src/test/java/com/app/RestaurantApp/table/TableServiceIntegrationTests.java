@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.table;
 
+import com.app.RestaurantApp.table.dto.FloorTableInfo;
 import com.app.RestaurantApp.table.dto.TableCreateDTO;
 import com.app.RestaurantApp.table.dto.TableUpdateDTO;
 import com.app.RestaurantApp.table.dto.TableWaiterDTO;
@@ -104,24 +105,50 @@ public class TableServiceIntegrationTests {
 
     @Test
     public void testGetTablesWithActiveOrderIfItExists(){
-        //todo
-//        List<TableWaiterDTO> tableList = tableService.getTablesWithActiveOrderIfItExists(0);
-//        tableList.sort(Comparator.comparing(TableWaiterDTO::getId));
-//        assertEquals("NEW", tableList.get(0).getOrderStatus());
-//        assertEquals("NEW", tableList.get(1).getOrderStatus());
-//        assertEquals("NEW", tableList.get(2).getOrderStatus());
-//        assertEquals("NEW", tableList.get(3).getOrderStatus());
-//        assertEquals("NEW", tableList.get(4).getOrderStatus());
-//        assertEquals("TABLE FREE", tableList.get(5).getOrderStatus());
-//        assertEquals("TABLE FREE", tableList.get(6).getOrderStatus());
-//        assertEquals("TABLE FREE", tableList.get(7).getOrderStatus());
-//        assertEquals("NEW", tableList.get(8).getOrderStatus());
-//        assertEquals("READY", tableList.get(9).getOrderStatus());
-//        assertEquals("TABLE FREE", tableList.get(10).getOrderStatus());
-//        assertEquals("TABLE FREE", tableList.get(11).getOrderStatus());
-//
-//        tableList = tableService.getTablesWithActiveOrderIfItExists(1);
-//        assertEquals(4, tableList.size());
-//        assertThat(tableList).extracting("occupied").containsOnly(false);
+        List<TableWaiterDTO> tableList = tableService.getTablesWithActiveOrderIfItExists(0, "waiter@maildrop.cc");
+        tableList.sort(Comparator.comparing(TableWaiterDTO::getId));
+        assertEquals("CREATED", tableList.get(0).getOrderStatus());
+        assertEquals("CREATED", tableList.get(1).getOrderStatus());
+        assertEquals("CREATED", tableList.get(2).getOrderStatus());
+        assertEquals("CREATED", tableList.get(3).getOrderStatus());
+        assertEquals("CREATED", tableList.get(4).getOrderStatus());
+        assertEquals("TABLE FREE", tableList.get(5).getOrderStatus());
+        assertEquals("TABLE FREE", tableList.get(6).getOrderStatus());
+        assertEquals("TABLE FREE", tableList.get(7).getOrderStatus());
+        assertEquals("CREATED", tableList.get(8).getOrderStatus());
+        assertEquals("READY", tableList.get(9).getOrderStatus());
+        assertEquals("TABLE FREE", tableList.get(10).getOrderStatus());
+        assertEquals("TABLE FREE", tableList.get(11).getOrderStatus());
+
+        tableList = tableService.getTablesWithActiveOrderIfItExists(1, "waiter@maildrop.cc");
+        assertEquals(4, tableList.size());
+        assertThat(tableList).extracting("occupied").containsOnly(false);
     }
+
+    @Test
+    public void testGetTableOrderInfo() throws TableException{
+        TableWaiterDTO tableWaiterDTO = tableService.getTableOrderInfo(1L, "waiter@maildrop.cc");
+        assertEquals("CREATED", tableWaiterDTO.getOrderStatus());
+        assertTrue(tableWaiterDTO.isOrderIsMine());
+        assertTrue(tableWaiterDTO.isOccupied());
+
+        tableWaiterDTO = tableService.getTableOrderInfo(6L, "waiter@maildrop.cc");
+        assertEquals("TABLE FREE", tableWaiterDTO.getOrderStatus());
+        assertFalse(tableWaiterDTO.isOrderIsMine());
+        assertFalse(tableWaiterDTO.isOccupied());
+    }
+
+    @Test
+    public void testGetTableOrderInfo_tableDoesNotExist(){
+        TableException tableException = assertThrows(TableException.class, ()-> tableService.getTableOrderInfo(52L, "mirkolegenda@gmail.com"));
+        assertEquals(tableException.getMessage(), "Table not found!");
+    }
+
+    @Test
+    public void getFloorTableInfo(){
+        FloorTableInfo floorTableInfo = tableService.getFloorTableInfo();
+        assertEquals(3, floorTableInfo.getNumberOfFloors());
+        assertEquals(10, floorTableInfo.getMaxNumberOfTables());
+    }
+
 }
