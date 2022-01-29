@@ -6,6 +6,7 @@ import e2e.commonPages.ModalDialogForQuantityInputPage;
 import e2e.commonPages.PaginationComponentPage;
 import e2e.orders.pages.*;
 import e2e.users.pages.LoginPage;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
@@ -130,6 +131,11 @@ public class CreateOrderTests {
         createOrderPage.clickCreateOrderButton();
         Utilities.urlWait(driver, "http://localhost:4200/rest-app/tables/tables-waiter", 10);
         assertEquals("http://localhost:4200/rest-app/tables/tables-waiter", driver.getCurrentUrl());
+    }
+
+    @AfterAll
+    public static void closeSelenium() {
+        driver.quit();
     }
 
 }

@@ -5,6 +5,7 @@ import e2e.commonPages.FloorChangeComponentPage;
 import e2e.commonPages.ModalDialogForQuantityInputPage;
 import e2e.orders.pages.*;
 import e2e.users.pages.LoginPage;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
@@ -67,8 +68,8 @@ public class UpdateOrderTests {
         floorChangeComponentPage.nextButtonClick();
         tablesWaiterViewComponentPage.table13CircleClick();
         tableViewWithOrderItemsComponentPage.updateOrderButtonClick();
-        Utilities.urlWait(driver, "http://localhost:4200/rest-app/orders/update-order-page/14", 10);
-        assertEquals("http://localhost:4200/rest-app/orders/update-order-page/14", driver.getCurrentUrl());
+        Utilities.urlWait(driver, "http://localhost:4200/rest-app/orders/update-order-page/13", 10);
+        assertEquals("http://localhost:4200/rest-app/orders/update-order-page/13", driver.getCurrentUrl());
 
         // Add new food
         selectItemsOrderComponentPage.firstItemCardH2Click();
@@ -82,6 +83,11 @@ public class UpdateOrderTests {
         updateOrderPage.clickUpdateOrderButton();
         Utilities.urlWait(driver, "http://localhost:4200/rest-app/tables/tables-waiter", 10);
         assertEquals("http://localhost:4200/rest-app/tables/tables-waiter", driver.getCurrentUrl());
+    }
+
+    @AfterAll
+    public static void closeSelenium() {
+        driver.quit();
     }
 
 }
