@@ -17,43 +17,43 @@ insert into app_user (dtype, password, first_name, last_name, email, gender, tel
 is_email_verified, user_type, salary, address, deleted, profile_photo)
 values ('E', '$2a$10$hB5YCgeGsfGSwJZLmG3tXeTn.CrfkyksuzfcNTKgIgoL0CjBwkIcq', 'Marko', 'Bjelica',
 'waiter_marko@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'WAITER', 4000.0, 'Luzicka 32, Livno', false,
-'user_profile_photos/test/default.jpg'); --3
+'/user_profile_photos/test/default.jpg'); --3
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
 is_email_verified, user_type, salary, address, deleted, profile_photo)
 values ('E', '$2a$10$hB5YCgeGsfGSwJZLmG3tXeTn.CrfkyksuzfcNTKgIgoL0CjBwkIcq', 'Darko', 'Tica',
 'waiter_milorad@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'WAITER', 7000.0, 'Luzicka 15, Laktasi', false,
-'user_profile_photos/test/default.jpg'); --4
+'/user_profile_photos/test/default.jpg'); --4
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
  is_email_verified, user_type, salary, address, deleted, profile_photo)
 values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Bojan', 'Baskalo',
 'headcook_igor@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'HEAD_COOK', 10000.0, 'Dunavska 32, Novi Sad', false,
-'user_profile_photos/test/default.jpg'); --5
+'/user_profile_photos/test/default.jpg'); --5
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
 is_email_verified, user_type, salary, address, deleted, profile_photo)
 values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Veljko', 'Tomic',
 'cook_drasko@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'COOK', 3000.0, 'Luzicka 32, Gradiska', false,
-'user_profile_photos/test/default.jpg'); --6
+'/user_profile_photos/test/default.jpg'); --6
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
 is_email_verified, user_type, salary, address, deleted, profile_photo)
 values ('E', '$2a$10$nMP47GLIXnJBN24FFK79tew9Wt.uNC2tY0sDY4sDdz7gknQzkZmui', 'Cvetko', 'Anova',
 'cook_milan@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'COOK', 3500.0, 'Luzicka 32, Gradiska', false,
-'user_profile_photos/test/default.jpg'); --7
+'/user_profile_photos/test/default.jpg'); --7
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
  is_email_verified, user_type, salary, address, deleted, profile_photo)
 values ('E', '$2a$10$II8odOsKhUp4LS/cID0DFuuBFWWAcXAgdxYXtlstns6z5dxPjSRw2', 'Dunjica', 'Slatkica',
 'barman_vuk@maildrop.cc', 'FEMALE', '0642312341', 'False', 'False', 'BARMAN', 4000.0, 'Luzicka 32, Becej', false,
-'user_profile_photos/test/default.jpg'); --8
+'/user_profile_photos/test/default.jpg'); --8
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed,
 is_email_verified, user_type, salary, address, deleted, profile_photo)
 values ('E', '$2a$10$II8odOsKhUp4LS/cID0DFuuBFWWAcXAgdxYXtlstns6z5dxPjSRw2', 'Mica', 'Bradina',
 'barman_andrej@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'BARMAN', 4200.0, 'Luzicka 32, Becej', false,
-'user_profile_photos/test/default.jpg'); --9
+'/user_profile_photos/test/default.jpg'); --9
 
 insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
 values ('U', '$2a$10$ZqRoZridlWZYrJhPbIek3.xOtlG4M8cZ3aWWpBPW2IU7yreEZd8jq', 'Pele', 'Djuric',
