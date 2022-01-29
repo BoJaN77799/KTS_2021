@@ -10,11 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Array;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SalaryServiceImpl implements SalaryService {
@@ -52,10 +50,21 @@ public class SalaryServiceImpl implements SalaryService {
 
         Employee e = employeeService.findEmployeeWithSalaries(salaryDTO.getEmail());
         if (e == null) throw new UserException("Invalid employee, email not found!");
-        Salary salary = new Salary(salaryDTO);
-        salary.setEmployee(e);
-        e.getSalaries().add(salary);
-        e.setSalary(salary.getAmount()); // podesimo novu platu
+        // provjerimo je li postoji ovakav datum da samo azuriram platu
+        long dateFrom = LocalDate.parse(salaryDTO.getDateFrom(), DateTimeFormatter.ofPattern("dd.MM.yyyy."))
+                .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
+
+        Salary salary = checkDateSalaries(e.getSalaries(), dateFrom);
+        if (salary == null) {
+            salary = new Salary(salaryDTO);
+            salary.setEmployee(e);
+            e.getSalaries().add(salary);
+        } else {
+            salary.setAmount(salaryDTO.getAmount());
+        }
+
+        e.setSalary(salary.getAmount());
+
         SalaryUtils.CheckSalaryInfo(salary);
 
         employeeRepository.save(e);
@@ -63,4 +72,10 @@ public class SalaryServiceImpl implements SalaryService {
         return salary;
     }
 
+    private Salary checkDateSalaries(Set<Salary> salaries, long date) {
+        for (Salary s : salaries)
+            if (s.getDateFrom() == date)
+                return s;
+        return null;
+    }
 }
