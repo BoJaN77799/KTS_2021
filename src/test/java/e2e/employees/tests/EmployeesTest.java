@@ -77,6 +77,6 @@ public class EmployeesTest {
 
     @AfterAll
     public static void closeSelenium() {
-
+        driver.quit();
     }
 }

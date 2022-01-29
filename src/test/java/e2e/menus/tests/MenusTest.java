@@ -139,6 +139,6 @@ public class MenusTest {
 
     @AfterAll
     public static void closeSelenium() {
-
+        driver.quit();
     }
 }

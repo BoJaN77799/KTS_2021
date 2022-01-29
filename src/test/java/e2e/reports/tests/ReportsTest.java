@@ -98,7 +98,7 @@ public class ReportsTest {
 
     @AfterAll
     public static void closeSelenium() {
-        // driver.quit();
+        driver.quit();
     }
 
 
