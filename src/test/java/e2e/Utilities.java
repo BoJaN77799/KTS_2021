@@ -31,6 +31,10 @@ public class Utilities {
         return new WebDriverWait(driver, wait).until(ExpectedConditions.visibilityOf(element));
     }
 
+    public static boolean invisibilityWait(WebDriver driver, WebElement element, int wait) {
+        return new WebDriverWait(driver, wait).until(ExpectedConditions.invisibilityOf(element));
+    }
+
     public static List<WebElement> visibilityWait(WebDriver driver, List<WebElement> webElements, int wait) {
         return new WebDriverWait(driver, wait).until(ExpectedConditions.visibilityOfAllElements(webElements));
     }

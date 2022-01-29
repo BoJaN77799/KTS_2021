@@ -57,113 +57,113 @@ public class UsersTests {
         assertTrue(usersPage.getUrl());
 
 
-//        //user update
-//        usersPage.clickOnUpdate("2");
-//        userViewPage.addTextToFNField("Petarko");
-//        userViewPage.addTextToLNField("Djuricko");
-//        userViewPage.addTextToAddressField("Beograd");
-//        userViewPage.addTextToTelephoneField("213123123");
-//
-//        userViewPage.clickSave();
-//        assertTrue(usersPage.checkOnUpdateOfUser("2", "Petarko", "Djuricko", "213123123"));
-//
-//        //user delete - zakomentarisan jer ne moze dva puta za redom
-//        usersPage.clickOnDelete();
-//        assertTrue(usersPage.checkIfDeleted("3"));
-//
-//        //sortiranje
-//        usersPage.clickSortId();
-//        assertTrue(usersPage.checkSortById(true));
-//        assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("1", "2", "3"))));
-//
-//        usersPage.clickSortId();
-//        assertTrue(usersPage.checkSortById(false));
-//        assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("12", "11", "10"))));
-//
-//        usersPage.clickSortFirstName();
-//        assertTrue(usersPage.checkSortByFirstName(true));
-//        assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("5", "7", "4"))));
-//
-//        usersPage.clickSortFirstName();
-//        assertTrue(usersPage.checkSortByFirstName(false));
-//        assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("6", "12", "11"))));
-//
-//        usersPage.clickSortLastName();
-//        assertTrue(usersPage.checkSortByLastName(true));
-//        assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("7", "5", "3"))));
-//
-//        usersPage.clickSortLastName();
-//        assertTrue(usersPage.checkSortByLastName(false));
-//        assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("6", "4", "8"))));
-//        usersPage.clickSortLastName();
-//
-//        //check num of pages
-//        assertTrue(usersPage.checkNumberOfPages(3));
-//
-//        //check shown user ids
-//        List<String> listIds = new ArrayList<>(List.of("1", "2", "3"));
-//        List<String> listNames;
-//        assertTrue(usersPage.checkIdsInOrder(listIds));
-//
-//        //click next page btn
-//        usersPage.paginationClick("next");
-//        listIds = new ArrayList<>(List.of("4", "5", "6"));
-//        assertTrue(usersPage.checkIdsInOrder(listIds));
-//
-//        usersPage.paginationClick("next");
-//        listIds = new ArrayList<>(List.of("7", "8", "9"));
-//        assertTrue(usersPage.checkIdsInOrder(listIds));
-//
-//        //return to the first
-//        usersPage.paginationClick("1");
-//
-//        //try out search field
-//        usersPage.addTextToSearchField("pe");
-//        listIds = new ArrayList<>(List.of("2", "10", "11"));
-//        listNames = new ArrayList<>(List.of("Petarko", "Pele", "Pex"));
-//        assertTrue(usersPage.checkNamesInOrder(listNames, listIds));
-//
-//        usersPage.addTextToSearchField("ca");
-//        listIds = new ArrayList<>(List.of("3", "4", "8"));
-//        listNames = new ArrayList<>(List.of("Bjelica", "Tica", "Slatkica"));
-//        assertTrue(usersPage.checkLastNamesInOrder(listNames, listIds));
-//
-//        usersPage.addTextToSearchField("waiter_marko@maildrop.cc");
-//        listIds = new ArrayList<>(List.of("3"));
-//        assertTrue(usersPage.checkIdsInOrder(listIds));
-//
-//        usersPage.addTextToSearchField("pel");
-//        usersPage.clickOnSelectUserType(2); //manager
-//        listIds = new ArrayList<>(List.of("10"));
-//        listNames = new ArrayList<>(List.of("MANAGER"));
-//        assertTrue(usersPage.checkUserTypeInOrder(listNames, listIds));
-//
-//        usersPage.addTextToSearchField("v");
-//        usersPage.clickOnSelectUserType(4); //cook
-//        listIds = new ArrayList<>(List.of("6", "7"));
-//        listNames = new ArrayList<>(List.of("COOK", "COOK"));
-//        assertTrue(usersPage.checkUserTypeInOrder(listNames, listIds));
-//
-//        //RESETUJEMO
-//        usersPage.clickOnSelectUserType(0); //any
-//        usersPage.addTextToSearchField("m");
-//        listIds = new ArrayList<>(List.of("1", "2", "3"));
-//        assertTrue(usersPage.checkIdsInOrder(listIds));
-//
-//        //user create
-//        usersPage.clickOnCreate();
-//        userCreatePage.addTextToFNField("Lola");
-//        userCreatePage.addTextToLNField("Lolic");
-//        userCreatePage.addTextToEmailField("lola@maildrop.cc");
-//        userCreatePage.addTextToTelephoneField("928320198");
-//        userCreatePage.addTextToAddressField("Zelena, Temerin");
-//        userCreatePage.clickOnSelectGender(8);
-//        userCreatePage.clickOnSelectUserType(11);
-//        userCreatePage.clickCreate();
-//
-//        usersPage.addTextToSearchField("lola");
-//        assertTrue(usersPage.checkOnCreateOfUser("Lola", "Lolic", "928320198",
-//                "lola@maildrop.cc", "MANAGER"));
+        //user update
+        usersPage.clickOnUpdate("2");
+        userViewPage.addTextToFNField("Petarko");
+        userViewPage.addTextToLNField("Djuricko");
+        userViewPage.addTextToAddressField("Beograd");
+        userViewPage.addTextToTelephoneField("213123123");
+
+        userViewPage.clickSave();
+        assertTrue(usersPage.checkOnUpdateOfUser("2", "Petarko", "Djuricko", "213123123"));
+
+        //user delete - zakomentarisan jer ne moze dva puta za redom
+        usersPage.clickOnDelete();
+        assertTrue(usersPage.checkIfDeleted("3"));
+
+        //sortiranje
+        usersPage.clickSortId();
+        assertTrue(usersPage.checkSortById(true));
+        assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("1", "2", "3"))));
+
+        usersPage.clickSortId();
+        assertTrue(usersPage.checkSortById(false));
+        assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("12", "11", "10"))));
+
+        usersPage.clickSortFirstName();
+        assertTrue(usersPage.checkSortByFirstName(true));
+        assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("5", "7", "4"))));
+
+        usersPage.clickSortFirstName();
+        assertTrue(usersPage.checkSortByFirstName(false));
+        assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("6", "12", "11"))));
+
+        usersPage.clickSortLastName();
+        assertTrue(usersPage.checkSortByLastName(true));
+        assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("7", "5", "3"))));
+
+        usersPage.clickSortLastName();
+        assertTrue(usersPage.checkSortByLastName(false));
+        assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("6", "4", "8"))));
+        usersPage.clickSortLastName();
+
+        //check num of pages
+        assertTrue(usersPage.checkNumberOfPages(3));
+
+        //check shown user ids
+        List<String> listIds = new ArrayList<>(List.of("1", "2", "3"));
+        List<String> listNames;
+        assertTrue(usersPage.checkIdsInOrder(listIds));
+
+        //click next page btn
+        usersPage.paginationClick("next");
+        listIds = new ArrayList<>(List.of("4", "5", "6"));
+        assertTrue(usersPage.checkIdsInOrder(listIds));
+
+        usersPage.paginationClick("next");
+        listIds = new ArrayList<>(List.of("7", "8", "9"));
+        assertTrue(usersPage.checkIdsInOrder(listIds));
+
+        //return to the first
+        usersPage.paginationClick("1");
+
+        //try out search field
+        usersPage.addTextToSearchField("pe");
+        listIds = new ArrayList<>(List.of("2", "10", "11"));
+        listNames = new ArrayList<>(List.of("Petarko", "Pele", "Pex"));
+        assertTrue(usersPage.checkNamesInOrder(listNames, listIds));
+
+        usersPage.addTextToSearchField("ca");
+        listIds = new ArrayList<>(List.of("3", "4", "8"));
+        listNames = new ArrayList<>(List.of("Bjelica", "Tica", "Slatkica"));
+        assertTrue(usersPage.checkLastNamesInOrder(listNames, listIds));
+
+        usersPage.addTextToSearchField("waiter_marko@maildrop.cc");
+        listIds = new ArrayList<>(List.of("3"));
+        assertTrue(usersPage.checkIdsInOrder(listIds));
+
+        usersPage.addTextToSearchField("pel");
+        usersPage.clickOnSelectUserType(2); //manager
+        listIds = new ArrayList<>(List.of("10"));
+        listNames = new ArrayList<>(List.of("MANAGER"));
+        assertTrue(usersPage.checkUserTypeInOrder(listNames, listIds));
+
+        usersPage.addTextToSearchField("v");
+        usersPage.clickOnSelectUserType(4); //cook
+        listIds = new ArrayList<>(List.of("6", "7"));
+        listNames = new ArrayList<>(List.of("COOK", "COOK"));
+        assertTrue(usersPage.checkUserTypeInOrder(listNames, listIds));
+
+        //RESETUJEMO
+        usersPage.clickOnSelectUserType(0); //any
+        usersPage.addTextToSearchField("m");
+        listIds = new ArrayList<>(List.of("1", "2", "3"));
+        assertTrue(usersPage.checkIdsInOrder(listIds));
+
+        //user create
+        usersPage.clickOnCreate();
+        userCreatePage.addTextToFNField("Lola");
+        userCreatePage.addTextToLNField("Lolic");
+        userCreatePage.addTextToEmailField("lola@maildrop.cc");
+        userCreatePage.addTextToTelephoneField("928320198");
+        userCreatePage.addTextToAddressField("Zelena, Temerin");
+        userCreatePage.clickOnSelectGender(8);
+        userCreatePage.clickOnSelectUserType(11);
+        userCreatePage.clickCreate();
+
+        usersPage.addTextToSearchField("lola");
+        assertTrue(usersPage.checkOnCreateOfUser("Lola", "Lolic", "928320198",
+                "lola@maildrop.cc", "MANAGER"));
 
     }
 }
