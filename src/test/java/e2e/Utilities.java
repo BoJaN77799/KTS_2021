@@ -39,6 +39,10 @@ public class Utilities {
         return new WebDriverWait(driver, wait).until(ExpectedConditions.elementToBeClickable(element));
     }
 
+    public static WebElement clickableWait(WebDriver driver, By locator, int wait) {
+        return new WebDriverWait(driver, wait).until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
     public static List<WebElement> visibilityOfElements(WebDriver driver, List<WebElement> elements, int wait) {
         return new WebDriverWait(driver, wait).until(ExpectedConditions.visibilityOfAllElements(elements));
     }
