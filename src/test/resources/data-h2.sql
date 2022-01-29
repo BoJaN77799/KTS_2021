@@ -179,7 +179,7 @@ insert into tables (id, active, x, y, floor) values (121, true, 7.0, 7.0, 0);
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id) values ('NEW', 1636730076405, 'Pozuri, galdan sam.', 1, 3);
 
-insert into order_item (quantity, status, price, priority, order_id, item_id) values (2, 'ORDERED', 300.0, 2, 1, 1);
+insert into order_item (quantity, status, price, priority, order_id, item_id) values (2, 'ORDERED', 300.0, 3, 1, 1);
 insert into order_item (quantity, status, price, priority, order_id, item_id) values (3, 'ORDERED', 600.0, 2, 1, 2);
 
 insert into restaurant_order (status, created_at, note, table_id, waiter_id) values ('NEW', 1636730076405, 'Pozuri, zedan sam.', 3, 3);

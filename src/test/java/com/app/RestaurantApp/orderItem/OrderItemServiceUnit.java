@@ -1,6 +1,8 @@
 package com.app.RestaurantApp.orderItem;
 
+import com.app.RestaurantApp.enums.ItemType;
 import com.app.RestaurantApp.enums.OrderItemStatus;
+import com.app.RestaurantApp.food.Food;
 import com.app.RestaurantApp.notifications.OrderNotificationService;
 import com.app.RestaurantApp.order.Order;
 import com.app.RestaurantApp.order.OrderException;
@@ -135,6 +137,9 @@ public class OrderItemServiceUnit {
         OrderItem oi = new OrderItem();
         oi.setStatus(OrderItemStatus.ORDERED);
         oi.setPriority(1); oi.setOrder(order);
+        Food food = new Food();
+        food.setItemType(ItemType.FOOD);
+        oi.setItem(food);
 
         given(orderItemRepositoryMock.findById(1L)).willReturn(Optional.of(oi));
         given(orderServiceMock.findOneWithOrderItems(1L)).willReturn(order);
@@ -142,7 +147,7 @@ public class OrderItemServiceUnit {
 
         Exception e = assertThrows(OrderItemException.class, () -> orderItemService.changeStatus(oiDTO));
 
-        assertEquals(e.getMessage(), PRIORITY_DENIED);
+        assertEquals(PRIORITY_DENIED, e.getMessage());
     }
 
     @Test
@@ -152,6 +157,9 @@ public class OrderItemServiceUnit {
         OrderItem oi = new OrderItem();
         oi.setStatus(OrderItemStatus.ORDERED);
         oi.setPriority(1); oi.setOrder(order);
+        Food food = new Food();
+        food.setItemType(ItemType.FOOD);
+        oi.setItem(food);
 
         given(orderItemRepositoryMock.findById(1L)).willReturn(Optional.of(oi));
         given(orderServiceMock.findOneWithOrderItems(1L)).willReturn(order);
@@ -169,6 +177,9 @@ public class OrderItemServiceUnit {
         oi.setStatus(OrderItemStatus.ORDERED);
         order.setOrderItems(new HashSet<>());
         order.getOrderItems().add(oi);
+        Food food = new Food();
+        food.setItemType(ItemType.FOOD);
+        oi.setItem(food);
 
         return order;
     }

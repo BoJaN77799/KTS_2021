@@ -126,7 +126,7 @@ public class OrderItemControllerIntegrationTests {
 
     @Test
     public void testChangeStatus_higherPriorityAlreadyExists() throws Exception {
-        OrderItemChangeStatusDTO oiDTO = new OrderItemChangeStatusDTO(6L, "IN_PROGRESS");
+        OrderItemChangeStatusDTO oiDTO = new OrderItemChangeStatusDTO(2L, "IN_PROGRESS");
         String jsonOiDTO = mapper.writeValueAsString(oiDTO);
         mockMvc.perform(put("/api/orderItems/changeStatus")
                         .headers(headers)
