@@ -3,6 +3,7 @@ package com.app.RestaurantApp.salary;
 import com.app.RestaurantApp.salary.dto.SalaryDTO;
 import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.employee.Employee;
+import com.app.RestaurantApp.users.employee.EmployeeRepository;
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class SalaryServiceImpl implements SalaryService {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Override
     public List<SalaryDTO> getSalariesOfEmployee(String email) throws UserException {
@@ -52,10 +56,11 @@ public class SalaryServiceImpl implements SalaryService {
         salary.setEmployee(e);
         e.getSalaries().add(salary);
         e.setSalary(salary.getAmount()); // podesimo novu platu
-
         SalaryUtils.CheckSalaryInfo(salary);
 
-        return salaryRepository.save(salary);
+        employeeRepository.save(e);
+        //return salaryRepository.save(salary);
+        return salary;
     }
 
 }

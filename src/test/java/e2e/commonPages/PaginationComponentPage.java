@@ -5,6 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+
+import java.util.List;
+
 public class PaginationComponentPage {
 
     private WebDriver driver;
@@ -14,6 +17,9 @@ public class PaginationComponentPage {
 
     @FindBy(xpath = "//app-pagination//a[.='Next']")
     private WebElement nextAnchor;
+
+    @FindBy(xpath = "//a[@class='page-link']")
+    private List<WebElement> paginationElements;
 
     public PaginationComponentPage() {}
 
@@ -28,4 +34,10 @@ public class PaginationComponentPage {
     public void nextAnchorClick() {
         Utilities.clickableWait(driver, this.nextAnchor, 10).click();
     }
+
+
+    public List<WebElement> getPaginationElements() {
+        return Utilities.visibilityOfElements(this.driver, this.paginationElements, 10);
+    }
+
 }

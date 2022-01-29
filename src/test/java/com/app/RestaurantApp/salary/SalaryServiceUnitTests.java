@@ -4,6 +4,7 @@ import com.app.RestaurantApp.bonus.BonusException;
 import com.app.RestaurantApp.salary.dto.SalaryDTO;
 import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.employee.Employee;
+import com.app.RestaurantApp.users.employee.EmployeeRepository;
 import com.app.RestaurantApp.users.employee.EmployeeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,12 +36,16 @@ public class SalaryServiceUnitTests {
     @MockBean
     private SalaryRepository salaryRepositoryMock;
 
+    @MockBean
+    private EmployeeRepository employeeRepositoryMock;
+
     @BeforeEach
     public void setup() {
         Employee e = createEmployeeWithSalaries();
 
         given(employeeServiceMock.findByEmail(EMAIL)).willReturn(e);
         given(employeeServiceMock.findEmployeeWithSalaries(EMAIL)).willReturn(e);
+        given(employeeRepositoryMock.save(any())).willReturn(any());
     }
 
     @Test
@@ -62,7 +67,7 @@ public class SalaryServiceUnitTests {
 
     @Test
     public void testGetSalariesOfEmployee_Invalid() {
-        given(employeeServiceMock.findEmployeeWithSalaries(any())).willReturn(null);
+        given(employeeServiceMock.findEmployeeWithSalaries(EMAIL)).willReturn(null);
 
         Exception exception = assertThrows(UserException.class, () -> salaryService.getSalariesOfEmployee(EMAIL));
 
@@ -80,7 +85,7 @@ public class SalaryServiceUnitTests {
         salaryService.createSalary(salaryDTO);
 
         verify(employeeServiceMock, times(2)).findEmployeeWithSalaries(EMAIL);
-        verify(salaryRepositoryMock, times(1)).save(any());
+        verify(employeeRepositoryMock, times(1)).save(any());
 
     }
 
