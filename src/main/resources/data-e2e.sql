@@ -55,6 +55,18 @@ values ('E', '$2a$10$II8odOsKhUp4LS/cID0DFuuBFWWAcXAgdxYXtlstns6z5dxPjSRw2', 'Mi
 'barman_andrej@maildrop.cc', 'MALE', '0642312341', 'False', 'False', 'BARMAN', 4200.0, 'Luzicka 32, Becej', false,
 'http://localhost:8080/user_profile_photos/test/default.jpg'); --9
 
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
+values ('U', '$2a$10$ZqRoZridlWZYrJhPbIek3.xOtlG4M8cZ3aWWpBPW2IU7yreEZd8jq', 'Pele', 'Djuric',
+        'manager2@maildrop.cc', 'MALE', '06433312341', 'False', 'False', 'MANAGER', null, 'Luzicka 32, Trebinje', false); --10
+
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
+values ('U', '$2a$10$ZqRoZridlWZYrJhPbIek3.xOtlG4M8cZ3aWWpBPW2IU7yreEZd8jq', 'Pex', 'Djuric',
+        'manager3@maildrop.cc', 'MALE', '06433312341', 'False', 'False', 'MANAGER', null, 'Luzicka 32, Trebinje', false); --11
+
+insert into app_user (dtype, password, first_name, last_name, email, gender, telephone, is_password_changed, is_email_verified, user_type, salary, address, deleted)
+values ('U', '$2a$10$ZqRoZridlWZYrJhPbIek3.xOtlG4M8cZ3aWWpBPW2IU7yreEZd8jq', 'Pezo', 'Djuric',
+        'manager4@maildrop.cc', 'MALE', '06433312341', 'False', 'False', 'MANAGER', null, 'Luzicka 32, Trebinje', false); --12
+
 --- prva plata 1.11.2021
 insert into salary (amount, date_from, employee_id) values (3700, 1635721200000, 3);
 insert into salary (amount, date_from, employee_id) values (6500, 1635721200000, 4);
