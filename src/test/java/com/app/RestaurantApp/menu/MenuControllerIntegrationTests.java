@@ -21,7 +21,7 @@ import java.util.Objects;
 
 import static com.app.RestaurantApp.menu.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -79,7 +79,7 @@ public class MenuControllerIntegrationTests {
     @Test
     @Transactional
     public void testUpdateMenu_ValidUpdating() throws Exception {
-        mockMvc.perform(post("/api/menus/updateMenu")
+        mockMvc.perform(put("/api/menus/updateMenu")
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(VALID_UPDATING_NAME))
@@ -90,7 +90,7 @@ public class MenuControllerIntegrationTests {
     @Test
     @Transactional
     public void testUpdateMenu_InvalidMenu() throws Exception {
-        mockMvc.perform(post("/api/menus/updateMenu")
+        mockMvc.perform(put("/api/menus/updateMenu")
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(INVALID_UPDATING_NAME))

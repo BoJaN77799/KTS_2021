@@ -29,7 +29,7 @@ public class  MenuController {
         }
     }
 
-    @PostMapping(value = "/updateMenu")
+    @PutMapping(value = "/updateMenu")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<String> updateMenu(@RequestBody String name)  {
         try {
