@@ -2,11 +2,8 @@ package e2e.tables.tests;
 
 import e2e.commonPages.AdminPage;
 import e2e.commonPages.FloorChangeComponentPage;
-import e2e.commonPages.LoginPage;
 import e2e.tables.pages.TablesAdminPage;
-import e2e.users.pages.CreateUserPage;
-import e2e.users.pages.UserViewPage;
-import e2e.users.pages.UsersPage;
+import e2e.users.pages.LoginPage;
 import e2e.utils.Constants;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -14,7 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TablesTests {

@@ -1,9 +1,9 @@
 package e2e.employees.tests;
 
 import e2e.commonPages.ConfirmationDialog;
-import e2e.commonPages.LoginPage;
 import e2e.commonPages.ManagerPage;
 import e2e.employees.pages.EmployeesPage;
+import e2e.users.pages.LoginPage;
 import e2e.utils.Constants;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

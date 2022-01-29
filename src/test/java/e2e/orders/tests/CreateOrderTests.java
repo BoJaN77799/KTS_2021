@@ -2,10 +2,10 @@ package e2e.orders.tests;
 
 import e2e.Utilities;
 import e2e.commonPages.FloorChangeComponentPage;
-import e2e.commonPages.LoginPage;
 import e2e.commonPages.ModalDialogForQuantityInputPage;
 import e2e.commonPages.PaginationComponentPage;
 import e2e.orders.pages.*;
+import e2e.users.pages.LoginPage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;

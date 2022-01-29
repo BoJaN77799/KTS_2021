@@ -1,12 +1,12 @@
 package e2e.menus.tests;
 
 import e2e.commonPages.ConfirmationDialog;
-import e2e.commonPages.LoginPage;
 import e2e.commonPages.ManagerPage;
 import e2e.commonPages.PaginationComponentPage;
 import e2e.menus.pages.MenuPriceComponent;
 import e2e.menus.pages.MenusItemComponent;
 import e2e.menus.pages.MenusPage;
+import e2e.users.pages.LoginPage;
 import e2e.utils.Constants;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;

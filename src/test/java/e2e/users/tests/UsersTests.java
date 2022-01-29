@@ -1,8 +1,8 @@
 package e2e.users.tests;
 
 import e2e.commonPages.AdminPage;
-import e2e.commonPages.LoginPage;
 import e2e.users.pages.CreateUserPage;
+import e2e.users.pages.LoginPage;
 import e2e.users.pages.UserViewPage;
 import e2e.users.pages.UsersPage;
 import e2e.utils.Constants;
