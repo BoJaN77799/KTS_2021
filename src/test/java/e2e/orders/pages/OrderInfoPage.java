@@ -1,5 +1,6 @@
 package e2e.orders.pages;
 
+import e2e.Utilities;
 import e2e.commonPages.BarmanCookHeader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -33,8 +34,8 @@ public class OrderInfoPage extends BarmanCookHeader {
 
     public List<WebElement> getFirstRowCells() { return firstRowCells; }
 
-    public String getOrderInfoTitle() {
-        return orderInfoTitle.getText();
+    public boolean isOrderInfoTitle(String text) {
+        return Utilities.textWait(driver, this.orderInfoTitle, text, 10);
     }
 
     public String getOrderCreatedInfoTitle() {

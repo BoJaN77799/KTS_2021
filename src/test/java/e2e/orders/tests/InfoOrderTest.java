@@ -19,6 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static e2e.utils.Constants.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class InfoOrderTest {
 
@@ -42,7 +43,7 @@ public class InfoOrderTest {
     }
 
     @Test
-    public void testInfoOrder() {
+    public void testInfoOrder() throws InterruptedException {
         assertEquals("http://localhost:4200/rest-app/auth/login", driver.getCurrentUrl());
         loginPage.setEmailInput(BARMAN_EMAIL);
         loginPage.setPasswordInput(BARMAN_PASSWORD);
@@ -53,8 +54,7 @@ public class InfoOrderTest {
 
         //assertTrue(ordersPage.getTableNewOrdersBodyContent().size() >= 1);
         ordersPage.infoButtonFirstRowButtonClick();
-
-        assertEquals("Details: Order on Table 13", orderInfoPage.getOrderInfoTitle());
+        assertTrue(orderInfoPage.isOrderInfoTitle("Details: Order on Table 13"));
         assertEquals("Order was created at January 13th 2022.", orderInfoPage.getOrderCreatedInfoTitle());
 
         assertEquals(1, orderInfoPage.getTableOrderItemsBodyContent().size());

@@ -5,6 +5,7 @@ import e2e.commonPages.CommonHeader;
 import e2e.commonPages.FloorChangeComponentPage;
 import e2e.orders.pages.*;
 import e2e.users.pages.LoginPage;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
@@ -80,8 +81,8 @@ public class FinishOrderTests {
         floorChangeComponentPage.nextButtonClick();
         tablesWaiterViewComponentPage.table14CircleClick();
         tableViewWithOrderItemsComponentPage.updateOrderButtonClick();
-        Utilities.urlWait(driver, "http://localhost:4200/rest-app/orders/update-order-page/15", 10);
-        assertEquals("http://localhost:4200/rest-app/orders/update-order-page/15", driver.getCurrentUrl());
+        Utilities.urlWait(driver, "http://localhost:4200/rest-app/orders/update-order-page/14", 10);
+        assertEquals("http://localhost:4200/rest-app/orders/update-order-page/14", driver.getCurrentUrl());
 
         // Finish order
         updateOrderPage.clickFinishOrderButton();
@@ -92,5 +93,10 @@ public class FinishOrderTests {
         commonHeader.logOutLinkClick();
         Utilities.urlWait(driver, "http://localhost:4200/rest-app/auth/login", 10);
         assertEquals("http://localhost:4200/rest-app/auth/login", driver.getCurrentUrl());
+    }
+
+    @AfterAll
+    public static void closeSelenium() {
+        driver.quit();
     }
 }

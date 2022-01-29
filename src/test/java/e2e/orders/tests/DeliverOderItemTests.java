@@ -7,6 +7,7 @@ import e2e.orders.pages.TableViewWithOrderItemsComponentPage;
 import e2e.orders.pages.TablesWaiterViewComponentPage;
 import e2e.orders.pages.UpdateOrderPage;
 import e2e.users.pages.LoginPage;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
@@ -61,6 +62,11 @@ public class DeliverOderItemTests {
         tablesWaiterViewComponentPage.table10CircleClick();
         tableViewWithOrderItemsComponentPage.deliverOrderItemButtonClick();
         assertTrue(commonHeader.isSnackBarContainsMessage("Order item delivered!"));
+    }
+
+    @AfterAll
+    public static void closeSelenium() {
+        driver.quit();
     }
 
 }
