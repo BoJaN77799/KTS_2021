@@ -100,7 +100,7 @@ public class DrinkServiceUnitTests {
         Category category = new Category(drinkDTO.getCategory());
         given(categoryServiceMock.findOneByName(CATEGORY_NAME)).willReturn(category);
         given(categoryServiceMock.insertCategory(category)).willReturn(category);
-        given(drinkRepositoryMock.save(drinkMocked)).willReturn(drinkMocked);
+        given(drinkRepositoryMock.save(any(Drink.class))).willReturn(drinkMocked);
 
         // Test invoke
         Drink drink = drinkService.saveDrink(drinkDTO);
@@ -108,7 +108,7 @@ public class DrinkServiceUnitTests {
         // Verifying
         verify(categoryServiceMock, times(1)).findOneByName(CATEGORY_NAME);
         verify(categoryServiceMock, times(0)).insertCategory(category);
-        verify(drinkRepositoryMock, times(1)).save(drink);
+        verify(drinkRepositoryMock, times(1)).save(any(Drink.class));
 
         assertNotNull(drink);
         assertEquals(drinkDTO.getVolume(), drink.getVolume());
@@ -124,7 +124,7 @@ public class DrinkServiceUnitTests {
         Category category = new Category(CATEGORY_ID, CATEGORY_NAME);
         given(categoryServiceMock.findOneByName(CATEGORY_NAME)).willReturn(null); // category does not exist
         given(categoryServiceMock.insertCategory(any(Category.class))).willReturn(category);
-        given(drinkRepositoryMock.save(drinkMocked)).willReturn(drinkMocked);
+        given(drinkRepositoryMock.save(any(Drink.class))).willReturn(drinkMocked);
 
         // Test invoke
         Drink drink = drinkService.saveDrink(drinkDTO);
@@ -132,12 +132,12 @@ public class DrinkServiceUnitTests {
         // Verifying
         verify(categoryServiceMock, times(1)).findOneByName(CATEGORY_NAME);
         verify(categoryServiceMock, times(1)).insertCategory(any(Category.class));
-        verify(drinkRepositoryMock, times(1)).save(drink);
+        verify(drinkRepositoryMock, times(1)).save(any(Drink.class));
 
         assertNotNull(drink);
         assertEquals(drinkDTO.getVolume(), drink.getVolume());
         assertEquals(drinkDTO.getCost(), drink.getCost());
-        assertEquals(category.getName(), drink.getCategory().getName());
+        assertEquals(CATEGORY_NAME, drink.getCategory().getName());
     }
 
     @Test
@@ -157,7 +157,7 @@ public class DrinkServiceUnitTests {
 
     private DrinkCreateDTO createDrinkDTO() {
         CategoryDTO category = new CategoryDTO(7L, "Alkoholna pica");
-        return new DrinkCreateDTO(7L, "Coca cola", 140.0, "Bas je gazirana", "putanja/cola", category, ItemType.DRINK, false, 0.5);
+        return new DrinkCreateDTO(70L, "Coca cola", 140.0, "Bas je gazirana", "putanja/cola", category, ItemType.DRINK, false, 0.5);
     }
 
     private List<Drink> createDrinks() {

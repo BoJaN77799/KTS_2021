@@ -8,20 +8,31 @@ import com.app.RestaurantApp.drinks.dto.DrinkWithPriceDTO;
 import com.app.RestaurantApp.enums.ItemType;
 import com.app.RestaurantApp.food.dto.FoodWithPriceDTO;
 import com.app.RestaurantApp.security.auth.JwtAuthenticationRequest;
+import com.app.RestaurantApp.users.FileUploadUtilTest;
 import com.app.RestaurantApp.users.dto.UserTokenState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static com.app.RestaurantApp.drink.Constants.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DrinkControllerIntegrationTests {
 
@@ -30,6 +41,9 @@ public class DrinkControllerIntegrationTests {
 
     @Autowired
     private DrinkService drinkService;
+
+    @Autowired
+    private MockMvc mockMvc;
 
     private final HttpHeaders headers = new HttpHeaders();
 
@@ -45,22 +59,38 @@ public class DrinkControllerIntegrationTests {
     }
 
     @Test
-    public void testSaveDrink(){
-
-        HttpEntity<DrinkDTO> httpEntity = new HttpEntity<>(createDrinkDTO(), headers);
-
+    public void testSaveDrink() throws Exception {
+        logInAsBarman();
         List<Drink> drinks =  drinkService.findAll(); // before test
 
-        ResponseEntity<String> entity = restTemplate
-                .exchange("/api/drinks", HttpMethod.POST, httpEntity, String.class);
+        MockMultipartFile image = new MockMultipartFile("multipartImageFile", "default_drink.jpg",
+                MediaType.IMAGE_JPEG_VALUE, FileUploadUtilTest.getTestFileInputStream());
 
-        assertEquals(HttpStatus.CREATED, entity.getStatusCode());
+        mockMvc.perform(multipart("/api/drinks")
+                        .file(image)
+                        .headers(headers)
+                        .param("name", "Spricer")
+                        .param("cost", "300")
+                        .param("description", "Obara")
+                        .param("image", "drink_photos/default_drink.jpg")
+                        .param("category", "Alkoholna pica")
+                        .param("itemType", "DRINK")
+                        .param("deleted", "false")
+                        .param("volume", "1.5")
+                )
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$").value("Drink successfully created"));
 
-        String message = entity.getBody();
-
-        assertNotNull(message);
-        assertEquals("Drink successfully created", message);
         assertEquals(drinks.size() + 1, drinkService.findAll().size());
+
+        //cleanup
+        Drink savedDrink = drinkService.findOne(14L);
+        if (savedDrink != null){
+            String foodImage = savedDrink.getImage();
+            Path resultPath = Paths.get(foodImage);
+            assertTrue(resultPath.toFile().exists() && !resultPath.toFile().isDirectory());
+            assertTrue(resultPath.toFile().delete());
+        }
     }
 
     @Test
@@ -213,6 +243,17 @@ public class DrinkControllerIntegrationTests {
         ResponseEntity<UserTokenState> responseEntity =
                 restTemplate.postForEntity("/api/users/login",
                         new JwtAuthenticationRequest(WAITER_EMAIL, WAITER_PWD),
+                        UserTokenState.class);
+
+        String accessToken = Objects.requireNonNull(responseEntity.getBody()).getAccessToken();
+
+        headers.set("Authorization", "Bearer " + accessToken);
+    }
+
+    private void logInAsBarman() {
+        ResponseEntity<UserTokenState> responseEntity =
+                restTemplate.postForEntity("/api/users/login",
+                        new JwtAuthenticationRequest(BARMAN_EMAIL, BARMAN_PWD),
                         UserTokenState.class);
 
         String accessToken = Objects.requireNonNull(responseEntity.getBody()).getAccessToken();

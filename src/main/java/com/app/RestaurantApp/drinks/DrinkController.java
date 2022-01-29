@@ -59,9 +59,9 @@ public class DrinkController {
         }
     }
 
-    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(consumes = "application/json")
     @PreAuthorize("hasRole('BARMAN')")
-    public ResponseEntity<String> updateDrink(@ModelAttribute DrinkCreateDTO drinkDTO) {
+    public ResponseEntity<String> updateDrink(@RequestBody DrinkCreateDTO drinkDTO) {
 
         try {
             Drink drink = drinkService.findOne(drinkDTO.getId());

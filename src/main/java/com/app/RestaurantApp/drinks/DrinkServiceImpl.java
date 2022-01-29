@@ -68,7 +68,7 @@ public class DrinkServiceImpl implements DrinkService {
                 String fileName = StringUtils.cleanPath(Objects.requireNonNull(drinkDTO.getMultipartImageFile().getOriginalFilename()));
                 String uploadDir = "drink_photos/" + drink.getId();
 
-                String path = FileUploadUtil.saveFile(uploadDir, fileName, drinkDTO.getMultipartImageFile());
+                FileUploadUtil.saveFile(uploadDir, fileName, drinkDTO.getMultipartImageFile());
 
                 drink.setImage(uploadDir + "/" + fileName);
 

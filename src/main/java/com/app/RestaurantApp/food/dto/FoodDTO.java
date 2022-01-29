@@ -4,12 +4,14 @@ import com.app.RestaurantApp.category.dto.CategoryDTO;
 import com.app.RestaurantApp.enums.ItemType;
 import com.app.RestaurantApp.food.Food;
 import com.app.RestaurantApp.item.dto.ItemDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 public class FoodDTO extends ItemDTO {
 
     private String recipe;
     private Integer timeToMake;
     private String type;
+    private MultipartFile multipartImageFile;
 
     public FoodDTO() {}
 
@@ -49,5 +51,13 @@ public class FoodDTO extends ItemDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public MultipartFile getMultipartImageFile() {
+        return multipartImageFile;
+    }
+
+    public void setMultipartImageFile(MultipartFile multipartImageFile) {
+        this.multipartImageFile = multipartImageFile;
     }
 }

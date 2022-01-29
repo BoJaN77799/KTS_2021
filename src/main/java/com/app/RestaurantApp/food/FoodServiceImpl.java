@@ -8,12 +8,16 @@ import com.app.RestaurantApp.food.dto.FoodWithIngredientsDTO;
 import com.app.RestaurantApp.ingredient.IngredientRepository;
 import com.app.RestaurantApp.ingredient.dto.IngredientDTO;
 import com.app.RestaurantApp.item.ItemException;
+import com.app.RestaurantApp.users.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class FoodServiceImpl implements FoodService {
@@ -54,7 +58,10 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public Food saveFood(FoodWithIngredientsDTO foodDTO) throws ItemException, FoodException {
+    public Food saveFood(Food food) { return foodRepository.save(food); }
+
+    @Override
+    public Food saveFood(FoodDTO foodDTO) throws ItemException, FoodException {
         Food food = new Food(foodDTO);
         FoodUtils.CheckFoodInfo(food);
         if (foodDTO.getCategory() != null) {
@@ -64,10 +71,25 @@ public class FoodServiceImpl implements FoodService {
                 category = categoryService.insertCategory(new Category(foodDTO.getCategory()));
             food.setCategory(category);
         }
-        for (IngredientDTO ingredient : foodDTO.getIngredients()) {
-            ingredientRepository.findById(ingredient.getId()).ifPresent(ingredientFromDb -> food.getIngredients().add(ingredientFromDb));
+
+        food.setMenu("Nedefinisan");
+        food.setCurrentPrice(0.0);
+        food = foodRepository.save(food);
+        if(foodDTO.getMultipartImageFile() != null){
+            try {
+                String fileName = StringUtils.cleanPath(Objects.requireNonNull(foodDTO.getMultipartImageFile().getOriginalFilename()));
+                String uploadDir = "food_photos/" + food.getId();
+
+                FileUploadUtil.saveFile(uploadDir, fileName, foodDTO.getMultipartImageFile());
+
+                food.setImage(uploadDir + "/" + fileName);
+
+                foodRepository.save(food);
+            }catch (NullPointerException | IOException e){
+                System.out.println(e.getMessage());
+                food.setImage(null);
+            }
         }
-        foodRepository.save(food);
         return food;
     }
 
