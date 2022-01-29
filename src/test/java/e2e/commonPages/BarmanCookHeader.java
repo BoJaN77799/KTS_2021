@@ -19,6 +19,8 @@ public class BarmanCookHeader extends CommonNotificationHeader {
     @FindBy(xpath = "//a[@id='create-drink']")
     protected WebElement createDrink;
 
+    @FindBy(xpath = "//a[@id='create-food']")
+    protected WebElement createFood;
 
     public BarmanCookHeader(WebDriver driver) {
         super(driver);
@@ -34,9 +36,7 @@ public class BarmanCookHeader extends CommonNotificationHeader {
         Utilities.clickableWait(driver, this.myOrdersLink, 10).click();
     }
 
-    public void createDrinkLinkClick() {
-        Utilities.clickableWait(driver, this.createDrink, 10).click();
-    }
+    public void createDrinkLinkClick() { Utilities.clickableWait(driver, this.createDrink, 10).click(); }
 
-
+    public void createFoodLinkClick() { Utilities.clickableWait(driver, this.createFood, 10).click(); }
 }

@@ -27,9 +27,6 @@ public class OrderInfoPage extends BarmanCookHeader {
     @FindBy(xpath = "//div[@class='content']")
     private WebElement noteElement;
 
-    @FindBy(xpath = "//td[@id='finish-cell']")
-    private WebElement finishCell;
-
     public OrderInfoPage(WebDriver driver) { super(driver); }
 
     public List<WebElement> getTableOrderItemsBodyContent(){ return tableOrderItemsBodyContent; }
@@ -46,5 +43,4 @@ public class OrderInfoPage extends BarmanCookHeader {
 
     public String getNoteElementText() { return noteElement.getText(); }
 
-    public WebElement getFinishCell(){ return finishCell; }
 }
