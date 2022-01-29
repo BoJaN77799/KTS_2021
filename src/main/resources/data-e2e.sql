@@ -419,3 +419,32 @@ insert into order_item (quantity, status, price, priority, order_id, item_id)
                 values (3, 'ORDERED', 200.0, 0, 13, 20); --espresso 110
 insert into order_item (quantity, status, price, priority, order_id, item_id)
                 values (3, 'DELIVERED', 200.0, 0, 13, 14); --cola 100
+
+
+insert into restaurant_order (status, created_at, note, table_id, waiter_id) -- Order to update
+values ('NEW', 1642028400000, 'Pozuri, zedan sam za stolom 13.', 13, 4);
+insert into order_item (quantity, status, price, priority, order_id, item_id)
+values (2, 'ORDERED', 220.0, 0, 14, 16); --bravo sok 100
+insert into order_item (quantity, status, price, priority, order_id, item_id)
+values (2, 'ORDERED', 450.0, 2, 14, 11); --ledene kocke 300
+
+insert into restaurant_order (status, created_at, note, table_id, waiter_id) -- Order to finish
+values ('NEW', 1642028400000, 'Pozuri, zedan sam za stolom 14.', 14, 4);
+insert into order_item (quantity, status, price, priority, order_id, item_id)
+values (2, 'ORDERED', 220.0, 0, 15, 16); --bravo sok 100
+insert into order_item (quantity, status, price, priority, order_id, item_id)
+values (2, 'ORDERED', 450.0, 2, 15, 11); --ledene kocke 300
+
+insert into restaurant_order (status, created_at, note, table_id, waiter_id) -- Order to finish from table view
+values ('NEW', 1642028400000, 'Pozuri, zedan sam za stolom 11.', 11, 4);
+insert into order_item (quantity, status, price, priority, order_id, item_id)
+values (2, 'ORDERED', 220.0, 0, 16, 16); --bravo sok 100
+insert into order_item (quantity, status, price, priority, order_id, item_id)
+values (2, 'ORDERED', 450.0, 2, 16, 11); --ledene kocke 300
+
+insert into restaurant_order (status, created_at, note, table_id, waiter_id) -- Order to finish from table view
+values ('NEW', 1642028400000, 'Pozuri, zedan sam za stolom 11.', 10, 4);
+insert into order_item (quantity, status, price, priority, order_id, item_id)
+values (2, 'FINISHED', 220.0, 0, 17, 16); --bravo sok 100
+insert into order_item (quantity, status, price, priority, order_id, item_id)
+values (2, 'ORDERED', 450.0, 2, 17, 11); --ledene kocke 300

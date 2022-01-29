@@ -23,6 +23,10 @@ public class Utilities {
         return new WebDriverWait(driver, wait).until(ExpectedConditions.textToBePresentInElement(element, text));
     }
 
+    public static boolean textValueWait(WebDriver driver, WebElement element, String text, int wait) {
+        return new WebDriverWait(driver, wait).until(ExpectedConditions.textToBePresentInElementValue(element, text));
+    }
+
     public static WebElement visibilityWait(WebDriver driver, WebElement element, int wait) {
         return new WebDriverWait(driver, wait).until(ExpectedConditions.visibilityOf(element));
     }
