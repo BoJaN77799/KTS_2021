@@ -56,6 +56,50 @@ public class UsersTests {
         adminPage.usersLinkClick();
         assertTrue(usersPage.getUrl());
 
+        //profile view
+        adminPage.profileLinkClick();
+        userViewPage.addTextToFNField("Filipko");
+        userViewPage.addTextToLNField("Markovicko");
+        userViewPage.addTextToAddressField("Plava, Dunav");
+        userViewPage.addTextToTelephoneField("1891991919");
+        userViewPage.clickSave();
+
+        adminPage.profileLinkClick();
+        assertTrue(userViewPage.checkTextinFN("Filipko"));
+        assertTrue(userViewPage.checkTextinLN("Markovicko"));
+        assertTrue(userViewPage.checkTextinAddress("Plava, Dunav"));
+        assertTrue(userViewPage.checkTextinTelephone("1891991919"));
+        userViewPage.clickEsc();
+
+        //change pw check
+        adminPage.profileLinkClick();
+        userViewPage.clickChangePassword();
+        userViewPage.addTextToOldPw("admin");
+        userViewPage.addTextToNewPw("admin123123");
+        userViewPage.clickSaveChangePass();
+
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        userViewPage.clickEsc();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        adminPage.logOutLinkClick();
+        loginPage.setEmailInput(Constants.ADMIN_EMAIL);
+        loginPage.setPasswordInput("admin123123");
+        loginPage.loginButtonClick();
+
+        adminPage.usersLinkClick();
+        assertTrue(usersPage.getUrl());
 
         //user update
         usersPage.clickOnUpdate("2");
@@ -73,26 +117,61 @@ public class UsersTests {
 
         //sortiranje
         usersPage.clickSortId();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         assertTrue(usersPage.checkSortById(true));
         assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("1", "2", "3"))));
 
+
         usersPage.clickSortId();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         assertTrue(usersPage.checkSortById(false));
         assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("12", "11", "10"))));
 
+
         usersPage.clickSortFirstName();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         assertTrue(usersPage.checkSortByFirstName(true));
         assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("5", "7", "4"))));
 
+
         usersPage.clickSortFirstName();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         assertTrue(usersPage.checkSortByFirstName(false));
         assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("6", "12", "11"))));
 
+
         usersPage.clickSortLastName();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         assertTrue(usersPage.checkSortByLastName(true));
         assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("7", "5", "3"))));
 
+
         usersPage.clickSortLastName();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         assertTrue(usersPage.checkSortByLastName(false));
         assertTrue(usersPage.checkIdsInOrder(new ArrayList<>(List.of("6", "4", "8"))));
         usersPage.clickSortLastName();
