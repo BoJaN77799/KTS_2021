@@ -3,6 +3,7 @@ package e2e.employees.pages;
 import e2e.utils.Constants;
 import e2e.Utilities;
 import e2e.commonPages.GeneralPage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -37,6 +38,12 @@ public class EmployeesPage extends GeneralPage {
 //
 //    private Wait<WebDriver> wait;
 
+    @FindBy(id = "searchFieldInput")
+    protected WebElement searchFieldInput;
+
+    @FindBy(id = "userTypeSelect")
+    protected WebElement userTypeSelect;
+
     public EmployeesPage(WebDriver driver) {
         super(driver);
         this.url = Constants.BASE_URL + "rest-app/employees/employees-manager";
@@ -44,6 +51,20 @@ public class EmployeesPage extends GeneralPage {
 //                .withTimeout(Duration.ofSeconds(30))
 //                .pollingEvery(Duration.ofSeconds(5))
 //                .ignoring(NoSuchElementException.class);
+    }
+
+    public void addTextToSearchField(String text){
+        WebElement field = Utilities.visibilityWait(this.driver, searchFieldInput, 10);
+        field.clear();
+        field.sendKeys(text);
+    }
+
+    public void clickOnSelectUserType(int option){
+        WebElement field = Utilities.clickableWait(this.driver, this.userTypeSelect, 10);
+        field.click();
+        WebElement selectOption = Utilities.clickableWait(this.driver, By.xpath("//mat-option[@id='mat-option-" + option +
+                "']"), 10);
+        selectOption.click();
     }
 
     public void employeeCardClick(int index) {
@@ -90,5 +111,12 @@ public class EmployeesPage extends GeneralPage {
         List<WebElement> elems = Utilities.visibilityOfElements(this.driver, this.cardsContent, 10);
         WebElement el = elems.get(2);
         return el.getText().contains(text);
+    }
+
+    public boolean checkTitleAndContentOfCard(int index, String title, String text) {
+        List<WebElement> elems = Utilities.visibilityOfElements(this.driver, this.cardsContent, 10);
+        WebElement el = elems.get(index);
+        return el.findElement(By.xpath("//p")).getText().contains(text) &&
+                el.findElement(By.xpath("//h3")).getText().equalsIgnoreCase(title);
     }
 }

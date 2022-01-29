@@ -13,7 +13,7 @@ public interface EmployeeService {
 
     Employee findById(Long id);
 
-    List<Employee> searchEmployeesManager(String searchField, String userType, Pageable pageable);
+    Page<Employee> searchEmployeesManager(String searchField, String userType, Pageable pageable);
 
     Employee findEmployeeWithBonuses(String email);
 

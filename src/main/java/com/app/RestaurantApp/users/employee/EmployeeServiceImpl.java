@@ -30,7 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public List<Employee> searchEmployeesManager(String searchField, String userType, Pageable pageable) {
+    public Page<Employee> searchEmployeesManager(String searchField, String userType, Pageable pageable) {
         if (searchField == null)
             searchField = "";
 

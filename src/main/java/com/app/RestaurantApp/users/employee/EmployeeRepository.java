@@ -19,7 +19,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             "or lower(u.firstName) like lower(concat('%', :search, '%')) " +
             "or lower(u.lastName) like lower(concat('%', :search, '%')))" +
             "AND (:userType = '' or u.userType = :userType) ")
-    List<Employee> searchEmployeesManager(@Param("search") String searchField, @Param("userType") String userType, Pageable pageable);
+    Page<Employee> searchEmployeesManager(@Param("search") String searchField, @Param("userType") String userType, Pageable pageable);
 
     @Query("select distinct e from Employee e left join fetch e.bonuses where e.email = ?1")
     Employee findEmployeeWithBonuses(String email);

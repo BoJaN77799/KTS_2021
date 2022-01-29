@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.users.employee;
 
 import com.app.RestaurantApp.ControllerUtils;
+import com.app.RestaurantApp.users.dto.AppUserAdminUserListDTO;
 import com.app.RestaurantApp.users.dto.EmployeeDTO;
 import com.app.RestaurantApp.users.dto.NewEmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,13 @@ public class EmployeeController {
 
     @GetMapping(value = "/search_employees", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
-    public List<EmployeeDTO> searchEmployeesManager(
+    public ResponseEntity<List<NewEmployeeDTO>> searchEmployeesManager(
             @RequestParam(value = "searchField", required = false) String searchField,
             @RequestParam(value = "userType", required = false) String userType,
             Pageable pageable) {
-        List<Employee> users = employeeService.searchEmployeesManager(searchField, userType, pageable);
-        return users.stream().map(EmployeeDTO::new).toList();
+        Page<Employee> employeesPage = employeeService.searchEmployeesManager(searchField, userType, pageable);
+        return new ResponseEntity<>
+                (employeesPage.stream().map(NewEmployeeDTO::new).toList(),
+                        ControllerUtils.createPageHeaderAttributes(employeesPage), HttpStatus.OK);
     }
 }

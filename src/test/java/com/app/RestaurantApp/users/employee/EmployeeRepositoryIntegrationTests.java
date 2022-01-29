@@ -71,27 +71,27 @@ public class EmployeeRepositoryIntegrationTests {
 
     @Test
     public void testSearchEmployeesManager() {
-        List<Employee> employees;
+        Page<Employee> employees;
         employees = employeeRepository.searchEmployeesManager(SEARCH_VAL_1, EMPTY,
                 PageRequest.of(0,2).withSort(Sort.by("firstName").descending()));
-        assertEquals(employees.size(), 2);
-        assertEquals(3, employees.get(0).getId());
-        assertEquals(5, employees.get(1).getId());
-        assertTrue(employees.get(0).getFirstName().toLowerCase().contains(SEARCH_VAL_1) &&
-                employees.get(1).getFirstName().toLowerCase().contains(SEARCH_VAL_1));
+        assertEquals(employees.getContent().size(), 2);
+        assertEquals(3, employees.getContent().get(0).getId());
+        assertEquals(5, employees.getContent().get(1).getId());
+        assertTrue(employees.getContent().get(0).getFirstName().toLowerCase().contains(SEARCH_VAL_1) &&
+                employees.getContent().get(1).getFirstName().toLowerCase().contains(SEARCH_VAL_1));
 
         employees = employeeRepository.searchEmployeesManager(SEARCH_VAL_2, COOK, null);
-        assertEquals(4, employees.get(0).getId());
-        assertTrue(employees.get(0).getFirstName().toLowerCase().contains(SEARCH_VAL_2));
+        assertEquals(4, employees.getContent().get(0).getId());
+        assertTrue(employees.getContent().get(0).getFirstName().toLowerCase().contains(SEARCH_VAL_2));
 
         employees = employeeRepository.searchEmployeesManager(EMPTY, COOK, null);
-        assertEquals(2, employees.size());
-        assertTrue(employees.get(0).getUserType() == UserType.COOK &&
-                employees.get(1).getUserType() == UserType.COOK);
+        assertEquals(2, employees.getContent().size());
+        assertTrue(employees.getContent().get(0).getUserType() == UserType.COOK &&
+                employees.getContent().get(1).getUserType() == UserType.COOK);
 
         employees = employeeRepository.searchEmployeesManager(EMPTY, EMPTY,
                 PageRequest.of(0, 10).withSort(Sort.by("firstName").ascending()));
-        assertEquals(4, employees.size());
+        assertEquals(4, employees.getContent().size());
     }
 
     @Test
