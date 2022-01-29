@@ -1,9 +1,11 @@
-package com.app.RestaurantApp.users;
+package com.app.RestaurantApp.users.authority;
 
+import com.app.RestaurantApp.users.appUser.AppUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="AUTHORITY")

@@ -1,7 +1,7 @@
 package com.app.RestaurantApp.users.appUser;
 
 import com.app.RestaurantApp.enums.UserType;
-import com.app.RestaurantApp.users.Authority;
+import com.app.RestaurantApp.users.authority.Authority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -79,6 +79,7 @@ public class AppUser implements UserDetails {
         this.userType = appUser.userType;
         this.deleted = appUser.deleted;
         this.profilePhoto = appUser.profilePhoto;
+        this.authorities = appUser.authorities;
     }
 
     public AppUser (Long id){

@@ -5,10 +5,12 @@ import com.app.RestaurantApp.mail.MailService;
 import com.app.RestaurantApp.users.FileUploadUtil;
 import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.UserUtils;
+import com.app.RestaurantApp.users.authority.Authority;
+import com.app.RestaurantApp.users.authority.AuthorityService;
 import com.app.RestaurantApp.users.dto.CreateUserDTO;
 import com.app.RestaurantApp.users.dto.UpdateUserDTO;
 import com.app.RestaurantApp.users.employee.Employee;
-import com.app.RestaurantApp.users.employee.EmployeeService;
+import com.app.RestaurantApp.users.employee.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +31,13 @@ import java.util.Optional;
 public class AppUserServiceImpl implements AppUserService {
 
     @Autowired
+    private AuthorityService authorityService;
+
+    @Autowired
     private AppUserRepository appUserRepository;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -77,11 +85,18 @@ public class AppUserServiceImpl implements AppUserService {
         user.setEmailVerified(false);
         user.setPasswordChanged(false);
 
+        List<Authority> authorityList = authorityService.findByName("ROLE_" + user.getUserType());
+        if (user.getUserType() == UserType.HEAD_COOK){
+            authorityList.addAll(authorityService.findByName("ROLE_" + UserType.COOK.toString()));
+        }
+
+        user.setAuthorities(authorityList);
+
         AppUser appUser;
         if (user.getUserType() == UserType.BARMAN || user.getUserType() == UserType.COOK ||
                 user.getUserType() == UserType.WAITER || user.getUserType() == UserType.HEAD_COOK)
         {
-            appUser = appUserRepository.save(new Employee(user));
+            appUser = employeeRepository.save(new Employee(user));
         }else{
             appUser =  appUserRepository.save(user);
         }
