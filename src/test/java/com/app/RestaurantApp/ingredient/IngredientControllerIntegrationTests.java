@@ -2,6 +2,8 @@ package com.app.RestaurantApp.ingredient;
 
 import com.app.RestaurantApp.food.Food;
 import com.app.RestaurantApp.food.dto.FoodDTO;
+import com.app.RestaurantApp.food.dto.FoodWithIngredientsDTO;
+import com.app.RestaurantApp.ingredient.dto.IngredientDTO;
 import com.app.RestaurantApp.security.auth.JwtAuthenticationRequest;
 import com.app.RestaurantApp.users.dto.UserTokenState;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,5 +58,29 @@ public class IngredientControllerIntegrationTests {
 
         assertNotNull(ingredientList);
         assertEquals(ingredients.size(), ingredientList.size());
+    }
+
+    @Test
+    public void saveIngredients(){
+        FoodWithIngredientsDTO food = createFoodWithIngredients();
+        HttpEntity<FoodWithIngredientsDTO> httpEntity = new HttpEntity<>(food, headers);
+
+        ResponseEntity<String> entity = restTemplate
+                .exchange("/api/ingredients", HttpMethod.POST, httpEntity, String.class);
+
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
+
+        String message = entity.getBody();
+
+        assertNotNull(message);
+        assertEquals(INGREDIENT_SUCCESS_SAVE, message);
+    }
+
+    private FoodWithIngredientsDTO createFoodWithIngredients() {
+        HashSet<IngredientDTO> ingredients = new HashSet<>(List.of(
+                new IngredientDTO(15L, INGREDIENT_NAME_1, false),
+                new IngredientDTO(1L, INGREDIENT_NAME_2, false),
+                new IngredientDTO(14L, INGREDIENT_NAME_3, false)));
+        return new FoodWithIngredientsDTO(FOOD_ID, ingredients);
     }
 }

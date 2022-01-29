@@ -3,31 +3,34 @@ package com.app.RestaurantApp.food;
 import com.app.RestaurantApp.category.dto.CategoryDTO;
 import com.app.RestaurantApp.enums.ItemType;
 import com.app.RestaurantApp.food.dto.FoodDTO;
-import com.app.RestaurantApp.food.dto.FoodSearchDTO;
-import com.app.RestaurantApp.food.dto.FoodWithIngredientsDTO;
 import com.app.RestaurantApp.food.dto.FoodWithPriceDTO;
-import com.app.RestaurantApp.ingredient.Ingredient;
-import com.app.RestaurantApp.ingredient.dto.IngredientDTO;
 import com.app.RestaurantApp.security.auth.JwtAuthenticationRequest;
+import com.app.RestaurantApp.users.FileUploadUtilTest;
+import com.app.RestaurantApp.users.appUser.AppUser;
 import com.app.RestaurantApp.users.dto.UserTokenState;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static com.app.RestaurantApp.food.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class FoodControllerIntegrationTests {
 
@@ -36,6 +39,9 @@ public class FoodControllerIntegrationTests {
 
     @Autowired
     private FoodService foodService;
+
+    @Autowired
+    private MockMvc mockMvc;
 
     private final HttpHeaders headers = new HttpHeaders();
 
@@ -51,21 +57,39 @@ public class FoodControllerIntegrationTests {
     }
 
     @Test
-    public void testSaveFood(){
-        HttpEntity<FoodDTO> httpEntity = new HttpEntity<>(createFoodDTO(), headers);
-
+    public void testSaveFood() throws Exception {
         List<Food> food =  foodService.findAll(); // before test
 
-        ResponseEntity<String> entity = restTemplate
-                .exchange("/api/food", HttpMethod.POST, httpEntity, String.class);
+        MockMultipartFile image = new MockMultipartFile("multipartImageFile", "default_food.jpg",
+                MediaType.IMAGE_JPEG_VALUE, FileUploadUtilTest.getTestFileInputStream());
 
-        assertEquals(HttpStatus.CREATED, entity.getStatusCode());
+        mockMvc.perform(multipart("/api/food")
+                        .file(image)
+                        .headers(headers)
+                        .param("name", "Rumenko")
+                        .param("cost", "200")
+                        .param("description", "Mnogo je dobar")
+                        .param("image", "food_photos/default_food.jpg")
+                        .param("category", "Sladoled")
+                        .param("itemType", "FOOD")
+                        .param("deleted", "false")
+                        .param("recipe", "Lako se pravi")
+                        .param("timeToMake", "20")
+                        .param("type", "DESERT")
+                )
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$").value("Food successfully created"));
 
-        String message = entity.getBody();
-
-        assertNotNull(message);
-        assertEquals("Food successfully created", message);
         assertEquals(food.size() + 1, foodService.findAll().size());
+
+        //cleanup
+        Food savedFood = foodService.findOne(14L);
+        if (savedFood != null){
+            String foodImage = savedFood.getImage();
+            Path resultPath = Paths.get(foodImage);
+            assertTrue(resultPath.toFile().exists() && !resultPath.toFile().isDirectory());
+            assertTrue(resultPath.toFile().delete());
+        }
     }
 
     @Test
@@ -210,7 +234,7 @@ public class FoodControllerIntegrationTests {
                 .exchange("/api/food/categories", HttpMethod.GET, httpEntity, String[].class);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(5, Objects.requireNonNull(responseEntity.getBody()).length);
+        assertEquals(6, Objects.requireNonNull(responseEntity.getBody()).length);
     }
 
     private void logInAsWaiter() {
@@ -226,9 +250,6 @@ public class FoodControllerIntegrationTests {
 
     private FoodDTO createFoodDTO(){
         CategoryDTO category = new CategoryDTO(1L, "Supe");
-        HashSet<IngredientDTO> ingredients = new HashSet<>(List.of(
-                new IngredientDTO(3L, "Brasno", false),
-                new IngredientDTO(6L, "Voda", false)));
-        return new FoodWithIngredientsDTO(null, "Supa", 250.0, "Bas je slana", "putanja/supa", category, ItemType.FOOD, false, "Ma lako se pravi", 20, "APPETIZER", ingredients);
+        return new FoodDTO(null, "Supa", 250.0, "Bas je slana", "putanja/supa", category, ItemType.FOOD, false, "Ma lako se pravi", 20, "APPETIZER");
     }
 }

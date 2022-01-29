@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.food;
 
+import com.app.RestaurantApp.food.dto.FoodDTO;
 import com.app.RestaurantApp.food.dto.FoodSearchDTO;
 import com.app.RestaurantApp.food.dto.FoodWithIngredientsDTO;
 import com.app.RestaurantApp.ingredient.dto.IngredientDTO;
@@ -108,7 +109,7 @@ public class FoodServiceIntegrationTests {
     @Test
     @Transactional
     public void testSaveFood() throws ItemException, FoodException {
-        FoodWithIngredientsDTO foodDTO = createFoodDTO(); // Creating test object
+        FoodDTO foodDTO = createFoodDTO(); // Creating test object
 
         // Test invoke
         Food food = foodService.saveFood(foodDTO);
@@ -124,7 +125,7 @@ public class FoodServiceIntegrationTests {
         assertEquals(foodDTO.getImage(), food.getImage());
         assertEquals(foodDTO.getDescription(), food.getDescription());
         assertFalse(food.isDeleted());
-        assertEquals(foodDTO.getCategory().getName(), food.getCategory().getName());
+        assertEquals(foodDTO.getCategory(), food.getCategory().getName());
     }
 
     @Test
@@ -156,13 +157,10 @@ public class FoodServiceIntegrationTests {
         assertEquals(categories.size(), 5);
     }
 
-    private FoodWithIngredientsDTO createFoodDTO(){
+    private FoodDTO createFoodDTO(){
         // This method creates testing object
         CategoryDTO category = new CategoryDTO(1L, "Supe");
-        HashSet<IngredientDTO> ingredients = new HashSet<>(List.of(
-                new IngredientDTO(3L, "Brasno", false),
-                new IngredientDTO(6L, "Voda", false)));
-        return new FoodWithIngredientsDTO(1L, "Supa", 250.0, "Bas je slana", "putanja/supa", category, ItemType.FOOD, false, "Ma lako se pravi", 20, "APPETIZER", ingredients);
+        return new FoodDTO(1L, "Supa", 250.0, "Bas je slana", "putanja/supa", category, ItemType.FOOD, false, "Ma lako se pravi", 20, "APPETIZER");
     }
 
 }

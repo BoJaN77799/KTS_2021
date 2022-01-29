@@ -1,6 +1,5 @@
 package com.app.RestaurantApp.item.dto;
 
-import com.app.RestaurantApp.category.dto.CategoryDTO;
 import com.app.RestaurantApp.enums.ItemType;
 import com.app.RestaurantApp.item.Item;
 
@@ -11,14 +10,14 @@ public class ItemDTO {
     private Double cost;
     private String description;
     private String image;
-    private CategoryDTO category;
+    private String category;
     private ItemType itemType;
     private boolean deleted;
 
     public ItemDTO() {
     }
 
-    public ItemDTO(Long id, String name, Double cost, String description, String image, CategoryDTO category, ItemType itemType, boolean deleted) {
+    public ItemDTO(Long id, String name, Double cost, String description, String image, String category, ItemType itemType, boolean deleted) {
         this.id = id;
         this.name = name;
         this.cost = cost;
@@ -35,8 +34,7 @@ public class ItemDTO {
         this.cost = i.getCost();
         this.description = i.getDescription();
         this.image = i.getImage();
-        if (i.getCategory() != null)
-            this.category = new CategoryDTO(i.getCategory());
+        this.category = i.getCategory().getName();
         this.itemType = i.getItemType();
         this.deleted = i.isDeleted();
     }
@@ -81,11 +79,11 @@ public class ItemDTO {
         this.image = image;
     }
 
-    public CategoryDTO getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(CategoryDTO category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 

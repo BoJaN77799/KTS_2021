@@ -15,7 +15,9 @@ public interface FoodService {
 
     Food findOne(Long id);
 
-    Food saveFood(FoodWithIngredientsDTO foodDTO) throws ItemException, FoodException;
+    Food saveFood(Food food);
+
+    Food saveFood(FoodDTO foodDTO) throws ItemException, FoodException;
 
     Food updateFood(FoodDTO foodDTO) throws ItemException, FoodException;
 

@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.drink;
 
+import com.app.RestaurantApp.drinks.dto.DrinkCreateDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkSearchDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -97,7 +98,7 @@ public class DrinkServiceIntegrationTests {
     @Test
     @Transactional
     public void testSaveDrink() throws ItemException, DrinkException {
-        DrinkDTO drinkDTO = createDrinkDTO(); // Creating test object
+        DrinkCreateDTO drinkDTO = createDrinkDTO(); // Creating test object
 
         // Test invoke
         Drink drink = drinkService.saveDrink(drinkDTO);
@@ -110,7 +111,7 @@ public class DrinkServiceIntegrationTests {
         assertEquals(drinkDTO.getImage(), drink.getImage());
         assertEquals(drinkDTO.getDescription(), drink.getDescription());
         assertFalse(drink.isDeleted());
-        assertEquals(drinkDTO.getCategory().getName(), drink.getCategory().getName());
+        assertEquals(drinkDTO.getCategory(), drink.getCategory().getName());
     }
 
     @Test
@@ -142,8 +143,8 @@ public class DrinkServiceIntegrationTests {
         assertEquals(categories.size(), 2);
     }
 
-    private DrinkDTO createDrinkDTO() {
+    private DrinkCreateDTO createDrinkDTO() {
         CategoryDTO category = new CategoryDTO(7L, "Alkoholna pica");
-        return new DrinkDTO(7L, "Coca cola", 140.0, "Bas je gazirana", "putanja/cola", category, ItemType.DRINK, false, 0.5);
+        return new DrinkCreateDTO(70L, "Coca Cola", 140.0, "Bas je gazirana", "putanja/cola", category, ItemType.DRINK, false, 0.5);
     }
 }

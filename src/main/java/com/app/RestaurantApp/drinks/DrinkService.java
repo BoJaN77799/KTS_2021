@@ -1,5 +1,6 @@
 package com.app.RestaurantApp.drinks;
 
+import com.app.RestaurantApp.drinks.dto.DrinkCreateDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkSearchDTO;
 import com.app.RestaurantApp.item.ItemException;
@@ -14,7 +15,7 @@ public interface DrinkService {
 
     Drink findOne(Long id);
 
-    Drink saveDrink(DrinkDTO drinkDTO) throws ItemException, DrinkException;
+    Drink saveDrink(DrinkCreateDTO drinkDTO) throws ItemException, DrinkException;
 
     void deleteDrink(Drink drink);
 

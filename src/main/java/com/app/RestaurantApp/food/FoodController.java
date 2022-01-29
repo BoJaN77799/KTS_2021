@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -49,12 +50,14 @@ public class FoodController {
         return new ResponseEntity<>(new FoodDTO(food), HttpStatus.CREATED);
     }
 
-    @PostMapping(consumes = "application/json")
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('HEAD_COOK')")
-    public ResponseEntity<String> saveFood(@RequestBody FoodWithIngredientsDTO foodDTO) {
+    public ResponseEntity<String> saveFood(@ModelAttribute FoodDTO foodDTO) {
         try {
-            foodService.saveFood(foodDTO);
-            return new ResponseEntity<>("Food successfully created", HttpStatus.CREATED);
+            Food food = foodService.saveFood(foodDTO);
+            HttpHeaders httpHeaderAttributes = new HttpHeaders();
+            httpHeaderAttributes.set("food-id", food.getId().toString());
+            return new ResponseEntity<>("Food successfully created", httpHeaderAttributes, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

@@ -2,15 +2,20 @@ package com.app.RestaurantApp.drinks;
 
 import com.app.RestaurantApp.category.Category;
 import com.app.RestaurantApp.category.CategoryService;
+import com.app.RestaurantApp.drinks.dto.DrinkCreateDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkDTO;
 import com.app.RestaurantApp.drinks.dto.DrinkSearchDTO;
 import com.app.RestaurantApp.item.ItemException;
+import com.app.RestaurantApp.users.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class DrinkServiceImpl implements DrinkService {
@@ -43,17 +48,36 @@ public class DrinkServiceImpl implements DrinkService {
     }
 
     @Override
-    public Drink saveDrink(DrinkDTO drinkDTO) throws DrinkException, ItemException {
+    public Drink saveDrink(DrinkCreateDTO drinkDTO) throws DrinkException, ItemException {
         Drink drink = new Drink(drinkDTO);
         DrinkUtils.CheckDrinkInfo(drink);
         if (drinkDTO.getCategory() != null) {
-            Category category = categoryService.findOneByName(drinkDTO.getCategory().getName());
+            Category category = categoryService.findOneByName(drinkDTO.getCategory());
             if (category == null)
                 // need to make category first
                 category = categoryService.insertCategory(new Category(drinkDTO.getCategory()));
             drink.setCategory(category);
         }
-        drinkRepository.save(drink);
+
+        drink.setMenu("Nedefinisan");
+        drink.setCurrentPrice(0.0);
+        drink = drinkRepository.save(drink);
+
+        if (drinkDTO.getMultipartImageFile() != null){
+            try {
+                String fileName = StringUtils.cleanPath(Objects.requireNonNull(drinkDTO.getMultipartImageFile().getOriginalFilename()));
+                String uploadDir = "drink_photos/" + drink.getId();
+
+                FileUploadUtil.saveFile(uploadDir, fileName, drinkDTO.getMultipartImageFile());
+
+                drink.setImage(uploadDir + "/" + fileName);
+
+                drinkRepository.save(drink);
+            }catch (NullPointerException | IOException e){
+                System.out.println(e.getMessage());
+                drink.setImage(null);
+            }
+        }
         return drink;
     }
 

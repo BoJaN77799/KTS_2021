@@ -105,11 +105,11 @@ public class FoodServiceUnitTests {
     @Test
     public void testSaveFood() throws ItemException, FoodException {
         // Test represent scenario where foodDTO has expected data
-        FoodWithIngredientsDTO foodDTO = createFoodDTO();
+        FoodDTO foodDTO = createFoodDTO();
         Food foodMocked = new Food(foodDTO);
         Category category = new Category(foodDTO.getCategory());
         given(categoryServiceMock.findOneByName(CATEGORY_NAME)).willReturn(category);
-        given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
+        given(foodRepositoryMock.save(any(Food.class))).willReturn(foodMocked);
 
         // Test invoke
         Food food = foodService.saveFood(foodDTO);
@@ -117,16 +117,16 @@ public class FoodServiceUnitTests {
         // Verifying
         verify(categoryServiceMock, times(1)).findOneByName(CATEGORY_NAME);
         verify(categoryServiceMock, times(0)).insertCategory(category);
-        verify(foodRepositoryMock, times(1)).save(food);
+        verify(foodRepositoryMock, times(1)).save(any(Food.class));
 
         assertNotNull(food);
         assertEquals(foodDTO.getName(), food.getName());
-        assertEquals(foodDTO.getCategory().getName(), food.getCategory().getName());
+        assertEquals(foodDTO.getCategory(), food.getCategory().getName());
     }
 
     @Test
     public void testSaveFood_RecipeNull() {
-        FoodWithIngredientsDTO foodDTO = createFoodDTO();
+        FoodDTO foodDTO = createFoodDTO();
         // Recipe is null
         foodDTO.setRecipe(null);
         Food foodMocked = new Food(foodDTO);
@@ -141,7 +141,7 @@ public class FoodServiceUnitTests {
 
     @Test
     public void testSaveFood_FoodTypeNull() {
-        FoodWithIngredientsDTO foodDTO = createFoodDTO();
+        FoodDTO foodDTO = createFoodDTO();
         // FoodType is null
         foodDTO.setType(null);
         Food foodMocked = new Food(foodDTO);
@@ -156,7 +156,7 @@ public class FoodServiceUnitTests {
 
     @Test
     public void testSaveFood_RecipeContentBlank() {
-        FoodWithIngredientsDTO foodDTO = createFoodDTO();
+        FoodDTO foodDTO = createFoodDTO();
         // Recipe is blank
         foodDTO.setRecipe("");
         Food foodMocked = new Food(foodDTO);
@@ -171,7 +171,7 @@ public class FoodServiceUnitTests {
 
     @Test
     public void testSaveFood_NameNull() {
-        FoodWithIngredientsDTO foodDTO = createFoodDTO();
+        FoodDTO foodDTO = createFoodDTO();
         // Name is null
         foodDTO.setName(null);
         Food foodMocked = new Food(foodDTO);
@@ -186,7 +186,7 @@ public class FoodServiceUnitTests {
 
     @Test
     public void testSaveFood_DescriptionNull() {
-        FoodWithIngredientsDTO foodDTO = createFoodDTO();
+        FoodDTO foodDTO = createFoodDTO();
         // Description is null
         foodDTO.setDescription(null);
         Food foodMocked = new Food(foodDTO);
@@ -201,7 +201,7 @@ public class FoodServiceUnitTests {
 
     @Test
     public void testSaveFood_ImageNull() {
-        FoodWithIngredientsDTO foodDTO = createFoodDTO();
+        FoodDTO foodDTO = createFoodDTO();
         // Image is null
         foodDTO.setImage(null);
         Food foodMocked = new Food(foodDTO);
@@ -216,13 +216,13 @@ public class FoodServiceUnitTests {
 
     @Test
     public void testSaveFood_NewCategory() throws ItemException, FoodException {
-        FoodWithIngredientsDTO foodDTO = createFoodDTO();
+        FoodDTO foodDTO = createFoodDTO();
         // Category is new one.
         Food foodMocked = new Food(foodDTO);
         Category category = new Category(CATEGORY_ID, CATEGORY_NAME);
         given(categoryServiceMock.findOneByName(CATEGORY_NAME)).willReturn(null); // category does not exist
         given(categoryServiceMock.insertCategory(any(Category.class))).willReturn(category);
-        given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
+        given(foodRepositoryMock.save(any(Food.class))).willReturn(foodMocked);
 
         // Test invoke
         Food food = foodService.saveFood(foodDTO);
@@ -230,16 +230,16 @@ public class FoodServiceUnitTests {
         // Verifying
         verify(categoryServiceMock, times(1)).findOneByName(CATEGORY_NAME);
         verify(categoryServiceMock, times(1)).insertCategory(any(Category.class));
-        verify(foodRepositoryMock, times(1)).save(food);
+        verify(foodRepositoryMock, times(1)).save(any(Food.class));
 
         assertNotNull(food);
         assertEquals(foodDTO.getName(), food.getName());
-        assertEquals(category.getName(), food.getCategory().getName());
+        assertEquals(CATEGORY_NAME, food.getCategory().getName());
     }
 
     @Test
     public void testSaveFood_ItemTypeNull() {
-        FoodWithIngredientsDTO foodDTO = createFoodDTO();
+        FoodDTO foodDTO = createFoodDTO();
         // ItemType is null
         foodDTO.setItemType(null);
         Food foodMocked = new Food(foodDTO);
@@ -254,7 +254,7 @@ public class FoodServiceUnitTests {
 
     @Test
     public void testSaveFood_NameContentBlank() {
-        FoodWithIngredientsDTO foodDTO = createFoodDTO();
+        FoodDTO foodDTO = createFoodDTO();
         // Name is blank
         foodDTO.setName("");
         Food foodMocked = new Food(foodDTO);
@@ -269,7 +269,7 @@ public class FoodServiceUnitTests {
 
     @Test
     public void testSaveFood_CostEqualsOrLowerThanZero() {
-        FoodWithIngredientsDTO foodDTO = createFoodDTO();
+        FoodDTO foodDTO = createFoodDTO();
         // Cost is lower than 0
         foodDTO.setCost(-30.0);
         Food foodMocked = new Food(foodDTO);
@@ -284,7 +284,7 @@ public class FoodServiceUnitTests {
 
     @Test
     public void testSaveFood_DescriptionContentBlank() {
-        FoodWithIngredientsDTO foodDTO = createFoodDTO();
+        FoodDTO foodDTO = createFoodDTO();
         // Description is blank
         foodDTO.setDescription("");
         Food foodMocked = new Food(foodDTO);
@@ -299,7 +299,7 @@ public class FoodServiceUnitTests {
 
     @Test
     public void testSaveFood_DescriptionContentIsTooBig() {
-        FoodWithIngredientsDTO foodDTO = createFoodDTO();
+        FoodDTO foodDTO = createFoodDTO();
         // Description is too big
         foodDTO.setDescription("a".repeat(257)); // 257 characters
         Food foodMocked = new Food(foodDTO);
@@ -314,7 +314,7 @@ public class FoodServiceUnitTests {
 
     @Test
     public void testSaveFood_ImagePathBlank() {
-        FoodWithIngredientsDTO foodDTO = createFoodDTO();
+        FoodDTO foodDTO = createFoodDTO();
         // Image path is blank
         foodDTO.setImage("");
         Food foodMocked = new Food(foodDTO);
@@ -329,9 +329,10 @@ public class FoodServiceUnitTests {
 
     @Test
     public void testSaveFood_CategoryNameBlank() {
-        FoodWithIngredientsDTO foodDTO = createFoodDTO();
+        FoodDTO foodDTO = createFoodDTO();
         // Category name is blank
-        foodDTO.setCategory(new CategoryDTO(1L, ""));
+        CategoryDTO blankCategory = new CategoryDTO(1L, "");
+        foodDTO.setCategory(blankCategory.getName());
         Food foodMocked = new Food(foodDTO);
         given(foodRepositoryMock.save(foodMocked)).willReturn(foodMocked);
 
@@ -342,13 +343,10 @@ public class FoodServiceUnitTests {
         assertEquals(CATEGORY_NAME_BLANK, exception.getMessage());
     }
 
-    private FoodWithIngredientsDTO createFoodDTO(){
+    private FoodDTO createFoodDTO(){
         // This method creates testing object
         CategoryDTO category = new CategoryDTO(1L, "Supe");
-        HashSet<IngredientDTO> ingredients = new HashSet<>(List.of(
-                new IngredientDTO(3L, "Brasno", false),
-                new IngredientDTO(6L, "Voda", false)));
-        return new FoodWithIngredientsDTO(1L, "Supa", 250.0, "Bas je slana", "putanja/supa", category, ItemType.FOOD, false, "Ma lako se pravi", 20, "APPETIZER", ingredients);
+        return new FoodDTO(20L, "Supa", 250.0, "Bas je slana", "putanja/supa", category, ItemType.FOOD, false, "Ma lako se pravi", 20, "APPETIZER");
     }
 
     private List<Food> createFoods() {
