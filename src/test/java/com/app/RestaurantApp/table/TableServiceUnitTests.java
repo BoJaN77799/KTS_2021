@@ -1,6 +1,7 @@
 package com.app.RestaurantApp.table;
 
 import com.app.RestaurantApp.enums.OrderItemStatus;
+import com.app.RestaurantApp.enums.OrderStatus;
 import com.app.RestaurantApp.order.Order;
 import com.app.RestaurantApp.orderItem.OrderItem;
 import com.app.RestaurantApp.table.dto.TableCreateDTO;
@@ -9,6 +10,7 @@ import com.app.RestaurantApp.table.dto.TableWaiterDTO;
 import com.app.RestaurantApp.users.UserException;
 import com.app.RestaurantApp.users.appUser.AppUser;
 import com.app.RestaurantApp.users.dto.UpdateUserDTO;
+import com.app.RestaurantApp.users.employee.Employee;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -30,8 +32,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith({SpringExtension.class})
 @SpringBootTest
@@ -123,20 +124,46 @@ public class TableServiceUnitTests {
 
     @Test
     public void testGetTablesWithActiveOrderIfItExists(){
-        //todo
-//        doReturn(getListOfTablesWithActiveOrders()).when(tableRepositoryMock).findByFloorAndInProgressOrders(1);
-//        doReturn(getListOfTablesWithoutActiveOrders()).when(tableRepositoryMock).findByFloorAndNoInProgressOrders(1);
-//
-//        List<TableWaiterDTO> list = tableService.getTablesWithActiveOrderIfItExists(1);
-//
-//        assertEquals(7, list.size());
-//        assertFalse(list.get(0).isOccupied());
-//        assertFalse(list.get(1).isOccupied());
-//        assertFalse(list.get(2).isOccupied());
-//        assertEquals("READY", list.get(3).getOrderStatus());
-//        assertEquals("IN PROGRESS", list.get(4).getOrderStatus());
-//        assertEquals("NEW", list.get(5).getOrderStatus());
-//        assertEquals("FINISHABLE", list.get(6).getOrderStatus());
+        doReturn(getListOfTablesWithActiveOrders()).when(tableRepositoryMock).findByFloorAndInProgressOrders(1);
+        doReturn(getListOfTablesWithoutActiveOrders()).when(tableRepositoryMock).findByFloorAndNoInProgressOrders(1, getIdsOfTablesWithActiveOrders());
+
+        List<TableWaiterDTO> list = tableService.getTablesWithActiveOrderIfItExists(1, "waiter@maildrop.cc");
+
+        assertEquals(7, list.size());
+        assertFalse(list.get(0).isOccupied());
+        assertFalse(list.get(1).isOccupied());
+        assertFalse(list.get(2).isOccupied());
+        assertEquals("READY", list.get(3).getOrderStatus());
+        assertEquals("CREATED", list.get(4).getOrderStatus());
+        assertEquals("CREATED", list.get(5).getOrderStatus());
+        assertEquals("DELIVERED", list.get(6).getOrderStatus());
+    }
+
+    @Test
+    public void testGetTableOrderInfo()  throws TableException {
+        doReturn(Optional.of(getTableWithActiveOrder())).when(tableRepositoryMock).findTableByIdIfHasActiveOrders(1L);
+
+        TableWaiterDTO tableWaiterDTO = tableService.getTableOrderInfo(1L, "mirkolegenda@gmail.com");
+        assertNotNull(tableWaiterDTO);
+        assertEquals("READY", tableWaiterDTO.getOrderStatus());
+        assertTrue(tableWaiterDTO.isOccupied());
+        assertEquals(1L, tableWaiterDTO.getId());
+
+        doReturn(Optional.empty()).when(tableRepositoryMock).findTableByIdIfHasActiveOrders(2L);
+        doReturn(Optional.of(getBasicTable())).when(tableRepositoryMock).findByIdAndActive(2L, true);
+        tableWaiterDTO = tableService.getTableOrderInfo(2L, "mirkolegenda@gmail.com");
+        assertNotNull(tableWaiterDTO);
+        assertEquals(tableWaiterDTO.getOrderStatus(), "TABLE FREE");
+        assertFalse(tableWaiterDTO.isOccupied());
+        assertEquals(2L, tableWaiterDTO.getId());
+    }
+
+    @Test
+    public void testGetTableOrderInfo_noTable()  {
+        doReturn(Optional.empty()).when(tableRepositoryMock).findTableByIdIfHasActiveOrders(2L);
+        doReturn(Optional.empty()).when(tableRepositoryMock).findByIdAndActive(2L, true);
+        TableException tableException = assertThrows(TableException.class, ()-> tableService.getTableOrderInfo(2L, "mirkolegenda@gmail.com"));
+        assertEquals(tableException.getMessage(), "Table not found!");
     }
 
     private Table getTableForUpdate(){
@@ -163,6 +190,51 @@ public class TableServiceUnitTests {
         return table;
     }
 
+    private List<Long> getIdsOfTablesWithActiveOrders(){
+        return List.of(4L, 5L, 6L, 7L);
+    }
+
+    private Table getTableWithActiveOrder() {
+        Table table = new Table();
+        table.setId(1L);
+        table.setActive(true);
+        table.setFloor(1);
+        table.setX(100);
+        table.setY(100);
+        table.setOrders(new HashSet<>());
+
+        Employee mirko = new Employee();
+        mirko.setEmail("mirkolegenda@gmail.com");
+
+        Order order1 = new Order();
+        order1.setStatus(OrderStatus.IN_PROGRESS);
+        order1.setWaiter(mirko);
+
+        OrderItem oi1_1 = new OrderItem();
+        oi1_1.setStatus(OrderItemStatus.FINISHED);
+        OrderItem oi1_2 = new OrderItem();
+        oi1_2.setStatus(OrderItemStatus.IN_PROGRESS);
+        HashSet<OrderItem> order_items1 = new HashSet<OrderItem>();
+        order_items1.add(oi1_1);
+        order_items1.add(oi1_2);
+        order1.setOrderItems(order_items1);
+        table.getOrders().add(order1);
+
+        return table;
+    }
+
+    private Table getBasicTable() {
+        Table table = new Table();
+        table.setId(2L);
+        table.setActive(true);
+        table.setFloor(1);
+        table.setX(100);
+        table.setY(100);
+        table.setOrders(new HashSet<>());
+
+        return table;
+    }
+
     private List<Table> getListOfTablesWithActiveOrders(){
         List<Table> tableList = new ArrayList<>();
         Table table1 = getGenericTable(4L);
@@ -170,48 +242,59 @@ public class TableServiceUnitTests {
         Table table3 = getGenericTable(6L);
         Table table4 = getGenericTable(7L);
 
-        Order order1 = new Order();
+        Employee mirko = new Employee();
+        mirko.setEmail("mirkolegenda@gmail.com");
+
+        Order order1 = mock(Order.class);
+        doReturn(mirko).when(order1).getWaiter();
 
         OrderItem oi1_1 = new OrderItem();
         oi1_1.setStatus(OrderItemStatus.FINISHED);
         OrderItem oi1_2 = new OrderItem();
         oi1_2.setStatus(OrderItemStatus.IN_PROGRESS);
-        order1.setOrderItems(new HashSet<>());
-        order1.getOrderItems().add(oi1_1);
-        order1.getOrderItems().add(oi1_2);
+        HashSet<OrderItem> order_items1 = new HashSet<OrderItem>();
+        order_items1.add(oi1_1);
+        order_items1.add(oi1_2);
+        doReturn(order_items1).when(order1).getOrderItems();
         table1.getOrders().add(order1);
 
-        Order order2 = new Order();
+        Order order2 = mock(Order.class);
+        doReturn(mirko).when(order2).getWaiter();
 
         OrderItem oi2_1 = new OrderItem();
         oi2_1.setStatus(OrderItemStatus.ORDERED);
         OrderItem oi2_2 = new OrderItem();
         oi2_2.setStatus(OrderItemStatus.IN_PROGRESS);
-        order2.setOrderItems(new HashSet<>());
-        order2.getOrderItems().add(oi2_1);
-        order2.getOrderItems().add(oi2_2);
+        HashSet<OrderItem> order_items2 = new HashSet<OrderItem>();
+        order_items2.add(oi2_1);
+        order_items2.add(oi2_2);
+        doReturn(order_items2).when(order2).getOrderItems();
         table2.getOrders().add(order2);
 
-        Order order3 = new Order();
+        Order order3 = mock(Order.class);
+        doReturn(mirko).when(order3).getWaiter();
 
         OrderItem oi3_1 = new OrderItem();
         oi3_1.setStatus(OrderItemStatus.ORDERED);
         OrderItem oi3_2 = new OrderItem();
         oi3_2.setStatus(OrderItemStatus.ORDERED);
-        order3.setOrderItems(new HashSet<>());
-        order3.getOrderItems().add(oi3_1);
-        order3.getOrderItems().add(oi3_2);
+        HashSet<OrderItem> order_items3 = new HashSet<OrderItem>();
+        order_items3.add(oi3_1);
+        order_items3.add(oi3_2);
+        doReturn(order_items3).when(order3).getOrderItems();
         table3.getOrders().add(order3);
 
-        Order order4 = new Order();
+        Order order4 = mock(Order.class);
+        doReturn(mirko).when(order4).getWaiter();
 
         OrderItem oi4_1 = new OrderItem();
         oi4_1.setStatus(OrderItemStatus.DELIVERED);
         OrderItem oi4_2 = new OrderItem();
         oi4_2.setStatus(OrderItemStatus.DELIVERED);
-        order4.setOrderItems(new HashSet<>());
-        order4.getOrderItems().add(oi4_1);
-        order4.getOrderItems().add(oi4_2);
+        HashSet<OrderItem> order_items4 = new HashSet<OrderItem>();
+        order_items3.add(oi4_1);
+        order_items3.add(oi4_2);
+        doReturn(order_items4).when(order4).getOrderItems();
         table4.getOrders().add(order4);
 
         tableList.add(table1);

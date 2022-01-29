@@ -89,7 +89,6 @@ public class TableController {
     @GetMapping(value = "/tableInfo/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('WAITER')")
     public ResponseEntity<TableWaiterDTO> getTableAndOrderInfo(@PathVariable Long id){
-        //todo test
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
             TableWaiterDTO resp = tableService.getTableOrderInfo(id, userDetails.getUsername());

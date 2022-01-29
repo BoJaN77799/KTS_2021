@@ -23,6 +23,7 @@ import static org.mockito.Mockito.times;
 
 
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,7 +48,7 @@ public class AppUserServiceUnitTests {
 
     @Test
     public void testSearchUsersAdmin() {
-        doReturn(new ArrayList<AppUser>())
+        doReturn(new PageImpl<AppUser>(new ArrayList<>()))
                 .when(appUserRepositoryMock).searchUsersAdmin("", "", null);
 
         appUserService.searchUsersAdmin(null, null, null);
@@ -109,9 +110,16 @@ public class AppUserServiceUnitTests {
 
         doReturn(Optional.of(updatedUser)).when(appUserRepositoryMock).findByIdAndDeleted(1L, false);
 
-        appUserService.updateUser(getUpdateUserDTO());
+        UpdateUserDTO updateUserDTO = getUpdateUserDTO();
+        MultipartFile image = mock(MultipartFile.class);
+        doReturn(PFP_NAME).when(image).getOriginalFilename();
+        updateUserDTO.setImage(image);
 
-        verify(appUserRepositoryMock).save(updatedUser);
+        try (MockedStatic<FileUploadUtil> mocked = mockStatic(FileUploadUtil.class)) {
+            mocked.when(() -> FileUploadUtil.saveFile(anyString(), anyString(), any())).thenReturn("");
+            appUserService.updateUser(updateUserDTO);
+            verify(appUserRepositoryMock, times(1)).save(any());
+        }
     }
 
     @Test
