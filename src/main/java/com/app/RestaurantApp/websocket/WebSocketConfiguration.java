@@ -3,6 +3,7 @@ package com.app.RestaurantApp.websocket;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -16,8 +17,9 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/socket")
-                .setAllowedOrigins("http://localhost:4200")
-                .withSockJS();
+                .setAllowedOrigins("http://localhost:4200").withSockJS();
+        registry.addEndpoint("/socket")
+                .setAllowedOrigins("https://mystifying-kilby-e46e5d.netlify.app").withSockJS();
     }
 
     // http://localhost:8080/socket-subscriber/
